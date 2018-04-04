@@ -13,47 +13,41 @@
 				<div class="wrapper">
 					<div class="flex">
 						<div class="links">
-							<div class="wrapper">
-								<div class="flex">
-									<div class="segitseg">
-										<h3>Tájékoztatók</h3>
-										<ul>
-											<? foreach ( $this->menu_footer->tree as $menu ): ?>
-												<li>
-													<? if($menu['link']): ?><a href="<?=($menu['link']?:'')?>"><? endif; ?>
-														<span class="item <?=$menu['css_class']?>" style="<?=$menu['css_styles']?>">
-															<? if($menu['kep']): ?><img src="<?=\PortalManager\Formater::sourceImg($menu['kep'])?>"><? endif; ?>
-															<?=$menu['nev']?></span>
-													<? if($menu['link']): ?></a><? endif; ?>
-													<? if($menu['child']): ?>
-														<? foreach ( $menu['child'] as $child ) { ?>
-															<div class="item <?=$child['css_class']?>">
-																<?
-																// Inclue
-																if(strpos( $child['nev'], '=' ) === 0 ): ?>
-																	<? echo $this->templates->get( str_replace('=','',$child['nev']), array( 'view' => $this ) ); ?>
-																<? else: ?>
-																<? if($child['link']): ?><a href="<?=$child['link']?>"><? endif; ?>
-																<? if($child['kep']): ?><img src="<?=\PortalManager\Formater::sourceImg($child['kep'])?>"><? endif; ?>
-																<span style="<?=$child['css_styles']?>"><?=$child['nev']?></span>
-																<? if($child['link']): ?></a><? endif; ?>
-																<? endif; ?>
-															</div>
-														<? } ?>
-													<? endif; ?>
-												</li>
-											<? endforeach; ?>
-										</ul>
-									</div>
-								</div>
+							<div class="segitseg">
+								<h3>Tájékoztatók</h3>
+								<ul>
+									<? foreach ( $this->menu_footer->tree as $menu ): ?>
+										<li>
+											<? if($menu['link']): ?><a href="<?=($menu['link']?:'')?>"><? endif; ?>
+												<span class="item <?=$menu['css_class']?>" style="<?=$menu['css_styles']?>">
+													<? if($menu['kep']): ?><img src="<?=\PortalManager\Formater::sourceImg($menu['kep'])?>"><? endif; ?>
+													<?=$menu['nev']?></span>
+											<? if($menu['link']): ?></a><? endif; ?>
+											<? if($menu['child']): ?>
+												<? foreach ( $menu['child'] as $child ) { ?>
+													<div class="item <?=$child['css_class']?>">
+														<?
+														// Inclue
+														if(strpos( $child['nev'], '=' ) === 0 ): ?>
+															<? echo $this->templates->get( str_replace('=','',$child['nev']), array( 'view' => $this ) ); ?>
+														<? else: ?>
+														<? if($child['link']): ?><a href="<?=$child['link']?>"><? endif; ?>
+														<? if($child['kep']): ?><img src="<?=\PortalManager\Formater::sourceImg($child['kep'])?>"><? endif; ?>
+														<span style="<?=$child['css_styles']?>"><?=$child['nev']?></span>
+														<? if($child['link']): ?></a><? endif; ?>
+														<? endif; ?>
+													</div>
+												<? } ?>
+											<? endif; ?>
+										</li>
+									<? endforeach; ?>
+								</ul>
 							</div>
 						</div>
 						<div class="subs">
+							<h3>Feliratkozás</h3>
 							<div class="subbox">
 								<div class="wrapper">
-									<div class="title">
-										<h3>Feliratkozás</h3>
-									</div>
 									<div class="form">
 										<form class="" action="/feliratkozas" method="get">
 											<div class="name">
@@ -76,16 +70,6 @@
 													</div>
 												</div>
 											</div>
-											<div class="phone">
-												<div class="flex flexmob-exc-resp">
-													<div class="ico">
-														<i class="fa fa-phone"></i>
-													</div>
-													<div class="input">
-														<input type="text" name="phone" value="" placeholder="Telefon">
-													</div>
-												</div>
-											</div>
 											<div class="button">
 												<button type="submit" name="subscribe">Mehet</button>
 											</div>
@@ -93,6 +77,10 @@
 									</div>
 								</div>
 							</div>
+						</div>
+						<div class="contacts">
+							<h3>Keresés</h3>
+							<h3>Kapcsolat</h3>
 						</div>
 					</div>
 				</div>

@@ -7,6 +7,7 @@ use PortalManager\Template;
 use PortalManager\Users;
 use PortalManager\Redirector;
 use ShopManager\Shop;
+use ShopManager\Categories;
 use PortalManager\News;
 use PortalManager\Portal;
 use Applications\Captcha;
@@ -69,9 +70,20 @@ class Controller {
         $this->out( 'db',   $this->db );
         $this->out( 'user', $this->User->get( self::$user_opt ) );
 
+        // Kategóriák
+        if ( defined('PRODUCTIONSITE') )
+        {
+          $this->Categories = new Categories(array( 'db' => $this->db ));
+          $this->Categories->getTree();
+          $this->out( 'categories', $this->Categories );
+        }
+
         // redirector
-        $redrirector = new Redirector('shop', ltrim($_SERVER['REQUEST_URI'], '/'), array('db' => $this->db));
-        $redrirector->start();
+        if ( defined('PRODUCTIONSITE') )
+        {
+          $redrirector = new Redirector('shop', ltrim($_SERVER['REQUEST_URI'], '/'), array('db' => $this->db));
+          $redrirector->start();
+        }
 
         $templates = new Template( VIEW . 'templates/' );
         $this->out( 'templates', $templates );

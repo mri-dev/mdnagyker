@@ -1,11 +1,11 @@
 footer {
 	margin-top: 25px;
+	border-top: 5px solid $color-grey;
 	.grid-layout > div {
 		padding: 15px !important;
 	}
 
 	.main {
-		margin-top: 30px;
 		h3 {
 			font-weight: bold;
 			text-transform: uppercase;
@@ -14,61 +14,66 @@ footer {
 			color: #404040;
 		}
 		& > .pw > .wrapper{
-			padding: 30px 0;
+			padding: 15px 0;
+			& > .flex{
+				margin: 0 -25px;
+			}
+			& > .flex > div{
+				flex-basis: calc(100% / 3);
+				padding: 25px;
+			}
 
 			.links {
-				flex: 1;
-
 				ul{
 					li{
+						border-bottom: 0.5px solid $color-grey;
 						a{
-							color: black;
+							color: $color-grey-dark;
 							display: block;
-							padding: 3px 0;
-						}
-					}
-				}
+							padding: 8px 0;
+							font-size: 0.85em;
+							text-transform: uppercase;
+							text-decoration: none;
 
-				& > .wrapper{
-					padding: 0 40px;
-					& > .flex {
-						& > div {
-							flex: 1;
+							&:hover{
+								color: $color-blue;
+							}
+						}
+
+						&:last-child{
+							border-bottom: none;
 						}
 					}
 				}
 			}
 
 			.subs{
-				flex-basis: 250px;
-
 				.subbox{
 					background: white;
-			    border: 1px solid #d9d9d9;
+			    border: 0.5px solid darken($color-grey, 20%);
 			    padding: 15px;
-			    box-shadow: 0 0 15px -5px #5d5d5d;
 
 					.title{
 						text-align: center;
 					}
 
 					.form > form > div {
-						border: 1px solid #ededed;
+						border: 0.5px solid darken($color-grey, 20%);
 						margin: 8px 0;
-						height: 40px;
+						height: 45px;
 						overflow: hidden;
 						padding: 2px;
 
 						&.button {
 							border: none;
-							text-align: center;
+							text-align: right;
 							height: auto;
 							margin: 0;
 
 							button {
 								margin: 10px 0 0 0;
-								background-color: #ffcc00;
-								color: $color-grey;
+								background-color: darken($color-grey, 25%);
+								color: white;
 								border: none;
 								padding: 8px;
 								font-size: 0.9em;
@@ -87,16 +92,16 @@ footer {
 								line-height: 40px;
 								width: 40px;
 								text-align: center;
-								color: $color-orange;
+								color: darken($color-grey, 20%);
 								font-size: 18px;
 							}
 						}
 
 						.input {
-							border-left: 1px solid #ededed;
+							border-left: 0.5px solid darken($color-grey, 20%);
 							flex: 1;
 							input {
-								color: $color-orange;
+								color: $color-blue;
 								border: none !important;
 								width: 100%;
 								height: 40px;

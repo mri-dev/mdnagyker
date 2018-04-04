@@ -91,18 +91,18 @@
         <div class="navs">
           <div class="flex">
             <div class="viszonteladok">
-              <a href="#">Viszonteladók jelentkezése</a>
+              <a href="#"><i class="fa fa-users"></i> Viszonteladók jelentkezése</a>
             </div>
             <div class="login">
-              <a href="/user/login">Belépés</a>
+              <a href="/user/login"><i class="fa fa-user"></i> Belépés</a>
             </div>
             <div class="div"></div>
             <div class="kedvencek">
-              <a href="/kedvencek">Kedvencek <span class="badge">{{fav_num}}</span></a>
+              <a href="/kedvencek"><i class="fa fa-star"></i> Kedvencek <span class="badge">{{fav_num}}</span></a>
             </div>
             <div class="div"></div>
             <div class="elofoglalas">
-              <a href="/user/elofoglalas">Előfoglalás <span class="badge">{{fav_num}}</span></a>
+              <a href="/user/elofoglalas"><i class="fa fa-pause-circle-o"></i> Előfoglalás <span class="badge">{{fav_num}}</span></a>
             </div>
           </div>
         </div>
@@ -126,7 +126,7 @@
                 <button type="submit"><i class="fa fa-search"></i></button>
               </div>
               <div class="more">
-                <a href="#">Összetett keresés</a>
+                <a href="#">Összetett keresés [+]</a>
               </div>
             </div>
             </form>
@@ -165,66 +165,74 @@
   </div>
   <div class="bottom">
     <div class="pw">
-      <div class="nav">
-				<ul>
-					<? foreach ( $this->menu_header->tree as $menu ): ?>
-					<li>
-						<a href="<?=($menu['link']?:'')?>">
-							<? if($menu['kep']): ?><img src="<?=\PortalManager\Formater::sourceImg($child['kep'])?>"><? endif; ?>
-							<?=$menu['nev']?> <? if($menu['child']): ?><i class="fa fa-angle-down"></i><? endif; ?></a>
-						<? if($menu['child']): ?>
-						<div class="sub nav-sub-view">
-							<div class="pw">
-								<div class="inside">
-									<? foreach($menu['child'] as $child): ?>
-									<?
-										$has_stacklink = false;
-										//print_r($child['child']);
-										if( $child['child'] && count($child['child']) > 0) {
-											foreach($child['child'] as $e):
-												if ( strpos($e['css_class'], 'nav-link-stackview') !== false ) {
-													$has_stacklink = true;
-													break;
-												}
-											endforeach;
-										}
-									?>
-									<div class="sub-col <?=($has_stacklink) ? 'has-stacklink' : ''?> <?=($child['lista'] ? 'kat-childlist' : '')?>">
-										<div class="item item-header <?=$child['css_class']?>" >
-										<? if($child['link']): ?><a href="<?=$child['link']?>"><? endif; ?>
-										<? if($child['kep']): ?><img src="<?=\PortalManager\Formater::sourceImg($child['kep'])?>"><? endif; ?>
-										<span style="<?=$child['css_styles']?>"><?=$child['nev']?></span>
-										<? if($child['link']): ?></a><? endif; ?>
-										</div>
-										<? if($child['lista']): ?>
-										<? foreach ($child['lista'] as $elem ) { ?>
-											<div class="item <?=$elem['css_class']?>">
-												<? if($elem['link']): ?><a href="<?=$elem['link']?>"><? endif; ?>
-												<span style="<?=$elem['css_styles']?>"><?=$elem['neve']?></span>
-												<? if($elem['link']): ?></a><? endif; ?>
-											</div>
-										<? }?>
-										<? endif; ?>
-										<? if($child['child']): ?>
-										<? foreach ($child['child'] as $elem ) { ?>
-											<div class="item <?=$elem['css_class']?>">
-												<? if($elem['link']): ?><a href="<?=$elem['link']?>"><? endif; ?>
-												<? if($elem['kep']): ?><img src="<?=\PortalManager\Formater::sourceImg($elem['kep'])?>"><? endif; ?>
-												<span style="<?=$elem['css_styles']?>"><?=$elem['nev']?></span>
-												<? if($elem['link']): ?></a><? endif; ?>
-											</div>
-										<? }?>
-										<? endif; ?>
-									</div>
-									<? endforeach; ?>
-								</div>
-							</div>
-						</div>
-						<? endif; ?>
-					</li>
-					<? endforeach; ?>
-				</ul>
-			</div>
+      <div class="flex">
+        <div class="nav nav-fix">
+          <ul>
+            <li class="kiemelt"><a href="#">Kiemelt ajánlataink</a></li>
+            <li class="akciok"><a href="#">Akciók</a></li>
+          </ul>
+        </div>
+        <div class="nav">
+  				<ul>
+  					<? foreach ( $this->menu_header->tree as $menu ): ?>
+  					<li>
+  						<a href="<?=($menu['link']?:'')?>">
+  							<? if($menu['kep']): ?><img src="<?=\PortalManager\Formater::sourceImg($child['kep'])?>"><? endif; ?>
+  							<?=$menu['nev']?> <? if($menu['child']): ?><i class="fa fa-angle-down"></i><? endif; ?></a>
+  						<? if($menu['child']): ?>
+  						<div class="sub nav-sub-view">
+  							<div class="pw">
+  								<div class="inside">
+  									<? foreach($menu['child'] as $child): ?>
+  									<?
+  										$has_stacklink = false;
+  										//print_r($child['child']);
+  										if( $child['child'] && count($child['child']) > 0) {
+  											foreach($child['child'] as $e):
+  												if ( strpos($e['css_class'], 'nav-link-stackview') !== false ) {
+  													$has_stacklink = true;
+  													break;
+  												}
+  											endforeach;
+  										}
+  									?>
+  									<div class="sub-col <?=($has_stacklink) ? 'has-stacklink' : ''?> <?=($child['lista'] ? 'kat-childlist' : '')?>">
+  										<div class="item item-header <?=$child['css_class']?>" >
+  										<? if($child['link']): ?><a href="<?=$child['link']?>"><? endif; ?>
+  										<? if($child['kep']): ?><img src="<?=\PortalManager\Formater::sourceImg($child['kep'])?>"><? endif; ?>
+  										<span style="<?=$child['css_styles']?>"><?=$child['nev']?></span>
+  										<? if($child['link']): ?></a><? endif; ?>
+  										</div>
+  										<? if($child['lista']): ?>
+  										<? foreach ($child['lista'] as $elem ) { ?>
+  											<div class="item <?=$elem['css_class']?>">
+  												<? if($elem['link']): ?><a href="<?=$elem['link']?>"><? endif; ?>
+  												<span style="<?=$elem['css_styles']?>"><?=$elem['neve']?></span>
+  												<? if($elem['link']): ?></a><? endif; ?>
+  											</div>
+  										<? }?>
+  										<? endif; ?>
+  										<? if($child['child']): ?>
+  										<? foreach ($child['child'] as $elem ) { ?>
+  											<div class="item <?=$elem['css_class']?>">
+  												<? if($elem['link']): ?><a href="<?=$elem['link']?>"><? endif; ?>
+  												<? if($elem['kep']): ?><img src="<?=\PortalManager\Formater::sourceImg($elem['kep'])?>"><? endif; ?>
+  												<span style="<?=$elem['css_styles']?>"><?=$elem['nev']?></span>
+  												<? if($elem['link']): ?></a><? endif; ?>
+  											</div>
+  										<? }?>
+  										<? endif; ?>
+  									</div>
+  									<? endforeach; ?>
+  								</div>
+  							</div>
+  						</div>
+  						<? endif; ?>
+  					</li>
+  					<? endforeach; ?>
+  				</ul>
+  			</div>
+      </div>
     </div>
   </div>
   <?php if (false): ?>

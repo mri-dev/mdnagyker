@@ -4,7 +4,11 @@ header {
 
 	.top {
 		background-color: lighten($color-grey, 5%);
-		padding: 8px 0;
+		padding: 0;
+
+		& > .pw > .flex {
+			justify-content: space-between;
+		}
 
 		.flex {
 			align-items: center;
@@ -13,6 +17,7 @@ header {
 		.contact {
 			font-size: 0.75em;
 			flex-basis: 550px;
+			padding: 0 10px;
 			.flex {
 				align-items: center;
 				& > div {
@@ -42,7 +47,6 @@ header {
 			}
 		}
 		.social {
-			padding-right: 40px;
 			.flex {
 				align-items: center;
 				justify-content: flex-start;
@@ -53,14 +57,85 @@ header {
 
 				a {
 					padding: 0;
-					width: 20px;
-					line-height: 20px;
+					width: 18px;
+					line-height: 18px;
 					display: block;
 					text-align: center;
 					background-color: #333333;
 					color: white;
+					font-size: 10px;
 					@include border-radius(10px);
 				}
+			}
+		}
+		.navs{
+			.flex {
+				& > div {
+					height: 40px;
+					a{
+						display: block;
+						text-transform: uppercase;
+						font-size: 0.8em;
+						line-height: 40px;
+						font-weight: bold;
+						color: $color-grey-dark;
+						text-decoration: none;
+						position: relative;
+						padding: 0 12px;
+					}
+
+					&.div{
+						position: relative;
+				    height: 40px;
+				    width: 10px;
+				    display: block;
+
+						&:before{
+							content:"";
+							height: 60%;
+							width: 0.5px;
+							position: absolute;
+							left: 25%;
+							top: 50%;
+							background-color: darken($color-grey, 15%);
+							-webkit-transform: rotate(20deg) translate(-50%, -50%);
+          			transform: rotate(20deg) translate(-50%, -50%);
+						}
+					}
+					&.viszonteladok{
+						a{
+							background: $color-red;
+							color: white;
+						}
+					}
+					&.elofoglalas{
+						.badge{
+							background: $color-blue;
+						}
+					}
+					&.kedvencek{
+						.badge{
+							background: #b132f3;
+						}
+					}
+				}
+			}
+
+			.badge{
+				font-size: 0.8em;
+				position: absolute;
+				pointer-events: none;
+		    position: absolute;
+				right: -3px;
+    		top: 2px;
+		    color: white;
+		    width: 15px;
+		    z-index: 10;
+		    height: 15px;
+		    padding: 0;
+		    line-height: 15px;
+		    text-align: center;
+		    border-radius: 18px;
 			}
 		}
 	}
@@ -80,10 +155,11 @@ header {
 		.searcher {
 			flex: 1;
 			text-align: right;
+			padding-right: 40px;
 			.searchform {
-				padding: 2px;
+				padding: 0px;
 				float: right;
-				width: 70%;
+				width: 85%;
 				background: white;
     		border: 0.4px solid #cacaca;
 
@@ -92,19 +168,30 @@ header {
 						flex: 1;
 					}
 					.button {
-						flex-basis: 85px;
 						button {
 							width: 100%;
 							text-align: center;
 							text-transform: uppercase;
 							font-size: 0.7em;
-							color: lighten($color-red, 10%);
+							color: $color-grey-dark;
 
 							i {
 								font-size: 18px;
 								vertical-align: middle;
-								margin: -1px 5px 0 0;
+								margin: -1px 0 0 0;
 							}
+						}
+					}
+					.more {
+						a{
+							display: block;
+							background: lighten($color-grey-dark, 20%);
+							color: white !important;
+							text-decoration: none;
+							line-height: 40px;
+							text-align: center;
+							font-size: 0.85em;
+							padding: 0 10px;
 						}
 					}
 				}
@@ -113,6 +200,7 @@ header {
 					background: transparent;
 					border: none;
 					width: 100%;
+					line-height: 40px;
 					color: $color-red;
 
 					@include border-radius-left(5px);
@@ -120,16 +208,15 @@ header {
 
 				input[type=text],
 				button {
-					line-height: 30px;
-					padding: 0 5px;
+					line-height: 40px;
+					padding: 0 15px;
 				}
 
 				button {
 					background: transparent;
-					color: $color-red;
+					color: $color-grey-dark;
 					border: none;
-					border-left: 1px solid #e6e6e6;
-					padding: 0 8px;
+					padding: 0 12px;
 					vertical-align: middle;
 					cursor: pointer;
 				}
@@ -147,7 +234,7 @@ header {
 				z-index: 200;
 
 				&:hover{
-					background-color: #971116;
+					background-color: $color-blue;
 				}
 
 				& > div.holder{
@@ -164,16 +251,16 @@ header {
 				}
 
 				.floating{
-					right: -13px;
+					right: -11px;
 					top: 100%;
 					width: 350px;
 					position: absolute;
 					z-index: 10;
 					background: #ffffff;
-					outline: 4px solid #c5161d91;
+					outline: 3px solid transparentize($color-blue, 0.2);
 
 					#cartContent{
-						color: $color-grey;
+						color: $color-grey-dark;
 					}
 
 					.whattodo{
@@ -221,7 +308,7 @@ header {
 					}
 				}
 			}
-			
+
 			& > div.cart > div.holder > .floating{
 				-webkit-transition: all .3s;
 					transition: all .3s;
@@ -246,8 +333,8 @@ header {
 				position: absolute;
 				right: 2px;
 				bottom: 2px;
-				background-color: #ffcc00;
-				color: black;
+				background-color: $color-red;
+				color: white;
 				font-size: 11px;
 				width: 20px;
 				z-index: 10;
@@ -259,30 +346,33 @@ header {
 			}
 
 			.cart {
-				padding: 0 10px;
-				.flex {
-					align-items: center;
-					& > div.ico {
-						flex-basis: 100%;
-						text-align: center;
-					}
-					& > div.info {
-						flex-basis: 100%;
-						text-align: center;
+				padding: 8px 15px 0 15px;
+				height: 100%;
+
+				.ico {
+					flex-basis: 100%;
+					text-align: center;
+
+					img {
+						max-width: 80%;
+						width: 80%;
 					}
 				}
 
 				.badge {
-					bottom: 5px;
-					right: -10px;
+					top: 12px;
+					right: 0px;
 				}
+
 				.info {
+					flex-basis: 100%;
+					text-align: center;
 					line-height: 1;
-					padding: 0 5px 0 15px;
-					text-align: left;
+					padding: 8px 0 0 0;
+					color: white;
 					.cash {
 						font-weight: bold;
-						font-size: 1.3em;
+						font-size: 1.25em;
 					}
 				}
 			}
@@ -310,6 +400,11 @@ header {
 		padding: 0;
 		position: relative;
 
+		& > .pw > .flex {
+			justify-content: space-between;
+			padding-left: $size-sidebar;
+		}
+
 		.nav{
 			& > ul {
 				display: -webkit-box;
@@ -324,12 +419,13 @@ header {
 					 & > a{
 						 text-transform: uppercase;
 						 font-weight: bold;
-						 font-size: 1em;
+						 font-size: 0.9em;
 					   padding: 0 15px;
 					   text-decoration: none;
 					   display: block;
 		 				 height: 38px;
 						 line-height: 38px;
+						 color: $color-grey-dark !important;
 
 						 i {
 							 font-size: 17px;
@@ -338,13 +434,26 @@ header {
 						 }
 					 }
 					&:hover{
-						background: #eceff2;
+						background: #fafafa;
 						color: $color-grey;
 						& > a {
 							color: $color-grey;
 						}
 						& > .sub {
 							display: block;
+						}
+					}
+
+					&.kiemelt{
+						a{
+							background: darken($color-grey, 50%);
+							color: white !important;
+						}
+					}
+					&.akciok{
+						a{
+							background: lighten($color-blue, 10%);
+							color: white !important;
 						}
 					}
 				}
@@ -416,7 +525,7 @@ header {
 	}
 
 	a, a:visited {
-		color: white;
+		color: $color-grey-dark;
 	}
 
 	.logo {

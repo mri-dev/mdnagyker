@@ -932,6 +932,96 @@ body.singlepage{
 		margin: 10px;
 		color: darken( $color-sec, 40%);
 	}
+	.filter-sidebar {
+	  flex-basis: $size-sidebar;
+	}
+}
+
+.cat-menu{
+	position: relative;
+	top: -38px;
+	border: 0.5px solid $color-grey;
+
+	& > .title {
+	 background: white;
+	 line-height: 38px;
+	 padding: 0 15px;
+	}
+
+	ul{
+		&.sub{
+			display: none;
+			position: absolute;
+			top: 0;
+			left: 100%;
+			background: white;
+			border: 0.5px solid lighten($color-blue, 20%);
+			min-width: 200px;
+		}
+		li{
+			position: relative;
+
+			.toggler{
+				position: absolute;
+				right: 0;
+				top: 0;
+				color: $color-grey-dark;
+				height: 100%;
+				width: 25px;
+				text-align: center;
+
+				i {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					line-height: 1;
+					margin: 0;
+					padding: 0;
+					font-size: 16px;
+					-webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+				}
+			}
+			a{
+				text-transform: uppercase;
+				display: block;
+				color: $color-grey-dark;
+				padding: 10px 15px;
+				line-height: 1.2;
+				text-decoration: none;
+				padding-right: 35px;
+			}
+
+			&:hover{
+				& > ul {
+					display: block;
+				}
+				& > a {
+					background: lighten($color-blue, 30%);
+					color: white;
+				}
+				& > .toggler{
+					i {
+						color: white;
+					}
+				}
+			}
+		}
+		&.sub{
+			padding: 10px;
+			& > li.title{
+				padding: 0 5px 10px 5px;
+				font-weight: bold;
+				font-size: 1.1em;
+				text-transform: uppercase;
+			}
+			& > li > a {
+				text-transform: none !important;
+				padding: 5px !important;
+				line-height: 1.1 !important;
+			}
+		}
+	}
 }
 
 .cat-nav {
