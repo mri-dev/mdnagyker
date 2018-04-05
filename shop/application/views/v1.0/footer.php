@@ -70,6 +70,9 @@
 													</div>
 												</div>
 											</div>
+											<div class="aszf">
+												<input type="checkbox" name="aszf" id="subs_aszf" value=""> <label for="subs_aszf"> Adataim magadásával, elfogadom az <a href="/p/aszf" target="_blank">ÁSZF</a> feltételeit és hozzájárulok ahhoz, hogy a <?php echo $this->settings['page_author']; ?> ismertető leveleket küldjön nekem a megadott névre és email címre.</label>
+											</div>
 											<div class="button">
 												<button type="submit" name="subscribe">Mehet</button>
 											</div>
@@ -79,8 +82,57 @@
 							</div>
 						</div>
 						<div class="contacts">
-							<h3>Keresés</h3>
-							<h3>Kapcsolat</h3>
+							<div class="searcher">
+								<h3>Keresés</h3>
+			          <div class="searchform">
+			            <form class="" action="/termekek/" method="get">
+			            <div class="flex flexmob-exc-resp">
+			              <div class="input">
+			                <input type="text" name="src" value="<?=$_GET['src']?>" placeholder="Keresési kifejezés megadása">
+			              </div>
+			              <div class="button">
+			                <button type="submit"><i class="fa fa-search"></i></button>
+			              </div>
+			            </div>
+			            </form>
+			          </div>
+			        </div>
+							<div class="contact">
+								<h3>Kapcsolat</h3>
+								<div class="">
+									<i class="fa fa-phone"></i> Telefon: <a href="tel:<?php echo $this->settings['page_author_phone']; ?>"><?php echo $this->settings['page_author_phone']; ?></a>
+								</div>
+								<div class="">
+									<i class="fa fa-envelope"></i> E-mail: <?php echo $this->settings['office_email']; ?>
+								</div>
+								<div class="">
+									<i class="fa fa-map-marker"></i> Cím: <?php echo $this->settings['page_author_address']; ?>
+								</div>
+							</div>
+							<div class="social">
+								<div class="flex flexmob-exc-resp">
+									<?php if ( !empty($this->settings['social_facebook_link'])) : ?>
+									<div class="facebook">
+										<a target="_blank" title="Facebook oldalunk" href="<?=$this->settings['social_facebook_link']?>"><i class="fa fa-facebook"></i></a>
+									</div>
+									<?php endif; ?>
+									<?php if ( !empty($this->settings['social_youtube_link'])) : ?>
+									<div class="youtube">
+										<a target="_blank" title="Youtube csatornánk" href="<?=$this->settings['social_youtube_link']?>"><i class="fa fa-youtube"></i></a>
+									</div>
+									<?php endif; ?>
+									<?php if ( !empty($this->settings['social_googleplus_link'])) : ?>
+									<div class="googleplus">
+										<a target="_blank" title="Google+ oldalunk" href="<?=$this->settings['social_googleplus_link']?>"><i class="fa fa-google-plus"></i></a>
+									</div>
+									<?php endif; ?>
+									<?php if ( !empty($this->settings['social_twitter_link'])) : ?>
+									<div class="twitter">
+										<a target="_blank" title="Twitter oldalunk" href="<?=$this->settings['social_twitter_link']?>"><i class="fa fa-twitter"></i></a>
+									</div>
+									<?php endif; ?>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -89,70 +141,17 @@
 		<div class="info">
 			<div class="pw">
 				<div class="flex">
-					<div class="copy flex-col-40">
-						&copy; <span class="author"><?=$this->settings['page_title']?></span>: <?=$this->settings['page_description']?> &nbsp;&nbsp; 2013 Minden jog fenntartva!
-					</div>
 					<div class="contact">
-						<div class="flex">
-							<div class="telefon">
-								<div class="wrapper">
-									<i class="fa fa-phone"></i>
-									<div class="title">
-										Telefon:
-									</div>
-									<div class="val">
-										<a href="tel:<?=$this->settings['page_author_phone']?>"><?=$this->settings['page_author_phone']?></a>
-									</div>
-								</div>
-							</div>
-							<div class="email">
-								<div class="wrapper">
-									<i class="fa fa-envelope-o"></i>
-									<div class="title">
-										E-mail:
-									</div>
-									<div class="val">
-										<a href="mailto:<?=$this->settings['primary_email']?>"><?=$this->settings['primary_email']?></a>
-									</div>
-								</div>
-							</div>
-							<div class="address">
-								<div class="wrapper">
-									<i class="fa fa-map-marker"></i>
-									<div class="title">
-										Cím:
-									</div>
-									<div class="val">
-										<?=$this->settings['page_author_address']?>
-									</div>
-								</div>
-							</div>
-						</div>
+
 					</div>
-					<div class="social flex-col-15">
-						<div class="flex flexmob-exc-resp">
-							<?php if ( !empty($this->settings['social_facebook_link'])) : ?>
-							<div class="facebook">
-								<a target="_blank" title="Facebook oldalunk" href="<?=$this->settings['social_facebook_link']?>"><i class="fa fa-facebook"></i></a>
-							</div>
-							<?php endif; ?>
-							<?php if ( !empty($this->settings['social_youtube_link'])) : ?>
-							<div class="youtube">
-								<a target="_blank" title="Youtube csatornánk" href="<?=$this->settings['social_youtube_link']?>"><i class="fa fa-youtube"></i></a>
-							</div>
-							<?php endif; ?>
-							<?php if ( !empty($this->settings['social_googleplus_link'])) : ?>
-							<div class="googleplus">
-								<a target="_blank" title="Google+ oldalunk" href="<?=$this->settings['social_googleplus_link']?>"><i class="fa fa-google-plus"></i></a>
-							</div>
-							<?php endif; ?>
-							<?php if ( !empty($this->settings['social_twitter_link'])) : ?>
-							<div class="twitter">
-								<a target="_blank" title="Twitter oldalunk" href="<?=$this->settings['social_twitter_link']?>"><i class="fa fa-twitter"></i></a>
-							</div>
-							<?php endif; ?>
-						</div>
+					<div class="resellers">
+						<a href="#">Viszonteladók jelentkezése</a>
 					</div>
+				</div>
+			</div>
+			<div class="bottom">
+				<div class="pw">
+					<span class="author"><?=$this->settings['page_author']?></span> &copy; 2018 &mdash; Minden jog fenntartva!
 				</div>
 			</div>
 		</div>

@@ -1,6 +1,6 @@
 <div class="cat-menu">
   <div class="title">
-    <i class="fa fa-bars"></i> Összes termék
+    <i class="fa fa-sliders"></i> Összes termék
   </div>
   <ul>
     <?php foreach ( $this->categories->tree  as $cat ) { ?>
