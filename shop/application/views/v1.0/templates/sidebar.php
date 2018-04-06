@@ -1,5 +1,5 @@
 <div class="sidebar-holder">
-    <?php if ( !$this->product_listing ): ?>
+    <?php if ( !$this->hide_categories ): ?>
       <? $this->render('templates/sidebar_menu'); ?>
     <?php endif; ?>
 
@@ -131,7 +131,7 @@
     <? if( $this->live_products_list ): ?>
     <div class="liveproducts side-group">
       <div class="head">
-        Mások ezeket nézik
+        Mások nézik
       </div>
       <div class="wrapper">
         <div class="product-side-items imaged-style">

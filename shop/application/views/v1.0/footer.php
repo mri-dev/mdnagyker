@@ -142,10 +142,13 @@
 			<div class="pw">
 				<div class="flex">
 					<div class="contact">
-
+						<div class="phone">
+							Mobil: <a href="tel:<?=$this->settings['mobile_number']?>"><?=$this->settings['mobile_number']?></a>
+						</div>
+						Elérhetőség: <?=$this->settings['mobile_number_elerhetoseg']?>
 					</div>
 					<div class="resellers">
-						<a href="#">Viszonteladók jelentkezése</a>
+						<a href="/viszontelado"><i class="fa fa-users"></i> Viszonteladók jelentkezése <div class="ico"><i class="fa fa-angle-right"></i></div></a>
 					</div>
 				</div>
 			</div>

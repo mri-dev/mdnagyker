@@ -318,7 +318,7 @@ body.singlepage{
 			}
 			.grid-row.products {
 				flex: 1;
-				padding: 0 0 0 20px;
+				padding: 20px 0 0 20px;
 			}
 		}
 	}
@@ -406,7 +406,7 @@ body.singlepage{
 		    padding: 10px 0;
     		text-align: center;
     		font-size: 1em;
-    		color: $color-pr;
+    		color: $color-grey-dark;
 		}
 	}
 }
@@ -699,6 +699,7 @@ body.singlepage{
 	.side-group {
 		border: 0.4px solid #e0e0e0;
 		color: #404040;
+		margin: 0 0 25px 0;
 
 		.head{
 			padding: 15px 10px;
@@ -851,7 +852,7 @@ body.singlepage{
 		}
 		&.liveproducts{
 			.head{
-				background: #e0e0e0;
+				background: lighten($color-grey, 10%);
 			}
 			.wrapper{
 				padding: 10px;
@@ -935,6 +936,9 @@ body.singlepage{
 	.filter-sidebar {
 	  flex-basis: $size-sidebar;
 	}
+	.inside-content{
+		flex: 1;
+	}
 }
 
 .cat-menu{
@@ -971,6 +975,7 @@ body.singlepage{
 
 	ul{
 		&.sub{
+			z-index: 100;
 			display: none;
 			position: absolute;
 			top: 0;

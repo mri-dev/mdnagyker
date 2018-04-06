@@ -416,6 +416,7 @@ header {
 
 				& > li {
 					height: 38px;
+					position: relative;
 					 & > a{
 						 text-transform: uppercase;
 						 font-weight: bold;
@@ -454,6 +455,42 @@ header {
 						a{
 							background: lighten($color-blue, 10%);
 							color: white !important;
+						}
+					}
+
+					.sub{
+						display: none;
+						right: 0;
+						position: absolute;
+						background: #fafafa;
+						min-width: 230px;
+						box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.5803921568627451);
+						border: 0.5px solid $color-grey;
+						border-top: none;
+						z-index: 100;
+
+						.inside{
+							padding: 0;
+
+							ul li {
+								a{
+									display: block;
+									padding: 8px 15px;
+									color: $color-grey-dark;
+									text-decoration: none;
+									font-size: 0.9em;
+									&:hover{
+										background: darken($color-grey, 20%);
+										color: white;
+									}
+								}
+							}
+						}
+					}
+
+					&:hover{
+						.sub{
+							display: block;
 						}
 					}
 				}

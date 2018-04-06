@@ -232,50 +232,50 @@ footer {
 	.info {
 		font-size: 0.8em;
 		background-color: $color-grey-dark;
-		padding: 25px 0 0 0;
+		padding: 10px 0 0 0;
 		color: white;
 
 		& > .pw > .flex {
 			align-items: center;
+			justify-content: space-between;
 		}
 
-		.author {
-			text-transform: uppercase;
-		}
 		.contact {
-			font-size: 0.85em;
-			flex: 1;
-			.flex {
-				align-items: center;
-				& > div {
-					line-height: 1;
-					flex: 1;
+			font-size: 1.25em;
+			text-transform: uppercase;
+			line-height: 1.5;
 
-					.wrapper{
-						padding: 0 10px;
-						color: white;
+			a {
+				text-decoration: none;
+				color: white;
+			}
 
-						a {
-							color: white;
-							text-decoration: none;
-						}
+			.phone {
+				font-size: 1.8em;
+				font-weight: bold;
+			}
+		}
+		.resellers{
+			a{
+				color: white;
+				text-transform: uppercase;
+				text-decoration: none;
+				font-weight: bold;
+				font-size: 1.8em;
+				line-height: 34px;
 
-						i {
-							color: lighten($color-orange, 10%);
-							float: left;
-							font-size: 26px;
-							margin: 0 8px 0 0;
-						}
-					}
-					.val {
-						margin-top: 5px;
-					}
+				.ico {
+					float: right;
+					margin: 0 0 0 15px;
+					background: $color-blue;
+					padding: 0 10px;
+					font-size: 1.6em;
 				}
 			}
 		}
 
 		.bottom {
-			margin: 25px 0 0 0;
+			margin: 10px 0 0 0;
 			background: white;
 			color: black;
 			padding: 25px;
