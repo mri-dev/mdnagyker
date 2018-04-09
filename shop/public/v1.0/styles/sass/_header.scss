@@ -234,7 +234,7 @@ header {
 				z-index: 200;
 
 				&:hover{
-					background-color: $color-blue;
+					background-color: black;
 				}
 
 				& > div.holder{
@@ -251,13 +251,14 @@ header {
 				}
 
 				.floating{
-					right: -11px;
+					right: -15px;
 					top: 100%;
-					width: 350px;
+					width: 450px;
 					position: absolute;
 					z-index: 10;
 					background: #ffffff;
-					outline: 3px solid transparentize($color-blue, 0.2);
+					box-shadow: 0 5px 50px -10px #000000;
+					border-top: 5px solid black;
 
 					#cartContent{
 						color: $color-grey-dark;
@@ -379,17 +380,17 @@ header {
 
 			.adder i,
 			.remove i {
-				font-size: 18px !important;
-				height: 18px !important;
-				line-height: 18px !important;
+				font-size: 14px !important;
+				height: 14px !important;
+				line-height: 14px !important;
 			}
 
 			.adder {
 				i[class*=fa-minus] {
-					color: #f16e74;
+					color: #9c9c9c;
 				}
 				i[class*=fa-plus] {
-					color: #8fd083;
+					color: #9c9c9c;
 				}
 			}
 		}

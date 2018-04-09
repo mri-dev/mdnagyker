@@ -59,6 +59,7 @@
                         <li><a href="/termekek/<?=$navh?>"><?php echo $nav['neve']; ?></a></li>
                         <?php endforeach; ?>
                       </ul>
+                      <div id="cart-msg"></div>
                   </div>
 
                   <? if( !$this->products->hasItems()): ?>
