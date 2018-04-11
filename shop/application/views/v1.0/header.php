@@ -168,6 +168,14 @@
       <div class="flex">
         <div class="nav nav-fix">
           <ul>
+            <?php if ($this->product): ?>
+            <li class="cats">
+              <a href="/termekek"><i class="fa fa-sliders"></i> Összes termék <i class="fa fa-angle-down"></i></a>
+              <div class="list">
+                <?php $this->render('templates/sidebar_menu'); ?>
+              </div>
+            </li>
+            <?php endif; ?>
             <li class="kiemelt"><a href="#">Kiemelt ajánlataink</a></li>
             <li class="akciok"><a href="#">Akciók</a></li>
           </ul>

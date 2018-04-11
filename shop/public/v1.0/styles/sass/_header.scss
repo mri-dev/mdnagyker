@@ -407,6 +407,7 @@ header {
 		}
 
 		.nav{
+			flex: 1;
 			& > ul {
 				display: -webkit-box;
 			  display: -ms-flexbox;
@@ -446,6 +447,31 @@ header {
 						}
 					}
 
+					&.cats{
+						flex-basis: $size-sidebar;
+						& > a{
+							background: white;
+							border: 0.4px solid $color-grey;
+							position: relative;
+							font-size: 1.1em;
+
+							i {
+								font-size: 15px;
+    						vertical-align: text-top;
+							}
+
+							i[class*=sliders] {
+								margin-right: 15px;
+							}
+							i[class*=angle-down] {
+								position: absolute;
+								right: 10px;
+								top: 50%;
+								transform: translateY(-50%);
+							}
+						}
+					}
+
 					&.kiemelt{
 						a{
 							background: darken($color-grey, 50%);
@@ -459,7 +485,7 @@ header {
 						}
 					}
 
-					.sub{
+					& > .sub{
 						display: none;
 						right: 0;
 						position: absolute;
@@ -490,12 +516,16 @@ header {
 					}
 
 					&:hover{
-						.sub{
+						& > .sub{
 							display: block;
 						}
 					}
 				}
 			}
+		}
+
+		.nav:not(.nav-fix) > ul {
+			justify-content: flex-end;
 		}
 	}
 	.sec-bottom{

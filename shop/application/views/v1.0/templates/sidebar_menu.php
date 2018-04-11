@@ -1,4 +1,4 @@
-<div class="cat-menu">
+<div class="cat-menu <?=($this->product)?'flowed':''?>">
   <div class="title">
     <i class="fa fa-sliders"></i> Összes termék
   </div>
