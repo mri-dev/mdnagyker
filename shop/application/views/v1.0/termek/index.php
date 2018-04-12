@@ -48,6 +48,9 @@
               </ul>
             </div>
           </div>
+          <?php if ($_GET['d'] == 1): ?>
+
+
           <h1><?=$this->product['nev']?></h1>
           <div class="csoport">
             <?=$this->product['csoport_kategoria']?>
@@ -222,19 +225,30 @@
                 </div>
             </div>
           </div>
+          <?php endif; ?>
+          
         </div>
       </div>
     </div>
     <div class="more-datas">
       <div class="page-width">
+        <nav class="tab-header">
+          <ul>
+            <li class="description active"><a href="#description" onclick="switchTab('description')">Leírás</a></li>
+            <?php if ($this->product['parameters'] && !empty($this->product['parameters'])): ?>
+            <li class="parameters"><a href="#parameters" onclick="switchTab('parameters')">Műszaki adatok</a></li>
+            <?php endif; ?>
+            <?php if ($this->product['documents']): ?>
+            <li class="documents"><a href="#documents" onclick="switchTab('documents')">Dokumentumok</a></li>
+            <?php endif; ?>
+            <li class="compatiblity"><a href="#compatiblity" onclick="switchTab('compatiblity')">Kompatibilitási lista</a></li>
+          </ul>
+        </nav>
         <div class="holder">
           <div class="info-texts">
             <?php if ($this->product['parameters'] && !empty($this->product['parameters'])): ?>
-              <div class="parameters">
-                <div class="head">
-                  <h3>Termék paraméterei</h3>
-                </div>
-                <div class="clr"></div>
+              <a name="parameters"></a>
+              <div class="parameters tab-holder" id="tab-content-parameters">
                 <div class="c">
                   <div class="params">
                     <?php foreach ( $this->product['parameters'] as $p ): ?>
@@ -252,24 +266,24 @@
               </div>
             <?php endif; ?>
 
-            <?php if ( !empty($this->product['leiras']) ): ?>
-            <div class="description">
-              <div class="head">
-                <h3>Termék leírás</h3>
-              </div>
-              <div class="clr"></div>
+
+            <a name="description"></a>
+            <div class="description tab-holder showed" id="tab-content-description">
               <div class="c">
+                <?php if ( !empty($this->product['leiras']) ): ?>
                 <?=$this->product['leiras']?>
+                <?php else: ?>
+                  <div class="no-data">
+                    <i class="fa fa-info-circle"></i> A terméknek nincs leírása.
+                  </div>
+                <?php endif; ?>
               </div>
             </div>
-            <?php endif; ?>
+
 
             <?php if ($this->product['documents']): ?>
-            <div class="documents">
-              <div class="head">
-                <h3>Dokumentumok</h3>
-              </div>
-              <div class="clr"></div>
+            <a name="documents"></a>
+            <div class="documents tab-holder" id="tab-content-documents">
               <div class="c">
                 <div class="docs">
                   <?php foreach ( (array)$this->product['documents'] as $doc ): ?>
@@ -281,12 +295,15 @@
               </div>
             </div>
             <?php endif; ?>
+            <a name="compatiblity"></a>
+            <div class="compatiblity tab-holder" id="tab-content-compatiblity">
+              <div class="c">
+                Kompatibilitási lista
+              </div>
+            </div>
           </div>
           <?php if ( $this->related_list ): ?>
           <div class="related-products">
-            <div class="head">
-              <h3>Ajánljuk még</h3>
-            </div>
             <div class="c">
               <div class="items">
               <?php if ( $this->related_list ): ?>
@@ -360,6 +377,15 @@
           autoplay: true
         });
     })
+
+    function switchTab( tab ) {
+      $('.tab-holder.showed').removeClass('showed');
+      $('.tab-holder.'+tab).addClass('showed');
+
+      $('nav.tab-header li.active').removeClass('active');
+      $('nav.tab-header li.'+tab).addClass('active');
+      console.log(tab);
+    }
 
     function changeProfilImg(i){
         $('.product-view .main-img a.zoom img').attr('src',i);

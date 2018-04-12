@@ -407,7 +407,6 @@ header {
 		}
 
 		.nav{
-			flex: 1;
 			& > ul {
 				display: -webkit-box;
 			  display: -ms-flexbox;
@@ -461,13 +460,23 @@ header {
 							}
 
 							i[class*=sliders] {
-								margin-right: 15px;
+								margin: 0 15px 0 0;
 							}
 							i[class*=angle-down] {
 								position: absolute;
 								right: 10px;
 								top: 50%;
 								transform: translateY(-50%);
+							}
+						}
+
+						& > .list {
+							display: none;
+						}
+
+						&:hover{
+							& > .list {
+								display: block;
 							}
 						}
 					}

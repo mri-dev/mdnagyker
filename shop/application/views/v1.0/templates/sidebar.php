@@ -81,76 +81,91 @@
     </form>
   <?php endif; // End of product_listing ?>
 
-    <? if( $this->viewed_products_list ): ?>
-    <div class="lastviewed side-group">
-      <div class="head">
-        Legutoljára megnézett termékek
-      </div>
-      <div class="wrapper">
-        <div class="product-side-items imaged-style">
-          <? foreach ( $this->viewed_products_list as $viewed ) { ?>
-          <div class="item">
-            <div class="img">
-              <a href="<?php echo $viewed['link']; ?>"><img src="<?php echo $viewed['profil_kep']; ?>" alt="<?php echo $viewed['product_nev']; ?>"></a>
-            </div>
-            <div class="name">
-              <a href="<?php echo $viewed['link']; ?>"><?php echo $viewed['product_nev']; ?></a>
-            </div>
-            <div class="desc">
-              <?php echo $viewed['csoport_kategoria']; ?>
-            </div>
+  <? if( $this->live_products_list ): ?>
+  <div class="liveproducts side-group">
+    <div class="head">
+      Most <strong>nézik</strong>
+    </div>
+    <div class="wrapper">
+      <div class="product-side-items imaged-style">
+        <? foreach ( $this->live_products_list as $livep ) { ?>
+        <div class="item">
+          <div class="img">
+            <a href="<?php echo $livep['link']; ?>"><img src="<?php echo $livep['profil_kep']; ?>" alt="<?php echo $livep['product_nev']; ?>"></a>
           </div>
-          <? } ?>
+          <div class="data">
+            <a href="<?php echo $livep['link']; ?>">
+              <div class="name">
+                <?php echo $livep['product_nev']; ?>
+              </div>
+              <div class="desc">
+                <?php echo $livep['csoport_kategoria']; ?>
+              </div>
+            </a>
+          </div>
         </div>
+        <? } ?>
       </div>
     </div>
-    <? endif; ?>
+  </div>
+  <? endif; ?>
 
-    <? if( $this->top_products && $this->top_products->hasItems() ): ?>
-    <div class="topproducts side-group">
-      <div class="head">
-        Top termékek
-      </div>
-      <div class="wrapper">
-        <div class="product-side-items simple-style">
-          <? foreach ( $this->top_products_list as $topp ) { ?>
-          <div class="item">
-            <div class="name">
-              <a href="<?php echo $topp['link']; ?>"><?php echo $topp['product_nev']; ?></a>
-            </div>
-            <div class="desc">
-              <?php echo $topp['csoport_kategoria']; ?>
-            </div>
-          </div>
-          <? } ?>
-        </div>
-      </div>
+  <? if( $this->top_products && $this->top_products->hasItems() ): ?>
+  <div class="topproducts side-group">
+    <div class="head">
+      Legtöbbet <strong>vásárolt</strong>
     </div>
-    <? endif; ?>
-
-    <? if( $this->live_products_list ): ?>
-    <div class="liveproducts side-group">
-      <div class="head">
-        Mások nézik
-      </div>
-      <div class="wrapper">
-        <div class="product-side-items imaged-style">
-          <? foreach ( $this->live_products_list as $livep ) { ?>
+    <div class="wrapper">
+      <div class="product-side-items imaged-style">
+        <? foreach ( $this->top_products_list as $topp ) { ?>
           <div class="item">
             <div class="img">
               <a href="<?php echo $livep['link']; ?>"><img src="<?php echo $livep['profil_kep']; ?>" alt="<?php echo $livep['product_nev']; ?>"></a>
             </div>
-            <div class="name">
-              <a href="<?php echo $livep['link']; ?>"><?php echo $livep['product_nev']; ?></a>
-            </div>
-            <div class="desc">
-              <?php echo $livep['csoport_kategoria']; ?>
+            <div class="data">
+              <a href="<?php echo $livep['link']; ?>">
+                <div class="name">
+                  <?php echo $livep['product_nev']; ?>
+                </div>
+                <div class="desc">
+                  <?php echo $livep['csoport_kategoria']; ?>
+                </div>
+              </a>
             </div>
           </div>
-          <? } ?>
-        </div>
+        <? } ?>
       </div>
     </div>
-    <? endif; ?>
+  </div>
+  <? endif; ?>
+
+  <? if( $this->viewed_products_list ): ?>
+  <div class="lastviewed side-group">
+    <div class="head">
+      Utoljára megtekintettek
+    </div>
+    <div class="wrapper">
+      <div class="product-side-items imaged-style">
+        <? foreach ( $this->viewed_products_list as $viewed ) { ?>
+          <div class="item">
+            <div class="img">
+              <a href="<?php echo $livep['link']; ?>"><img src="<?php echo $livep['profil_kep']; ?>" alt="<?php echo $livep['product_nev']; ?>"></a>
+            </div>
+            <div class="data">
+              <a href="<?php echo $livep['link']; ?>">
+                <div class="name">
+                  <?php echo $livep['product_nev']; ?>
+                </div>
+                <div class="desc">
+                  <?php echo $livep['csoport_kategoria']; ?>
+                </div>
+              </a>
+            </div>
+          </div>
+        <? } ?>
+      </div>
+    </div>
+  </div>
+  <? endif; ?>
 
 </div>

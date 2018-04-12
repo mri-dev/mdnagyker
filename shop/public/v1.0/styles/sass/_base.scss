@@ -438,6 +438,7 @@ body.singlepage{
 				padding: 0.3px;
 				position: relative;
 				border: .4px solid #e0e0e0;
+				background: white;
 			}
 
 			a {
@@ -451,6 +452,7 @@ body.singlepage{
 				overflow: hidden;
 				border-bottom: 0.4px solid #eaeaea;
 				margin: 0 0 10px 0;
+				background: white;
 
 				.discount-percent{
 					color: white;
@@ -663,7 +665,8 @@ body.singlepage{
 	}
 }
 .related-products .items .item {
-	flex-basis: calc(100%/2) !important;
+	flex-basis: calc(100%/3) !important;
+	padding: 5px !important;
 }
 .related-products .items .item > .wrapper {
 	font-size: 0.7em !important;
@@ -701,15 +704,22 @@ body.singlepage{
 
 .filter-sidebar{
 	.side-group {
-		border: 0.4px solid #e0e0e0;
+		border: 0.4px solid #d2d2d2;
 		color: #404040;
-		margin: 0 0 25px 0;
+		margin: 0 0 15px 0;
 
 		.head{
+			font-size: 1.32em;
 			padding: 0 10px;
-			line-height: 36px;
-			height: 37px;
+			line-height: 40px;
+			font-weight: bold;
+			height: 40px;
+			color: #202020;
 			text-transform: uppercase;
+
+			strong {
+				color: $color-blue;
+			}
 		}
 
 		.section-group {
@@ -842,26 +852,16 @@ body.singlepage{
 				color: white;
 			}
 			.wrapper{
-				padding: 10px;
+				padding: 5px;
 			}
 		}
+		&.liveproducts,
 		&.topproducts{
-			background: $color-yellow;
-			padding: 10px;
 			.head{
-				padding: 5px 0 15px 0;
+				background: lighten($color-grey, 5%);
 			}
 			.wrapper{
-				background: white;
-				padding: 10px;
-			}
-		}
-		&.liveproducts{
-			.head{
-				background: lighten($color-grey, 10%);
-			}
-			.wrapper{
-				padding: 10px;
+				padding: 5px;
 			}
 		}
 
@@ -870,15 +870,27 @@ body.singlepage{
 		margin: -5px 0;
 		.item {
 			border-bottom: 1px solid #f1f1f1;
-			padding: 10px 0;
+			padding: 5px 0;
 			color: #404040;
+			display: -webkit-box;
+		  display: -ms-flexbox;
+		  display: flex;
+			flex-wrap: nowrap;
+			align-items: center;
+
+			& > .img {
+				flex-basis: 40%;
+			}
+
+			& > .data {
+				flex: 1;
+				padding: 0 0 0 12px;
+			}
 
 			a{
 				color: #404040;
-				text-transform: uppercase;
 				text-decoration: none;
-				font-weight: bold;
-				font-size: 1.05em;
+				display: block;
 
 				&:hover{
 					color: $color-orange;
@@ -886,7 +898,6 @@ body.singlepage{
 			}
 
 			.desc {
-				margin-top: 5px;
 				font-size: 0.9em;
 			}
 
@@ -905,11 +916,6 @@ body.singlepage{
 				}
 			}
 			.img{
-				height: 50px;
-				width: 50px;
-				float:left;
-				margin-right:10px;
-
 				img {
 					max-width: 100%;
 					width: 100%;
@@ -950,8 +956,10 @@ body.singlepage{
 .cat-menu{
 	position: relative;
 	top: -38px;
+	margin-bottom: -20px;
 	z-index: 1;
 	border: 0.5px solid $color-grey;
+	box-shadow: 8px 8px 12px -5px rgba(0, 0, 0, 0.11);
 
 	& > .title {
 	 background: white;
@@ -965,6 +973,8 @@ body.singlepage{
 
 	 i {
 		 margin: 0 15px 0 0;
+		 font-size: 15px;
+     vertical-align: text-top;
 	 }
 	 &:after{
 		 position: absolute;
@@ -1611,8 +1621,52 @@ body.singlepage{
 		}
 		.more-datas{
 			background: #fafafa;
-			border-top: 3px solid #868686;
+			border-top: 1px solid #949494;
 			margin: 50px 0 0 0;
+    	padding: 25px 0;
+
+			.page-width{
+				position: relative;
+			}
+
+			nav.tab-header{
+				position: absolute;
+				left: 0;
+				top: -62px;
+				ul{
+					display: -webkit-box;
+				  display: -ms-flexbox;
+				  display: flex;
+					flex-wrap: wrap;
+					align-items: center;
+
+					& > li {
+						padding: 0 10px 0 0;
+
+						a{
+							font-size: 1.15em;
+							display: block;
+							padding: 10px 15px;
+							text-transform: uppercase;
+							font-weight: bold;
+							background: #e8e8e8;
+							border: 1px solid #dbdbdb;
+							border-bottom: none;
+							border-radius: 4px 4px 0 0;
+							color: #333333;
+							text-decoration: none;
+						}
+
+						&.active {
+							a{
+								background: #3e3e3e;
+								color: white;
+								border: 1px solid #3e3e3e;
+							}
+						}
+					}
+				}
+			}
 
 			.holder{
 				display: -webkit-box;
@@ -1628,27 +1682,31 @@ body.singlepage{
 
 			.info-texts{
 				padding-right: 10px;
-				.description,
-				.documents,
-				.parameters{
-					margin: 0 0 20px 0;
-					.c{
-						border: .5px solid #e6e6e6;
-						padding: 15px;
-						font-size: 1.1em;
-						overflow: hidden;
-					}
 
-					.head{
-						h3 {
-							background: #747272;
-							color: white;
-							padding: 8px 12px;
-							text-transform: uppercase;
-							font-weight: bold;
-							font-size: 1.3em;
-							float: left;
-						}
+				.no-data{
+					font-size: 1.2em;
+					background: white;
+					border: 1px solid #f1f1f1;
+					padding: 15px;
+					border-radius: 5px;
+    			color: #676767;
+					line-height: 1.1;
+
+					i {
+						font-size: 24px;
+						vertical-align: middle;
+						padding: 0;
+						line-height: 1;
+						color: #d4d4d4;
+						margin: 0 10px 0 0;
+					}
+				}
+
+				.tab-holder{
+					display: none;
+
+					&.showed{
+						display: block;
 					}
 				}
 
@@ -1657,6 +1715,8 @@ body.singlepage{
 						padding: 0;
 					}
 					.params{
+						background: white;
+						border: 2px solid #e2e2e2;
 						.param{
 							display: -webkit-box;
 						  display: -ms-flexbox;
@@ -1675,7 +1735,7 @@ body.singlepage{
 							}
 
 							&:nth-child(even){
-								background: #f9f9f9;
+								background: #efefef;
 							}
 							&:last-child{
 								border-bottom: none;
@@ -1686,8 +1746,6 @@ body.singlepage{
 
 				.description{
 					.c {
-						overflow: auto;
-						max-height: 500px;
 						color: #404040;
 						line-height: 1.4;
 
@@ -1717,21 +1775,12 @@ body.singlepage{
 						}
 					}
 				}
-
-				.documents{
-					.head{
-						 h3{
-							 background: $color-yellow;
-						 }
-					}
-				}
 			}
 
 			.related-products {
 				padding-left: 10px;
 				.head{
 					padding: 10px 0;
-					border-top: 5px solid #404040;
 					h3{
 						text-align: center;
 						font-size: 1.8em;
@@ -1755,9 +1804,9 @@ body.singlepage{
 
 	& > .doc {
 		flex-basis: 100%;
-		margin:5px 0;
+		margin: 10px 0;
 		a{
-			font-size: 1em;
+			font-size: 1.2em;
 			line-height: 1.4;
 			display: block;
 			color: #080808;
@@ -5894,5 +5943,9 @@ body.product-page {
 	}
 	header .bottom > .pw > .flex {
 	   padding-left: 0;
+	}
+
+	.nav.nav-fix {
+		flex: 1;
 	}
 }
