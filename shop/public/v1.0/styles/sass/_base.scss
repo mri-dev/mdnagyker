@@ -120,7 +120,7 @@ body.singlepage{
 .slideShow {
 	position: relative;
 	background: #FFFFFF;
-	width: 100%;
+	width: 870px;
 
 	.info-box {
 		position: absolute;
@@ -194,23 +194,23 @@ body.singlepage{
 	}
 	.slick-dots li button {
 		display: block;
-	    width: 12px;
-	    height: 0;
-	    padding-top: 12px;
-	    background-position: 0 0;
-	    float: left;
-	    overflow: hidden;
-	    position: relative;
-	    border:none;
-	    background: transparent;
+    width: 12px;
+    height: 0;
+    padding-top: 12px;
+    background-position: 0 0;
+    float: left;
+    overflow: hidden;
+    position: relative;
+    border:none;
+    background: transparent;
 	}
 
 	.slick-dots li button:before {
-		color: $color-sec;
+		color: #9e9e9e;
 		font-size:10px;
 		line-height: 12px;
 		width: 12px;
-		content: "\f10c";
+		content: "\f111";
 		font-family: FontAwesome;
 		position: absolute;
 		left: 0;
@@ -219,7 +219,7 @@ body.singlepage{
 		text-shadow: none;
 	}
 	.slick-dots li.slick-active button:before {
-		color: #ffda00;
+		color: $color-blue;
 		font-size:12px;
 		content: "\f111";
 		font-family: FontAwesome;
@@ -232,7 +232,7 @@ body.singlepage{
 	.slick-prev,
 	.slick-next
 	{
-		background: #ffca00;
+		background: $color-blue;
 		z-index: 1;
 		width: 48px;
 		height: 48px;
@@ -286,16 +286,16 @@ body.singlepage{
 	.slidesjs-stop,
 	.slidesjs-play {
 		display: block;
-	    width: 18px;
-	    height: 0;
-	    padding-top: 18px;
-	    background-position: 0 0;
-	    overflow: hidden;
-	    position: absolute;
-	    bottom: 10px;
-	    top: auto;
-	    left: 10px;
-	    z-index: 1000;
+    width: 18px;
+    height: 0;
+    padding-top: 18px;
+    background-position: 0 0;
+    overflow: hidden;
+    position: absolute;
+    bottom: 10px;
+    top: auto;
+    left: 10px;
+    z-index: 1000;
 	}
 	.slidesjs-stop:before,
 	.slidesjs-play:before {
@@ -313,6 +313,323 @@ body.singlepage{
 	}
 	.slidesjs-play:before {
 		content: "\f04b";
+	}
+}
+.news-page{
+	.related-news{
+		h2.title{
+			margin: 20px 0 35px 0;
+	    font-weight: bold;
+	    text-align: center;
+	    text-transform: uppercase;
+	    font-size: 1.8em;
+		}
+	}
+	.news-content{
+		padding: 25px 0;
+		.head{
+			.subline{
+				display: -webkit-box;
+			  display: -ms-flexbox;
+			  display: flex;
+				align-items: center;
+				flex-wrap: wrap;
+				margin: 20px 0 40px 0;
+
+				.backurl{
+					a{
+						border: 0.4px solid #acacac;
+				    padding: 0 5px;
+				    border-radius: 3px;
+				    line-height: 20px;
+						height: 20px;
+						font-size: 0.6em;
+				    text-transform: uppercase;
+				    display: block;
+				    color: black;
+				    font-weight: bold;
+						text-decoration: none;
+
+						&:hover{
+							background: $color-blue;
+							border: 0.4px solid $color-blue;
+							color: white;
+						}
+					}
+				}
+
+				ul {
+					margin: 0;
+				}
+
+				& > div {
+					padding: 0 20px 0 0;
+				}
+			}
+		}
+
+		& > .content{
+			font-size: 1.2em;
+			line-height: 1.5;
+			margin: 0 0 50px 0;
+
+			p {
+				margin: 0 0 20px 0;
+			}
+		}
+	}
+}
+.news,
+.news-list {
+	background: #f1f1f1;
+	border-top: 3px solid #dbdbdb;
+	padding: 20px 0 50px 0;
+	position: relative;
+
+	.slick-dots{
+		position: absolute;
+		bottom: -33px;
+		left: 50%;
+		z-index: 1;
+		-webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+
+		& > li {
+			display: inline-block;
+			*display: inline;
+			zoom: 1;
+			vertical-align: middle;
+	 		padding: 0 4px;
+
+			& > button{
+				position: relative;
+				background: transparent;
+				border: none;
+				text-indent: -9999px;
+				&:after{
+					font-family: 'FontAwesome';
+					content:"\f111";
+					font-size: 14px;
+					width: 16px;
+					height: 16px;
+					line-height: 16px;
+					top: 50%;
+					color:#bfbfbf;
+					left: 50%;
+					text-indent: initial;
+					position: absolute;
+					-webkit-transform: translate(-50%,-50%);
+					transform: translate(-50%,-50%);
+				}
+			}
+
+			&.slick-active{
+				& > button{
+					&:after{
+						color: $color-blue;
+					}
+				}
+			}
+		}
+	}
+
+	.slick-arrow{
+		position: absolute;
+		bottom: -35px;
+		width: 25px;
+		height: 25px;
+		border: none;
+		background: white;
+		text-indent: -9999px;
+		color: #4c4c4c;
+		z-index: 2;
+
+		&:after{
+			font-family: 'FontAwesome';
+			font-size: 20px;
+			width: 25px;
+			height: 25px;
+			line-height: 25px;
+			top: 50%;
+			color: $color-blue;
+			left: 50%;
+    	text-indent: initial;
+			position: absolute;
+			-webkit-transform: translate(-50%,-50%);
+			transform: translate(-50%,-50%);
+		}
+
+		&.slick-prev{
+			right: 43px;
+			&:after{
+				content: "\f104";
+			}
+		}
+		&.slick-next{
+			right: 15px;
+			&:after{
+				content: "\f105";
+			}
+		}
+
+		&:hover{
+			background: $color-blue;
+			color: white;
+
+			&:after{
+				color: white;
+			}
+		}
+
+
+	}
+
+	.articles {
+		margin: 0 -15px;
+		article{
+			padding: 0 15px;
+
+			& > .wrapper{
+				padding: 0.5px;
+				background: white;
+				border: 0.5px solid #d9d9d9;
+
+				.img {
+					height: 220px;
+					position: relative;
+					overflow: hidden;
+					border-bottom: 0.5px solid #d9d9d9;
+					background: white;
+					img {
+						position: absolute;
+						width: 110%;
+						left: 50%;
+						top: 50%;
+						-webkit-transform: translate(-50%,-50%);
+          	transform: translate(-50%,-50%);
+					}
+				}
+
+				.title{
+					height: 50px;
+					position: relative;
+					margin: 10px 0;
+
+					h2 {
+						position: absolute;
+						top: 50%;
+						width: 100%;
+						-webkit-transform: translateY(-50%);
+          	transform: translateY(-50%);
+					}
+				}
+
+				h2 {
+					text-align: center;
+					text-transform: uppercase;
+					margin: 0;
+					padding: 0 10px;
+
+					a{
+						color: #6e6e6e;
+						text-decoration: none;
+					}
+				}
+
+				.content{
+					padding: 0 10px;
+					font-size: 0.8em;
+					line-height: 1.2;
+					text-align: justify;
+					height: 70px;
+					overflow: hidden;
+					position: relative;
+
+					&:after{
+						content:"";
+						height: 20px;
+						bottom: 0;
+						left: 1px;
+						right: 1px;
+						position: absolute;
+						/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&0+0,1+70,1+70,1+100 */
+						background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 70%, rgba(255,255,255,1) 100%); /* FF3.6-15 */
+						background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 70%,rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
+						background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 70%,rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+						filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+					}
+				}
+
+				.more{
+					text-align: center;
+					padding: 15px 10px 25px 10px;
+
+					a{
+						padding: 10px 15px;
+						color: white;
+						text-transform: uppercase;
+						text-decoration: none;
+						font-weight: bold;
+						font-size: 0.9em;
+						border-radius: 5px;
+						background: #6e6e6e;
+					}
+				}
+			}
+			&.no-img{
+				& > .wrapper{
+					.img{
+						img {
+							width: auto;
+							height: 100%;
+						}
+					}
+				}
+			}
+
+			&:hover{
+				& > .wrapper{
+					background: #c8cbcc;
+					border: 0.5px solid $color-blue;
+
+					.content{
+						&:after{
+							/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#c8cbcc+0,c8cbcc+100&0+0,1+70,1+70,1+100 */
+							background: -moz-linear-gradient(top, rgba(200,203,204,0) 0%, rgba(200,203,204,1) 70%, rgba(200,203,204,1) 100%); /* FF3.6-15 */
+							background: -webkit-linear-gradient(top, rgba(200,203,204,0) 0%,rgba(200,203,204,1) 70%,rgba(200,203,204,1) 100%); /* Chrome10-25,Safari5.1-6 */
+							background: linear-gradient(to bottom, rgba(200,203,204,0) 0%,rgba(200,203,204,1) 70%,rgba(200,203,204,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+							filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00c8cbcc', endColorstr='#c8cbcc',GradientType=0 ); /* IE6-9 */
+						}
+					}
+					.more{
+						a{
+							background: $color-blue;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.news-list {
+	border-top: none;
+	h1 {
+		text-align: center;
+    margin: 20px 0 40px 0;
+    padding: 0 15px;
+	}
+	.articles {
+		display: -webkit-box;
+	  display: -ms-flexbox;
+	  display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
+
+		& > article{
+			padding: 15px;
+			flex-basis: calc(100% / 3);
+		}
 	}
 }
 
@@ -958,6 +1275,7 @@ body.singlepage{
 	top: -38px;
 	margin-bottom: -20px;
 	z-index: 1;
+  padding: 0.2px;
 	border: 0.5px solid $color-grey;
 	box-shadow: 8px 8px 12px -5px rgba(0, 0, 0, 0.11);
 
@@ -5930,6 +6248,19 @@ a.cetelem-startrans {
 		right: -39px;
 		top: 21px;
 	}
+	}
+}
+
+body.homepage,
+body.article{
+	footer {
+		margin-top: 0;
+	}
+}
+
+body.article{
+	.website{
+		width: 100%;
 	}
 }
 
