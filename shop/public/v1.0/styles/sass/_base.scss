@@ -981,6 +981,120 @@ body.singlepage{
 		}
 	}
 }
+
+.webshop-product-top.slide-style{
+	position: relative;
+	.items {
+		margin: 0;
+		.item {
+			flex-basis: 100%;
+		}
+	}
+	.slick-dots{
+		position: absolute;
+		right: 70px;
+		top: -42px;
+
+		li {
+			width: 25px;
+			height: 25px;
+			background: white;
+			display: inline-block;
+			*display: inline;
+			zoom: 1;
+			margin-left: 5px;
+
+			button {
+				width: 25px;
+				height: 25px;
+				border:none;
+				text-align: center;
+				color: #555555;
+				background: none;
+				font-weight: bold;
+				font-size: 0.9em;
+			}
+			&.slick-active{
+				background: #333333;
+				button {
+					color: white;
+				}
+			}
+			&:hover{
+				background: #666666;
+				button {
+					color: white;
+				}
+			}
+		}
+	}
+
+	.slick-arrow{
+		position: absolute;
+		top: -42px;
+		width: 25px;
+		height: 25px;
+		border: none;
+		background: white;
+		text-indent: -9999px;
+		color: #555555;
+		z-index: 2;
+
+		&:after{
+			font-family: 'FontAwesome';
+			font-size: 16px;
+			width: 25px;
+			height: 25px;
+			line-height: 25px;
+			top: 50%;
+			color: #555555;
+			left: 50%;
+    	text-indent: initial;
+			position: absolute;
+			-webkit-transform: translate(-50%,-50%);
+			transform: translate(-50%,-50%);
+		}
+
+		&.slick-prev{
+			right: 40px;
+			&:after{
+				content: "\f104";
+			}
+		}
+		&.slick-next{
+			right: 10px;
+			&:after{
+				content: "\f105";
+			}
+		}
+
+		&:hover{
+			background: #333333;
+			color: white;
+
+			&:after{
+				color: white;
+			}
+		}
+	}
+}
+.title-header{
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 0.5px solid #c8cbcc;
+	padding: 0 0 10px 0;
+	margin: 10px;
+
+	h2 {
+		text-transform: uppercase;
+		color: #333333;
+		margin: 0 0 0 5px;
+	}
+}
 .related-products .items .item {
 	flex-basis: calc(100%/3) !important;
 	padding: 5px !important;
@@ -6051,6 +6165,82 @@ a.cetelem-startrans {
     		}
     	}
     }
+}
+
+.factory-preview{
+	background: white;
+	padding: 40px 0;
+
+	.factories{
+		border: 0.4px solid #d9d9d9;
+		position: relative;
+		padding: 20px 1px;
+
+	  .slick-slide{
+			height: 40px !important;
+			position: relative;
+			img {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				height: 90%;
+				max-height: 90%;
+				-webkit-transform: translate(-50%,-50%);
+				transform: translate(-50%,-50%);
+			}
+		}
+
+		.slick-arrow{
+			position: absolute;
+			top: 50%;
+			width: 25px;
+			height: 25px;
+			border: none;
+			background: #d9d9d9;
+			text-indent: -9999px;
+			color: white;
+			z-index: 2;
+			-webkit-transform:translateY(-50%);
+          transform:translateY(-50%);
+
+			&:after{
+				font-family: 'FontAwesome';
+				font-size: 20px;
+				width: 25px;
+				height: 25px;
+				line-height: 25px;
+				top: 50%;
+				color: white;
+				left: 50%;
+	    	text-indent: initial;
+				position: absolute;
+				-webkit-transform: translate(-50%,-50%);
+				transform: translate(-50%,-50%);
+			}
+
+			&.slick-prev{
+				left: -30px;
+				&:after{
+					content: "\f104";
+				}
+			}
+			&.slick-next{
+				right: -30px;
+				&:after{
+					content: "\f105";
+				}
+			}
+
+			&:hover{
+				background: #acacac;
+				color: white;
+
+				&:after{
+					color: white;
+				}
+			}
+		}
+	}
 }
 
 .subscribe{
