@@ -273,7 +273,10 @@ body.blured-bg #content .container-fluid{
 #content .slideMenu .menu ul li{
 	border-bottom: 1px solid #404040;
 }
-
+#content .slideMenu .menu ul li.div{
+  background: #191919;
+  height: 8px;
+}
 #content .slideMenu .menu ul li a{
 	position:relative;
 	color:#A7A7A7;

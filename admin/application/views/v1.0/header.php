@@ -163,57 +163,28 @@
 	<? if($this->adm->logged): ?>
     <div class="slideMenu">
     	<div class="slideMenuToggle" title="Kinyit/Becsuk"><i class="fa fa-arrows-h"></i></div>
-        <div class="clr"></div>
+      <div class="clr"></div>
    		<div class="menu">
         	<ul>
             	<li class="<?=($this->gets[0] == 'home')?'on':''?>"><a href="/" title="Dashboard"><span class="ni">1</span><i class="fa fa-life-saver"></i> Dashboard</a></li>
-                <li class="<?=($this->gets[0] == 'megrendelesek')?'on':''?>"><a href="/megrendelesek" title="Megrendelések"><span class="ni">2</span><i class="fa fa-briefcase"></i> Megrendelések</a></li>
-                <? if(false): if($this->gets[0] == 'megrendelesek' || $this->gets[0] == 'partnerSale'): ?>
-                <li class="<?=($this->gets[0] == 'partnerSale')?'on':''?> sub"><a href="/partnerSale" title="Ajánlókódos megrendelések"><span class="ni">2</span> Ajánlókódos megrendelések</a></li>
-            	  <? endif; endif; ?>
-            	  <? if($this->gets[0] == 'megrendelesek' || $this->gets[0] == 'partnerSale'): ?>
-                <li class="<?=($this->gets[0] == 'megrendelesek' && $this->gets[1] == 'allapotok')?'on':''?> sub"><a href="/megrendelesek/allapotok" title="Megrendelés állapotok"><span class="ni">2</span> Megrendelés állapotok</a></li>
-            	  <? endif; ?>
-            	  <? if($this->gets[0] == 'megrendelesek' || $this->gets[0] == 'partnerSale'): ?>
-                <li class="<?=($this->gets[0] == 'megrendelesek' && $this->gets[1] == 'termek_allapotok')?'on':''?> sub"><a href="/megrendelesek/termek_allapotok" title="Megrendelés termék állapotok"><span class="ni">2</span> Megrendelés termék állapotok</a></li>
-            	  <? endif; ?>
-                <?php if (false): ?>
-                <li class="<?=($this->gets[0] == 'referrerHierarchy')?'on':''?>"><a href="/referrerHierarchy" title="Ajánló rangsor"><span class="ni">2</span><i class="fa fa-pie-chart"></i> Ajánló rangsor</a></li>
-                <? endif; ?>
-                <li class="<?=($this->gets[0] == 'termekek')?'on':''?>"><a href="/termekek" title="Termékek"><span class="ni">2</span><i class="fa fa-cubes"></i> Termékek</a></li>
-                <!--<li class="<?=($this->gets[0] == 'lookbook')?'on':''?>"><a href="/lookbook" title="Lookbook"><span class="ni">2</span><i class="fa fa-book"></i> Lookbook</a></li>-->
-                <li class="<?=($this->gets[0] == 'felhasznalok')?'on':''?>"><a href="/felhasznalok" title="Felhasználók"><span class="ni">2</span><i class="fa fa-group"></i> Felhasználók</a></li>
-                <?php if (false): ?>
-                <? if($this->gets[0] == 'felhasznalok' || ($this->gets[0] == 'felhasznalok' && $this->gets[1] == 'containers') || ($this->gets[0] == 'felhasznalok' && $this->gets[1] == 'container_new')) : ?>
-                <li class="<?=(($this->gets[0] == 'felhasznalok' && $this->gets[1] == 'containers') || ($this->gets[0] == 'felhasznalok' && $this->gets[1] == 'container_new'))?'on':''?> sub"><a href="/felhasznalok/containers" title="Felhasználói körök"><span class="ni">2</span> Felhasználói körök</a></li>
-            	  <? endif; ?>
-                <? endif; ?>
-                <?php if (false): ?>
-                <li class="<?=($this->gets[0] == 'partnerek')?'on':''?>"><a href="/partnerek" title="Partnerek"><span class="ni">2</span><i class="fa fa-group"></i> Partnerek</a></li>
-                <li class="<?=($this->gets[0] == 'uzletek')?'on':''?>"><a href="/uzletek" title="Üzletek"><span class="ni">2</span><i class="fa fa-home"></i> Üzletek</a></li>
-                <?php endif; ?>
-                <li class="<?=($this->gets[0] == 'kuponok')?'on':''?>"><a href="/kuponok" title="Kuponok"><span class="ni">2</span><i class="fa fa-star"></i> Kuponok</a></li>
-                <!-- <li class="<?=($this->gets[0] == 'watercard')?'on':''?>"><a href="/watercard" title="Arena Water Card"><span class="ni">2</span><i class="fa fa-gift"></i>Jövő Bajnokai</a></li>-->
-                <li class="<?=($this->gets[0] == 'feliratkozok')?'on':''?>"><a href="/feliratkozok" title="Feliratkozók"><span class="ni">2</span><i class="fa fa-check-square-o"></i> Feliratkozók</a></li>
-		            <li class="<?=($this->gets[0] == 'uzenetek')?'on':''?>"><a href="/uzenetek" title="Üzenetek"><span class="ni">8</span><i class="fa fa-envelope-o"></i> Üzenetek</a></li>
-                <!-- <li class="<?=($this->gets[0] == 'reklamfal')?'on':''?>"><a href="/reklamfal" title="Slideshow"><span class="ni">3</span><i class="fa fa-th-large"></i> Slideshow</a></li>-->
-                <li class="<?=($this->gets[0] == 'menu')?'on':''?>"><a href="/menu" title="Menü"><span class="ni">4</span><i class="fa fa-ellipsis-h"></i> Menü</a></li>
-                <li class="<?=($this->gets[0] == 'oldalak')?'on':''?>"><a href="/oldalak" title="Oldalak"><span class="ni">5</span><i class="fa fa-file-o"></i> Oldalak</a></li>
-                <li class="<?=($this->gets[0] == 'hirek')?'on':''?>"><a href="/hirek" title="Hírek"><span class="ni">5</span><i class="fa fa-paper-plane-o"></i> Hírek</a></li>
-                <li class="<?=($this->gets[0] == 'kategoriak')?'on':''?>"><a href="/kategoriak" title="Kategóriák"><span class="ni">6</span><i class="fa fa-bars"></i> Kategóriák</a></li>
-                <li class="<?=($this->gets[0] == 'markak')?'on':''?>"><a href="/markak" title="Márkák"><span class="ni">7</span><i class="fa fa-bookmark"></i> Márkák</a></li>
-                <!-- <li class="<?=($this->gets[0] == 'kedvezmenyek' || $this->gets[0] == 'elorendeles_kedvezmenyek')?'on':''?>"><a href="/kedvezmenyek" title="Törzsvásárlói kedvezmények"><span class="ni">8</span><i class="fa fa-bullhorn"></i> Kedvezmények</a></li>-->
-                <li class="<?=($this->gets[0] == 'stat')?'on':''?>"><a href="/stat" title="Statisztikák"><span class="ni">8</span><i class="fa fa-bar-chart-o"></i> Statisztikák</a></li>
-        				<!--<li class="<?=($this->gets[0] == 'forgalom')?'on':''?>"><a href="/forgalom" title="Forgalmak"><span class="ni">8</span><i class="fa fa-signal"></i> Forgalmak</a></li>-->
-        				<li class="<?=($this->gets[0] == 'ajanloszoveg')?'on':''?>"><a href="/ajanloszoveg" title="Ajánló felirat"><span class="ni">8</span><i class="fa fa-quote-right"></i> Ajánló feliratok</a></li>
-        				<li class="<?=($this->gets[0] == 'slideshow')?'on':''?>"><a href="/slideshow" title="Slideshow"><span class="ni">8</span><i class="fa fa-th"></i> Slideshow</a></li>
-        				<!-- <li class="<?=($this->gets[0] == 'tablazatok')?'on':''?>"><a href="/tablazatok" title="Táblázatok"><span class="ni">8</span><i class="fa fa-table"></i> Táblázatok</a></li>-->
-        				<li class="<?=($this->gets[0] == 'dokumentumok')?'on':''?>"><a href="/dokumentumok" title="Dokumentumok"><span class="ni">8</span><i class="fa fa-file-text-o "></i> Dokumentumok</a></li>
-                <li class="<?=($this->gets[0] == 'tudastar')?'on':''?>"><a href="/tudastar" title="Tudástár"><span class="ni">8</span><i class="fa fa-lightbulb-o"></i> Tudástár</a></li>
-        				<li class="<?=($this->gets[0] == 'emails')?'on':''?>"><a href="/emails" title="Email sablonok"><span class="ni">8</span><i class="fa fa-envelope"></i> Email sablonok</a></li>
-        				<li class="<?=($this->gets[0] == 'atiranyitas')?'on':''?>"><a href="/atiranyitas" title="Átirányítások"><span class="ni">8</span><i class="fa fa-long-arrow-right"></i> Átirányítások</a></li>
-        				<li class="<?=($this->gets[0] == 'popup')?'on':''?>"><a href="/popup" title="Popup"><span class="ni">8</span><i class="fa fa-bullhorn"></i> Popup</a></li>
-        				<li class="<?=($this->gets[0] == 'beallitasok')?'on':''?>"><a href="/beallitasok" title="Beállítások"><span class="ni">8</span><i class="fa fa-gear"></i> Beállítások</a></li>
+              <li class="<?=($this->gets[0] == 'megrendelesek')?'on':''?>"><a href="/megrendelesek" title="Megrendelések"><span class="ni">2</span><i class="fa fa-briefcase"></i> Megrendelések</a></li>
+              <li class="<?=($this->gets[0] == 'markak')?'on':''?>"><a href="/markak" title="Márkák"><span class="ni">7</span><i class="fa fa-bookmark"></i> Márkák</a></li>
+              <li class="<?=($this->gets[0] == 'termekek')?'on':''?>"><a href="/termekek" title="Termékek"><span class="ni">2</span><i class="fa fa-cubes"></i> Termékek</a></li>
+              <li class="<?=($this->gets[0] == 'kategoriak')?'on':''?>"><a href="/kategoriak" title="Kategóriák"><span class="ni">6</span><i class="fa fa-bars"></i> Kategóriák</a></li>
+              <li class="<?=($this->gets[0] == 'felhasznalok')?'on':''?>"><a href="/felhasznalok" title="Felhasználók"><span class="ni">2</span><i class="fa fa-group"></i> Felhasználók</a></li>
+              <li class="<?=($this->gets[0] == 'uzenetek')?'on':''?>"><a href="/uzenetek" title="Üzenetek"><span class="ni">8</span><i class="fa fa-envelope-o"></i> Üzenetek</a></li>
+              <li class="<?=($this->gets[0] == 'menu')?'on':''?>"><a href="/menu" title="Menü"><span class="ni">4</span><i class="fa fa-ellipsis-h"></i> Menü</a></li>
+              <li class="<?=($this->gets[0] == 'oldalak')?'on':''?>"><a href="/oldalak" title="Oldalak"><span class="ni">5</span><i class="fa fa-file-o"></i> Oldalak</a></li>
+              <li class="<?=($this->gets[0] == 'emails')?'on':''?>"><a href="/emails" title="Email sablonok"><span class="ni">8</span><i class="fa fa-envelope"></i> Email sablonok</a></li>
+              <!-- MODULS-->
+              <?php if ( !empty($this->modules) ): ?>
+              <li class="div"></li>
+              <?php foreach ($this->modules as $module): ?>
+              <li class="<?=($this->gets[0] == $module['menu_slug'])?'on':''?>"><a href="/<?=$module['menu_slug']?>" title="<?=$module['menu_title']?>"><span class="ni"><?=$module['ID']?></span><i class="fa fa-<?=$module['faico']?>"></i> <?=$module['menu_title']?></a></li>
+              <?php endforeach; ?>
+              <?php endif; ?>
+              <!-- End of MODULS-->
+              <li class="<?=($this->gets[0] == 'beallitasok')?'on':''?>"><a href="/beallitasok" title="Beállítások"><span class="ni">8</span><i class="fa fa-gear"></i> Beállítások</a></li>
         	</ul>
         </div>
     </div>

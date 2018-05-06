@@ -13,7 +13,7 @@ use PortalManager\Portal;
 use Applications\Captcha;
 use FileManager\FileLister;
 use ProductManager\Products;
-
+use PortalManager\Installer;
 
 class Controller {
     public $db = null;
@@ -42,6 +42,7 @@ class Controller {
         // $this->model 		= new Model();
         $this->view = new View();
         $this->db = new Database();
+        $this->installer = new Installer(array('db'=> $this->db));
         //////////////////////////////////////////////////////
         $this->view->settings = $this->getAllValtozo();
         $this->gets = Helper::GET();
@@ -69,6 +70,12 @@ class Controller {
 
         $this->out( 'db',   $this->db );
         $this->out( 'user', $this->User->get( self::$user_opt ) );
+
+        // Only admin
+        if ( !defined('PRODUCTIONSITE') )
+        {
+          $this->out( 'modules', $this->installer->listModules(array('only_active' => true)) );
+        }
 
         // Kategóriák
         if ( defined('PRODUCTIONSITE') )
