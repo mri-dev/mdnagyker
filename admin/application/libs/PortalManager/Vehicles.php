@@ -31,6 +31,79 @@ class Vehicles implements InstallModules
     return $this;
   }
 
+  /**
+	 * Létrehzás
+	 * @param array $data új elem létrehozásához szükséges adatok
+	 * @return void
+	 */
+	public function add( $data = array() )
+	{
+		$deep = 0;
+		$name = ($data['name']) ?: false;
+		$parent = ($data['parent_id']) ?: NULL;
+    $image = ( isset($data['logo']) ) ? $data['logo'] : NULL;
+    $slug = \Helper::makeSafeUrl(trim($name));
+
+		if ($parent) {
+			$xparent = explode('_',$parent);
+			$parent = (int)$xparent[0];
+			$deep = (int)$xparent[1] + 1;
+		}
+
+		if ( !$name ) {
+			throw new \Exception( "Kérjük, hogy adja meg az elem elnevezését!" );
+		}
+
+		$this->db->insert(
+			self::DBTABLE,
+			array(
+				'title'	=> $name,
+        'slug' => $slug,
+				'parent_id' => $parent,
+				'deep' => $deep,
+  			'logo' => $image,
+			)
+		);
+	}
+
+  /**
+	 * Szerkesztése
+	 * @param  Vehicle $item PortalManager\Vehicle class
+	 * @param  array    $new_data
+	 * @return void
+	 */
+	public function edit( Vehicle $item, $new_data = array() )
+	{
+		$deep = 0;
+		$name = ($new_data['name']) ?: false;
+		$parent = ($new_data['parent_id']) ?: NULL;
+		$image = ( isset($new_data['logo']) ) ? $new_data['logo'] : NULL;
+    $slug = \Helper::makeSafeUrl(trim($name));
+
+		if ($parent) {
+			$xparent = explode('_',$parent);
+			$parent = (int)$xparent[0];
+			$deep = (int)$xparent[1] + 1;
+		}
+
+		if ( !$name ) {
+			throw new \Exception( "Kérjük, hogy adja meg a gépjármű elnevezését!" );
+		}
+
+		$item->edit(array(
+			'title' => $name,
+      'slug' => $slug,
+			'parent_id' => $parent,
+			'deep' => $deep,
+			'logo' => $image
+		));
+	}
+
+  public function delete( Vehicle $item )
+	{
+		$item->delete();
+	}
+
   public function getTree( $arg = array() )
   {
     $tree = array();
@@ -39,7 +112,7 @@ class Vehicles implements InstallModules
     $qry = "
       SELECT *
       FROM ".self::DBTABLE."
-      WHERE 1=1 ";
+      WHERE 1=1 and parent_id IS NULL";
 
     // ID SET
     if( isset($arg['id_set']) && count($arg['id_set']) )
@@ -50,11 +123,11 @@ class Vehicles implements InstallModules
     $qry .= " ORDER BY title ASC;";
 
     $top_cat_qry = $this->db->query($qry);
-    $top_cat_data = $top_cat_qry->fetchAll(\PDO::FETCH_ASSOC);
+    $top_item_data = $top_cat_qry->fetchAll(\PDO::FETCH_ASSOC);
 
     if( $top_cat_qry->rowCount() == 0 ) return $this;
 
-    foreach ( $top_cat_data as $top_cat ) {
+    foreach ( $top_item_data as $top_cat ) {
       $this->tree_items++;
       $this->tree_steped_item[] = $top_cat;
 
@@ -86,11 +159,11 @@ class Vehicles implements InstallModules
 			WHERE	parent_id = %d
 			ORDER BY title ASC;", $parent_id));
 
-		$child_cat_data	= $child_cat_qry->fetchAll(\PDO::FETCH_ASSOC);
+		$child_item_data	= $child_cat_qry->fetchAll(\PDO::FETCH_ASSOC);
 
 		if( $child_cat_qry->rowCount() == 0 ) return false;
 
-		foreach ( $child_cat_data as $child_cat ) {
+		foreach ( $child_item_data as $child_cat ) {
 			$this->tree_items++;
 			$child_cat['kep']	= ($child_cat['kep'] == '') ? '/src/images/no-image.png' : $child_cat['logo'];
 			$this->tree_steped_item[] = $child_cat;
@@ -164,7 +237,8 @@ class Vehicles implements InstallModules
       `title` varchar(150) NOT NULL,
       `slug` varchar(150) NOT NULL,
       `logo` text,
-      `parent_id` mediumint(9) DEFAULT NULL
+      `parent_id` mediumint(9) DEFAULT NULL,
+      `deep` smallint(6) NOT NULL DEFAULT '0'
     )";
     $installer->createTable( $table_create );
 

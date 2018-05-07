@@ -1,5 +1,6 @@
 <?
 use PortalManager\Vehicles;
+use PortalManager\Vehicle;
 
 class gepjarmuvek extends Controller{
 		function __construct(){
@@ -10,6 +11,57 @@ class gepjarmuvek extends Controller{
 			$this->view->adm->logged = $this->AdminUser->isLogged();
 
       $vehicles = new Vehicles( array('db'=> $this->db) );
+			////////////////////////////////////////////////////////////////////////////////////////
+
+			// Új
+			if( Post::on('addVehicle') )
+			{
+				try {
+					$vehicles->add( $_POST );
+					Helper::reload();
+				} catch ( Exception $e ) {
+					$this->view->err = true;
+					$this->view->bmsg	= Helper::makeAlertMsg('pError', $e->getMessage());
+				}
+			}
+
+			// Szerkesztés
+			if ( $this->view->gets[1] == 'szerkeszt') {
+				// Kategória adatok
+				$item_data = new Vehicle( $this->view->gets[2],  array( 'db' => $this->db )  );
+				$this->out( 'vehicle', $item_data );
+
+				// Változások mentése
+				if( Post::on('saveVehicle') )
+				{
+					try {
+						$vehicles->edit( $item_data, $_POST );
+						Helper::reload();
+					} catch ( Exception $e ) {
+						$this->view->err = true;
+						$this->view->bmsg = Helper::makeAlertMsg('pError', $e->getMessage());
+					}
+				}
+			}
+
+			// Törlés
+			if ( $this->view->gets[1] == 'torles') {
+				// Adatok
+				$item_data = new Vehicle( $this->view->gets[2], array( 'db' => $this->db )  );
+				$this->out( 'vehicle_d', $item_data );
+
+				// Törlése
+				if( Post::on('delVehicle') )
+				{
+					try {
+						$vehicles->delete( $item_data );
+						Helper::reload( '/gepjarmuvek' );
+					} catch ( Exception $e ) {
+						$this->view->err = true;
+						$this->view->bmsg = Helper::makeAlertMsg('pError', $e->getMessage());
+					}
+				}
+			}
 
       // LOAD
 			////////////////////////////////////////////////////////////////////////////////////////

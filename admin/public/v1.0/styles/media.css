@@ -251,6 +251,9 @@ body.blured-bg #content .container-fluid{
 	padding-left:75px;
 	z-index:10;
 }
+#content .ct > .innerContent > .row{
+  margin: 0 -15px !important;	
+}
 #content .slideMenu{
 	background:#333333;
 	width:200px;
@@ -1809,6 +1812,19 @@ table.termekfrissites > tbody > tr.not-in-product > td{
 	padding: 2px 5px;
 	margin: 5px 0;
 }
+.categories.vehicle-list .logo{
+	float: left;
+}
+.categories.vehicle-list .logo + a{
+	float: left;
+  display: block;
+  line-height: 25px;
+  padding-left: 10px;
+}
+.categories.vehicle-list .logo img{
+	height: 25px;
+  max-height: 25px;
+}
 .tudastar-list a.title{
   font-weight: bold;
   margin: 0 0 5px 0;
@@ -1864,7 +1880,7 @@ table.termekfrissites > tbody > tr.not-in-product > td{
 .row.on-edit,
 .row.on-del
 {
-  background: #f9f9f9;
+  background: #ffffff;
   border: 1px solid #d8d8d8;
   border-left: 3px solid #ffab05;
 }
