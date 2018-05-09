@@ -2,6 +2,12 @@
   <div class="title">
     <i class="fa fa-sliders"></i> Összes termék
   </div>
+  <div class="vehicle-filter" ng-click="openVehicleSelector()">
+    <div class="wrapper">
+      <div class="badge">{{vehicle_num}}</div>
+      <i class="fa fa-car"></i> Gépjármű szűrő
+    </div>
+  </div>
   <ul>
     <?php foreach ( $this->categories->tree  as $cat ) { ?>
     <li class="menu-item item<?=$cat['ID']?> deep<?=$cat['deep']?>">

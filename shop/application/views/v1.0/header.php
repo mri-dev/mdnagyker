@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html xmlns="http://www.w3.org/1999/html4"
       xmlns:og="http://ogp.me/ns#"
-      xmlns:fb="http://www.facebook.com/2008/fbml" lang="hu-HU" ng-app="tuzvedelmicentrum">
+      xmlns:fb="http://www.facebook.com/2008/fbml" lang="hu-HU" ng-app="mobildata">
 <head>
     <title><?=$this->title?></title>
     <?=$this->addMeta('robots','index,folow')?>

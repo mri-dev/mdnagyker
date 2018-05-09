@@ -1422,6 +1422,32 @@ body.singlepage{
 	 }
 	}
 
+	& > .vehicle-filter{
+		background: $color-blue;
+		color: white;
+		.wrapper{
+			padding: 10px;
+			position: relative;
+
+			i{
+				margin: 0 5px 0 0;
+			}
+
+			.badge{
+				position: absolute;
+				right: 10px;
+				top: 50%;
+				-webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+				background-color: #464646;
+			}
+		}
+		&:hover{
+			background: darken($color-blue, 10%);
+			cursor: pointer;
+		}
+	}
+
 	& > ul  > li {
 		background: white;
 	}
