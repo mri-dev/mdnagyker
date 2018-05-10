@@ -3,6 +3,10 @@ var app = angular.module('mobildata', ['ngMaterial', 'ngMessages', 'ngCookies'])
 app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$location','$cookies', '$cookieStore', function($scope, $sce, $http, $mdToast, $mdDialog, $location, $cookies, $cookieStore)
 {
   $scope.vehicle_num = 0;
+  $scope.vehicles = [];
+  $scope.vehicles_selected = [];
+  $scope.vehicle_childs = {};
+
   $scope.fav_num = 0;
   $scope.fav_ids = [];
   $scope.in_progress_favid = false;
@@ -22,19 +26,26 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         mode: 'getList'
       })
     }).success(function(r){
-      callback(r.data);
-    });
-    $mdDialog.show({
-      controller: VehicleDialogController,
-      templateUrl: '/app/templates/vehicleSelector',
-      parent: angular.element(document.body),
-      clickOutsideToClose:true,
-      fullscreen: true
-    })
-    .then(function(answer) {
-      $scope.status = 'You said the information was "' + answer + '".';
-    }, function() {
-      $scope.status = 'You cancelled the dialog.';
+      $scope.vehicles = r.data;
+      console.log(r.data);
+      $mdDialog.show({
+        controller: VehicleDialogController,
+        templateUrl: '/app/templates/vehicleSelector',
+        parent: angular.element(document.body),
+        clickOutsideToClose:true,
+        fullscreen: true,
+        preserveScope: true,
+        scope: $scope
+      })
+      .then(function(answer) {
+        $scope.status = 'You said the information was "' + answer + '".';
+      }, function() {
+        $scope.status = 'You cancelled the dialog.';
+      });
+
+      if (typeof callback !== 'undefined') {
+        callback(r.data);
+      }
     });
   }
 
@@ -50,6 +61,26 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     $scope.answer = function(answer) {
       $mdDialog.hide(answer);
     };
+  }
+
+  $scope.selectVehicleItem = function( id ){
+    if ($scope.vehicles_selected.indexOf(id) !== -1) {
+      $scope.vehicles_selected.splice($scope.vehicles_selected.indexOf(id), 1);
+    } else {
+      $scope.vehicles_selected.push(id);
+    }
+    $scope.displaySelectedVehicleChilds();
+  }
+
+  $scope.displaySelectedVehicleChilds = function(){
+    $scope.vehicle_childs = {};
+    angular.forEach($scope.vehicles_selected, function(e,i){
+      if (typeof $scope.vehicle_childs[e] === 'undefined') {
+        $scope.vehicle_childs[e] = {};
+      }
+      $scope.vehicle_childs[e].title = $scope.vehicles[e].title;
+      $scope.vehicle_childs[e].data = $scope.vehicles[e].child;
+    });
   }
 
   $scope.productAddToFav = function( id, ev ){

@@ -440,13 +440,14 @@ class ajax extends Controller{
 
 			switch($type){
 				case 'vehicles':
-
 					switch ( $mode ) {
 						case 'getList':
+							$vehicles = new Vehicles(array('db' => $this->db));
+							$vehicles->getTree();
+							$ret['data'] = $vehicles->prepareTreeForSelector($vehicles->tree);
 							echo json_encode($ret);
 						break;
 					}
-
 				break;
 				case 'settings':
 					$_POST['key'] = ($_POST['key'] != '') ? (array)$_POST['key'] : array();

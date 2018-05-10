@@ -199,6 +199,21 @@ class Vehicles implements InstallModules
 		return $this->current_item;
 	}
 
+  public function prepareTreeForSelector( $tree = array() )
+  {
+    $t = array();
+
+    foreach ( (array)$tree as $tr) {
+      $child = $tr['child'];
+      if ( !empty($child) ) {
+        $tr['child'] = $this->prepareTreeForSelector( $child );
+      }
+      $t[$tr['ID']] = $tr;
+    }
+
+    return $t;
+  }
+
   public function __destruct()
   {
     $this->db = null;
@@ -208,6 +223,7 @@ class Vehicles implements InstallModules
 		$this->tree_items = 0;
 		$this->walk_step = 0;
   }
+
 
   /*******************************
   * Installer

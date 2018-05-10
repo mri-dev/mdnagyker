@@ -13,7 +13,32 @@
     <md-dialog-content>
       <div class="md-dialog-content">
         <div class="vehicle-filter-list">
-          {{vehicles}}
+          <div class="vehicle-group deep0">
+            <div class="vehicle" ng-repeat="vehicle in vehicles">
+              <div class="wrapper" ng-click="selectVehicleItem(vehicle.ID)" ng-class="(vehicles_selected.indexOf(vehicle.ID)!==-1)?'selected':''">
+                <div class="logo" ng-hide="(vehicle.logo=='')">
+                  <img src="<?=IMGDOMAIN?>{{vehicle.logo}}" alt="{{vehicle.title}}">
+                </div>
+                <div class="title">
+                  {{vehicle.title}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="child-list">
+            <div class="child" ng-repeat="models in vehicle_childs" ng-show="models.data">
+              <div class="title">
+                <strong>{{models.title}}</strong> modellek:
+              </div>
+              <div class="vehicle-group">
+                <div class="item" ng-repeat="model in models.data">
+                  <div class="wrapper">
+                    {{model.title}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </md-dialog-content>
