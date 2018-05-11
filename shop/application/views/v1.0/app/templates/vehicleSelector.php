@@ -2,10 +2,10 @@
   <form ng-cloak>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2>Gépjármű szerinti szűrés</h2>
+        <h2><i class="fa fa-car"></i> Gépjármű szerinti szűrés</h2>
         <span flex></span>
         <md-button class="md-icon-button" ng-click="cancel()">
-          <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+          <md-icon md-svg-src="/src/images/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
         </md-button>
       </div>
     </md-toolbar>
@@ -32,7 +32,7 @@
               </div>
               <div class="vehicle-group">
                 <div class="item" ng-repeat="model in models.data">
-                  <div class="wrapper">
+                  <div class="wrapper" ng-click="selectVehicleItem(model.ID)" ng-class="(vehicles_selected.indexOf(model.ID)!==-1)?'selected':''">
                     {{model.title}}
                   </div>
                 </div>
@@ -40,11 +40,14 @@
             </div>
           </div>
         </div>
+        <div class="saving-vehicle-filters" ng-show="vehicle_saving">
+          Mentés folyamatban <i class="fa fa-spin fa-spinner"></i>
+        </div>
       </div>
     </md-dialog-content>
 
     <md-dialog-actions layout="row">
-      <md-button ng-click="saveVehicleFilter()">
+      <md-button ng-click="save()" ng-hide="vehicle_saving">
         Szűrő mentése
       </md-button>
     </md-dialog-actions>

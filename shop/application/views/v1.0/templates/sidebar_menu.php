@@ -2,7 +2,7 @@
   <div class="title">
     <i class="fa fa-sliders"></i> Összes termék
   </div>
-  <div class="vehicle-filter" ng-click="openVehicleSelector()">
+  <div class="vehicle-filter" ng-click="openVehicleSelector()" ng-class="(vehicle_num!=0)?'filtered':''">
     <div class="wrapper">
       <div class="badge">{{vehicle_num}}</div>
       <i class="fa fa-car"></i> Gépjármű szűrő

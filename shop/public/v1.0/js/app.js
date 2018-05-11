@@ -6,6 +6,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.vehicles = [];
   $scope.vehicles_selected = [];
   $scope.vehicle_childs = {};
+  $scope.vehicle_saving = false;
 
   $scope.fav_num = 0;
   $scope.fav_ids = [];
@@ -27,12 +28,12 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       })
     }).success(function(r){
       $scope.vehicles = r.data;
-      console.log(r.data);
+      $scope.displaySelectedVehicleChilds();
       $mdDialog.show({
         controller: VehicleDialogController,
         templateUrl: '/app/templates/vehicleSelector',
         parent: angular.element(document.body),
-        clickOutsideToClose:true,
+        clickOutsideToClose: false,
         fullscreen: true,
         preserveScope: true,
         scope: $scope
@@ -43,6 +44,25 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         $scope.status = 'You cancelled the dialog.';
       });
 
+      if (typeof callback !== 'undefined') {
+        callback(r.data);
+      }
+    });
+  }
+
+  $scope.saveVehicleFilter = function( callback ){
+    $scope.vehicle_saving = true;
+    $http({
+      method: 'POST',
+      url: '/ajax/get',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: $.param({
+        type: "vehicles",
+        mode: "saveFilter",
+        ids: $scope.vehicles_selected
+      })
+    }).success(function(r){
+      $scope.vehicle_saving = false;
       if (typeof callback !== 'undefined') {
         callback(r.data);
       }
@@ -61,6 +81,16 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     $scope.answer = function(answer) {
       $mdDialog.hide(answer);
     };
+
+    $scope.save = function(){
+      $scope.saveVehicleFilter(function() {
+        $scope.syncVehicles(function(n, vehicles){
+          $scope.vehicle_num = n;
+          $scope.vehicles_selected = vehicles;
+        });
+        $mdDialog.hide();
+      });
+    }
   }
 
   $scope.selectVehicleItem = function( id ){
@@ -75,11 +105,13 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.displaySelectedVehicleChilds = function(){
     $scope.vehicle_childs = {};
     angular.forEach($scope.vehicles_selected, function(e,i){
-      if (typeof $scope.vehicle_childs[e] === 'undefined') {
-        $scope.vehicle_childs[e] = {};
+      if (typeof $scope.vehicles[e] !== 'undefined') {
+        if (typeof $scope.vehicle_childs[e] === 'undefined') {
+          $scope.vehicle_childs[e] = {};
+        }
+        $scope.vehicle_childs[e].title = $scope.vehicles[e].title;
+        $scope.vehicle_childs[e].data = $scope.vehicles[e].child;
       }
-      $scope.vehicle_childs[e].title = $scope.vehicles[e].title;
-      $scope.vehicle_childs[e].data = $scope.vehicles[e].child;
     });
   }
 
@@ -117,6 +149,10 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   }
 
   $scope.init = function( ordernow ){
+    $scope.syncVehicles(function(n, vehicles){
+      $scope.vehicle_num = n;
+      $scope.vehicles_selected = vehicles;
+    });
     $scope.syncFavs(function(err, n){
       $scope.fav_num = n;
     });
@@ -315,6 +351,22 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
       if (typeof callback === 'function') {
         callback(r.error, r.msg, r);
+      }
+    });
+  }
+
+  $scope.syncVehicles = function( callback ) {
+    $http({
+      method: 'POST',
+      url: '/ajax/get',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: $.param({
+        type: "vehicles",
+        mode: 'getFilter'
+      })
+    }).success(function(r){
+      if (typeof callback === 'function') {
+        callback(r.num, r.ids);
       }
     });
   }

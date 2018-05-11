@@ -1444,7 +1444,7 @@ body.singlepage{
 	}
 
 	.child-list{
-		margin: 5px 0 0 0;
+		margin: 20px 0 0 0;
 
 		.child{
 			margin: 10px 0;
@@ -1470,6 +1470,12 @@ body.singlepage{
 						border: 1px solid #acacac;
 						padding: 5px;
 						border-radius: 5px;
+
+						&.selected{
+							border: 1px solid darken($color-green, 10%);
+							color: white;
+							background: $color-green;
+						}
 					}
 				}
 			}
@@ -1516,7 +1522,7 @@ body.singlepage{
 	}
 
 	& > .vehicle-filter{
-		background: $color-blue;
+		background: #777676;
 		color: white;
 		.wrapper{
 			padding: 10px;
@@ -1538,6 +1544,9 @@ body.singlepage{
 		&:hover{
 			background: darken($color-blue, 10%);
 			cursor: pointer;
+		}
+		&.filtered{
+			background: $color-blue;
 		}
 	}
 
@@ -2624,6 +2633,31 @@ body.singlepage{
 
 .md-dialog-content-body{
 	margin-top: 20px;
+}
+
+md-toolbar{
+	background-color: #ebebeb !important;
+  color: #424242 !important;
+	md-icon {
+		color: #03A9F4 !important;
+    fill: #03A9F4 !important;
+	}
+}
+md-dialog{
+	.saving-vehicle-filters{
+		background: $color-green;
+		text-align: center;
+		padding: 15px;
+		color: white;
+		border-radius: 5px;
+		margin: 10px 0;
+    text-transform: uppercase;
+    font-weight: bold;
+	}
+}
+md-dialog-actions{
+	border-top: 0.5px solid #e9e9e9;
+  background: #f5f5f5;
 }
 
 .ajaxdialog{

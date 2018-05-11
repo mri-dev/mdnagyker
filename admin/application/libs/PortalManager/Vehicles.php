@@ -11,6 +11,7 @@ use Interfaces\InstallModules;
 class Vehicles implements InstallModules
 {
   const DBTABLE = 'Vehicles';
+  const DBSELECTED = 'Vehicles_selected';
   const MODULTITLE = 'Gépjárművek';
 
   private $db = null;
@@ -214,6 +215,58 @@ class Vehicles implements InstallModules
     return $t;
   }
 
+  public function saveFilter( $mid, $ids = array() )
+  {
+    if ($mid == '') {
+      return false;
+    }
+
+    // Remove previous
+    $this->db->query("DELETE FROM ".self::DBSELECTED." WHERE mid = '{$mid}'");
+
+    if (!empty($ids)) {
+      $insert = array();
+      $header = array('mid', 'vehicle_id');
+      foreach ( (array)$ids as $id ) {
+        $insert[] = array($mid, (int)$id);
+      }
+      unset($ids);
+      if (!empty($insert)) {
+        $this->db->multi_insert(
+          self::DBSELECTED,
+          $header,
+          $insert
+        );
+      }
+    }
+  }
+
+  public function getFilterIDS( $mid )
+  {
+    if ($mid == '') {
+      return false;
+    }
+
+    $q = "SELECT
+      vehicle_id
+    FROM ".self::DBSELECTED."
+    WHERE mid = '{$mid}'";
+
+    $qry= $this->db->query($q);
+
+    if ($qry->rowCount() == 0) {
+      return array('num' => 0, 'ids' => array() );
+    } else {
+      $data = $qry->fetchAll(\PDO::FETCH_ASSOC);
+      $ids = array();
+      foreach ((array)$data as $id) {
+        $ids[] = $id['vehicle_id'];
+      }
+      unset($data);
+      return array('num' => $qry->rowCount(), 'ids' => $ids);
+    }
+  }
+
   public function __destruct()
   {
     $this->db = null;
@@ -244,8 +297,11 @@ class Vehicles implements InstallModules
   {
     $installed = false;
 
-    $installer->setTable( self::DBTABLE );
 
+    /**
+    * Vehicles
+    **/
+    $installer->setTable( self::DBTABLE );
     // Tábla létrehozás
     $table_create =
     "(
@@ -269,6 +325,25 @@ class Vehicles implements InstallModules
     $inc_create =
     "MODIFY `ID` mediumint(9) NOT NULL AUTO_INCREMENT";
     $installer->addIncrements( $inc_create );
+
+    /**
+    * Vehicles_selected
+    **/
+    $installer->setTable( self::DBSELECTED );
+    // Tábla létrehozás
+    $table_create =
+    "(
+      `mid` varchar(25) NOT NULL,
+      `vehicle_id` mediumint(9) NOT NULL
+    )";
+    $installer->createTable( $table_create );
+
+    // Indexek
+    $index_create =
+    "ADD PRIMARY KEY (`ID`),
+    ADD KEY `mid` (`mid`),
+    ADD KEY `vehicle_id` (`vehicle_id`);";
+    $installer->addIndexes( $index_create );
 
     // Modul instalállás mentése
     $installed = $installer->setModulInstalled( __CLASS__, self::MODULTITLE, 'gepjarmuvek' , 'car' );

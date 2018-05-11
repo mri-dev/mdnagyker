@@ -447,6 +447,20 @@ class ajax extends Controller{
 							$ret['data'] = $vehicles->prepareTreeForSelector($vehicles->tree);
 							echo json_encode($ret);
 						break;
+						case 'saveFilter':
+							$mid 	= Helper::getMachineID();
+							$vehicles = new Vehicles(array('db' => $this->db));
+							$vehicles->saveFilter( $mid, $ids );
+							echo json_encode($ret);
+						break;
+						case 'getFilter':
+							$mid 	= Helper::getMachineID();
+							$vehicles = new Vehicles(array('db' => $this->db));
+							$filters = $vehicles->getFilterIDS( $mid );
+							$ret['num'] = $filters['num'];
+							$ret['ids'] = $filters['ids'];
+							echo json_encode($ret);
+						break;
 					}
 				break;
 				case 'settings':
