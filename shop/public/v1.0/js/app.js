@@ -93,9 +93,26 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     }
   }
 
+  $scope.removeChildIDS = function( id, callback ){
+    if ( $scope.vehicle_childs && $scope.vehicle_childs[id] && $scope.vehicle_childs[id].data ) {
+      angular.forEach($scope.vehicle_childs[id].data, function(e,i){
+        var ins = $scope.vehicles_selected.indexOf(i);
+        if ( ins !== -1 ) {
+          $scope.vehicles_selected.splice($scope.vehicles_selected.indexOf(i), 1);
+        }
+      });
+    }
+
+    if (typeof callback !== 'undefined') {
+      callback();
+    }
+  }
+
   $scope.selectVehicleItem = function( id ){
     if ($scope.vehicles_selected.indexOf(id) !== -1) {
-      $scope.vehicles_selected.splice($scope.vehicles_selected.indexOf(id), 1);
+      $scope.removeChildIDS( id, function(){
+        $scope.vehicles_selected.splice($scope.vehicles_selected.indexOf(id), 1);
+      } );
     } else {
       $scope.vehicles_selected.push(id);
     }

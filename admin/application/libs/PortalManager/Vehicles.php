@@ -12,6 +12,7 @@ class Vehicles implements InstallModules
 {
   const DBTABLE = 'Vehicles';
   const DBSELECTED = 'Vehicles_selected';
+  const DBSHOPXREF = 'Vehicles_shop_termek_xref';
   const MODULTITLE = 'Gépjárművek';
 
   private $db = null;
@@ -241,6 +242,79 @@ class Vehicles implements InstallModules
     }
   }
 
+  public function getSelectedQueryFilterIDS( $mid, $more_info = false )
+  {
+    $re = false;
+    $ret = array();
+    if ($mid == '') {
+      return false;
+    }
+
+    $q = "SELECT
+    s.vehicle_id,
+    v.parent_id
+    FROM ".self::DBSELECTED." as s
+    LEFT OUTER JOIN ".self::DBTABLE." as v ON v.ID = s.vehicle_id
+    WHERE 1=1 and s.mid = '{$mid}'";
+
+    $qry = $this->db->query( $q );
+
+    if ( $qry->rowCount() != 0 )
+    {
+      $re = array();
+      $data = $qry->fetchAll(\PDO::FETCH_ASSOC);
+      foreach ( $data as $d ) {
+        if ( is_null($d['parent_id']) ) {
+          if( !isset($re[$d['vehicle_id']]) ){
+            $re[$d['vehicle_id']] = array();
+          }
+        } else {
+          $re[$d['parent_id']][] = $d['vehicle_id'];
+        }
+      }
+
+      $ret = array();
+      foreach ( $re as $rid => $r ) {
+        if( is_array($r) && empty($r) ) {
+          $ret[$rid] = $this->getChildIDS( $rid );
+        } else {
+          $ret[$rid] = $r;
+        }
+      }
+      unset($re);
+    }
+
+    if ( !$more_info ) {
+      $coll = array();
+      foreach ($ret as $rid => $r ) {
+        foreach ($r as $rd) {
+          $coll[] = $rd;
+        }        
+      }
+      $ret = $coll;
+      unset($coll);
+    }
+
+    return $ret;
+  }
+
+  public function getChildIDS( $parent_id = 0 )
+  {
+    $q = "SELECT v.ID FROM ".self::DBTABLE." as v WHERE v.parent_id = ".$parent_id;
+    echo $q;
+    $qry = $this->db->query($q);
+    if ( $qry->rowCount() == 0 ) {
+      return array();
+    } else {
+      $data = $qry->fetchAll(\PDO::FETCH_ASSOC);
+      $ret = array();
+      foreach ($data as $d) {
+        $ret[] = (int)$d['ID'];
+      }
+      return $ret;
+    }
+  }
+
   public function getFilterIDS( $mid )
   {
     if ($mid == '') {
@@ -344,6 +418,30 @@ class Vehicles implements InstallModules
     ADD KEY `mid` (`mid`),
     ADD KEY `vehicle_id` (`vehicle_id`);";
     $installer->addIndexes( $index_create );
+
+    /**
+    * Vehicles_shop_termek_xref
+    **/
+    $installer->setTable( self::DBSHOPXREF );
+    $table_create =
+    "(
+      `ID` int(11) NOT NULL,
+      `vehicle_id` int(11) NOT NULL,
+      `termek_id` int(11) NOT NULL
+    )";
+    $installer->createTable( $table_create );
+
+    // Indexek
+    $index_create =
+    "ADD PRIMARY KEY (`ID`),
+    ADD KEY `vehicle_id` (`vehicle_id`),
+    ADD KEY `termek_id` (`termek_id`)";
+    $installer->addIndexes( $index_create );
+
+    // Increment
+    $inc_create =
+    "MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT";
+    $installer->addIncrements( $inc_create );
 
     // Modul instalállás mentése
     $installed = $installer->setModulInstalled( __CLASS__, self::MODULTITLE, 'gepjarmuvek' , 'car' );

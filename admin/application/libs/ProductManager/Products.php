@@ -2,6 +2,7 @@
 namespace ProductManager;
 
 use ShopManager\Categories;
+use PortalManager\Vehicles;
 /**
 * class Products
 * @package ProductManager
@@ -23,11 +24,14 @@ class Products
 	private $selected_sizes = array();
 	public $item_ids = array();
 	public $settings = array();
+	private $vehicles = null;
 
 	public function __construct( $arg = array() ) {
 		$this->db = $arg[db];
 		$this->user = $arg[user];
 		$this->settings = $arg['settings'];
+
+		$this->vehicles = new Vehicles(array('db' => $this->db));
 
 		return $this;
 	}
@@ -534,8 +538,10 @@ class Products
 
 	public function prepareList( $arg = array() )
 	{
+		$mid = \Helper::getMachineID();
 		$this->products = array();
 		$this->products_number = 0;
+		$vehicle_ids = $this->vehicles->getSelectedQueryFilterIDS( $mid );
 
 		if ( $arg['limit'] ) {
 			if( $arg['limit'] > 0 ) {
@@ -663,6 +669,14 @@ class Products
 
 		if ( $arg['in_cat'] ) {
 			$add = " and FIND_IN_SET(".$arg['in_cat'].",(SELECT GROUP_CONCAT(kategoria_id) FROM shop_termek_in_kategoria WHERE termekID = p.ID )) ";
+			$whr .= $add;
+			$size_whr .= $add;
+		}
+
+		if ( $vehicle_ids && !empty($vehicle_ids) )
+		{
+			$vehicle_ids_str = implode("|",$vehicle_ids);
+			$add = ' and (SELECT CONCAT(",",GROUP_CONCAT(x.vehicle_id),",") as vhc FROM Vehicles_shop_termek_xref as x WHERE x.termek_id = p.ID) REGEXP ",('.$vehicle_ids_str.')," ';
 			$whr .= $add;
 			$size_whr .= $add;
 		}
@@ -895,7 +909,7 @@ class Products
 		$start_item = $current_page * $this->product_limit_per_page - $this->product_limit_per_page;
 		$qry .= " LIMIT ".$start_item.",".$this->product_limit_per_page.";";
 
-		//echo $qry . '<br>';
+		//echo $qry . '<br><br>';
 
 		$this->qry_str = $qry;
 
@@ -2057,6 +2071,7 @@ class Products
 		$this->avaiable_sizes = array();
 		$this->qry_str = null;
 		$this->selected_sizes = array();
+		$this->vehicles = null;
 	}
 }
 ?>
