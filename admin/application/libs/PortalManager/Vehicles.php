@@ -13,6 +13,7 @@ class Vehicles implements InstallModules
   const DBTABLE = 'Vehicles';
   const DBSELECTED = 'Vehicles_selected';
   const DBSHOPXREF = 'Vehicles_shop_termek_xref';
+  const DBXREFCREATIONRESTRICT = 'Vehicles_shop_termek_xref_creationrestrict';
   const MODULTITLE = 'Gépjárművek';
 
   private $db = null;
@@ -242,6 +243,49 @@ class Vehicles implements InstallModules
     }
   }
 
+  public function getProductCompatibilityList( $product_id = 0 )
+  {
+    $ret = array();
+    $re = array();
+
+    $q = "SELECT
+      v.parent_id,
+      v.title,
+      x.ID as xid,
+      x.vehicle_id,
+      vp.title as parent_title
+    FROM ".self::DBSHOPXREF." as x
+    LEFT OUTER JOIN ".self::DBTABLE." as v ON v.ID = x.vehicle_id
+    LEFT OUTER JOIN ".self::DBTABLE." as vp ON vp.ID = v.parent_id
+    WHERE 1=1 ";
+
+    $q .= " and x.termek_id = " . $product_id;
+
+    $qry = $this->db->query( $q );
+
+    if ( $qry->rowCount() != 0 )
+    {
+      $data = $qry->fetchAll(\PDO::FETCH_ASSOC);
+
+      foreach ($data as $d)
+      {
+        if ( empty($d['parent_id']) ) {
+          if ( !isset($ret[$d['vehicle_id']]) ) {
+            $ret[$d['vehicle_id']] = $d;
+          }
+        } else {
+          $d['creation_restricts'] = $this->getCreationRestricts($d['xid']);
+          $ret[$d['parent_id']]['title'] = $d['parent_title'];
+          $ret[$d['parent_id']]['vehicle_id'] = $d['parent_id'];
+          $ret[$d['parent_id']]['parent_id'] = null;
+          $ret[$d['parent_id']]['models'][$d['vehicle_id']] = $d;
+        }
+      }
+    }
+
+    return $ret;
+  }
+
   public function getSelectedQueryFilterIDS( $mid, $more_info = false )
   {
     $re = false;
@@ -289,7 +333,7 @@ class Vehicles implements InstallModules
       foreach ($ret as $rid => $r ) {
         foreach ($r as $rd) {
           $coll[] = $rd;
-        }        
+        }
       }
       $ret = $coll;
       unset($coll);
@@ -298,10 +342,41 @@ class Vehicles implements InstallModules
     return $ret;
   }
 
+  public function getCreationRestricts( $xref_id = 0 )
+  {
+    $ret = array();
+
+    $q = "SELECT s.ID, s.title, s.ydate_start, s.ydate_end FROM ".self::DBXREFCREATIONRESTRICT." as s WHERE s.xref_id = ".$xref_id. " ORDER BY s.ydate_start ASC, s.ydate_end ASC ";
+
+    $qry = $this->db->query($q);
+
+    if ( $qry->rowCount() == 0 ) {
+      return array();
+    } else {
+      $data = $qry->fetchAll(\PDO::FETCH_ASSOC);
+      $ret = array();
+      foreach ($data as $d) {
+        $ydate = '';
+        if ( !is_null($d['ydate_start']) && !is_null($d['ydate_end']) ) {
+          $ydate = $d['ydate_start'].' &mdash; '.$d['ydate_end'];
+        } else if( !is_null($d['ydate_start']) && is_null($d['ydate_end'])){
+          $ydate = $d['ydate_start'].'-tól';
+        } else if( is_null($d['ydate_start']) && !is_null($d['ydate_end'])){
+          $ydate = $d['ydate_end'].'-ig';
+        }
+        $d['ydate'] = $ydate;
+        $ret[] = $d;
+      }
+      return $ret;
+    }
+
+    return $ret;
+  }
+
   public function getChildIDS( $parent_id = 0 )
   {
     $q = "SELECT v.ID FROM ".self::DBTABLE." as v WHERE v.parent_id = ".$parent_id;
-    echo $q;
+
     $qry = $this->db->query($q);
     if ( $qry->rowCount() == 0 ) {
       return array();
@@ -442,6 +517,34 @@ class Vehicles implements InstallModules
     $inc_create =
     "MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT";
     $installer->addIncrements( $inc_create );
+
+    /**
+    * Vehicles_shop_termek_xref_creationrestrict
+    **/
+    $installer->setTable( self::DBXREFCREATIONRESTRICT );
+    // Tábla létrehozás
+    $table_create =
+    "(
+      `ID` int(11) NOT NULL,
+      `xref_id` int(11) NOT NULL,
+      `title` text,
+      `ydate_start` decimal(7,2) DEFAULT NULL,
+      `ydate_end` decimal(7,2) DEFAULT NULL
+    )";
+    $installer->createTable( $table_create );
+
+    // Indexek
+    $index_create =
+    "ADD PRIMARY KEY (`ID`),
+    ADD KEY `xref_id` (`xref_id`)";
+    $installer->addIndexes( $index_create );
+
+    // Increment
+    $inc_create =
+    "MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT";
+    $installer->addIncrements( $inc_create );
+
+
 
     // Modul instalállás mentése
     $installed = $installer->setModulInstalled( __CLASS__, self::MODULTITLE, 'gepjarmuvek' , 'car' );

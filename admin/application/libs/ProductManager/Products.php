@@ -924,9 +924,9 @@ class Products
 
 		// Get sizes
 		$sqry = "
-		SELECT 		p.meret
-		FROM 		shop_termekek as p
-		WHERE 		p.ID IS NOT NULL
+		SELECT p.meret
+		FROM shop_termekek as p
+		WHERE p.ID IS NOT NULL
 		";
 		$sqry .= $size_whr;
 		/* $sqry .= " ORDER BY
@@ -1606,8 +1606,8 @@ class Products
 		$data['profil_kep'] 		=  \PortalManager\Formater::productImage( $kep, false, self::TAG_IMG_NOPRODUCT );
 		$data['profil_kep_small'] 	=  \PortalManager\Formater::productImage( $kep, 75, self::TAG_IMG_NOPRODUCT );
 
-		$arInfo 		= $this->getProductPriceCalculate( $data['marka'], $brutto_ar );
-		$akcios_arInfo 	= $this->getProductPriceCalculate( $data['marka'], $akcios_brutto_ar );
+		$arInfo = $this->getProductPriceCalculate( $data['marka'], $brutto_ar );
+		$akcios_arInfo = $this->getProductPriceCalculate( $data['marka'], $akcios_brutto_ar );
 
 		if( $d['akcios'] == '1') {
 			$arInfo['ar'] = $arInfo['ar'];
@@ -1630,6 +1630,7 @@ class Products
 		$data['parameters']			= $this->getParameters( $product_id, $data['alapertelmezett_kategoria'] );
 		$data['related_products_ids']	= $this->getRelatedIDS( $product_id );
 		$data['nav'] = array_reverse($categories->getCategoryParentRow((int)$data['alapertelmezett_kategoria'], false));
+		$data['vehicles_compatiblity'] = $this->vehicles->getProductCompatibilityList( $product_id );
 
 		$data['keszlet_info'] = $this->checkProductStockName( $data['keszletID'], $data['raktar_keszlet'], true );
 		$data['szallitas_info'] = $this->checkProductTransportName( $data['szallitasID'], $data['raktar_keszlet'] );

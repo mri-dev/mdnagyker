@@ -226,10 +226,13 @@
             </div>
           </div>
           <?php endif; ?>
-          
+
         </div>
       </div>
     </div>
+    <?php
+    $vc = $this->product['vehicles_compatiblity'];
+    ?>
     <div class="more-datas">
       <div class="page-width">
         <nav class="tab-header">
@@ -266,7 +269,6 @@
               </div>
             <?php endif; ?>
 
-
             <a name="description"></a>
             <div class="description tab-holder showed" id="tab-content-description">
               <div class="c">
@@ -279,7 +281,6 @@
                 <?php endif; ?>
               </div>
             </div>
-
 
             <?php if ($this->product['documents']): ?>
             <a name="documents"></a>
@@ -298,7 +299,54 @@
             <a name="compatiblity"></a>
             <div class="compatiblity tab-holder" id="tab-content-compatiblity">
               <div class="c">
-                Kompatibilitási lista
+                <?php
+                if ( empty($vc) ): ?>
+                <div class="no-setted-values">
+                  <i class="fa fa-question-circle-o"></i>
+                  <strong>Ehhez a termékhez nem lett meghatározva gépjármű kompatibilitás!</strong><br>
+                  Vásárlás előtt mindenképp tájékozódjon a gyártó weboldalán!
+                </div>
+                <?php else: ?>
+                  <div class="list">
+                    <?php foreach ($vc as $vg): ?>
+                    <div class="manufacturer">
+                      <div class="wrapper">
+                        <div class="head">
+                          <?=$vg['title']?>
+                        </div>
+                        <?php if (count($vg['models']) == 0): ?>
+                        <div class="all-model">
+                          Az összes modellel kompatibilis.
+                        </div>
+                        <?php else: ?>
+                          <?php foreach ($vg['models'] as $vm): ?>
+                          <div class="model">
+                            <div class="head">
+                              <strong><?=$vm['title']?></strong>
+                            </div>                            
+                            <?php if (count($vm['creation_restricts']) != 0): ?>
+                              <div class="restricts">
+                                <?php foreach ($vm['creation_restricts'] as $rs): ?>
+                                <div class="config">
+                                  <div class="title">
+                                    <?=$rs['title']?>
+                                  </div>
+                                  <div class="date">
+                                    <?=$rs['ydate']?>
+                                  </div>
+                                </div>
+                                <?php endforeach; ?>
+                              </div>
+                            <?php endif; ?>
+                          </div>
+                          <?php endforeach; ?>
+                        <?php endif; ?>
+                      </div>
+                    </div>
+                    <?php endforeach; ?>
+                  </div>
+                  <pre><?php print_r($this->product['vehicles_compatiblity']); ?></pre>
+                <?php endif; ?>
               </div>
             </div>
           </div>
