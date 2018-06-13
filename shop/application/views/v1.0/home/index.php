@@ -12,7 +12,7 @@
 						<h2>Újdonságok</h2>
 					</div>
 				</div>
-				<div class="webshop-product-top slide-style">
+				<div class="webshop-product-top <?=(count($this->ujdonsag_products_list) > 3)?'slide-style':''?>">
 					<?php if (true): ?>
 						<div class="items trackwidth">
 							<? foreach ( $this->ujdonsag_products_list as $p ) {
@@ -31,7 +31,7 @@
 						<h2>Kiemelt ajánlataink</h2>
 					</div>
 				</div>
-				<div class="webshop-product-top slide-style">
+				<div class="webshop-product-top <?=(count($this->kiemelt_products_list) > 3)?'slide-style':''?>">
 					<?php if (true): ?>
 						<div class="items trackwidth">
 							<? foreach ( $this->kiemelt_products_list as $p ) {
@@ -96,7 +96,7 @@
 				dots: true
 			});
 
-			$('.webshop-product-top .items').slick({
+			$('.webshop-product-top.slide-style .items').slick({
 				slidesToShow: 3,
 				slidesToScroll: 3,
 				dots: true

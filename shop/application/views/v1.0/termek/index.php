@@ -307,6 +307,25 @@
                   Vásárlás előtt mindenképp tájékozódjon a gyártó weboldalán!
                 </div>
                 <?php else: ?>
+                  <?php if ( $this->product['vehicles_compatiblity_num'] > 0 ): ?>
+                    <div class="compatible-msg compatible">
+                      <i class="fa fa-check-circle-o"></i>
+                      <strong>Az eszköz / alkatrész <?=$this->product['vehicles_compatiblity_num']?> db gépjármű modellel kompatibilis!</strong><br>
+                      Ellenőrizze a model koncepcióját és gyártási év intervallumokat, amennyiben meghatároztuk.
+                    </div>
+                  <?php elseif( empty($this->product['vehicles_filtered_ids']) ): ?>
+                    <div class="compatible-msg unsetted">
+                      <i class="fa fa-car"></i>
+                      <strong>Tudja meg, hogy kompatibilis-e a termék a gépjárművével!</strong><br>
+                      <span class="btn" ng-click="openVehicleSelector()"><i class="fa fa-gear"></i> szűrő beállítása</span>
+                    </div>
+                  <?php else: ?>
+                    <div class="compatible-msg uncompatible">
+                      <i class="fa fa-times-circle-o"></i>
+                      <strong>Az eszköz / alkatrész nem kompatibilis az Ön által szűrt gépjármű modellekhez!</strong><br>
+                      Szűrőfeltételei alapján egyik modelhez sem használható a termék!
+                    </div>
+                  <?php endif; ?>
                   <div class="list">
                     <?php foreach ($vc as $vg): ?>
                     <div class="manufacturer">
@@ -320,10 +339,10 @@
                         </div>
                         <?php else: ?>
                           <?php foreach ($vg['models'] as $vm): ?>
-                          <div class="model">
+                          <div class="model <?=($vm['compatible'])?'compatible':''?>">
                             <div class="head">
-                              <strong><?=$vm['title']?></strong>
-                            </div>                            
+                              <strong><?=$vm['title']?></strong> <?=($vm['compatible'])?'<i class="fa fa-check-circle-o"></i>':''?>
+                            </div>
                             <?php if (count($vm['creation_restricts']) != 0): ?>
                               <div class="restricts">
                                 <?php foreach ($vm['creation_restricts'] as $rs): ?>
@@ -345,7 +364,7 @@
                     </div>
                     <?php endforeach; ?>
                   </div>
-                  <pre><?php print_r($this->product['vehicles_compatiblity']); ?></pre>
+                  <pre><?php //print_r($this->product['vehicles_compatiblity']); ?></pre>
                 <?php endif; ?>
               </div>
             </div>

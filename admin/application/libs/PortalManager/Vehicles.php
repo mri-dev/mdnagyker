@@ -247,6 +247,7 @@ class Vehicles implements InstallModules
   {
     $ret = array();
     $re = array();
+    $cmnum = 0;
 
     $q = "SELECT
       v.parent_id,
@@ -263,6 +264,8 @@ class Vehicles implements InstallModules
 
     $qry = $this->db->query( $q );
 
+    $myfilter = $this->getSelectedQueryFilterIDS( \Helper::getMachineID() );
+
     if ( $qry->rowCount() != 0 )
     {
       $data = $qry->fetchAll(\PDO::FETCH_ASSOC);
@@ -275,6 +278,10 @@ class Vehicles implements InstallModules
           }
         } else {
           $d['creation_restricts'] = $this->getCreationRestricts($d['xid']);
+          $d['compatible'] = (in_array($d['vehicle_id'], $myfilter)) ? true : false;
+          if($d['compatible']){
+            $cmnum++;
+          }
           $ret[$d['parent_id']]['title'] = $d['parent_title'];
           $ret[$d['parent_id']]['vehicle_id'] = $d['parent_id'];
           $ret[$d['parent_id']]['parent_id'] = null;
@@ -283,7 +290,10 @@ class Vehicles implements InstallModules
       }
     }
 
-    return $ret;
+    return array(
+      'list' => $ret,
+      'compatibilty_num' => $cmnum
+    );
   }
 
   public function getSelectedQueryFilterIDS( $mid, $more_info = false )

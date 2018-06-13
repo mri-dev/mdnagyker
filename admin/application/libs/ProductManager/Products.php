@@ -1630,7 +1630,11 @@ class Products
 		$data['parameters']			= $this->getParameters( $product_id, $data['alapertelmezett_kategoria'] );
 		$data['related_products_ids']	= $this->getRelatedIDS( $product_id );
 		$data['nav'] = array_reverse($categories->getCategoryParentRow((int)$data['alapertelmezett_kategoria'], false));
-		$data['vehicles_compatiblity'] = $this->vehicles->getProductCompatibilityList( $product_id );
+
+		$vehicles_compatiblity = $this->vehicles->getProductCompatibilityList( $product_id );
+		$data['vehicles_compatiblity'] = $vehicles_compatiblity['list'];
+		$data['vehicles_compatiblity_num'] = (int)$vehicles_compatiblity['compatibilty_num'];
+		$data['vehicles_filtered_ids'] = $this->vehicles->getSelectedQueryFilterIDS( \Helper::getMachineID() );
 
 		$data['keszlet_info'] = $this->checkProductStockName( $data['keszletID'], $data['raktar_keszlet'], true );
 		$data['szallitas_info'] = $this->checkProductTransportName( $data['szallitasID'], $data['raktar_keszlet'] );

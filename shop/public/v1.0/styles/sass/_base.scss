@@ -745,7 +745,6 @@ body.singlepage{
 		flex-wrap: wrap;
 		border-right: none;
 		border-bottom: none;
-		margin: -10px;
 
 		.item {
 			flex-basis: calc(100%/3);
@@ -979,6 +978,9 @@ body.singlepage{
 				}
 			}
 		}
+	}
+	&.slide-style{
+		margin: -10px;
 	}
 }
 
@@ -2186,12 +2188,14 @@ body.singlepage{
     	padding: 25px 0;
 
 			.compatiblity{
-				.no-setted-values{
+				.no-setted-values,
+				.compatible-msg{
 					border-radius: 5px;
 					border: 0.5px solid #dbdbdb;
 					padding: 15px;
 					line-height: 1.4;
 					background: white;
+					font-size: 0.8em;
 					i{
 						color: $color-blue;
 						float: left;
@@ -2201,6 +2205,45 @@ body.singlepage{
 					}
 					strong {
 						color: $color-blue;
+						font-size:1.3em;
+					}
+
+					&.unsetted{
+						background: $color-blue;
+						color: white;
+
+						i, strong {
+							color: white;
+						}
+
+						span.btn{
+							cursor: pointer;
+							font-size: 11px;
+							color: black;
+							background: white;
+							border-radius: 4px;
+							padding: 2px 5px;
+							margin: 5px 0 0 0;
+
+							i {
+								color: black;
+								font-size: 12px;
+						    line-height: 18px;
+						    vertical-align: middle;
+						    margin: 0 5px 0 0;
+							}
+						}
+					}
+
+					&.uncompatible{
+						i, strong {
+							color: $color-red;
+						}
+					}
+					&.compatible{
+						i, strong {
+							color: $color-green;
+						}
 					}
 				}
 
@@ -2209,14 +2252,21 @@ body.singlepage{
 				  display: -ms-flexbox;
 				  display: flex;
 					flex-wrap: wrap;
-					align-items: flex-start;
+					margin: 0 -5px;
 
 					& > div {
 						flex-basis: 50%;
 						padding: 5px;
+						display: -webkit-box;
+					  display: -ms-flexbox;
+					  display: flex;
+
 						& > .wrapper{
 							background: white;
 							border: 0.5px solid #dbdbdb;
+							width: 100%;
+							border-radius: 3px;
+
 							& > .head{
 								text-align: center;
 								font-weight: bold;
@@ -2237,11 +2287,12 @@ body.singlepage{
 								padding: 5px;
 								font-size: 1.3em;
 								line-height: 1;
-								color: #3333333;
+								color: #a0a0a0;
 								border-bottom: 0.5px solid #dbdbdb;
 
 								& > .head{
 									padding: 5px 0;
+									color: #777777;
 								}
 
 								.restricts{
@@ -2250,7 +2301,7 @@ body.singlepage{
 									border-top: 0.5px solid #dcdcdc;
 									.config{
 										border-bottom: 0.4px solid #f1f1f1;
-										padding: 5px;
+										padding: 3px 0;
 										display: -webkit-box;
 									  display: -ms-flexbox;
 									  display: flex;
@@ -2265,6 +2316,18 @@ body.singlepage{
 
 										&:last-child{
 											border-bottom: none;
+										}
+									}
+								}
+
+								&.compatible{
+									color: #222222;
+									& > .head{
+										color: $color-green;
+										i{
+											font-weight: normal;
+											font-size: 12px;
+											vertical-align: middle;
 										}
 									}
 								}
