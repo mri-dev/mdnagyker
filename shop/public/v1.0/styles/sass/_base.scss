@@ -1363,12 +1363,26 @@ body.singlepage{
 }
 
 .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus{
-	background-color: #ffcc00;
-	border-color:#e6b904;
+	background-color: $color-blue;
+	border-color: darken($color-blue, 10%);
 }
 .pagination>li>a, .pagination>li>span{
-	color: #f09f0f;
+	color: $color-blue;
+	border: 0.4px solid #dedede;
+	margin: 0 2px;
 }
+.pagination>li>a:hover, .pagination>li>span:hover, .pagination>li>a:focus, .pagination>li>span:focus{
+	color: #cacaca;
+  background-color: #666;
+  border-color: #3e3e3e;
+}
+.pagination-sm>li:last-child>a, .pagination-sm>li:last-child>span,
+.pagination-sm>li:first-child>a, .pagination-sm>li:first-child>span{
+	border-radius: 0;
+	background: transparent;
+	border: none;
+}
+
 
 .home {
 	h1.stitle, h3.stitle {

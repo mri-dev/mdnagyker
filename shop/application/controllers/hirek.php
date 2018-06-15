@@ -41,7 +41,7 @@ class hirek extends Controller{
 
 		} else {
 			$arg = array(
-				'limit' => 10,
+				'limit' => 9,
 				'page' => Helper::currentPageNum()
 			);
 			$this->out( 'list', $news->getTree( $arg ) );
