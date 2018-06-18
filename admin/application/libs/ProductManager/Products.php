@@ -1685,7 +1685,7 @@ class Products
 		$stockdata = $this->db->query("SELECT elnevezes, color FROM shop_termek_allapotok WHERE ID = ".$statkey)->fetch(\PDO::FETCH_ASSOC);
 
 		if ( $formated ) {
-			return '<span style="color:'.$stockdata['color'].';">'.$stockdata['elnevezes'].'</span>';
+			return '<span style="background-color:'.$stockdata['color'].';">'.$stockdata['elnevezes'].'</span>';
 		} else {
 			return $stockdata['elnevezes'];
 		}

@@ -16,6 +16,9 @@
             <? if( $ar >= $this->settings['cetelem_min_product_price'] && $ar <= $this->settings['cetelem_max_product_price'] && $this->product['no_cetelem'] != 1 ): ?>
                 <img class="cetelem" src="<?=IMG?>cetelem_badge.png" alt="Cetelem Online Hitel">
             <? endif; ?>
+            <?  if( $this->product['akcios'] == '1' && $this->product['akcios_fogy_ar'] > 0): ?>
+            <div class="discount-percent"><div class="p">-<? echo 100-round($this->product['akcios_fogy_ar'] / ($this->product['brutto_ar'] / 100)); ?>%</div></div>
+            <? endif; ?>
             <div class="img-thb">
                 <a href="<?=$this->product['profil_kep']?>" class="zoom"><img di="<?=$this->product['profil_kep']?>" src="<?=$this->product['profil_kep']?>" alt="<?=$this->product['nev']?>"></a>
             </div>
@@ -48,8 +51,7 @@
               </ul>
             </div>
           </div>
-          <?php if ($_GET['d'] == 1): ?>
-
+          <?php if ( true ): ?>
 
           <h1><?=$this->product['nev']?></h1>
           <div class="csoport">
@@ -58,22 +60,22 @@
           <div class="prices">
               <div class="base">
                 <?php if ($this->product['without_price']): ?>
-                  <div class="price-head"><?=__('ÁR')?>:</div>
                   <div class="current">
                     ÉRDEKLŐDJÖN!
                   </div>
                 <?php else: ?>
-                  <div class="price-head"><?=__('ÁR')?>:</div>
-                  <?  if( $this->product['akcios'] == '1' && $this->product['akcios_fogy_ar'] > 0):
-                      $ar = $this->product['akcios_fogy_ar'];
-                  ?>
-                  <div class="old">
-                      <div class="price"><strike><?=\PortalManager\Formater::cashFormat($this->product['ar'])?> <?=$this->valuta?></strike></div>
+                  <div class="netto">
+                    <div class="pricehead">Kiskereskedelmi <strong>nettó ár</strong>:</div>
+                    <span class="price"><?=\PortalManager\Formater::cashFormat($ar/1.27)?> <?=$this->valuta?></span>
                   </div>
-                  <div class="discount_percent">-<? echo 100-round($this->product['akcios_fogy_ar'] / ($this->product['brutto_ar'] / 100)); ?>%</div>
-                  <? endif; ?>
-                  <div class="current">
-                      <?=\PortalManager\Formater::cashFormat($ar)?> <?=$this->valuta?>
+                  <div class="brutto">
+                    <div class="pricehead">Kiskereskedelmi <strong>bruttó ár</strong>:</div>
+                    <span class="price current <?=( $this->product['akcios'] == '1' && $this->product['akcios_fogy_ar'] > 0)?'discounted':''?>"><?=\PortalManager\Formater::cashFormat($ar)?> <?=$this->valuta?></span>
+                    <?  if( $this->product['akcios'] == '1' && $this->product['akcios_fogy_ar'] > 0):
+                        $ar = $this->product['akcios_fogy_ar'];
+                    ?>
+                    <span class="price old"><strike><?=\PortalManager\Formater::cashFormat($this->product['ar'])?> <?=$this->valuta?></strike></span>
+                    <? endif; ?>
                   </div>
                 <?php endif; ?>
               </div>
@@ -86,21 +88,33 @@
               <? endif; ?>
               </div>
           </div>
-          <? if($this->product['show_stock'] == '1' && $this->product['raktar_keszlet'] > 0): ?>
-          <div class="stock">
-            Készleten: <strong><?php echo $this->product['raktar_keszlet']; ?> db</strong>
+
+          <div class="divider"></div>
+          <div class="status-params">
+            <div class="avaibility">
+              <div class="h">Elérhetőség:</div>
+              <div class="v"><?=$this->product['keszlet_info']?></div>
+            </div>
+            <div class="transport">
+              <div class="h">Várható szállítás:</div>
+              <div class="v"><span><?=$this->product['szallitas_info']?></span></div>
+            </div>
+            <?php if ( $ar > $this->settings['FREE_TRANSPORT_ABOVEPRICE']): ?>
+            <div class="free-transport">
+              <div class="free-transport-ele">
+                <img src="<?=IMG?>icons/transport.svg" alt="Ingyenes Szállítás"> Ezt a terméket ingyen szállítjuk
+              </div>
+            </div>
+            <?php endif; ?>
           </div>
-          <? endif; ?>
           <div class="divider"></div>
           <div class="short-desc">
             <?=$this->product['rovid_leiras']?>
           </div>
-
           <?
           if( count($this->product['hasonlo_termek_ids']['colors']) > 1 ):
               $colorset = $this->product['hasonlo_termek_ids']['colors'];
           ?>
-          <div class="divider"></div>
           <div class="variation-header">
             Elérhető variációk:
           </div>
@@ -112,32 +126,6 @@
           <? endif; ?>
           <div class="divider"></div>
           <div class="cart-info">
-            <div class="group">
-              <div class="variation">
-                <div class="h">
-                  Variáció:
-                </div>
-                <div class="v">
-                  <strong><?=$this->product['szin']?></strong>
-                </div>
-              </div>
-              <div class="rack-status">
-                <div class="h">
-                  Elérhetőség:
-                </div>
-                <div class="v">
-                  <?=$this->product['keszlet_info']?>
-                </div>
-              </div>
-              <div class="transport-status">
-                <div class="h">
-                  Várható kiszállítás:
-                </div>
-                <div class="v">
-                  <?=$this->product['szallitas_info']?>
-                </div>
-              </div>
-            </div>
             <div id="cart-msg"></div>
             <? if($this->settings['stock_outselling'] == '0' && $this->product['raktar_keszlet'] <= 0): ?>
             <div class="out-of-stock">
@@ -183,47 +171,6 @@
               </div>
             </div>
             <?php endif; ?>
-            <div class="group helpdesk-actions">
-                <div class="tudastar">
-                  <div class="wrapper icoed">
-                    <div class="ico">
-                      <div class="wrap">
-                          <i class="fa fa-lightbulb-o"></i>
-                      </div>
-                    </div>
-                    <div class="text">
-                      <a href="<?=($this->product['tudastar_url'] != '')?$this->product['tudastar_url']:'/tudastar'?>" target="_blank">
-                        TUDÁSTÁR
-                        <div class="t">
-                          Olvassa el!
-                        </div>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="callhelp">
-                  <div class="wrapper icoed">
-                    <div class="ico">
-                      <i class="fa fa-phone"></i>
-                    </div>
-                    <div class="text">
-                      Segíthetünk?
-                      <div class="phone">
-                        <a href="tel:<?=$this->settings['page_author_phone']?>"><?=$this->settings['page_author_phone']?></a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div aria-label="Hozzáadás a kedvencekhez." class="fav" ng-class="(fav_ids.indexOf(<?=$this->product['ID']?>) !== -1)?'selected':''" ng-click="productAddToFav(<?=$this->product['ID']?>)">
-                  <div class="wrapper" title="Kedvencekhez adás">
-                    <i class="fa fa-heart" ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) !== -1"></i>
-                    <i class="fa fa-heart-o" ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) === -1"></i>
-                  </div>
-                  <md-tooltip md-direction="bottom">
-                    Hozzáadás a kedvencekhez.
-                  </md-tooltip>
-                </div>
-            </div>
           </div>
           <?php endif; ?>
 
@@ -235,6 +182,35 @@
     ?>
     <div class="more-datas">
       <div class="page-width">
+        <div class="actions">
+          <div class="wrapper">
+            <div class="fav">
+              <div aria-label="Hozzáadás a kedvencekhez." class="fav" ng-class="(fav_ids.indexOf(<?=$this->product['ID']?>) !== -1)?'selected':''" ng-click="productAddToFav(<?=$this->product['ID']?>)">
+                <div class="wrapper" title="Kedvencekhez adás">
+                  <i class="fa fa-star" ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) !== -1"></i>
+                  <i class="fa fa-star-o" ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) === -1"></i>
+                  Kedvencekhez
+                </div>
+                <md-tooltip md-direction="bottom">
+                  Hozzáadás a kedvencekhez.
+                </md-tooltip>
+              </div>
+            </div>
+            <div class="sep"></div>
+            <div class="lefoglal">
+              <div aria-label="Hozzáadás a kedvencekhez." class="fav" ng-class="(fav_ids.indexOf(<?=$this->product['ID']?>) !== -1)?'selected':''" ng-click="productAddToFav(<?=$this->product['ID']?>)">
+                <div class="wrapper" title="Kedvencekhez adás">
+                  <i class="fa fa-pause-circle" ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) !== -1"></i>
+                  <i class="fa fa-pause-circle-o" ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) === -1"></i>
+                  Lefoglal
+                </div>
+                <md-tooltip md-direction="bottom">
+                  Termék lefoglalása 24 órára.
+                </md-tooltip>
+              </div>
+            </div>
+          </div>
+        </div>
         <nav class="tab-header">
           <ul>
             <li class="description active"><a href="#description" onclick="switchTab('description')">Leírás</a></li>
@@ -436,9 +412,17 @@
 
         });
 
+
+        $('.images .all').on('init', function(slick){
+          $('.images .all .imgslide > .wrp').css({
+            height: $('.images .all .imgslide > .wrp').width()
+          });
+        });
+
         $('.images .all').slick({
           infinite: true,
-          slidesToShow: 5,
+          arrow: true,
+          slidesToShow: 3,
           slidesToScroll: 1,
           speed: 400,
           autoplay: true

@@ -1503,7 +1503,7 @@ body.singlepage{
 	position: relative;
 	top: -38px;
 	margin-bottom: -20px;
-	z-index: 1;
+	z-index: 50;
   padding: 0.2px;
 	border: 0.5px solid $color-grey;
 	box-shadow: 8px 8px 12px -5px rgba(0, 0, 0, 0.11);
@@ -1764,7 +1764,6 @@ body.singlepage{
 			align-items: flex-start;
 			border-bottom: 1px solid #f1f1f1;
 			margin: 0 0 10px 0;
-			padding: 0 0 10px 0;
 
 			& > .pagi{
 				flex-basis: 70%;
@@ -1790,6 +1789,7 @@ body.singlepage{
 
 			.images{
 				padding-right: 10px;
+     		padding-top: 25px;
 				.main-img{
 					border: .4px solid #e0e0e0;
 					overflow: hidden;
@@ -1815,62 +1815,73 @@ body.singlepage{
 						-webkit-transform: translate(-50%,-50%);
           	transform: translate(-50%,-50%);
 					}
+
+					.discount-percent{
+						z-index: 10;
+						color: white;
+						pointer-events: none;
+						font-size: 1.6em;
+						position: absolute;
+						left: 0;
+						top: 0;
+						font-weight: bold;
+						width: 150px;
+						height: 150px;
+						background: url('#{$imgroot}discount_half_square.svg');
+						background-position: center;
+						background-repeat: no-repeat;
+
+						.p {
+							position: absolute;
+							left: 33%;
+    					top: 30%;
+							-webkit-transform: translate(-50%,-50%);
+	          	transform: translate(-50%,-50%);
+						}
+					}
 				}
 
 				.all {
 					position: relative;
-					width: 350px;
+					width: 450px;
 					margin: 10px auto 0 auto;
 					.imgslide{
 						padding: 3px;
 						.wrp {
 							padding: 5px;
+							background: white;
 							border: .4px solid #e0e0e0;
+							position: relative;
+
+							img {
+								position: absolute;
+								top: 50%;
+								left: 50%;
+								width: 90%;
+								-webkit-transform: translate(-50%,-50%);
+          			transform: translate(-50%,-50%);
+							}
 						}
 					}
 				}
 			}
 
 			.main-data {
-				padding-left: 10px;
+				padding-left: 20px;
 				h1 {
-					color: #deb200;
 					font-weight: bold;
-					font-size: 2.3em;
+					font-size: 3em;
 					line-height: 1.2;
 				}
 				.csoport {
 					color: #404040;
-					font-size: 1.35em;
+					font-size: 2em;
 					margin: 5px 0;
 				}
 				.prices {
 					margin-top: 20px;
 					font-size: 1.6em;
 					position: relative;
-
-					.old{
-						color: #727272;
-    				font-weight: 100;
-					}
-
-					.discount_percent{
-						background: $color-red;
-				    color: white;
-				    padding: 5px;
-				    font-size: 0.5em;
-				    border-radius: 5px;
-					}
-
-					.price-head,
-					.old,
-					.discount_percent{
-						margin-right: 10px;
-					}
-
-					.current{
-						font-weight: bold;
-					}
 
 					.cimkek{
 						position: absolute;
@@ -1884,22 +1895,105 @@ body.singlepage{
 					  display: -ms-flexbox;
 					  display: flex;
 						flex-wrap: wrap;
-						align-items: center;
-					}
-				}
-				.stock {
-					margin-top: 10px;
-			    color: #959595;
-			    font-size: 0.9em;
+						align-items: flex-start;
 
-					strong {
-						color: #747474;
+						.pricehead{
+							font-size: 0.6em;
+							margin: 0 0 8px 0;
+						}
+
+						.price {
+							font-size: 1.2em;
+							font-weight: bold;
+							color: #3c3c3c;
+
+							&.current{
+								color: $color-blue;
+								font-size: 1.3em;
+
+								&.discounted{
+									color: $color-red;
+								}
+							}
+
+							&.old{
+								color: #454545;
+								font-size: 0.85em;
+		    				font-weight: 100;
+							}
+						}
+
+						& > div {
+							flex-basis: calc(100% / 2);
+						}
 					}
 				}
+
+				.status-params{
+					display: -webkit-box;
+					display: -ms-flexbox;
+					display: flex;
+					flex-wrap: wrap;
+					align-items: center;
+					justify-content: space-between;
+					margin: -5px;
+
+					& > div{
+						padding: 0 5px;
+						display: -webkit-box;
+						display: -ms-flexbox;
+						display: flex;
+						flex-wrap: nowrap;
+
+						.v{
+							padding-left: 4px;
+						}
+
+						&.avaibility{
+							span {
+								padding: 4px;
+								color: white;
+								border-radius: 2px;
+								line-height: 1;
+     						font-weight: bold;
+							}
+						}
+						&.transport{
+							span {
+								padding: 5px 10px;
+								color: #505050;
+								font-weight: bold;
+								background: #e8e8e8;
+								border: 0.5px solid #c9c9c9;
+								border-radius: 2px;
+								line-height: 1;
+							}
+						}
+					}
+
+					.free-transport{
+						.free-transport-ele{
+							background: #b0cb1f;
+							color: white;
+							padding: 5px 8px;
+							line-height: 1.4;
+							border-radius: 2px;
+							font-size: 0.9em;
+							font-weight: bold;
+
+							img{
+								float: left;
+								margin: 0 5px 0 0;
+								height: 15px;
+							}
+						}
+					}
+				}
+
 				.short-desc{
-					font-size: 1.05em;
+					font-size: 0.95em;
 					line-height: 1.3;
-					color: #404040;
+					color: #6e6e6e;
 				}
 				.variation-header{
 					text-align: center;
@@ -2040,159 +2134,6 @@ body.singlepage{
 						}
 					}
 				}
-				.helpdesk-actions{
-					width: 100%;
-					display: -webkit-box;
-					display: -ms-flexbox;
-					display: flex;
-					flex-wrap: wrap;
-					align-items: center;
-					margin: 10px 0 0 0 !important;
-
-					& > div {
-						height: 45px;
-						padding: 0 5px !important;
-						& > div.wrapper{
-							height: 100%;
-							border: .4px solid #e0e0e0;
-					    overflow: hidden;
-					    padding: .4px;
-
-							&.icoed{
-								display: -webkit-box;
-								display: -ms-flexbox;
-								display: flex;
-								flex-wrap: nowrap;
-								align-items: center;
-
-								.ico {
-									height: 43px;
-    							flex-basis: 35px;
-									position: relative;
-								}
-								.text {
-									 flex: 1;
-									 text-align: center;
-								}
-							}
-						}
-					}
-
-					& > .tudastar{
-						flex: 1;
-						a{
-							color: white !important;
-							text-decoration: none;
-						}
-						.wrapper{
-							background: #deb200;
-							color: white;
-
-							.ico{
-								background: white;
-
-								.wrap{
-									width: 24px;
-									height: 24px;
-									line-height: 24px;
-									background-color: #ffcc00;
-									color: white;
-									text-align: center;
-									font-size: 18px;
-									@include border-radius(24px);
-									position: absolute;
-									left: 50%;
-									top: 50%;
-									-webkit-transform: translate(-50%,-50%);
-          				transform: translate(-50%,-50%);
-								}
-							}
-
-							.text {
-								font-size: 1.3em;
-
-								.t{
-									font-size: 0.7em;
-								}
-							}
-						}
-					}
-
-					& > .callhelp{
-						flex: 1;
-						.wrapper{
-							background: #ffffff;
-							color: #404040;
-
-							.ico{
-								background: #eceff2;
-								border-right: .4px solid #e0e0e0;
-
-								i {
-									font-size: 24px;
-									position: absolute;
-									left: 50%;
-									top: 50%;
-									-webkit-transform: translate(-50%,-50%);
-          				transform: translate(-50%,-50%);
-									color: #747272;
-								}
-							}
-
-							.text {
-								font-size: 0.9em;
-								.phone {
-									margin: 5px 0 0 0;
-
-									a {
-										font-weight: bold;
-										text-decoration: none;
-										color: $color-red;
-										font-size: 1.2em;
-									}
-								}
-							}
-						}
-					}
-
-					& > .fav {
-						flex-basis:45px !important;
-						.wrapper{
-							background: $color-yellow;
-							position: relative;
-							cursor: pointer;
-
-							i {
-								transition: all .2s;
-								color: white;
-								font-size: 16px;
-								position: absolute;
-								left: 50%;
-								top: 50%;
-								-webkit-transform: translate(-50%,-50%);
-								transform: translate(-50%,-50%);
-							}
-							&:hover{
-								i {
-									font-size: 18px;
-								}
-							}
-						}
-
-						&.selected{
-							.wrapper{
-								background: #e6585e;
-							}
-						}
-					}
-
-					& > div:first-child{
-						padding-left: 0 !important;
-					}
-					& > div:last-child{
-						padding-right: 0 !important;
-					}
-				}
 			}
 		}
 		.more-datas{
@@ -2200,6 +2141,74 @@ body.singlepage{
 			border-top: 1px solid #949494;
 			margin: 50px 0 0 0;
     	padding: 25px 0;
+
+			.actions{
+				position: absolute;
+				right: 0;
+				top: -55px;
+
+				& > .wrapper{
+					display: -webkit-box;
+				  display: -ms-flexbox;
+				  display: flex;
+					flex-wrap: nowrap;
+					margin: 0 -5px;
+
+					& > div {
+						flex: 1;
+						padding: 5px;
+						cursor: pointer;
+					}
+
+					& > .fav{
+						color: #b132f3;
+						.wrapper{
+							display: -webkit-box;
+						  display: -ms-flexbox;
+						  display: flex;
+							flex-wrap: nowrap;
+							align-items: center;
+
+							i {
+								margin: 0 5px 0 0;
+							}
+						}
+					}
+
+					& > .lefoglal{
+						color: $color-blue;
+						.wrapper{
+							display: -webkit-box;
+							display: -ms-flexbox;
+							display: flex;
+							flex-wrap: nowrap;
+							align-items: center;
+
+							i {
+								margin: 0 5px 0 0;
+							}
+						}
+					}
+
+					& > .sep{
+						position: relative;
+						-webkit-transform: rotate(30deg);
+          	transform: rotate(30deg);
+
+						&:before{
+							content:"";
+							position: absolute;
+							width: 1px;
+							height: 80%;
+							background: #acacac;
+							left: 50%;
+							top: 50%;
+							-webkit-transform: translate(-50%,-50%);
+          		transform: translate(-50%,-50%);
+						}
+					}
+				}
+			}
 
 			.compatiblity{
 				.no-setted-values,
@@ -2561,19 +2570,22 @@ body.singlepage{
 	.slick-prev,
 	.slick-next {
 		position: absolute;
-		top: 0;
+		top: 50%;
 		bottom: 0;
-		height: 100%;
+		height: 30px;
 		text-indent: -1000px;
 		border: none;
-		background: transparent;
+		background: $color-blue;
 		width: 30px;
-		z-index: 100;
+		z-index: 10;
 		overflow: hidden;
+		-webkit-transform: translateY(-50%);
+					transform: translateY(-50%);
 		&:before{
-			color: #c8c8c8;
+			color: #ffffff;
 			font-family: 'FontAwesome';
-			font-size: 36px;
+			font-size: 30px;
+     	margin-top: -1px;
 			position: absolute;
 			top: 50%;
 			left: 50%;
@@ -2589,13 +2601,13 @@ body.singlepage{
 		}
 	}
 	.slick-prev{
-		left: -30px;
+		left: -45px;
 		&:before{
 			content: "\f104";
 		}
 	}
 	.slick-next{
-		right: -30px;
+		right: -45px;
 		&:before{
 			content: "\f105";
 		}
@@ -5060,8 +5072,8 @@ input[type=checkbox]:checked + label:before {
 }
 
 .divider {
-	height: 1px;
-	background: #eceff2;
+	height: 0.5px;
+	background: #c8cbcc;
 	display:block;
 }
 

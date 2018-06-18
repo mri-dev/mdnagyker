@@ -138,7 +138,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     if ( infav !== -1 ) {
       var confirmRemoveFav = $mdDialog.confirm()
           .title('Biztos, hogy eltávolítja a kedvencekből?')
-          .texappontent('Ez a termék jelenleg a kedvencei közt szerepel.')
+          .textContent('Ez a termék jelenleg a kedvencei közt szerepel.')
           .ariaLabel('Eltávolítás a kedvencek közül')
           .targetEvent(ev)
           .ok('Eltávolítás')
@@ -314,9 +314,9 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     		if (typeof text !== 'undefined') {
     			$mdToast.show(
     				$mdToast.simple()
-    				.texappontent(text)
+    				.textContent(text)
     				.position('top')
-    				.toasapplass('alert-toast mode-'+mode)
+    				.toastClass('alert-toast mode-'+mode)
     				.hideDelay(delay)
     			);
     		}
@@ -418,9 +418,9 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     if (typeof text !== 'undefined') {
       $mdToast.show(
         $mdToast.simple()
-        .texappontent(text)
+        .textContent(text)
         .position('top')
-        .toasapplass('alert-toast mode-'+mode)
+        .toastClass('alert-toast mode-'+mode)
         .hideDelay(delay)
       );
     }
@@ -507,9 +507,9 @@ app.controller('ActionButtons', ['$scope', '$http', '$mdDialog', '$mdToast', fun
     		if (typeof text !== 'undefined') {
     			$mdToast.show(
     				$mdToast.simple()
-    				.texappontent(text)
+    				.textContent(text)
     				.position('top')
-    				.toasapplass('alert-toast mode-'+mode)
+    				.toastClass('alert-toast mode-'+mode)
     				.hideDelay(delay)
     			);
     		}
@@ -598,9 +598,9 @@ app.controller('ActionButtons', ['$scope', '$http', '$mdDialog', '$mdToast', fun
     		if (typeof text !== 'undefined') {
     			$mdToast.show(
     				$mdToast.simple()
-    				.texappontent(text)
+    				.textContent(text)
     				.position('top')
-    				.toasapplass('alert-toast mode-'+mode)
+    				.toastClass('alert-toast mode-'+mode)
     				.hideDelay(delay)
     			);
     		}
@@ -772,7 +772,7 @@ app.controller('Tudastar',['$scope', '$http', '$mdToast', '$element', '$location
     }
   }
 
-  $scope.geappatData = function(catid) {
+  $scope.getcatData = function(catid) {
     var obj;
 
     if ( $scope.categories.length != 0 ) {
@@ -792,7 +792,7 @@ app.controller('Tudastar',['$scope', '$http', '$mdToast', '$element', '$location
     var key = 'cat' + catid;
     if ( typeof $scope.catFilters[key] === 'undefined') {
       $scope.catFilters[key] = {};
-      $scope.catFilters[key] = $scope.geappatData( catid );
+      $scope.catFilters[key] = $scope.getcatData( catid );
     } else {
       delete $scope.catFilters[key];
     }
@@ -847,7 +847,7 @@ app.controller('Tudastar',['$scope', '$http', '$mdToast', '$element', '$location
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       data: $.param({
         type: "Helpdesk",
-        action: 'geappategories',
+        action: 'getcategories',
         search: $scope.searchKeys,
         cats: $scope.catFilters
       })
@@ -873,9 +873,9 @@ app.controller('Tudastar',['$scope', '$http', '$mdToast', '$element', '$location
     if (typeof text !== 'undefined') {
       $mdToast.show(
         $mdToast.simple()
-        .texappontent(text)
+        .textContent(text)
         .position('top')
-        .toasapplass('alert-toast mode-'+mode)
+        .toastClass('alert-toast mode-'+mode)
         .hideDelay(delay)
       );
     }
