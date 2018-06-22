@@ -102,7 +102,7 @@
             </div>
             <div class="div"></div>
             <div class="elofoglalas">
-              <a href="/user/elofoglalas"><i class="fa fa-pause-circle-o"></i> Előfoglalás <span class="badge">{{fav_num}}</span></a>
+              <a href="/elofoglalasok"><i class="fa fa-pause-circle-o"></i> Előfoglalás <span class="badge">{{fav_num}}</span></a>
             </div>
           </div>
         </div>
@@ -239,7 +239,7 @@
 <div class="website">
 		<?=$this->gmsg?>
 		<div class="general-sidebar"></div>
-		<div class="site-container <?=($this->gets[0]=='termek' || $this->gets[0]=='kosar' )?'productview':''?>">
+		<div class="site-container <?=($this->gets[0]=='termek' )?'productview':''?>">
 			<div class="clr"></div>
 			<div class="inside-content">
 <?php endif; ?>
