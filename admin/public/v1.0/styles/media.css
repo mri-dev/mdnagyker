@@ -252,7 +252,7 @@ body.blured-bg #content .container-fluid{
 	z-index:10;
 }
 #content .ct > .innerContent > .row{
-  margin: 0 -15px !important;	
+  margin: 0 -15px !important;
 }
 #content .slideMenu{
 	background:#333333;
@@ -730,6 +730,12 @@ i.edit:hover{
 .termeklista .usergroup{
   color: #c5171e;
   font-size: 10px;
+  margin-right: 5px;
+}
+.termeklista .pricegroup{
+  color: #3395ff;
+  font-size: 10px;
+  margin-right: 5px;
 }
 .termeklista .search td i{
 	line-height:15px;

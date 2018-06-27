@@ -988,6 +988,64 @@ class Products
 		return $this;
 	}
 
+	public function priceGroupList()
+	{
+		$q = "SELECT * FROM shop_price_groups ORDER BY groupkey ASC";
+		$qry = $this->db->query($q);
+
+		if ( $qry->rowCount() == 0 ) {
+			return array();
+		}
+
+		$data = $qry->fetchAll(\PDO::FETCH_ASSOC);
+
+		$bdata = array();
+		foreach ((array)$data as $d) {
+			$bdata[$d['groupkey']] = $d;
+		}
+		unset($data);
+		return $bdata;
+	}
+
+	public function priceGroups( $originid = 0, $prodid )
+	{
+		if ($originid == 0) {
+			return false;
+		}
+		$groups = array();
+		$groups['has'] = array();
+		$pricenums = 6;
+
+		$qkey = "";
+		for ($x= 1; $x <= $pricenums  ; $x++) {
+			$qkey .= "t.ar".$x.", ";
+		}
+		$qkey = rtrim($qkey,", ");
+
+		$q = "SELECT ".$qkey." FROM xml_temp_products as t WHERE t.origin_id = {$originid} and t.prod_id = $prodid";
+		$prices = $this->db->query($q);
+
+		if ( $prices->rowCount() != 0 ) {
+			$prices = $prices->fetch(\PDO::FETCH_ASSOC);
+		} else $prices = array();
+
+		for ($i = 1; $i <= $pricenums ; $i++) {
+			$key = 'ar'.$i;
+			$net = (float)$prices[$key];
+			if($net != 0 && !in_array($key, $groups['has'])) {
+				$groups['has'][] = $key;
+			}
+			$groups['set'][$key] = array(
+				'netto' => $net,
+				'brutto' => ($net * 1.27)
+			);
+		}
+
+		unset($prices);
+
+		return $groups;
+	}
+
 	public function getFilters( $get, $prefix )
 	{
 		$re = array();
