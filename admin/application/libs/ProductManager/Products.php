@@ -553,22 +553,26 @@ class Products
 
 		$admin_listing = ( $arg['admin'] ) ? true : false;
 
+		$uid = (int)$this->user[data][ID];
+
 		/*==========  Lekérdezés  ==========*/
 		$qry = "
 		SELECT SQL_CALC_FOUND_ROWS
 			p.ID as product_id,
 			p.nev as product_nev,
 			p.cikkszam,
+			p.nagyker_kod,
 			p.kulcsszavak,
 			p.pickpackszallitas,
 			p.no_cetelem,
 			p.akcios,
 			p.ujdonsag,
-			p.netto_ar,
+			p.brutto_ar as ar,
 			p.marketing_leiras,
-			p.brutto_ar,
 			p.akcios_netto_ar,
 			p.akcios_brutto_ar,
+			p.netto_ar,
+			p.brutto_ar,
 			p.egyedi_ar,
 			p.marka as marka_id,
 			p.szallitasID,
@@ -588,14 +592,18 @@ class Products
 			p.termek_site_url,
 			p.ajandek,
 			p.rovid_leiras,
-			GROUP_CONCAT(CONCAT('p_',pa.parameterID,':',pa.ertek)) as paramErtek,
+			p.xml_import_origin,
+			p.fotermek,
+			getTermekAr(p.ID, ".$uid.") as ar,
+			(SELECT GROUP_CONCAT(kategoria_id) FROM shop_termek_in_kategoria WHERE termekID = p.ID ) as in_cat,
+			(SELECT neve FROM shop_termek_kategoriak WHERE ID = p.alapertelmezett_kategoria ) as alap_kategoria";
+
+			/*
 			IF(p.egyedi_ar IS NOT NULL,
 				p.egyedi_ar,
 				getTermekAr(p.marka, IF(p.akcios,p.akcios_brutto_ar,p.brutto_ar))
-			) as ar,
-			p.fotermek,
-			(SELECT GROUP_CONCAT(kategoria_id) FROM shop_termek_in_kategoria WHERE termekID = p.ID ) as in_cat,
-			(SELECT neve FROM shop_termek_kategoriak WHERE ID = p.alapertelmezett_kategoria ) as alap_kategoria";
+			) as ar
+			*/
 
 		if ( isset($arg['collectby']) && $arg['collectby'] == 'top' ) {
 			$qry .= " ,(SELECT sum(me) FROM `stat_nezettseg_termek` WHERE termekID = p.ID and datediff(now(),datum) < 60) as v";
@@ -951,15 +959,18 @@ class Products
 		$bdata = array();
 
 
-		foreach($data as $d){
-			$brutto_ar 			= $d['brutto_ar'];
-			$akcios_brutto_ar 	= $d['akcios_brutto_ar'];
+		foreach($data as $d)
+		{
+			//$brutto_ar = $d['brutto_ar'];
+			//$akcios_brutto_ar = $d['akcios_brutto_ar'];
 
 			$kep = $d['profil_kep'];
 			$d['profil_kep'] 		=  \PortalManager\Formater::productImage( $kep, false, self::TAG_IMG_NOPRODUCT );
-			$d['profil_kep_small'] 	=  \PortalManager\Formater::productImage( $kep, 75, self::TAG_IMG_NOPRODUCT );
+			$d['profil_kep_mid'] 	=  \PortalManager\Formater::productImage( $kep, 300, self::TAG_IMG_NOPRODUCT );
+			$d['profil_kep_small'] 	=  \PortalManager\Formater::productImage( $kep, 150, self::TAG_IMG_NOPRODUCT );
 
-			$arInfo 		= $this->getProductPriceCalculate( $d['marka_id'], $brutto_ar );
+			/*
+			$arInfo	= $this->getProductPriceCalculate( $d['marka_id'], $brutto_ar );
 			$akcios_arInfo 	= $this->getProductPriceCalculate( $d['marka_id'], $akcios_brutto_ar );
 
 			if( $d['akcios'] == '1') {
@@ -968,6 +979,7 @@ class Products
 
 			$arInfo['ar'] 			= ($this->settings['round_price_5'] == '1') ? round($arInfo['ar'] / 5) * 5 : $arInfo['ar'] ;
 			$akcios_arInfo['ar'] 	= ($this->settings['round_price_5'] == '1') ? round($akcios_arInfo['ar'] / 5) * 5 : $akcios_arInfo['ar'] ;
+			*/
 
 			// Kategória lista, ahol szerepel a termék
 			$in_cat = $this->getCategoriesWhereProductIn( $d['product_id'] );
@@ -975,10 +987,11 @@ class Products
 			$d['link'] 				= DOMAIN.'termek/'.\PortalManager\Formater::makeSafeUrl( $d['product_nev'], '_-'.$d['product_id'] );
 			$d['hasonlo_termek_ids']= $this->getProductRelatives( $d['product_id'] );
 			$d['parameters'] 		= $this->getParameters( $d['product_id'], $d['alapertelmezett_kategoria'] );
+			$d['price_groups'] 	= $this->priceGroups( $d['xml_import_origin'], $d['nagyker_kod'] );
 			$d['inKatList'] 		= $in_cat;
-			$d['ar'] 				= $arInfo['ar'];
-			$d['akcios_fogy_ar']	= $akcios_arInfo['ar'];
-			$d['arres_szazalek'] 	= $arInfo['arres'];
+			//$d['ar'] 				= $arInfo['ar'];
+			//$d['akcios_fogy_ar']	= $akcios_arInfo['ar'];
+			//$d['arres_szazalek'] 	= $arInfo['arres'];
 
 			$bdata[]	 			= $d;
 		}
@@ -1022,7 +1035,9 @@ class Products
 		}
 		$qkey = rtrim($qkey,", ");
 
-		$q = "SELECT ".$qkey." FROM xml_temp_products as t WHERE t.origin_id = {$originid} and t.prod_id = $prodid";
+		$prodid = addslashes($prodid);
+
+		$q = "SELECT ".$qkey." FROM xml_temp_products as t WHERE t.origin_id = {$originid} and t.prod_id = '$prodid'";
 		$prices = $this->db->query($q);
 
 		if ( $prices->rowCount() != 0 ) {

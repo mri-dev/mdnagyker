@@ -33,6 +33,7 @@ class Cart
 		$re 		= array();
 		$itemNum 	= 0;
 		$totalPrice = 0;
+		$uid = (int)$this->user[data][ID];
 
 		// Clear cart if item num 0
 		$this->db->query("DELETE FROM shop_kosar WHERE me <= 0 and gepID = {$this->machine_id};");
@@ -42,14 +43,14 @@ class Cart
 			c.termekID,
 			c.me,
 			c.hozzaadva,
-			t.pickpackszallitas,			
+			t.pickpackszallitas,
 			CONCAT(m.neve,' ',t.nev) as termekNev,
 			t.meret,
 			t.szin,
 			ta.elnevezes as allapot,
 			t.profil_kep,
-			IF(t.egyedi_ar IS NOT NULL, t.egyedi_ar, getTermekAr(t.marka, IF(t.akcios,t.akcios_brutto_ar,t.brutto_ar))) as ar,
-			(IF(t.egyedi_ar IS NOT NULL, t.egyedi_ar, getTermekAr(t.marka, IF(t.akcios,t.akcios_brutto_ar,t.brutto_ar))) * c.me) as sum_ar,
+			getTermekAr(c.termekID, ".$uid.") as ar,
+			(getTermekAr(c.termekID, ".$uid.") * c.me) as sum_ar,
 			szid.elnevezes as szallitasIdo
 		FROM shop_kosar as c
 		LEFT OUTER JOIN shop_termekek AS t ON t.ID = c.termekID

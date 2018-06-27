@@ -1018,6 +1018,8 @@ class Shop
 			'items' => array()
 		);
 
+		$uid = (int)$this->user[data][ID];
+
 		if($mid == '') return false;
 
 		if( $arg['coupon'] ) {
@@ -1045,8 +1047,8 @@ class Shop
 			getTermekUrl(t.ID,'".DOMAIN."') as url,
 			ta.elnevezes as allapot,
 			t.profil_kep,
-			IF(t.egyedi_ar IS NOT NULL, t.egyedi_ar, getTermekAr(t.marka, IF(t.akcios,t.akcios_brutto_ar,t.brutto_ar))) as ar,
-			(IF(t.egyedi_ar IS NOT NULL, t.egyedi_ar, getTermekAr(t.marka, IF(t.akcios,t.akcios_brutto_ar,t.brutto_ar))) * c.me) as sum_ar,
+			getTermekAr(c.termekID, ".$uid.") as ar,
+			(getTermekAr(c.termekID, ".$uid.") * c.me) as sum_ar,
 			t.referer_price_discount,
 			szid.elnevezes as szallitasIdo
 		FROM shop_kosar as c
