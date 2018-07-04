@@ -1,5 +1,6 @@
 <?
 use ShopManager\OrderException;
+use ShopManager\PreOrders;
 use Applications\PayU;
 use Applications\Simple;
 use PortalManager\PartnerReferrer;
@@ -154,6 +155,19 @@ class kosar extends Controller{
 				$this->view->canOrder = false;
 			}*/
 
+			// Előfoglalás
+			if (Post::on('doPreorder'))
+			{
+				$preorder = new PreOrders(array('db' => $this->db));
+
+				try{
+					$key = $preorder->orderHandler( $_POST['preorder'], $this->view->kosar );
+					//Helper::reload('/elofoglalasok/?created='.$key);
+				}catch(Exception $e){
+					$this->out( 'msg', \Helper::makeAlertMsg('pError', $e->getMessage()));
+				}
+			}
+
 			if(Post::on('orderState')) {
 				/**
 				* Virtuálos egyenleg felhasználás
@@ -196,7 +210,7 @@ class kosar extends Controller{
 			if($this->view->orderStep == 0 && $this->view->gets[1] != ''){
 				if ( $this->view->gets[1] != 'elofoglalas' ) {
 					Helper::reload('/kosar/');
-				}				
+				}
 			}
 
 			// SEO Információk

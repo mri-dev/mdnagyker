@@ -4467,6 +4467,54 @@ md-toast{
 		font-size: 1.2em;
 		padding: 10px 0;
 	}
+
+	.datas{
+		margin: 15px 0 0 0;
+		h2 {
+			font-weight: bold;
+			color: black;
+			margin: 0 0 15px 0;
+			font-size: 2.5em;
+		}
+
+		.input-line{
+			width: 50%;
+			max-width: 50%;
+			margin: 10px 0;
+
+			label.ilb{
+				margin: 0 0 10px 0;
+			}
+			.lb-check{
+				margin: 20px 0;
+
+				label {
+					line-height: 1.2 !important;
+				}
+			}
+
+			a.back-order{
+				background: #fcfcfc;
+				border-radius: 3px;
+				border: 0.5px solid #d0d0d0;
+				padding: 12px 20px;
+				color: #515151;
+				text-decoration: none;
+				font-size: 0.9em;
+			}
+
+			button {
+				background: $color-green;
+				border-radius: 3px;
+				font-size: 1.1em;
+				border: none;
+				padding: 12px 20px;
+				text-transform: uppercase;
+				color: white;
+				font-weight: bold;
+			}
+		}
+	}
 }
 
 .order {

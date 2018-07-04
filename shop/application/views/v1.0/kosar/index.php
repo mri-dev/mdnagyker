@@ -177,18 +177,7 @@
 					<?php
 					// Előfoglalás
 					if ($this->gets[1] == 'elofoglalas'): ?>
-					<div class="nextOrded cart-elofoglalas">
-						<h2 class="title">Termékek előfoglalása</h2>
-						<div class="desc">
-							Az előfoglalással Ön lefoglalhatja a kosárba tett termékeket anélkül, hogy megvásárolná. A lefoglalt termékeket <?=$this->settings['elofoglalas_ora']?> óráig tartjuk fent Önnek!
-						</div>
-						<div class="info-box">
-							<div class="ico"><i class="fa fa-info"></i></div>
-							<div class="text">
-								Az előfoglalást kérjük, hogy akkor használja, ha meg szeretné vásárolni a termékeket, de nincs most ideje végig menni a megrendelés folyamatán!
-							</div>
-						</div>
-					</div>
+						<?php $this->render('templates/preorder/kosar'); ?>
 					<?php
 					// Megrendelés menete
 					else: ?>
