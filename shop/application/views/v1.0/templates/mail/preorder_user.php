@@ -1,0 +1,3 @@
+<? require "head.php"; ?>
+  Előfoglalás üzenet tartalma...
+<? require "footer.php"; ?>

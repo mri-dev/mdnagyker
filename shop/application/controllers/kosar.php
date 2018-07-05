@@ -5,6 +5,7 @@ use Applications\PayU;
 use Applications\Simple;
 use PortalManager\PartnerReferrer;
 use PortalManager\Coupon;
+use ResourceImporter\CashmanAPI;
 
 class kosar extends Controller{
 
@@ -159,6 +160,8 @@ class kosar extends Controller{
 			if (Post::on('doPreorder'))
 			{
 				$preorder = new PreOrders(array('db' => $this->db));
+				$crm = new CashmanAPI(array('db' => $this->db));
+				$preorder->addAPIHandler( $crm );
 
 				try{
 					$key = $preorder->orderHandler( $_POST['preorder'], $this->view->kosar );

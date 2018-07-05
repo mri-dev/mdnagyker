@@ -2,6 +2,9 @@
 namespace ShopManager;
 
 use Interfaces\InstallModules;
+use MailManager\Mailer;
+use MailManager\MailTemplates;
+use PortalManager\Template;
 
 /**
 * class PreOrders
@@ -15,20 +18,29 @@ class PreOrders implements InstallModules
   const MODULTITLE = 'Előfoglalások';
 
   private $db = null;
+  private $settings = array();
   public $tree = false;
 	private $current_item = false;
 	private $tree_steped_item = false;
 	private $tree_items = 0;
 	private $walk_step = 0;
+  protected $api  = null;
 
   public function __construct( $arg = array() )
   {
     $this->db = $arg[db];
+    $this->settings = (array)$this->db->settings;
 
     if( !$this->checkInstalled() && strpos($_SERVER['REQUEST_URI'], '/install') !== 0) {
       \Helper::reload('/install?module='.__CLASS__);;
     }
 
+    return $this;
+  }
+
+  public function addAPIHandler( $apiobj )
+  {
+    $this->api = $apiobj;
     return $this;
   }
 
@@ -50,27 +62,92 @@ class PreOrders implements InstallModules
     }
 
     $hour = $this->validHour();
+    $hash = md5(uniqid());
+    $mid = \Helper::getMachineID();
 
     print_r($data);
     print_r($cart);
 
     // Foglalás kezdete
     $start_date = date('Y-m-d H:i:s');
-
     // Foglalás fenntartása
     $end_date = date('Y-m-d H:i:s', strtotime('+'.$hour.' hours'));
 
 
     // Foglalás rögzítése
+    $this->db->insert(
+      self::DBTABLE,
+      array(
+        'sessionkey' => $hash,
+        'name' => addslashes($data['name']),
+        'email' => addslashes($data['email']),
+        'requested_at' => $start_date,
+        'valid_to' => $end_date
+      )
+    );
+
+    // Új foglalás ID-ja
+    $iid = $this->db->lastInsertId();
 
     // Kosár tételek beszúrása
-    foreach ( $cart['items'] as $item )
-    {
+    $cart_header = array('order_id', 'gepID', 'termekID', 'me', 'egysegAr');
+    $cart_insert = array();
+    $stock_set = array();
 
+    foreach ( (array)$cart['items'] as $item )
+    {
+      $cart_insert[] = array( $iid, $mid, $item['termekID'], $item['me'], $item['prices']['current_each'] );
+      $stock_set[] = array(
+        'ID' => $item['termekID'],
+        'stock' => ((int)$item['me'] * -1)
+      );
     }
 
+    if (!empty($cart_insert)) {
+      $this->db->multi_insert(
+        self::DBITEMS,
+        $cart_header,
+        $cart_insert
+      );
+    }
+    unset($cart_header);
+    unset($cart_insert);
+
+    // Raktárkészlet fogyás elvégzése
+    if ( $this->api && method_exists($this->api, 'updateStock') )
+    {
+      $this->api->updateStock( $stock_set );
+    }
+    unset($stock_set);
+
     // Kosár ürítése
+    //$this->db->query("DELETE FROM shop_kosar WHERE gepID = '$mid'");
+
+
     // E-mail értesítés
+    if ( true )
+    {
+      // Értesítő e-mail az adminisztrátornak
+      $mail = new Mailer(
+        $this->settings['page_title'],
+        SMTP_USER,
+        $this->settings['mail_sender_mode']
+      );
+      $mail->add( $data['email'] );
+
+      $arg = array(
+        'settings' => $this->settings,
+        'infoMsg' => 'Ezt az üzenetet a rendszer küldte. Kérjük, hogy ne válaszoljon rá!',
+      );
+      $mail->setSubject( 'Előfoglalás visszaigazolás.' );
+      $mail->setMsg( (new Template( VIEW . 'templates/mail/' ))->get( 'preorder_user', $arg ) );
+      $re = $mail->sendMail();
+    }
+
+    unset($cart);
+    unset($data);
+
+    return $hash;
   }
 
 	public function add( $data = array() )
