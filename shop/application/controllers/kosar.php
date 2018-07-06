@@ -165,7 +165,7 @@ class kosar extends Controller{
 
 				try{
 					$key = $preorder->orderHandler( $_POST['preorder'], $this->view->kosar );
-					//Helper::reload('/elofoglalasok/?created='.$key);
+					Helper::reload('/elofoglalasok/?session='.$key.'&created=1');
 				}catch(Exception $e){
 					$this->out( 'msg', \Helper::makeAlertMsg('pError', $e->getMessage()));
 				}

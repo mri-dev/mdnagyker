@@ -1750,8 +1750,70 @@ body.singlepage{
 
 .elofoglalas-page
 {
-	.no-foglalas{
+	& > .wrapper{
 		padding: 30px 0;
+
+		& > .list {
+			margin-top: 25px;
+			.item {
+				border: 0.5px solid #f1f1f1;
+				background: #f4f4f4;
+				margin: 0 0 10px 0;
+
+				& > .wrapper{
+					display: -webkit-box;
+					display: -ms-flexbox;
+					display: flex;
+					flex-wrap: wrap;
+					justify-content: space-between;
+
+					& > div {
+						padding: 10px;
+					}
+
+					& > .status {
+						flex-basis: 45px;
+						background: $color-blue;
+						color: white;
+						position: relative;
+
+						i{
+							position: absolute;
+							top: 50%;
+							left: 50%;
+							font-size: 24px;
+							-webkit-transform: translate(-50%,-50%);
+		          transform: translate(-50%,-50%);
+						}
+
+					}
+
+					& > .head {
+						fleX: 1;
+
+						.item-info{
+							font-weight: bold;
+							color: black;
+							margin: 0 0 5px 0;
+						}
+
+						.hashkey {
+							color: #acacac;
+							font-style: italic;
+							font-size: 0.8em;
+						}
+					}
+
+					.price {
+						font-weight: bold;
+						color: $color-green;
+					}
+				}
+			}
+		}
+	}
+
+	.no-foglalas{
 		text-align: center;
 		color: black;
 		font-size: 1.2em;

@@ -1,9 +1,20 @@
-<?
+<?php
+use ShopManager\PreOrders;
+
 class elofoglalasok extends Controller
 {
-		function __construct(){
+		function __construct()
+		{
 			parent::__construct();
 			parent::$pageTitle = 'Előfoglalás';
+
+			$mid = (isset($_GET['a']) && !empty($_GET['a'])) ? $_GET['a'] : \Helper::getMachineID();
+
+			$preorder = new PreOrders(array('db' => $this->db));
+			$preorder->getTree(array(
+				'gepID' => $mid
+			));
+			$this->out('preorder', $preorder);
 
 			// SEO Információk
 			$SEO = null;

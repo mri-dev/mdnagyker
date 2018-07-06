@@ -5,6 +5,7 @@ use Interfaces\InstallModules;
 use MailManager\Mailer;
 use MailManager\MailTemplates;
 use PortalManager\Template;
+use ShopManager\PreOrder;
 
 /**
 * class PreOrders
@@ -65,8 +66,10 @@ class PreOrders implements InstallModules
     $hash = md5(uniqid());
     $mid = \Helper::getMachineID();
 
-    print_r($data);
-    print_r($cart);
+    //print_r($data);
+    //print_r($cart);
+
+    //return false;
 
     // Foglalás kezdete
     $start_date = date('Y-m-d H:i:s');
@@ -121,8 +124,9 @@ class PreOrders implements InstallModules
     unset($stock_set);
 
     // Kosár ürítése
-    //$this->db->query("DELETE FROM shop_kosar WHERE gepID = '$mid'");
-
+    if ( false ) {
+      $this->db->query("DELETE FROM shop_kosar WHERE gepID = '$mid'");
+    }
 
     // E-mail értesítés
     if ( true )
@@ -138,6 +142,12 @@ class PreOrders implements InstallModules
       $arg = array(
         'settings' => $this->settings,
         'infoMsg' => 'Ezt az üzenetet a rendszer küldte. Kérjük, hogy ne válaszoljon rá!',
+        'foglal_ora' => $this->settings['elofoglalas_ora'],
+        'expire_at' => $end_date,
+        'name' => $data['name'],
+        'hash' => $hash,
+        'mid' => $mid,
+        'cart' => $cart['items']
       );
       $mail->setSubject( 'Előfoglalás visszaigazolás.' );
       $mail->setMsg( (new Template( VIEW . 'templates/mail/' ))->get( 'preorder_user', $arg ) );
@@ -217,9 +227,9 @@ class PreOrders implements InstallModules
 
     // Legfelső színtű kategóriák
     $qry = "
-      SELECT *
+      SELECT ID
       FROM ".self::DBTABLE."
-      WHERE 1=1 and parent_id IS NULL";
+      WHERE 1=1 ";
 
     // ID SET
     if( isset($arg['id_set']) && count($arg['id_set']) )
@@ -227,7 +237,17 @@ class PreOrders implements InstallModules
       $qry .= " and ID IN (".implode(",",$arg['id_set']).") ";
     }
 
-    $qry .= " ORDER BY title ASC;";
+    if( isset($arg['gepID']) && !empty($arg['gepID']) )
+    {
+      $qry .= " and gepID = '".$arg['gepID']."' ";
+    }
+
+    if( isset($arg['session']) )
+    {
+      $qry .= " and sessionkey = '".$arg['session']."' ";
+    }
+
+    $qry .= " ORDER BY valid_to DESC;";
 
     $top_cat_qry = $this->db->query($qry);
     $top_item_data = $top_cat_qry->fetchAll(\PDO::FETCH_ASSOC);
@@ -237,7 +257,7 @@ class PreOrders implements InstallModules
     foreach ( $top_item_data as $top_cat )
     {
       $this->tree_items++;
-      $this->tree_steped_item[] = $top_cat;
+      $this->tree_steped_item[] = new PreOrder($top_cat['ID'], array('db' => $this->db));
       $tree[] = $top_cat;
     }
 
@@ -264,6 +284,11 @@ class PreOrders implements InstallModules
 
 		return true;
 	}
+
+  public function itemNums()
+  {
+    return $this->tree_items;
+  }
 
   public function the_item()
 	{
@@ -310,9 +335,9 @@ class PreOrders implements InstallModules
     "(
       `ID` int(11) NOT NULL,
       `sessionkey` varchar(40) NOT NULL,
+      `gepID` varchar(20) NOT NULL,
       `name` varchar(250) NOT NULL,
       `email` varchar(250) NOT NULL,
-      `isconfirmed` tinyint(1) NOT NULL DEFAULT '0',
       `requested_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
       `valid_to` datetime DEFAULT NULL
     )";
@@ -322,7 +347,8 @@ class PreOrders implements InstallModules
     $index_create =
     "ADD PRIMARY KEY (`ID`),
     ADD UNIQUE KEY `sessionkey` (`sessionkey`),
-    ADD KEY `isconfirmed` (`isconfirmed`)";
+    ADD KEY `isconfirmed` (`isconfirmed`),
+    ADD KEY `gepID` (`gepID`)";
     $installer->addIndexes( $index_create );
 
     // Increment

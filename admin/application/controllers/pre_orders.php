@@ -8,10 +8,6 @@ class pre_orders extends Controller{
 			$this->view->adm = $this->AdminUser;
 			$this->view->adm->logged = $this->AdminUser->isLogged();
 
-			if($this->gets[1] == 'exit'){
-				$this->AdminUser->logout();
-			}
-
 			// SEO Információk
 			$SEO = null;
 			// Site info
