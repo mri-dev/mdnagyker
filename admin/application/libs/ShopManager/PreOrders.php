@@ -82,6 +82,7 @@ class PreOrders implements InstallModules
       self::DBTABLE,
       array(
         'sessionkey' => $hash,
+        'gepID' => $mid,
         'name' => addslashes($data['name']),
         'email' => addslashes($data['email']),
         'requested_at' => $start_date,

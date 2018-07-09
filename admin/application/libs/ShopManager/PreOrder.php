@@ -99,8 +99,14 @@ class PreOrder
     $this->items = array();
 
     $get = $this->db->query(sprintf("SELECT
-      i.*
+      i.*,
+			t.cikkszam,
+			t.profil_kep,
+			IF(t.marka > 0, CONCAT(m.neve,' ',t.nev), t.nev) as nev,
+			m.neve as markaNev
     FROM ".\ShopManager\PreOrders::DBITEMS." as i
+		LEFT OUTER JOIN shop_termekek as t ON t.ID = i.termekID
+		LEFT OUTER JOIN shop_markak as m ON t.marka = m.ID
     WHERE 1=1 and i.order_id = %d
     ", $this->getId()));
 
@@ -111,6 +117,11 @@ class PreOrder
 
       foreach ((array)$data as $d)
       {
+				$d['ar'] = round($d['egysegAr']) * $d['me'];
+				$d['link'] = DOMAIN.'termek/'.\PortalManager\Formater::makeSafeUrl( $d['nev'], '_-'.$d['termekID'] );
+				$kep = $d['profil_kep'];
+				$d['profil_kep']=\PortalManager\Formater::productImage( $kep, false, \ProductManager\Products::TAG_IMG_NOPRODUCT );
+
         $this->total_price += round($d['egysegAr']) * $d['me'];
         $this->item_numbers += $d['me'];
         $this->items[] = $d;
