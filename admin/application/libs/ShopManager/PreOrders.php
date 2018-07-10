@@ -248,7 +248,12 @@ class PreOrders implements InstallModules
       $qry .= " and sessionkey = '".$arg['session']."' ";
     }
 
-    $qry .= " ORDER BY valid_to DESC;";
+    if( isset($arg['sessionOrder']) && $arg['sessionOrder'] !== false )
+    {
+      $qry .= " ORDER BY (IF(sessionkey = '".$arg['sessionOrder']."', 1, 0)) DESC ,valid_to DESC";
+    } else {
+      $qry .= " ORDER BY valid_to DESC";
+    }
 
     $top_cat_qry = $this->db->query($qry);
     $top_item_data = $top_cat_qry->fetchAll(\PDO::FETCH_ASSOC);
@@ -265,6 +270,64 @@ class PreOrders implements InstallModules
     $this->tree = $tree;
 
     return $this;
+  }
+
+  public function clearExpiredCRON()
+  {
+    $stock_set = array();
+    $delete_orders = array();
+
+    // Lejártak összegyűjtése
+    $qry = "SELECT
+      pt.order_id,
+      pt.termekID,
+      pt.me,
+      p.sessionkey
+    FROM `preorder_termekek` as pt
+    LEFT OUTER JOIN preorder as p ON p.ID = pt.order_id
+    WHERE now() >= p.valid_to";
+    $qry = $this->db->query( $qry );
+
+    if ($qry->rowCount() == 0) {
+      return false;
+    }
+
+    $expires = $qry->fetchAll(\PDO::FETCH_ASSOC);
+
+    foreach ( (array)$expires as $e )
+    {
+      $stock_set[] = array(
+        'ID' => $e['termekID'],
+        'stock' => (int)$e['me']
+      );
+
+      if (!in_array($e['order_id'], $delete_orders)) {
+        $delete_orders[] = $e['order_id'];
+      }
+    }
+
+    // Raktárkészlet frissítés
+    if ( !empty($stock_set) )
+    {
+      if ( $this->api && method_exists($this->api, 'updateStock') )
+      {
+        $this->api->updateStock( $stock_set );
+      }
+    }
+    unset($stock_set);
+
+    // Összegyűjtött rendelések törlése
+    foreach ( (array)$delete_orders as $oid )
+    {
+      // Tételek törlése
+      $this->db->query("DELETE FROM ".self::DBITEMS." WHERE order_id = {$oid}");
+      // Előfoglalás törlése
+      $this->db->query("DELETE FROM ".self::DBTABLE." WHERE ID = {$oid}");
+    }
+
+    unset($delete_orders);
+    unset($expires);
+    unset($qry);
   }
 
   public function walk()

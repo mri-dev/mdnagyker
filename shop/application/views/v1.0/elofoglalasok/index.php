@@ -5,6 +5,10 @@
   <div class="wrapper">
     <?php if ( $nums != 0 ): ?>
       <h1>Előfoglalások</h1>
+      <?php if (isset($_GET['created']) && $_GET['created'] == '1'): ?>
+        <br>
+        <?php echo \Helper::makeAlertMsg('pSuccess', 'Sikeresen rögzítette az előfoglalást! A lefoglalt termékeket '.$this->settings['elofoglalas_ora'].' órán belül kizárólag Ön vásárolhatja meg.'); ?>
+      <?php endif; ?>
       <div class="list">
         <div class="header">
           <div class="wrapper">
@@ -12,7 +16,7 @@
             <div class="head"></div>
             <div class="price">Össz. ár</div>
             <div class="dateStart">Foglalás ideje</div>
-            <div class="dateEnd">Foglalás lejár</div>
+            <div class="dateEnd">Hátralévő idő</div>
           </div>
         </div>
         <?php while ( $this->preorder->walk() ):
@@ -22,12 +26,15 @@
         ?>
           <div class="item">
             <div class="wrapper">
-              <div class="status">
+              <div class="status" style="background:<?=$item->expireColor()?>;">
                 <i class="fa fa-pause-circle-o"></i>
               </div>
               <div class="head">
                 <div class="item-info">
-                  <a href="javascript:void(0);"><strong><?=$item_nums?> db</strong> tétel foglalva</a>
+                  <?php if (isset($_GET['session']) && $_GET['session'] == $item->getHashkey()): ?>
+                    <i class="fa fa-thumb-tack"></i>
+                  <?php endif; ?>
+                  <a href="javascript:void(0);" data-show-details="<?=$item->getHashkey()?>"><strong><?=$item_nums?> db</strong> tétel foglalva</a>
                 </div>
                 <div class="hashkey"><?=$item->getHashkey()?></div>
               </div>
@@ -37,57 +44,77 @@
               <div class="dateStart">
                 <?=$item->dateStart(true)?>
               </div>
-              <div class="dateEnd">
-                <?=$item->dateEnd(true)?>
+              <div class="dateEnd" title="<?=$item->dateEnd(true)?>">
+                <strong style="color:<?=$item->expireColor()?>;"><?=\Helper::distanceDate($item->dateEnd(false))?></strong> <?php if ($item->expired()): ?>lejárt<?php endif; ?>
               </div>
             </div>
           </div>
-          <div class="item-details" id="ref<?=$item->getHashkey()?>">
-            <div class="header">
-              <div class="wrapper">
-                <div class="name">
-                  Termék
-                </div>
-                <div class="me">
-                  Me.
-                </div>
-                <div class="eprice">
-                  Egységár
-                </div>
-                <div class="price">
-                  Ár
-                </div>
-              </div>
-            </div>
-            <div class="items">
-              <?php foreach ($items as $p): ?>
-              <div class="product">
+          <div class="item-details <?php if (isset($_GET['session']) && $_GET['session'] == $item->getHashkey()): ?>thumbed<?php endif; ?>" id="ref<?=$item->getHashkey()?>" <?=(isset($_GET['session']) && $_GET['session'] == $item->getHashkey())?'style="display:block;"':''?>>
+            <div class="holder">
+              <div class="header">
                 <div class="wrapper">
-                  <div class="img">
-                    <a href="<?=$p['link']?>" target="_blank"><img src="<?=$p['profil_kep']?>" alt="<?=$p['nev']?>"></a>
-                  </div>
                   <div class="name">
-                    <strong><a href="<?=$p['link']?>" target="_blank"><?=$p['nev']?></a></strong>
-                    <div class="code">
-                      <?=$p['cikkszam']?>
-                    </div>
+                    Termék
                   </div>
                   <div class="me">
-                    <?=$p['me']?> db
+                    Me.
                   </div>
                   <div class="eprice">
-                    <?=Helper::cashFormat($p['egysegAr'])?> Ft
+                    Egységár
                   </div>
                   <div class="price">
-                    <?=Helper::cashFormat($p['ar'])?> Ft
+                    Ár
                   </div>
                 </div>
               </div>
-              <?php endforeach; ?>
+              <div class="items">
+                <?php foreach ($items as $p): ?>
+                <div class="product">
+                  <div class="wrapper">
+                    <div class="img">
+                      <a href="<?=$p['link']?>" target="_blank"><img src="<?=$p['profil_kep']?>" alt="<?=$p['nev']?>"></a>
+                    </div>
+                    <div class="name">
+                      <strong><a href="<?=$p['link']?>" target="_blank"><?=$p['nev']?></a></strong>
+                      <div class="code">
+                        <?=$p['cikkszam']?>
+                      </div>
+                    </div>
+                    <div class="me">
+                      <?=$p['me']?> db
+                    </div>
+                    <div class="eprice">
+                      <?=Helper::cashFormat($p['egysegAr'])?> Ft
+                    </div>
+                    <div class="price">
+                      <?=Helper::cashFormat($p['ar'])?> Ft
+                    </div>
+                  </div>
+                </div>
+                <?php endforeach; ?>
+              </div>
+            </div>
+            <div class="actions">
+              <?php if (!$item->expired()): ?>
+              <form class="" action="" method="post">
+                <button type="submit" class="cancel" name="cancelPreorder" value="<?=$item->getHashkey()?>">Foglalás törlése <i class="fa fa-trash"></i></button>
+                <button type="submit" class="submit" name="startOrder" value="<?=$item->getHashkey()?>">Lefoglalt termékek megvásárlása <i class="fa fa-arrow-circle-right"></i></button>
+              </form>
+              <div class="clr"></div>
+              <?php endif; ?>
             </div>
           </div>
         <?php endwhile; ?>
       </div>
+      <script type="text/javascript">
+        $(function(){
+          $('*[data-show-details]').click(function(){
+            var ref = $(this).data('show-details');
+            $('.item-details:not(#ref'+ref+')').slideUp(400);
+            $('.item-details#ref'+ref).slideDown(400);
+          });
+        });
+      </script>
     <?php else: ?>
       <div class="no-foglalas">
         <div class="ico">

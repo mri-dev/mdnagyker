@@ -84,6 +84,35 @@ class PreOrder
     return false;
 	}
 
+	public function expired()
+	{
+		$now = strtotime( NOW );
+		$end = strtotime( $this->data['valid_to'] );
+
+		if ( $now >= $end ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function expireColor()
+	{
+		$now = strtotime( NOW );
+		$end = strtotime( $this->data['valid_to'] );
+		$diff = $end - $now;
+
+		// < 1 óra
+		if ($diff <= 3600)
+		{
+			return '#ff6161';
+		}
+		// < 8 óra
+		else if( $diff > 3600 && $diff <= 28800){
+			return '#ff8d00';
+		}
+	}
+
   public function itemNumbers()
   {
     return $this->item_numbers;
@@ -93,6 +122,7 @@ class PreOrder
   {
     return $this->total_price;
   }
+
 
   public function getItems()
   {

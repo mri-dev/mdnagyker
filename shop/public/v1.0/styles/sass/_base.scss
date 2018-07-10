@@ -1785,7 +1785,7 @@ body.singlepage{
 				}
 			}
 			.item {
-				border: 0.5px solid #f1f1f1;
+				border: 0.5px solid #dedede;
 				background: #f4f4f4;
 				margin: 0 0 10px 0;
 
@@ -1834,57 +1834,86 @@ body.singlepage{
 				}
 			}
 			.item-details{
-				border: 3px solid #ececec;
 				margin: 0 0 15px 0;
+				display: none;
+				& > .holder{
+					border: 3px solid #ececec;
+					margin: 0 0 10px 0;
 
-				.header{
-					background: #f4f4f4;
+					.header{
+						background: #f4f4f4;
+					}
+
+					.header > .wrapper,
+					.items > .product > .wrapper{
+						display: -webkit-box;
+						display: -ms-flexbox;
+						display: flex;
+						flex-wrap: wrap;
+						align-items: center;
+						justify-content: space-between;
+
+						& > div {
+							padding: 10px;
+						}
+						& > .img {
+							flex-basis: 70px;
+							img {
+								max-width: 100%;
+							}
+						}
+						& > .name {
+							flex: 1;
+							line-height: 1.4;
+
+							a {
+								font-size: 1.1em;
+							}
+
+							.code {
+								text-transform: uppercase;
+								font-size: 0.9em;
+								color: #8c8c8c;
+							}
+						}
+						& > .me{
+							flex-basis: 60px;
+							text-align: center;
+						}
+						& > .eprice,
+						& > .price {
+							flex-basis: 120px;
+							text-align: center;
+						}
+					}
+					.items > .product{
+						border: 0.5px solid #f1f1f1;
+					}
 				}
 
-				.header > .wrapper,
-				.items > .product > .wrapper{
-					display: -webkit-box;
-					display: -ms-flexbox;
-					display: flex;
-					flex-wrap: wrap;
-					align-items: center;
-					justify-content: space-between;
+				.actions{
+					button {
+						padding: 8px 12px;
+						background: #909090;
+						text-transform: uppercase;
+						color: white;
+						border: none;
+						border-radius: 3px;
+						cursor: pointer;
+					}
 
-					& > div {
-						padding: 10px;
+					.cancel{
+						float: left;
+						background: $color-red;
 					}
-					& > .img {
-						flex-basis: 70px;
-						img {
-							max-width: 100%;
-						}
-					}
-					& > .name {
-						flex: 1;
-						line-height: 1.4;
-
-						a {
-							font-size: 1.1em;
-						}
-
-						.code {
-							text-transform: uppercase;
-							font-size: 0.9em;
-							color: #8c8c8c;
-						}
-					}
-					& > .me{
-						flex-basis: 60px;
-						text-align: center;
-					}
-					& > .eprice,
-					& > .price {
-						flex-basis: 120px;
-						text-align: center;
+					.submit {
+						background: $color-green;
+						float: right;
 					}
 				}
-				.items > .product{
-					border: 0.5px solid #f1f1f1;
+
+				&.thumbed{
+					margin: 0 0 35px 0;
 				}
 			}
 		}

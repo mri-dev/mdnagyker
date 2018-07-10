@@ -12,7 +12,8 @@ class elofoglalasok extends Controller
 
 			$preorder = new PreOrders(array('db' => $this->db));
 			$preorder->getTree(array(
-				'gepID' => $mid
+				'gepID' => $mid,
+				'sessionOrder' => (isset($_GET['session']) && !empty($_GET['session'])) ? $_GET['session'] : false
 			));
 			$this->out('preorder', $preorder);
 
