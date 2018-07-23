@@ -1,6 +1,7 @@
 <?
 use ShopManager\PreOrders;
 use ResourceImporter\CashmanAPI;
+use ResourceImporter\ResourceImport;
 
 class cron extends Controller{
 		function __construct(){
@@ -31,6 +32,50 @@ class cron extends Controller{
       $preorder->addAPIHandler( $crm );
       $preorder->clearExpiredCRON();
     }
+
+		public function sync()
+		{
+			$crm = new CashmanAPI(array('db' => $this->db));
+
+			switch ( $this->gets[2] )
+			{
+				case 'importProgramTechToCashman':
+
+					$res = new ResourceImport(array('db' => $this->db));
+
+					//$raw_raktar = $res->getRaktarXML();
+
+					$items = array();
+
+					if ( count($raw_raktar->sor) != 0 ) {
+						foreach ( $raw_raktar->sor as $sor )
+						{
+							if( (string)$sor->Mértékegység == 'darab' || (string)$sor->Mértékegység == 'db' || (string)$sor->Mértékegység == '' ){
+								$mee = 'db';
+							} else {
+								$mee = (string)$sor->Mértékegység;
+							}
+							$tid = 0;
+
+							$items[] = array(
+								'termek_id' => $tid,
+								'cikkszam' => (string)$sor->Cikkszám,
+								'megnevezes' =>(string) $sor->Megnevezés,
+								'megjegyzes' => (string)$sor->Tétel_megjegyzés,
+								'afa' => 27,
+								'netto_egysegar' => (float)$sor->Eladási_nettó_egységár,
+								'termekcsoport_id' => 1,
+								'mennyisegiegyseg' => $mee
+							);
+						}
+					}
+
+					//$return = $crm->addProduct( $items );
+
+					print_r($return);
+				break;
+			}
+		}
 
 		function __destruct(){
 			// RENDER OUTPUT

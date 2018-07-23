@@ -14,6 +14,13 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
     return parent::__construct( $arg );
   }
 
+  public function getRaktarXML()
+  {
+    $raktar = $this->loadResource( 2 );
+
+    return $raktar;
+  }
+
   public function groupCat( $content = false )
   {
     $group = array();
