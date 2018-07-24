@@ -42,6 +42,100 @@ class CashmanAPI extends ResourceImportBase
 
   }
 
+  public function autoImportProducts( $list = array() )
+  {
+    $prepare = array();
+
+    foreach ( (array)$list as $row )
+    {
+      $each = array();
+
+      if ($row['cikkszam'] == '') {
+        continue;
+      }
+
+      $each['prod_id'] = $row['cikkszam'];
+      $each['termek_nev'] = $row['megnevezes'];
+      $each['termek_keszlet'] = $row['keszlet'];
+      $each['ean_code'] = $row['vonalkod'];
+      $each['ar1'] = $row['netto'];
+
+      unset($row);
+
+      $prepare[] = $each;
+    }
+    unset($each);
+    unset($context);
+
+    print_r($prepare);
+
+    return $prepare;
+  }
+
+  public function getProducts()
+  {
+    $param = array();
+    $param[0] = array(
+      'ar' => 1,
+      'mennyiseg' => 0
+    );
+    $this->incFixRowData($param[0]);
+
+    $this->api->keszlet_lista( $param );
+
+    return array(
+      'uzenet' => $this->api->uzenet,
+      'hiba' => $this->api->hiba,
+      'error' => ($this->api->hiba == '') ? 0 : 1,
+      'data' => $this->api->keszlet_listaTomb
+    );
+  }
+
+  public function getProduct( $cikkszam )
+  {
+    $param = array();
+    $param[0] = array(
+      'cikkszam' => $cikkszam
+    );
+    $this->incFixRowData($param[0]);
+    $this->api->termekadatok($param);
+
+    return array(
+      'id' =>  $this->api->termekTomb[1],
+      'megnevezes' => $this->api->termekTomb[1],
+      "vonalkod" => $this->api->termekTomb[2],
+			"cikkszam" => $this->api->termekTomb[3],
+			"afa" => $this->api->termekTomb[4],
+			"netto" => $this->api->termekTomb[5],
+			"afa2" => $this->api->termekTomb[6],
+			"netto2" => $this->api->termekTomb[7],
+			"afa3: " => $this->api->termekTomb[8],
+			"netto3" => $this->api->termekTomb[9],
+			"afa4" => $this->api->termekTomb[10],
+			"netto4" => $this->api->termekTomb[11],
+			"afa5" => $this->api->termekTomb[12],
+			"netto5" => $this->api->termekTomb[13],
+			"afa6" => $this->api->termekTomb[14],
+			"netto6" => $this->api->termekTomb[15],
+			"afa7" => $this->api->termekTomb[16],
+			"netto7" => $this->api->termekTomb[17],
+			"afa8" => $this->api->termekTomb[18],
+			"netto8" => $this->api->termekTomb[19],
+			"netto_beszerzes" => $this->api->termekTomb[20],
+			"termek" => $this->api->termekTomb[21],
+			"keszlet_min" => $this->api->termekTomb[22],
+			"beszallito" => $this->api->termekTomb[23],
+			"gyarto" => $this->api->termekTomb[24],
+			"meret_hosszusag" => $this->api->termekTomb[25],
+			"meret_szelesseg " => $this->api->termekTomb[26],
+			"meret_magassag" => $this->api->termekTomb[27],
+			"termekcsoport" => $this->api->termekTomb[28],
+			"mennyisegegyseg" => $this->api->termekTomb[29],
+			"vtszszj" => $this->api->termekTomb[30],
+			"kn_kod" => $this->api->termekTomb[31],
+    );
+  }
+
   public function addProduct( $row_set = array() )
   {
     $ret = array();

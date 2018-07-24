@@ -74,6 +74,23 @@ class cron extends Controller{
 
 					print_r($return);
 				break;
+
+				case 'importProducts':
+					$res = new ResourceImport(array('db' => $this->db));
+					$products = $crm->getProducts();
+					$crm->autoImportProducts( (array)$products['data'] );
+
+					echo '<pre>';
+					print_r($products);
+					echo '</pre>';
+				break;
+
+				case 'getProduct':
+					$data = $crm->getProduct('1440-02');
+					echo '<pre>';
+					print_r($data);
+					echo '</pre>';
+				break;
 			}
 		}
 
