@@ -81,7 +81,10 @@ class cron extends Controller{
 					$items[] = array(
 						'termek_id' => 0,
 						'cikkszam' => 'TESZT'.$u,
+						'gyarto_cikkszam' => 'TESZT'.$u,
+						'gyartocikkszam' => 'TESZT'.$u,
 						'megnevezes' => 'Teszt termék '.$u,
+						'vonalkod' => '1000001000004',
 						'megjegyzes' => '',
 						'afa' => 27,
 						'netto_egysegar' => 1000,
