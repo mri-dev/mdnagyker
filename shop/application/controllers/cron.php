@@ -75,13 +75,33 @@ class cron extends Controller{
 					print_r($return);
 				break;
 
+				case 'createProduct':
+					$items = array();
+					$u = uniqid();
+					$items[] = array(
+						'termek_id' => 0,
+						'cikkszam' => 'TESZT'.$u,
+						'megnevezes' => 'Teszt termék '.$u,
+						'megjegyzes' => '',
+						'afa' => 27,
+						'netto_egysegar' => 1000,
+						'termekcsoport_id' => 1,
+						'koltseghely_id' => 2,
+						'termek' => 1,
+						'mennyisegiegyseg' => 'darab'
+					);
+
+					$ins = $crm->addProduct( $items );
+					print_r($ins);
+				break;
+
 				case 'importProducts':
 					$res = new ResourceImport(array('db' => $this->db));
 					$products = $crm->getProducts();
-					$crm->autoImportProducts( (array)$products['data'] );
+					$prep = $crm->autoImportProducts( 1, (array)$products['data'] );
 
 					echo '<pre>';
-					print_r($products);
+					//print_r($prep);
 					echo '</pre>';
 				break;
 

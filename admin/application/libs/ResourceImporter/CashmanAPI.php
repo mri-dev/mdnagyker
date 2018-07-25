@@ -42,34 +42,118 @@ class CashmanAPI extends ResourceImportBase
 
   }
 
-  public function autoImportProducts( $list = array() )
+  public function autoImportProducts( $originid, $list = array() )
   {
     $prepare = array();
+    $hk = array();
 
+    // Reset IO
+    $this->db->update(
+      parent::DB_TEMP_PRODUCTS,
+      array(
+        'io' => 0
+      ),
+      sprintf("origin_id = %d", $originid)
+    );
+
+    $s = 0;
     foreach ( (array)$list as $row )
     {
+      $s++;
+      //if($s >= 100) break;
       $each = array();
 
-      if ($row['cikkszam'] == '') {
+      if ($row['cikkszam'] == '' || $row['vonalkod'] == '') {
         continue;
       }
 
+      $fulldata = $this->getProduct($row['cikkszam']);
       $each['prod_id'] = $row['cikkszam'];
       $each['termek_nev'] = $row['megnevezes'];
       $each['termek_keszlet'] = $row['keszlet'];
       $each['ean_code'] = $row['vonalkod'];
-      $each['ar1'] = $row['netto'];
+      $each['beszerzes_netto'] = $fulldata['netto_beszerzes'];
+      $each['ar1'] = $fulldata['netto'];
+      $each['ar2'] = $fulldata['netto2'];
+      $each['ar3'] = $fulldata['netto3'];
+      $each['ar4'] = $fulldata['netto4'];
+      $each['ar5'] = $fulldata['netto5'];
+      $each['ar6'] = $fulldata['netto6'];
+      $each['ar7'] = $fulldata['netto7'];
+      $each['ar8'] = $fulldata['netto8'];
+      $each['mennyisegegyseg'] = $fulldata['mennyisegegyseg'];
+
+      $each['fulldata'] = $fulldata;
 
       unset($row);
 
       $prepare[] = $each;
     }
     unset($each);
-    unset($context);
 
-    print_r($prepare);
+    $insert_row = array();
+    $insert_header = array('hashkey', 'origin_id', 'prod_id', 'last_updated', 'termek_nev', 'termek_leiras', 'termek_leiras2', 'beszerzes_netto', 'nagyker_ar_netto', 'kisker_ar_netto', 'termek_keszlet', 'termek_kep_urls', 'ean_code', 'marka_nev', 'kisker_ar_netto_akcios', 'nagyker_ar_netto_akcios', 'ar1','ar2','ar3','ar4','ar5','ar6','ar7','ar8','ar9','ar10', 'io', 'mennyisegegyseg');
 
-    return $prepare;
+    foreach ( (array)$prepare as $r ) {
+      $hashkey = md5($originid.'_'.$r['prod_id'].'_'.$r['ean_code']);
+      $kepek = NULL;
+
+      if (array_key_exists($hashkey, $hk)) {
+        continue;
+      }
+
+      $insert_row[] = array(
+        $hashkey, $originid, addslashes((string)$r['prod_id'].''), NOW, addslashes($r['termek_nev']), addslashes($r['termek_leiras']), addslashes($r['termek_leiras2']), $r['beszerzes_netto'], $r['beszerzes_netto'], $r['ar1'], $r['termek_keszlet'], $kepek, addslashes((string)$r['ean_code'].''), addslashes($r['marka_nev']),$r['kisker_ar_netto_akcios'], $r['nagyker_ar_netto_akcios'], $r['ar1'],$r['ar2'],$r['ar3'],$r['ar4'],$r['ar5'],$r['ar6'],$r['ar7'],$r['ar8'],$r['ar9'],$r['ar10'], 1, addslashes($r['mennyisegegyseg'])
+      );
+
+      /*if (!is_array($r['kepek'])) {
+        $r['kepek'] = explode(",", $r['kepek']);
+      }*/
+
+      /*
+      foreach ((array)$r['kepek'] as $k) {
+        if($k == '') continue;
+        $kephash = md5($originid.'_'.$r['nagyker_termek_id'].'_'.$k);
+        $img_row[] = array($kephash, $originid, (string)$r['nagyker_termek_id'].'', (string)$r['nagyker_termek_id'].'', $k);
+      }
+      */
+
+      // Reg. prev. hashkey exc. multiple insert
+      $hk[$hashkey] += 1;
+    }
+    unset($prepare);
+    unset($r);
+    unset($hk);
+
+    print_r($insert_row);
+    exit;
+
+    /* */
+    if (!empty($insert_row)) {
+      $dbx = $this->db->multi_insert(
+        parent::DB_TEMP_PRODUCTS,
+        $insert_header,
+        $insert_row,
+        array(
+          'debug' => false,
+          'duplicate_keys' => array('hashkey', 'prod_id', 'termek_nev', 'last_updated', 'termek_leiras', 'termek_leiras2', 'beszerzes_netto', 'nagyker_ar_netto', 'kisker_ar_netto', 'termek_keszlet', 'termek_kep_urls', 'ean_code', 'marka_nev', 'kisker_ar_netto_akcios', 'nagyker_ar_netto_akcios','ar1','ar2','ar3','ar4','ar5','ar6','ar7','ar8','ar9','ar10', 'io', 'mennyisegegyseg' )
+        )
+      );
+    }
+    //echo '--->'; $this->memo();
+    unset($insert_row);
+
+    $this->db->update(
+      parent::DB_SOURCE,
+      array(
+        'download_progress' => 0,
+        'last_download' => NOW
+      ),
+      sprintf("ID = %d", $originid)
+    );
+
+
+    return $dbx;
   }
 
   public function getProducts()
@@ -109,7 +193,7 @@ class CashmanAPI extends ResourceImportBase
 			"netto" => $this->api->termekTomb[5],
 			"afa2" => $this->api->termekTomb[6],
 			"netto2" => $this->api->termekTomb[7],
-			"afa3: " => $this->api->termekTomb[8],
+			"afa3" => $this->api->termekTomb[8],
 			"netto3" => $this->api->termekTomb[9],
 			"afa4" => $this->api->termekTomb[10],
 			"netto4" => $this->api->termekTomb[11],
@@ -146,16 +230,17 @@ class CashmanAPI extends ResourceImportBase
     }
     unset($row_set);
 
+    print_r($set);
+
     if ( !empty($set) )
     {
-      foreach ($set as $s) {
-        $this->api->termekrogzites( $s );
-        $ret[$s['cikkszam']] = array(
-          'uzenet' => $this->api->uzenet,
-          'hiba' => $this->api->hiba,
-          'error' => ($this->api->hiba == '') ? 0 : 1
-        );
-      }
+      $this->api->termekrogzites( $set );
+      $ret = array(
+        'uzenet' => $this->api->uzenet,
+        'hiba' => $this->api->hiba,
+        'error' => ($this->api->hiba == '') ? 0 : 1,
+        'sended' => $set
+      );
   		return $ret;
     }
     else return false;
