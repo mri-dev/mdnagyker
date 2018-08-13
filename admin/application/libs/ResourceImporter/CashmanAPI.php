@@ -98,25 +98,51 @@ class CashmanAPI extends ResourceImportBase
       $hashkey = md5($originid.'_'.$r['prod_id'].'_'.$r['ean_code']);
       $kepek = NULL;
 
-      if (array_key_exists($hashkey, $hk)) {
-        continue;
+      if (!array_key_exists($hashkey, $hk)) {
+        $insert_row[] = array(
+          $hashkey,
+          $originid,
+          addslashes((string)$r['prod_id'].''),
+          NOW,
+          addslashes($r['termek_nev']),
+          addslashes($r['termek_leiras']),
+          addslashes($r['termek_leiras2']),
+          (float)$r['beszerzes_netto'],
+          (float)$r['beszerzes_netto'],
+          (float)$r['ar1'],
+          $r['termek_keszlet'],
+          $kepek,
+          addslashes((string)$r['ean_code'].''),
+          addslashes($r['marka_nev']),
+          (float)$r['kisker_ar_netto_akcios'],
+          (float)$r['nagyker_ar_netto_akcios'],
+          (float)$r['ar1'],
+          (float)$r['ar2'],
+          (float)$r['ar3'],
+          (float)$r['ar4'],
+          (float)$r['ar5'],
+          (float)$r['ar6'],
+          (float)$r['ar7'],
+          (float)$r['ar8'],
+          (float)$r['ar9'],
+          (float)$r['ar10'],
+          1,
+          addslashes(trim($r['mennyisegegyseg']))
+        );
+
+        /*if (!is_array($r['kepek'])) {
+          $r['kepek'] = explode(",", $r['kepek']);
+        }*/
+
+        /*
+        foreach ((array)$r['kepek'] as $k) {
+          if($k == '') continue;
+          $kephash = md5($originid.'_'.$r['nagyker_termek_id'].'_'.$k);
+          $img_row[] = array($kephash, $originid, (string)$r['nagyker_termek_id'].'', (string)$r['nagyker_termek_id'].'', $k);
+        }
+        */
       }
 
-      $insert_row[] = array(
-        $hashkey, $originid, addslashes((string)$r['prod_id'].''), NOW, addslashes($r['termek_nev']), addslashes($r['termek_leiras']), addslashes($r['termek_leiras2']), $r['beszerzes_netto'], $r['beszerzes_netto'], $r['ar1'], $r['termek_keszlet'], $kepek, addslashes((string)$r['ean_code'].''), addslashes($r['marka_nev']),$r['kisker_ar_netto_akcios'], $r['nagyker_ar_netto_akcios'], $r['ar1'],$r['ar2'],$r['ar3'],$r['ar4'],$r['ar5'],$r['ar6'],$r['ar7'],$r['ar8'],$r['ar9'],$r['ar10'], 1, addslashes($r['mennyisegegyseg'])
-      );
-
-      /*if (!is_array($r['kepek'])) {
-        $r['kepek'] = explode(",", $r['kepek']);
-      }*/
-
-      /*
-      foreach ((array)$r['kepek'] as $k) {
-        if($k == '') continue;
-        $kephash = md5($originid.'_'.$r['nagyker_termek_id'].'_'.$k);
-        $img_row[] = array($kephash, $originid, (string)$r['nagyker_termek_id'].'', (string)$r['nagyker_termek_id'].'', $k);
-      }
-      */
 
       // Reg. prev. hashkey exc. multiple insert
       $hk[$hashkey] += 1;
@@ -125,8 +151,8 @@ class CashmanAPI extends ResourceImportBase
     unset($r);
     unset($hk);
 
-    print_r($insert_row);
-    exit;
+    //print_r($insert_row);
+    //exit;
 
     /* */
     if (!empty($insert_row)) {
@@ -136,6 +162,7 @@ class CashmanAPI extends ResourceImportBase
         $insert_row,
         array(
           'debug' => false,
+          'steplimit' => 10,
           'duplicate_keys' => array('hashkey', 'prod_id', 'termek_nev', 'last_updated', 'termek_leiras', 'termek_leiras2', 'beszerzes_netto', 'nagyker_ar_netto', 'kisker_ar_netto', 'termek_keszlet', 'termek_kep_urls', 'ean_code', 'marka_nev', 'kisker_ar_netto_akcios', 'nagyker_ar_netto_akcios','ar1','ar2','ar3','ar4','ar5','ar6','ar7','ar8','ar9','ar10', 'io', 'mennyisegegyseg' )
         )
       );

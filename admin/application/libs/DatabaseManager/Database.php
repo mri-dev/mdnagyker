@@ -204,12 +204,14 @@ class Database
 			$query .= ";";
 			if( !$debug ){
 				$this->query( $query );
+				//echo $query . "<br><br>";
 			} else {
 				$debug_str .= $query;
 			}
 
 			$step_breaks--;
 			$wk_step++;
+			usleep(10);
 		}
 
 		return $debug_str;

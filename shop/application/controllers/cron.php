@@ -94,7 +94,7 @@ class cron extends Controller{
 						'mennyisegiegyseg' => 'darab'
 					);
 
-					$ins = $crm->addProduct( $items );
+					//$ins = $crm->addProduct( $items );
 					print_r($ins);
 				break;
 
@@ -104,7 +104,7 @@ class cron extends Controller{
 					$prep = $crm->autoImportProducts( 1, (array)$products['data'] );
 
 					echo '<pre>';
-					//print_r($prep);
+					print_r($prep);
 					echo '</pre>';
 				break;
 
