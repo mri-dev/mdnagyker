@@ -94,8 +94,10 @@ class cron extends Controller{
 						'mennyisegiegyseg' => 'darab'
 					);
 
-					//$ins = $crm->addProduct( $items );
+					$ins = $crm->addProduct( $items );
+					echo '<pre>';
 					print_r($ins);
+					echo '</pre>';
 				break;
 
 				case 'importProducts':
@@ -107,9 +109,26 @@ class cron extends Controller{
 					print_r($prep);
 					echo '</pre>';
 				break;
+				case 'updateProduct':
+					$items = array();
+					$items[] = array(
+						'termek_id' => 10,
+						'vonalkod' => 'TEST0001',
+						'termekcsoport_id' => 1,
+						'megjegyzes' => 'teszt',
+						'megnevezes' => 'Teszt termék X',
+						'mennyisegiegyseg' => 'db',
+						'afa' => 27,
+						'netto_egysegar' => 480
+					);
 
+					$ins = $crm->addProduct( $items );
+					echo '<pre>';
+					print_r($ins);
+					echo '</pre>';
+				break;
 				case 'getProduct':
-					$data = $crm->getProduct('1440-02');
+					$data = $crm->getProduct($this->gets[3]);
 					echo '<pre>';
 					print_r($data);
 					echo '</pre>';
