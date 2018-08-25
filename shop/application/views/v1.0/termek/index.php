@@ -110,7 +110,7 @@
           <div class="divider"></div>
           <div class="short-desc">
             <?=$this->product['rovid_leiras']?>
-          </div>
+          </div>          
           <?
           if( count($this->product['hasonlo_termek_ids']['colors']) > 1 ):
               $colorset = $this->product['hasonlo_termek_ids']['colors'];
@@ -124,9 +124,12 @@
           <? endforeach; ?>
           </div>
           <? endif; ?>
+
           <div class="divider"></div>
+
           <div class="cart-info">
             <div id="cart-msg"></div>
+
             <? if($this->settings['stock_outselling'] == '0' && $this->product['raktar_keszlet'] <= 0): ?>
             <div class="out-of-stock">
               A termék jelenleg nem rendelhető.
@@ -134,9 +137,10 @@
             <? endif; ?>
 
             <?php if ( $this->product['raktar_keszlet'] > 0 || $this->settings['stock_outselling'] == '1'): ?>
-            <div class="group" style="margin: 10px -10px 0 0;">
+            <div class="group" style="margin: 10px -10px 0 -10px;">
               <?
-              if( count($this->product['hasonlo_termek_ids']['colors'][$this->product['szin']]['size_set']) > 1 ):
+              // KIKAPCSOLVA
+              if( count($this->product['hasonlo_termek_ids']['colors'][$this->product['szin']]['size_set']) > 1 && false ):
                   $colorset = $this->product['hasonlo_termek_ids']['colors'][$this->product['szin']]['size_set'];
                   //unset($colorset[$this->product['szin']]);
               ?>
@@ -150,15 +154,50 @@
                   </div>
               </div>
               <? endif; ?>
+
+              <div class="configs">
+                <div class="list">
+                  <?php if (false): ?>
+                  <div class="conf">
+                    <label for="conf_szin">Szín:</label>
+                    <div class="sel-inp-wrapper">
+                      <select class="" name="config[szin]">
+                        <option value="">Fekete</option>
+                        <option value="">Szürke</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="conf">
+                    <label for="conf_meret">Méret:</label>
+                    <div class="sel-inp-wrapper">
+                      <select class="" name="config[meret]">
+                        <option value="">110mm</option>
+                        <option value="">115mm</option>
+                      </select>
+                    </div>
+                  </div>
+
+
+                  <?php endif; ?>
+                  <?php if ( !$this->product['without_price'] ): ?>
+                  <div class="conf men">
+                    <label for="darab">Darab:</label>
+                    <div class="num-inp-wrapper">
+                      <input type="number" name="" id="add_cart_num" cart-count="<?=$this->product['ID']?>" value="1" min="1">
+                    </div>
+                  </div>
+                  <?php endif; ?>
+                </div>
+              </div>
+
               <div class="order <?=($this->product['without_price'])?'requestprice':''?>">
                 <?php if ( !$this->product['without_price'] ): ?>
-                <div class="men">
-                  <input type="number" name="" id="add_cart_num" cart-count="<?=$this->product['ID']?>" value="1" min="1">
-                </div>
-                <?php endif; ?>
-                <?php if ( !$this->product['without_price'] ): ?>
+                  <div class="finalprice">
+                    Bruttó összeg:<br>
+                    <div class="price"><?=\PortalManager\Formater::cashFormat($ar)?> Ft</div>
+                  </div>
                   <div class="buttonorder">
-                    <button id="addtocart" cart-data="<?=$this->product['ID']?>" cart-remsg="cart-msg" title="Kosárba" class="tocart cart-btn"><?=__('kosárba')?></i></button>
+                    <button id="addtocart" cart-data="<?=$this->product['ID']?>" cart-remsg="cart-msg" title="Kosárba rakom" class="tocart cart-btn"> <img src="<?=IMG?>cart-shop.svg" alt=""> <?=__('kosárba rakom')?></i></button>
                   </div>
                 <?php else: ?>
                   <div class="requestbutton">
@@ -171,6 +210,67 @@
               </div>
             </div>
             <?php endif; ?>
+          </div>
+          <div class="divider"></div>
+          <div class="group-infos">
+            <div class="cats">
+              <div class="flex">
+                <div class="title">
+                  Kategóriák:
+                </div>
+                <div class="val">
+                  <div class="wrapper">
+                    ...
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="keywords">
+              <div class="flex">
+                <div class="title">
+                  Címke:
+                </div>
+                <div class="val">
+                  <div class="wrapper">
+                    <div class="labels">
+                      <div>
+                        <a href="#">Pioneer</a>
+                      </div>
+                      <div>
+                        <a href="#">Autórádió</a>
+                      </div>
+                      <div>
+                        <a href="#">Fejegység</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="shares">
+              <div class="flex">
+                <div class="title">
+                  Megosztás:
+                </div>
+                <div class="val">
+                  <div class="wrapper">
+                    <div class="social">
+                      <div class="flex flexmob-exc-resp">
+                        <div class="facebook">
+                          <a  href="#"><i class="fa fa-facebook"></i></a>
+                        </div>
+                        <div class="googleplus">
+                          <a href="#"><i class="fa fa-google-plus"></i></a>
+                        </div>
+                        <div class="email">
+                          <a href="#"><i class="fa fa-envelope"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <?php endif; ?>
 

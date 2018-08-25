@@ -46,28 +46,7 @@ header {
 				}
 			}
 		}
-		.social {
-			.flex {
-				align-items: center;
-				justify-content: flex-start;
-
-				& > div {
-					padding: 0 2px;
-				}
-
-				a {
-					padding: 0;
-					width: 18px;
-					line-height: 18px;
-					display: block;
-					text-align: center;
-					background-color: #333333;
-					color: white;
-					font-size: 10px;
-					@include border-radius(10px);
-				}
-			}
-		}
+		
 		.navs{
 			.flex {
 				& > div {
