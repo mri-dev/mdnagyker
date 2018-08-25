@@ -212,7 +212,7 @@ class CashmanAPI extends ResourceImportBase
     $this->api->termekadatok($param);
 
     return array(
-      'id' =>  $this->api->termekTomb[1],
+      'id' =>  $this->api->termekTomb[0],
       'megnevezes' => $this->api->termekTomb[1],
       "vonalkod" => $this->api->termekTomb[2],
 			"cikkszam" => $this->api->termekTomb[3],
