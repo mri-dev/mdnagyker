@@ -2249,8 +2249,8 @@ body.singlepage .website .page.covered-page .side-menu {
 .related-products .items .item .title a {
   color: #202020;
   display: block;
-  height: 26px;
-  max-height: 26px;
+  height: 30px;
+  max-height: 30px;
   overflow: hidden;
 }
 /* line 912, sass/_base.scss */
@@ -3578,8 +3578,8 @@ body.singlepage .website .page.covered-page .side-menu {
 /* line 2147, sass/_base.scss */
 .product-view > .product-data .top-datas .main-data h1 {
   font-weight: bold;
-  font-size: 3em;
-  line-height: 1.2;
+  font-size: 2.4em;
+  line-height: 1.1;
 }
 /* line 2152, sass/_base.scss */
 .product-view > .product-data .top-datas .main-data .csoport {

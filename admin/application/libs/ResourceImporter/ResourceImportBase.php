@@ -34,7 +34,7 @@ class ResourceImportBase
   public function __destruct()
   {
     $this->db = null;
-    $this->memo();
+    //$this->memo();
   }
 
   public function delSource()

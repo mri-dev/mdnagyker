@@ -42,6 +42,29 @@ class CashmanAPI extends ResourceImportBase
 
   }
 
+  public function getFullItemData( $originid, $id )
+  {
+    $data = array();
+
+    $q = "SELECT
+      x.*,
+      x.prod_id as sync_id
+    FROM xml_temp_products as x WHERE 1=1 ";
+
+    $q .= " and x.origin_id = ".$originid;
+    $q .= " and x.prod_id = :prod_id ";
+
+    $qry = $this->db->squery( $q, array(
+      'prod_id' => $id
+    ));
+
+    $dat = $qry->fetch(\PDO::FETCH_ASSOC);
+
+    $data = $dat;
+
+    return $data;
+  }
+
   public function autoImportProducts( $originid, $list = array() )
   {
     $prepare = array();
@@ -60,7 +83,7 @@ class CashmanAPI extends ResourceImportBase
     foreach ( (array)$list as $row )
     {
       $s++;
-      //if($s >= 100) break;
+      //if($s >= 300) break;
       $each = array();
 
       if ($row['cikkszam'] == '' || $row['vonalkod'] == '') {
@@ -68,7 +91,12 @@ class CashmanAPI extends ResourceImportBase
       }
 
       $fulldata = $this->getProduct($row['cikkszam']);
-      $each['prod_id'] = $row['cikkszam'];
+      $hashkey = md5($originid.'_'.$fulldata['id'].'_'.$row['vonalkod']);
+
+      $each['hashkey'] = $hashkey;
+      $each['cikkszam'] = $row['cikkszam'];
+      $each['gyarto_kod'] = $row['cikkszam'];
+      $each['prod_id'] = (int)trim($fulldata['id']);
       $each['termek_nev'] = $row['megnevezes'];
       $each['termek_keszlet'] = $row['keszlet'];
       $each['ean_code'] = $row['vonalkod'];
@@ -92,17 +120,20 @@ class CashmanAPI extends ResourceImportBase
     unset($each);
 
     $insert_row = array();
-    $insert_header = array('hashkey', 'origin_id', 'prod_id', 'last_updated', 'termek_nev', 'termek_leiras', 'termek_leiras2', 'beszerzes_netto', 'nagyker_ar_netto', 'kisker_ar_netto', 'termek_keszlet', 'termek_kep_urls', 'ean_code', 'marka_nev', 'kisker_ar_netto_akcios', 'nagyker_ar_netto_akcios', 'ar1','ar2','ar3','ar4','ar5','ar6','ar7','ar8','ar9','ar10', 'io', 'mennyisegegyseg');
+    $insert_header = array('hashkey', 'origin_id', 'cikkszam', 'gyarto_kod', 'prod_id', 'last_updated', 'termek_nev', 'termek_leiras', 'termek_leiras2', 'beszerzes_netto', 'nagyker_ar_netto', 'kisker_ar_netto', 'termek_keszlet', 'termek_kep_urls', 'ean_code', 'marka_nev', 'kisker_ar_netto_akcios', 'nagyker_ar_netto_akcios', 'ar1','ar2','ar3','ar4','ar5','ar6','ar7','ar8','ar9','ar10', 'io', 'mennyisegegyseg');
 
-    foreach ( (array)$prepare as $r ) {
-      $hashkey = md5($originid.'_'.$r['prod_id'].'_'.$r['ean_code']);
+    foreach ( (array)$prepare as $r )
+    {
+      $hashkey = $r['hashkey'];
       $kepek = NULL;
 
       if (!array_key_exists($hashkey, $hk)) {
         $insert_row[] = array(
           $hashkey,
           $originid,
-          addslashes((string)$r['prod_id'].''),
+          addslashes($r['cikkszam']),
+          addslashes($r['gyarto_kod']),
+          $r['prod_id'],
           NOW,
           addslashes($r['termek_nev']),
           addslashes($r['termek_leiras']),
@@ -161,9 +192,9 @@ class CashmanAPI extends ResourceImportBase
         $insert_header,
         $insert_row,
         array(
-          'debug' => false,
+          'debug' => true,
           'steplimit' => 10,
-          'duplicate_keys' => array('hashkey', 'prod_id', 'termek_nev', 'last_updated', 'termek_leiras', 'termek_leiras2', 'beszerzes_netto', 'nagyker_ar_netto', 'kisker_ar_netto', 'termek_keszlet', 'termek_kep_urls', 'ean_code', 'marka_nev', 'kisker_ar_netto_akcios', 'nagyker_ar_netto_akcios','ar1','ar2','ar3','ar4','ar5','ar6','ar7','ar8','ar9','ar10', 'io', 'mennyisegegyseg' )
+          'duplicate_keys' => array('hashkey', 'cikkszam', 'gyarto_kod', 'prod_id', 'termek_nev', 'last_updated', 'termek_leiras', 'termek_leiras2', 'beszerzes_netto', 'nagyker_ar_netto', 'kisker_ar_netto', 'termek_keszlet', 'termek_kep_urls', 'ean_code', 'marka_nev', 'kisker_ar_netto_akcios', 'nagyker_ar_netto_akcios','ar1','ar2','ar3','ar4','ar5','ar6','ar7','ar8','ar9','ar10', 'io', 'mennyisegegyseg' )
         )
       );
     }
@@ -194,11 +225,17 @@ class CashmanAPI extends ResourceImportBase
 
     $this->api->keszlet_lista( $param );
 
+    $list = array();
+
+    foreach ($this->api->keszlet_listaTomb as $tomb ) {
+      $list[] = $tomb;
+    }
+
     return array(
       'uzenet' => $this->api->uzenet,
       'hiba' => $this->api->hiba,
       'error' => ($this->api->hiba == '') ? 0 : 1,
-      'data' => $this->api->keszlet_listaTomb
+      'data' => $list
     );
   }
 

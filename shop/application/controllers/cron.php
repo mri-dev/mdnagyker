@@ -105,21 +105,28 @@ class cron extends Controller{
 					$products = $crm->getProducts();
 					$prep = $crm->autoImportProducts( 1, (array)$products['data'] );
 
-					echo '<pre>';
-					print_r($prep);
+					echo $prep;
+
+					/*echo '<pre>';
+					print_r($products);
 					echo '</pre>';
+					*/
 				break;
 				case 'updateProduct':
 					$items = array();
 					$items[] = array(
-						'termek_id' => 10,
-						'vonalkod' => 'TEST0001',
+						// Kötelezőek
+						'termek_id' => 1392,
+						'vonalkod' => 15177,
+						'megnevezes' => 'Kenwood KDC-X5200BT Bluetooth/MP3/WMA/CD/USB autórádió',
 						'termekcsoport_id' => 1,
-						'megjegyzes' => 'teszt',
-						'megnevezes' => 'Teszt termék X',
-						'mennyisegiegyseg' => 'db',
 						'afa' => 27,
-						'netto_egysegar' => 480
+						'mennyisegiegyseg' => 'darab',
+						'netto_egysegar' => 34567,
+						'termek' => 1,
+						'cikkszam' => 'KDC-X5200BT',
+						// Kiegészítés:
+						'minimum' => 25,
 					);
 
 					$ins = $crm->addProduct( $items );

@@ -96,71 +96,15 @@
 				</div>
 
 				<div class="con">
-					<h3>Cashman FX törzsadatok</h3>
+					<h3>Termék törzsadatok</h3>
 					<div class="row">
-						<div class="col-md-4">
-							<div class="row np">
-								<div class="col-md-6">
-									<strong>Belső azonosító:</strong>
-								</div>
-								<div class="col-md-6">
-									<?php echo $this->termek['crm']['sync_id']; ?>
-								</div>
-							</div>
-							<div class="row np">
-								<div class="col-md-6">
-									<strong>Importálás ideje:</strong>
-								</div>
-								<div class="col-md-6">
-									<?php echo $this->termek['crm']['when_imported']; ?>
-								</div>
-							</div>
-							<div class="row np">
-								<div class="col-md-6">
-									<strong>Utoljára frissítve:</strong>
-								</div>
-								<div class="col-md-6">
-									<?php echo $this->termek['crm']['last_updated']; ?>
-								</div>
-							</div>
-							<div class="row np">
-								<div class="col-md-6">
-									<strong>Utoljára felszinkronizálva:</strong>
-								</div>
-								<div class="col-md-6">
-									<?php echo $this->termek['crm']['last_sync_up']; ?>
-								</div>
-							</div>
+						<div class="col-md-6">
+							<label for="raktar_articleid">Típus azonosító törzskód</label>
+							<input type="text" name="raktar_articleid" id="raktar_articleid" value="<?=$this->termek[raktar_articleid]?>" class="form-control">
 						</div>
-						<div class="col-md-8">
-							<div class="row">
-								<div class="col-md-12">
-									<h2>Fő adatok</h2>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-8">
-									<label for="crm_termek_nev">Termék neve</label>
-									<input type="text" name="crm[termek_nev]" id="crm_termek_nev" value="<?=$this->termek[crm][termek_nev]?>" class="form-control">
-								</div>
-								<div class="col-md-4">
-									<label for="crm_ean_code">Vonalkód</label>
-									<input type="text" name="crm[ean_code]" id="crm_ean_code" value="<?=$this->termek[crm][ean_code]?>" class="form-control">
-								</div>
-							</div>
-							<br>
-							<div class="row">
-								<div class="col-md-4">
-									<label for="crm_keszlet_min">Virtuális készlet</label>
-									<input type="number" min="0" name="crm[keszlet_min]" id="crm_keszlet_min" value="<?=$this->termek[crm][keszlet_min]?>" class="form-control">
-								</div>
-							</div>
-							<br>
-							<div class="row">
-								<div class="col-md-12">
-									<h2>Ár adatok</h2>
-								</div>
-							</div>
+						<div class="col-md-6">
+							<label for="raktar_variantid">Variáció azonosító</label>
+							<input type="text" name="raktar_variantid" id="raktar_variantid" value="<?=$this->termek[raktar_variantid]?>" class="form-control">
 						</div>
 					</div>
 				</div>
@@ -226,11 +170,11 @@
 					<div class="row">
 						<div class="form-group col-md-2">
 							<label for="cikkszam">Nagyker kód / Cikkszám</label>
-							<input class="form-control" id="cikkszam" readonly="readonly" type="text" value="<?=$this->termek['cikkszam']?>"  name="cikkszam">
+							<input class="form-control" id="cikkszam" type="text" value="<?=$this->termek['cikkszam']?>"  name="cikkszam">
 						</div>
 						<div class="form-group col-md-4">
 							<label for="nev">Termék neve*</label>
-							<input type="text" class="form-control" readonly="readonly" name="nev" id="nev" value="<?=$this->termek[nev]?>">
+							<input type="text" class="form-control" name="nev" id="nev" value="<?=$this->termek[nev]?>">
 						</div>
 						<div class="form-group col-md-3">
 							<label for="csoport_kategoria">Termék alcíme</label>

@@ -1,5 +1,5 @@
 <?php
-  $ar = $this->product['brutto_ar'];
+  $ar = $this->product['ar'];
 
   if( $this->product['akcios'] == '1' && $this->product['akcios_fogy_ar'] > 0)
   {
@@ -110,7 +110,7 @@
           <div class="divider"></div>
           <div class="short-desc">
             <?=$this->product['rovid_leiras']?>
-          </div>          
+          </div>
           <?
           if( count($this->product['hasonlo_termek_ids']['colors']) > 1 ):
               $colorset = $this->product['hasonlo_termek_ids']['colors'];

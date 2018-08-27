@@ -25,6 +25,7 @@ class Products
 	public $item_ids = array();
 	public $settings = array();
 	private $vehicles = null;
+	private $crm = null;
 
 	public function __construct( $arg = array() ) {
 		$this->db = $arg[db];
@@ -32,6 +33,13 @@ class Products
 		$this->settings = $arg['settings'];
 
 		$this->vehicles = new Vehicles(array('db' => $this->db));
+
+		return $this;
+	}
+
+	public function setCRMHandler( $crm )
+	{
+		$this->crm = $crm;
 
 		return $this;
 	}
@@ -555,6 +563,7 @@ class Products
 
 		$uid = (int)$this->user[data][ID];
 
+
 		/*==========  Lekérdezés  ==========*/
 		$qry = "
 		SELECT SQL_CALC_FOUND_ROWS
@@ -567,7 +576,7 @@ class Products
 			p.no_cetelem,
 			p.akcios,
 			p.ujdonsag,
-			p.brutto_ar as ar,
+			p.brutto_ar,
 			p.marketing_leiras,
 			p.akcios_netto_ar,
 			p.akcios_brutto_ar,
@@ -992,6 +1001,9 @@ class Products
 			//$d['ar'] 				= $arInfo['ar'];
 			//$d['akcios_fogy_ar']	= $akcios_arInfo['ar'];
 			//$d['arres_szazalek'] 	= $arInfo['arres'];
+
+			// CRM - Cashman FX
+			$d['crm'] = array();
 
 			$bdata[]	 			= $d;
 		}
@@ -1656,11 +1668,14 @@ class Products
 			$row = rtrim( $opt['rows'], ',' );
 		}
 
+		$uid = (int)$this->user[data][ID];
+
 		$q = $this->db->query("
 			SELECT 			$row,
-							k.neve as kategoriaNev,
-							ta.elnevezes as keszletNev,
-							sza.elnevezes as szallitasNev
+				getTermekAr(t.ID, ".$uid.") as ar,
+				k.neve as kategoriaNev,
+				ta.elnevezes as keszletNev,
+				sza.elnevezes as szallitasNev
 			FROM 			shop_termekek as t
 			LEFT OUTER JOIN shop_termek_kategoriak as k ON k.ID = t.alapertelmezett_kategoria
 			LEFT OUTER JOIN shop_termek_allapotok as ta ON ta.ID = t.keszletID
@@ -1672,7 +1687,7 @@ class Products
 		$data = $q->fetch(\PDO::FETCH_ASSOC);
 
 
-		$brutto_ar 			= $data['brutto_ar'];
+		$brutto_ar	= $data['ar'];
 		$akcios_brutto_ar 	= $data['akcios_brutto_ar'];
 
 		$kep = $data['profil_kep'];
@@ -1686,11 +1701,11 @@ class Products
 			$arInfo['ar'] = $arInfo['ar'];
 		}
 
-		$arInfo['ar'] 			= ($this->settings['round_price_5'] == '1') ? round($arInfo['ar'] / 5) * 5 : $arInfo['ar'] ;
-		$akcios_arInfo['ar'] 	= ($this->settings['round_price_5'] == '1') ? round($akcios_arInfo['ar'] / 5) * 5 : $akcios_arInfo['ar'] ;
+		//$arInfo['ar'] 			= ($this->settings['round_price_5'] == '1') ? round($arInfo['ar'] / 5) * 5 : $arInfo['ar'] ;
+		//$akcios_arInfo['ar'] 	= ($this->settings['round_price_5'] == '1') ? round($akcios_arInfo['ar'] / 5) * 5 : $akcios_arInfo['ar'] ;
 
 		$data['rovid_leiras'] 		= $this->addLinkToString( $data, $data['rovid_leiras'] );
-		$data['ar'] 				= $arInfo['ar'];
+		$data['ar'] = $arInfo['ar'];
 		$data['akcios_fogy_ar']		= $akcios_arInfo['ar'];
 		$data['arres_szazalek'] 	= $arInfo['arres'];
 		$data['hasonlo_termek_ids'] = $this->getProductRelatives( $product_id );
@@ -1718,6 +1733,12 @@ class Products
 		$data['link_lista']	= $this->getProductLinksFromStr( $data['linkek'] );
 		// Csatolt link hivatkozások
 		$this->getProductLinksFromCategoryHashkeys( $data['in_cat_page_hashkeys'], $data['link_lista'] );
+
+		// CRM - Cashman FX
+		if ( $this->crm && gettype($this->crm) == 'object' )
+		{
+			$data['crm'] = $this->crm->getFullItemData( 1, $data['nagyker_kod'] );
+		}
 
 		return $data;
 	}

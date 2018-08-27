@@ -7,6 +7,7 @@ use PortalManager\Template;
 use PortalManager\Admin;
 use FileManager\FileLister;
 use Applications\XMLParser;
+use ResourceImporter\CashmanAPI;
 
 class termekek extends Controller
 {
@@ -122,8 +123,12 @@ class termekek extends Controller
 				Helper::reload('/termekek/1');
 			}
 
+			// CRM
+			$crm = new CashmanAPI( array( 'db' => $this->db ) );
+
 			// Termék lista
 			$products = new Products( array( 'db' => $this->db ) );
+			$products->setCRMHandler( $crm );
 			$price_groups = $products->priceGroupList();
 
 			$filters = Helper::getCookieFilter('filter',array('filtered'));
@@ -209,7 +214,10 @@ class termekek extends Controller
 
 		function t(){
 
+			// CRM
+			$crm = new CashmanAPI( array( 'db' => $this->db ) );
 			$products = new Products( array( 'db' => $this->db ) );
+			$products->setCRMHandler( $crm );
 
 			switch($this->view->gets[2]){
 				case 'del':
