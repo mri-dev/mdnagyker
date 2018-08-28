@@ -37,13 +37,6 @@ class Products
 		return $this;
 	}
 
-	public function setCRMHandler( $crm )
-	{
-		$this->crm = $crm;
-
-		return $this;
-	}
-
 	public function create(Product $product)
 	{
 		$uploadedProductId = 0;
@@ -320,6 +313,8 @@ class Products
 			$tudastar_url 	= (!$product->getVariable('tudastar_url')) ? NULL : $product->getVariable('tudastar_url');
 			$referer_price_discount 	= (!$product->getVariable('referer_price_discount')) ? 0 : $product->getVariable('referer_price_discount');
 			$sorrend 			= (!$product->getVariable('sorrend')) ? 0 : $product->getVariable('sorrend');
+
+			$this->syncUpCRMProduct( 1, $product->getVariable('crm') );
 
 			// Csatolt hivatkozások előkészítése
 			if( $link_list ) {
@@ -2120,6 +2115,56 @@ class Products
 		}
 
 		return false;
+	}
+
+
+	public function setCRMHandler( $crm )
+	{
+		$this->crm = $crm;
+
+		return $this;
+	}
+
+	public function syncUpCRMProduct( $origin, $torzs )
+	{
+		if ( !$this->crm ) {
+			return false;
+		}
+
+		$items = array();
+		$in = array(
+			// Kötelezőek
+			'termekcsoport_id' => 1,
+			'afa' => 27,
+			'mennyisegiegyseg' => 'darab',
+			'termek' => 1,
+
+			'termek_id' => $torzs['prod_id'],
+			'vonalkod' => $torzs['ean_code'],
+			'megnevezes' => trim($torzs['termek_nev']),
+			'netto_egysegar' => $torzs['ar'][1],
+			'cikkszam' => $torzs['cikkszam'],
+			// Kiegészítés:
+			'minimum' => (float)$torzs['keszlet_min'],
+		);
+		foreach ($torzs['ar'] as $ai => $ar ) {
+			$in['afa'.$ai] = 27;
+			$in['netto_egysegar'.$ai] = (float) $ar;
+		}
+		$items[] = $in;
+
+		//$ins = $this->crm->addProduct( $items );
+
+		if ($ins[error] == 0) {
+			$this->db->update(
+				'xml_temp_products',
+				array(
+					'last_sync_up' => date('Y-m-d H:i:s')
+				),
+				sprintf("origin_id = %d and prod_id = %d", $origin, $torzs['prod_id'])
+			);
+		}
+		return $ins;
 	}
 
 	/*===============================

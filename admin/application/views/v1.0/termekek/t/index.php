@@ -140,25 +140,48 @@
 							</div>
 							<div class="row">
 								<div class="col-md-8">
+									<input type="hidden" name="crm[prod_id]" value="<?=$this->termek[crm][sync_id]?>" class="form-control">
 									<label for="crm_termek_nev">Termék neve</label>
 									<input type="text" name="crm[termek_nev]" id="crm_termek_nev" value="<?=$this->termek[crm][termek_nev]?>" class="form-control">
 								</div>
 								<div class="col-md-4">
-									<label for="crm_ean_code">Vonalkód</label>
-									<input type="text" name="crm[ean_code]" id="crm_ean_code" value="<?=$this->termek[crm][ean_code]?>" class="form-control">
+									<label for="crm_keszlet_min">Virtuális készlet</label>
+									<input type="number" min="0" name="crm[keszlet_min]" id="crm_keszlet_min" value="<?=$this->termek[crm][virtualis_keszlet]?>" class="form-control">
 								</div>
 							</div>
 							<br>
 							<div class="row">
 								<div class="col-md-4">
-									<label for="crm_keszlet_min">Virtuális készlet</label>
-									<input type="number" min="0" name="crm[keszlet_min]" id="crm_keszlet_min" value="<?=$this->termek[crm][keszlet_min]?>" class="form-control">
+									<label for="crm_ean_code">Vonalkód</label>
+									<input type="text" name="crm[ean_code]" id="crm_ean_code" value="<?=$this->termek[crm][ean_code]?>" class="form-control">
+								</div>
+								<div class="col-md-4">
+									<label for="crm_cikkszam">Cikkszám</label>
+									<input type="text" name="crm[cikkszam]" id="crm_cikkszam" value="<?=$this->termek[crm][cikkszam]?>" class="form-control">
 								</div>
 							</div>
 							<br>
 							<div class="row">
 								<div class="col-md-12">
 									<h2>Ár adatok</h2>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<label for="crm_beszerzes_netto">Nettó beszerzés</label>
+									<input type="number" min="0" disabled="disabled" id="crm_beszerzes_netto" value="<?=$this->termek[crm][beszerzes_netto]?>" class="form-control">
+								</div>
+								<div class="col-md-8">
+									<?php for ($ap = 1; $ap <= 8; $ap++): ?>
+									<div class="row">
+										<div class="col-md-12">
+											<label for="crm_ar<?=$ap?>">Ár #<?=$ap?> nettó <? if(array_key_exists('ar'.$ap, $this->price_groups)): ?>- <strong style="color:green;"><?=$this->price_groups['ar'.$ap]['title']?></strong><? endif; ?></label>
+											<input <?=(!array_key_exists('ar'.$ap, $this->price_groups)) ? 'disabled="disabled"' : ''?> type="number" min="0" name="crm[ar][<?=$ap?>]" id="crm_ar<?=$ap?>" value="<?=$this->termek[crm]['ar'.$ap]?>" class="form-control">
+											<small><?=(!array_key_exists('ar'.$ap, $this->price_groups)) ? 'Nincs árcsoporthoz kapcsolva. <a href="/arcsoportok">Beállítás</a>' : ''?></small>
+										</div>
+									</div>
+									<br>
+									<?php endfor; ?>
 								</div>
 							</div>
 						</div>

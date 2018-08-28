@@ -212,8 +212,8 @@ class termekek extends Controller
 			Helper::reload('/termekek/');
 		}
 
-		function t(){
-
+		function t()
+		{
 			// CRM
 			$crm = new CashmanAPI( array( 'db' => $this->db ) );
 			$products = new Products( array( 'db' => $this->db ) );
@@ -296,7 +296,8 @@ class termekek extends Controller
 								'show_stock' => $_POST['show_stock'],
 								'sorrend' =>  (isset($_POST['sorrend']) ? $_POST['sorrend'] : 100),
 								'meta_title' => $_POST['meta_title'],
-								'meta_desc' => $_POST['meta_desc']
+								'meta_desc' => $_POST['meta_desc'],
+								'crm' => $_POST['crm']
 							) ) );
 							Helper::reload( '/termekek/t/edit/'.$this->view->gets[3].'/?backmsg=success&msg='.$save);
 						} catch (Exception $e){

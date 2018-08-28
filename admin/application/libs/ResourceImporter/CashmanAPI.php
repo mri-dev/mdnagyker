@@ -294,8 +294,6 @@ class CashmanAPI extends ResourceImportBase
     }
     unset($row_set);
 
-    print_r($set);
-
     if ( !empty($set) )
     {
       $this->api->termekrogzites( $set );
