@@ -135,16 +135,18 @@
 				       <a title="Szerkesztés" href="/termekek/t/edit/<?=$d['product_id']?>" style="color:black;" ><?=$d['product_nev']?></a>
              </div>
              <div class="inps">
-               <div class="szin">
-                 <input type="text" class="form-control action" mode="szin" tid="<?=$d['product_id']?>" value="<?=$d['szin']?>" placeholder="Variáció" />
-               </div>
-               <div class="meret">
-                 <input type="text" class="form-control action" mode="meret" tid="<?=$d['product_id']?>" value="<?=$d['meret']?>" placeholder="Kiszerelés" />
-               </div>
+               <?php if (false): ?>
+                 <div class="szin">
+                   <input type="text" class="form-control action" mode="szin" tid="<?=$d['product_id']?>" value="<?=$d['szin']?>" placeholder="Variáció" />
+                 </div>
+                 <div class="meret">
+                   <input type="text" class="form-control action" mode="meret" tid="<?=$d['product_id']?>" value="<?=$d['meret']?>" placeholder="Kiszerelés" />
+                 </div>
+               <?php endif; ?>
              </div>
             <? if( true ): ?>
             	<span class="modkat">
-                  <strong><a href="javascript:void(0);" title="Kategóriába listázva" class="itemInf" itemId="<?=$d['product_id']?>"><?=count($d[inKatList])?> <i class="fa fa-th-list"></i></a></strong><? if(count($d['hasonlo_termek_ids']['ids']) > 0): ?>&nbsp;&nbsp;&nbsp;<span title="Termék variáció kapcsolatok száma"><a href="/termekek/?article=<?=$d[raktar_articleid]?>"><?=count($d['hasonlo_termek_ids']['ids'])?> <i class="fa fa-th"></i></a></span><? endif;?>
+                  <strong><a href="javascript:void(0);" title="Kategóriába listázva" class="itemInf" itemId="<?=$d['product_id']?>"><?=count($d[inKatList])?> <i class="fa fa-th-list"></i></a></strong><? if(count($d['hasonlo_termek_ids']['ids']) > 0): ?>&nbsp;&nbsp;&nbsp;<span title="Termék variáció kapcsolatok száma"><a href="/termekek/?article=<?=$d[raktar_articleid]?>"><?=count($d['hasonlo_termek_ids']['ids'])?><i class="fa fa-th"></i></a></span><? endif;?>
               </span>
             <? endif; ?>
             </td>
@@ -205,7 +207,13 @@
             </select>
             </td>
             <td align="center">
-			          <input type="number" step="any" class="form-control action" mode="raktar_keszlet" tid="<?=$d['product_id']?>" min="-1" value="<?=$d['raktar_keszlet']?>" />
+              <strong><?=$d['raktar_keszlet']?></strong>
+              <div class="virtrack">
+                (<?=$d['virtualis_keszlet']?>)
+              </div>
+              <?php if (false): ?>                
+                <input type="number" step="any" class="form-control action" mode="raktar_keszlet" tid="<?=$d['product_id']?>" min="-1" value="<?=$d['raktar_keszlet']?>" />
+              <?php endif; ?>
             </td>
             <td align="center"><? if($d['lathato'] == '1'): ?><i class="fa fa-check vtgl" title="Aktív / Kattintson az inaktiváláshoz" tid="<?=$d['product_id']?>"></i><? else: ?><i class="fa fa-times vtgl" title="Inaktív / Kattintson az aktiváláshoz" tid="<?=$d['product_id']?>"></i><? endif; ?></td>
             <!--<td align="center"><? if($d['fotermek'] == '1'): ?><i class="fa fa-check ftgl" title="Főtermék / Kattintson az inaktiváláshoz" tid="<?=$d['product_id']?>"></i><? else: ?><i class="fa fa-times ftgl" title="Nem főtermék / Kattintson az aktiváláshoz" tid="<?=$d['product_id']?>"></i><? endif; ?></td>-->

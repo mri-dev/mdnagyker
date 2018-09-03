@@ -534,26 +534,24 @@
 				<br>
 	        </div>
 
-			<? if( true ): ?>
-	        <div class="con con-extra">
-            	<h3>Termék másolat <?=\PortalManager\Formater::tooltip('Javasolt termék variációhoz, ahol a termék adatai nagy részében megegyeznek.')?> <em class="info">Lemásolhatja tetszőletes számban a terméket.</em></h3>
-                <div class="row" style="">
-					<div class="col-md-12">
-						<?=$this->copyMsg?>
-						<form action="" method="post" role="form">
-							<input type="hidden" name="tid" value="<?=$this->termek[ID]?>" />
-							<div class="input-group">
-								<input type="number" class="form-control" min="0" value="0" name="copyNum" />
-								<span class="input-group-addon">darab</span>
-								<span class="input-group-btn"><button class="btn btn-danger" name="copyTermek">másolás</button></span>
-							</div>
-						</form>
-					</div>
-                </div>
-            </div>
-       		<? endif; ?>
-
-
+			<? if( false ): ?>
+      <div class="con con-extra">
+      	<h3>Termék másolat <?=\PortalManager\Formater::tooltip('Javasolt termék variációhoz, ahol a termék adatai nagy részében megegyeznek.')?> <em class="info">Lemásolhatja tetszőletes számban a terméket.</em></h3>
+          <div class="row" style="">
+						<div class="col-md-12">
+							<?=$this->copyMsg?>
+							<form action="" method="post" role="form">
+								<input type="hidden" name="tid" value="<?=$this->termek[ID]?>" />
+								<div class="input-group">
+									<input type="number" class="form-control" min="0" value="0" name="copyNum" />
+									<span class="input-group-addon">darab</span>
+									<span class="input-group-btn"><button class="btn btn-danger" name="copyTermek">másolás</button></span>
+								</div>
+							</form>
+						</div>
+          </div>
+        </div>
+      <? endif; ?>
 
 			<? if( true ): ?>
 	        <div class="con con-extra">

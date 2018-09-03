@@ -2131,6 +2131,9 @@ class Products
 			return false;
 		}
 
+		$save_xml_query = "UPDATE xml_temp_products SET ";
+		$save_term_query = "UPDATE shop_termekek SET ";
+
 		$items = array();
 		$in = array(
 			// Kötelezőek
@@ -2147,15 +2150,32 @@ class Products
 			// Kiegészítés:
 			'minimum' => (float)$torzs['keszlet_min'],
 		);
+
+		$save_xml_query .= sprintf(" termek_nev = '%s', cikkszam = '%s', virtualis_keszlet = %d, ean_code = '%s'",trim($torzs['termek_nev']), $torzs['cikkszam'], (float)$torzs['keszlet_min'], $torzs['ean_code']);
+		$save_term_query .= sprintf(" nev = '%s', cikkszam = '%s', virtualis_keszlet = %d",trim($torzs['termek_nev']), $torzs['cikkszam'], (float)$torzs['keszlet_min']);
+
 		foreach ($torzs['ar'] as $ai => $ar ) {
 			$in['afa'.$ai] = 27;
 			$in['netto_egysegar'.$ai] = (float) $ar;
+			$save_xml_query .= sprintf(", ar".$ai." = %d", (float)$ar);
 		}
 		$items[] = $in;
 
-		//$ins = $this->crm->addProduct( $items );
+		$ins = $this->crm->addProduct( $items );
 
-		if ($ins[error] == 0) {
+		$save_xml_query = rtrim($save_xml_query, ', ');
+		$save_xml_query .= " WHERE origin_id = ".$origin." and prod_id = ".$torzs['prod_id'];
+
+		$save_term_query = rtrim($save_term_query, ', ');
+		$save_term_query .= " WHERE xml_import_origin = ".$origin." and nagyker_kod = ".$torzs['prod_id'];
+
+		//echo $save_xml_query; exit;
+
+		if ($ins[error] == 0)
+		{
+			$this->db->query( $save_xml_query );
+			$this->db->query( $save_term_query );
+
 			$this->db->update(
 				'xml_temp_products',
 				array(
@@ -2163,6 +2183,8 @@ class Products
 				),
 				sprintf("origin_id = %d and prod_id = %d", $origin, $torzs['prod_id'])
 			);
+		} else {
+
 		}
 		return $ins;
 	}
