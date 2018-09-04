@@ -582,7 +582,6 @@ class Products
 			p.szallitasID,
 			p.keszletID,
 			p.raktar_keszlet,
-			p.virtualis_keszlet,
 			p.raktar_articleid,
 			p.profil_kep,
 			p.kep_mappa,
@@ -2142,6 +2141,7 @@ class Products
 			'afa' => 27,
 			'mennyisegiegyseg' => 'darab',
 			'termek' => 1,
+
 			'termek_id' => $torzs['prod_id'],
 			'vonalkod' => $torzs['ean_code'],
 			'megnevezes' => trim($torzs['termek_nev']),
@@ -2179,8 +2179,7 @@ class Products
 			$this->db->update(
 				'xml_temp_products',
 				array(
-					'last_sync_up' => date('Y-m-d H:i:s'),
-					'last_updated' => date('Y-m-d H:i:s'),
+					'last_sync_up' => date('Y-m-d H:i:s')
 				),
 				sprintf("origin_id = %d and prod_id = %d", $origin, $torzs['prod_id'])
 			);

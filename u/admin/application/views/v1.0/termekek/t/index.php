@@ -247,18 +247,15 @@
 				<div class="con">
 					<h3>Termék adatok</h3>
 					<div class="row">
-						<div class="form-group col-md-3">
+						<div class="form-group col-md-2">
 							<label for="cikkszam">Nagyker kód / Cikkszám</label>
 							<input class="form-control" id="cikkszam" readonly="readonly" type="text" value="<?=$this->termek['cikkszam']?>"  name="cikkszam">
 						</div>
-						<div class="form-group col-md-9">
+						<div class="form-group col-md-4">
 							<label for="nev">Termék neve*</label>
 							<input type="text" class="form-control" readonly="readonly" name="nev" id="nev" value="<?=$this->termek[nev]?>">
 						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-md-5">
+						<div class="form-group col-md-3">
 							<label for="csoport_kategoria">Termék alcíme</label>
 							<input type="text" class="form-control" name="csoport_kategoria" id="csoport_kategoria" value="<?=$this->termek[csoport_kategoria]?>">
 						</div>
@@ -272,33 +269,31 @@
 								<? endforeach; ?>
 							</select>
 						</div>
-						<div class="form-group col-md-2">
-							<label for="raktar_keszlet">Raktárkészlet (mennyiség)</label>
-							<div class="">
-								<strong><?=$this->termek['raktar_keszlet']?> db</strong>
-							</div>
-							<input type="hidden" class="form-control" name="raktar_keszlet" value="<?=$this->termek['raktar_keszlet']?>" id="raktar_keszlet">
-						</div>
-						<div class="form-group col-md-2">
-							<label for="sorrend">Sorrend</label>
-							<input type="number" class="form-control" name="sorrend" id="sorrend" value="<?=$this->termek['sorrend']?>">
-						</div>
-						<? if(false): ?>
+					</div>
+
+					<div class="row">
 						<div class="form-group col-md-3">
 							<label for="szin">Típus variácó <?=\PortalManager\Formater::tooltip('Több variáció esetén variációk hozhatóak létre, melyet ennél az értéknél lehet megadni. Azonos típus azonosító törzskód és eltérő variácó meghatározásánál a rendszer automatikusan összekapcsolja a termékeket és átjárást biztosít a termék adatlapokon.<br>Pl.: zöld, piros, 16mm, 10 fm, 2x4x10mm, stb...')?></label>
 							<input type="text" class="form-control" name="szin" id="szin" value="<?=$this->termek['szin']?>">
 						</div>
+						<? if(true): ?>
 						<div class="form-group col-md-3">
 							<label for="meret">Kiszerelés <?=\PortalManager\Formater::tooltip('Termékenkét termékkapcsolat hozható létre, amennyiben több fajta kiszerelés van egy-egy azonos termék esetében. Adjuk meg a kiszerelést és ez alapján a vásárló válogathat.<br>Pl.: 1 liter, 1 vödör, 1 zsák, 25 kg, 100 db / csomag, stb...')?></label>
 							<input type="text" class="form-control" name="meret" id="meret" placeholder="1 darab, 25 liter, 100 db / csomag, stb..." value="<?=$this->termek['meret']?>">
 						</div>
 						<? endif; ?>
-						<?php if (false): ?>
+						<div class="form-group col-md-3">
+							<label for="raktar_keszlet">Raktárkészlet (mennyiség)</label>
+							<input type="number" class="form-control" name="raktar_keszlet" value="<?=$this->termek['raktar_keszlet']?>" id="raktar_keszlet">
+						</div>
+						<div class="form-group col-md-2">
+							<label for="sorrend">Sorrend</label>
+							<input type="number" class="form-control" name="sorrend" id="sorrend" value="<?=$this->termek['sorrend']?>">
+						</div>
 						<div class="form-group col-md-1">
 							<label for="fotermek">Főtermék <?=\PortalManager\Formater::tooltip('Több szín és méret esetén kijelölhetjük, hogy melyik legyen az alapértelmezett, ami megjelenjen a terméklistázásban. A Főtermék-nek NEM jelölt termékek nem fognak megjelenni a listában, hanem csak mint variáció a kapcsolódó terméklapon!')?></label>
 							<input type="checkbox" class="form-control" name="fotermek" id="fotermek" <?=($this->termek && $this->termek['fotermek'] == 1)?'checked="checked"':''?>>
 						</div>
-						<?php endif; ?>
 					</div>
 
 					<div class="row">
