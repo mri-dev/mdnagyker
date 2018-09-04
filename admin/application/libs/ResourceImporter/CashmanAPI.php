@@ -83,7 +83,7 @@ class CashmanAPI extends ResourceImportBase
     foreach ( (array)$list as $row )
     {
       $s++;
-      //if($s >= 300) break;
+      if($s >= 20) break;
       $each = array();
 
       if ($row['cikkszam'] == '' || $row['vonalkod'] == '') {
@@ -101,6 +101,7 @@ class CashmanAPI extends ResourceImportBase
       $each['termek_keszlet'] = $row['keszlet'];
       $each['ean_code'] = $row['vonalkod'];
       $each['beszerzes_netto'] = $fulldata['netto_beszerzes'];
+      $each['arucsoport'] = $fulldata['termekcsoport'];
       $each['ar1'] = $fulldata['netto'];
       $each['ar2'] = $fulldata['netto2'];
       $each['ar3'] = $fulldata['netto3'];
@@ -120,7 +121,7 @@ class CashmanAPI extends ResourceImportBase
     unset($each);
 
     $insert_row = array();
-    $insert_header = array('hashkey', 'origin_id', 'cikkszam', 'gyarto_kod', 'prod_id', 'last_updated', 'termek_nev', 'termek_leiras', 'termek_leiras2', 'beszerzes_netto', 'nagyker_ar_netto', 'kisker_ar_netto', 'termek_keszlet', 'termek_kep_urls', 'ean_code', 'marka_nev', 'kisker_ar_netto_akcios', 'nagyker_ar_netto_akcios', 'ar1','ar2','ar3','ar4','ar5','ar6','ar7','ar8','ar9','ar10', 'io', 'mennyisegegyseg');
+    $insert_header = array('hashkey', 'origin_id', 'cikkszam', 'gyarto_kod', 'prod_id', 'last_updated', 'termek_nev', 'termek_leiras', 'termek_leiras2', 'beszerzes_netto', 'arucsoport', 'nagyker_ar_netto', 'kisker_ar_netto', 'termek_keszlet', 'termek_kep_urls', 'ean_code', 'marka_nev', 'kisker_ar_netto_akcios', 'nagyker_ar_netto_akcios', 'ar1','ar2','ar3','ar4','ar5','ar6','ar7','ar8','ar9','ar10', 'io', 'mennyisegegyseg');
 
     foreach ( (array)$prepare as $r )
     {
@@ -128,7 +129,7 @@ class CashmanAPI extends ResourceImportBase
       $kepek = NULL;
 
       if (!array_key_exists($hashkey, $hk)) {
-        $insert_row[] = array(
+        /*$insert_row[] = array(
           $hashkey,
           $originid,
           addslashes($r['cikkszam']),
@@ -139,6 +140,7 @@ class CashmanAPI extends ResourceImportBase
           addslashes($r['termek_leiras']),
           addslashes($r['termek_leiras2']),
           (float)$r['beszerzes_netto'],
+          $r['arucsoport'],
           (float)$r['beszerzes_netto'],
           (float)$r['ar1'],
           $r['termek_keszlet'],
@@ -159,6 +161,40 @@ class CashmanAPI extends ResourceImportBase
           (float)$r['ar10'],
           1,
           addslashes(trim($r['mennyisegegyseg']))
+        );*/
+
+        $insert_row[] = array(
+          'hashkey' => $hashkey,
+          'origin_id' => $originid,
+          'cikkszam' => ($r['cikkszam']),
+          'gyarto_kod' => ($r['gyarto_kod']),
+          'prod_id' => $r['prod_id'],
+          'last_updated' => NOW,
+          'termek_nev' =>  ($r['termek_nev']),
+          'termek_leiras' => ($r['termek_leiras']),
+          'termek_leiras2' => ($r['termek_leiras2']),
+          'beszerzes_netto' => (float)$r['beszerzes_netto'],
+          'arucsoport' => $r['arucsoport'],
+          'nagyker_ar_netto' => (float)$r['beszerzes_netto'],
+          'kisker_ar_netto' => (float)$r['ar1'],
+          'termek_keszlet' => $r['termek_keszlet'],
+          'termek_kep_urls' => $kepek,
+          'ean_code' => ((string)$r['ean_code'].''),
+          'marka_nev' => ($r['marka_nev']),
+          'kisker_ar_netto_akcios' => (float)$r['kisker_ar_netto_akcios'],
+          'nagyker_ar_netto_akcios' => (float)$r['nagyker_ar_netto_akcios'],
+          'ar1' => (float)$r['ar1'],
+          'ar2' => (float)$r['ar2'],
+          'ar3' => (float)$r['ar3'],
+          'ar4' => (float)$r['ar4'],
+          'ar5' => (float)$r['ar5'],
+          'ar6' => (float)$r['ar6'],
+          'ar7' => (float)$r['ar7'],
+          'ar8' => (float)$r['ar8'],
+          'ar9' => (float)$r['ar9'],
+          'ar10' => (float)$r['ar10'],
+          'io' => 1,
+          'mennyisegegyseg' => (trim($r['mennyisegegyseg']))
         );
 
         /*if (!is_array($r['kepek'])) {
@@ -187,14 +223,14 @@ class CashmanAPI extends ResourceImportBase
 
     /* */
     if (!empty($insert_row)) {
-      $dbx = $this->db->multi_insert(
+      $dbx = $this->db->multi_insert_v2(
         parent::DB_TEMP_PRODUCTS,
         $insert_header,
         $insert_row,
         array(
           'debug' => true,
           'steplimit' => 10,
-          'duplicate_keys' => array('hashkey', 'cikkszam', 'gyarto_kod', 'prod_id', 'termek_nev', 'last_updated', 'termek_leiras', 'termek_leiras2', 'beszerzes_netto', 'nagyker_ar_netto', 'kisker_ar_netto', 'termek_keszlet', 'termek_kep_urls', 'ean_code', 'marka_nev', 'kisker_ar_netto_akcios', 'nagyker_ar_netto_akcios','ar1','ar2','ar3','ar4','ar5','ar6','ar7','ar8','ar9','ar10', 'io', 'mennyisegegyseg' )
+          'duplicate_keys' => array('hashkey', 'cikkszam', 'gyarto_kod', 'prod_id', 'termek_nev', 'last_updated', 'termek_leiras', 'termek_leiras2', 'beszerzes_netto', 'nagyker_ar_netto', 'kisker_ar_netto', 'termek_keszlet', 'termek_kep_urls', 'ean_code', 'marka_nev', 'kisker_ar_netto_akcios', 'nagyker_ar_netto_akcios','arucsoport', 'ar1','ar2','ar3','ar4','ar5','ar6','ar7','ar8','ar9','ar10', 'io', 'mennyisegegyseg' )
         )
       );
     }

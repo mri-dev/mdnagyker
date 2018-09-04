@@ -216,6 +216,89 @@ class Database
 		return $debug_str;
 	}
 
+	public function multi_insert_v2( $table, $head = false, $data = false, $arg = array() )
+	{
+
+	 $this->db->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);
+
+	 $query 	= null;
+	 $debug_str = null;
+	 $header	= null;
+	 $value 	= null;
+	 $debug 	= ( !$arg[debug] ) ? false : true;
+
+	 if( $table == '' ) return false;
+	 if( !$head || !is_array( $head ) ) return false;
+	 if( !$data || !is_array( $data ) ) return false;
+
+	 foreach( $head as $h ){
+		 $header[] 	= $h;
+	 }
+
+	 $total_step = 0;
+	 $steplimit = ( $arg['steplimit'] ) ?  $arg['steplimit'] : 50;
+	 $step = 0;
+	 $step_rows = array();
+	 $step_breaks = 0;
+
+	 foreach( $data as $dh => $dv ){
+		 if ($steplimit <= $step) {
+			 $step_breaks++;
+			 $step = 0;
+		 }
+
+		 $step_rows[$step_breaks][] = $dv;
+
+		 $step++;
+		 $total_step++;
+	 }
+
+	 $wk_step = 0;
+
+	 $query = ' INSERT INTO '.$table.'(' . implode( ', ', $header ) . ') VALUES (:' . implode( ', :', $header ) . ')';
+
+	 if( is_array($arg['duplicate_keys']) && count($arg['duplicate_keys']) > 0 ) {
+	 	$dupkeys = ' ON DUPLICATE KEY UPDATE ';
+	 	foreach ($arg['duplicate_keys'] as $key ) {
+	 		$dupkeys .= $key." = VALUES(:".$key."), ";
+	 	}
+
+		$dupkeys = rtrim($dupkeys, ', ');
+
+		$query .= $dupkeys;
+	 }
+
+
+
+	 echo $query ."<br><br>";
+
+
+	 $insertprepare = $this->db->prepare( $query );
+
+
+	 while ( $step_breaks >= 0 ) {
+
+		 //echo $step_breaks . '<br>';
+		 //print_r($step_rows[$step_breaks]);
+
+		 $this->db->beginTransaction();
+		 foreach ($step_rows[$step_breaks] as $eprep) {
+			 try {
+				 $ex = $insertprepare->execute($eprep);
+			 } catch (\PDOException $e){
+			 		echo $e->getMessage()."<br><br>";
+			 }
+		 }
+		 $this->db->commit();
+
+
+		 $step_breaks--;
+		 $wk_step++;
+	 }
+
+	 return $debug_str;
+ }
+
 	public function insert( $table, $post ) {
 		$fields = array();
 		$values = array();
