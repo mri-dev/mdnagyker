@@ -260,7 +260,7 @@ class Database
 	 if( is_array($arg['duplicate_keys']) && count($arg['duplicate_keys']) > 0 ) {
 	 	$dupkeys = ' ON DUPLICATE KEY UPDATE ';
 	 	foreach ($arg['duplicate_keys'] as $key ) {
-	 		$dupkeys .= $key." = VALUES(:".$key."), ";
+	 		$dupkeys .= $key." = VALUES(".$key."), ";
 	 	}
 
 		$dupkeys = rtrim($dupkeys, ', ');
@@ -268,29 +268,24 @@ class Database
 		$query .= $dupkeys;
 	 }
 
-
-
-	 echo $query ."<br><br>";
-
-
 	 $insertprepare = $this->db->prepare( $query );
 
-
 	 while ( $step_breaks >= 0 ) {
-
 		 //echo $step_breaks . '<br>';
 		 //print_r($step_rows[$step_breaks]);
+		 try {
 
-		 $this->db->beginTransaction();
-		 foreach ($step_rows[$step_breaks] as $eprep) {
-			 try {
-				 $ex = $insertprepare->execute($eprep);
-			 } catch (\PDOException $e){
-			 		echo $e->getMessage()."<br><br>";
-			 }
+		 	$this->db->beginTransaction();
+
+			foreach ($step_rows[$step_breaks] as $eprep) {
+			 	$ex = $insertprepare->execute($eprep);
+			}
+			$this->db->commit();
+		 } catch (\PDOException $e){
+				echo $e->getMessage()."<br><br>";
 		 }
-		 $this->db->commit();
-
+		 
+		 usleep(10);
 
 		 $step_breaks--;
 		 $wk_step++;

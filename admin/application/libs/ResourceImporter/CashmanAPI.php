@@ -83,7 +83,7 @@ class CashmanAPI extends ResourceImportBase
     foreach ( (array)$list as $row )
     {
       $s++;
-      if($s >= 20) break;
+      if($s >= 1000) break;
       $each = array();
 
       if ($row['cikkszam'] == '' || $row['vonalkod'] == '') {
@@ -229,7 +229,7 @@ class CashmanAPI extends ResourceImportBase
         $insert_row,
         array(
           'debug' => true,
-          'steplimit' => 10,
+          'steplimit' => 50,
           'duplicate_keys' => array('hashkey', 'cikkszam', 'gyarto_kod', 'prod_id', 'termek_nev', 'last_updated', 'termek_leiras', 'termek_leiras2', 'beszerzes_netto', 'nagyker_ar_netto', 'kisker_ar_netto', 'termek_keszlet', 'termek_kep_urls', 'ean_code', 'marka_nev', 'kisker_ar_netto_akcios', 'nagyker_ar_netto_akcios','arucsoport', 'ar1','ar2','ar3','ar4','ar5','ar6','ar7','ar8','ar9','ar10', 'io', 'mennyisegegyseg' )
         )
       );
