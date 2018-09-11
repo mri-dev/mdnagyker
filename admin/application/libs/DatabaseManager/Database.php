@@ -21,14 +21,9 @@ class Database
 
 	public $settings 	= array();
 
-	public function __construct(){
-		try{
-			$this->db = new \PDO('mysql:host=' . $this->db_host . ';dbname=' . $this->db_name, $this->db_user , $this->db_pw );
-			//echo '-DBOPEN-';
-			$this->query("set names utf8");
-		}catch(\PDOException $e){
-			die($e->getMessage());
-		}
+	public function __construct() {
+
+		$this->connectDB();
 
 		// Settings
 		$settings = $this->query("SELECT * FROM beallitasok")->fetchAll(\PDO::FETCH_ASSOC);
@@ -38,6 +33,18 @@ class Database
 		$this->settings['domain'] = 'http://www.' . rtrim(str_replace(array('http://','www.'),array('',''),$this->settings['page_url']), '/').'/';
 	}
 
+	public function connectDB()
+	{
+		if ( $this->db === null ) {
+			try{
+				$this->db = new \PDO('mysql:host=' . $this->db_host . ';dbname=' . $this->db_name, $this->db_user , $this->db_pw );
+				//echo '-DBOPEN: '.date('Y-m-d H:i:s').'-<br>';
+				$this->query("set names utf8");
+			}catch(\PDOException $e){
+				die($e->getMessage());
+			}
+		}
+	}
 
 	public function squery( $qry, array $params = array() )
 	{
@@ -218,7 +225,6 @@ class Database
 
 	public function multi_insert_v2( $table, $head = false, $data = false, $arg = array() )
 	{
-
 	 $this->db->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);
 
 	 $query 	= null;
@@ -282,9 +288,9 @@ class Database
 			}
 			$this->db->commit();
 		 } catch (\PDOException $e){
-				echo $e->getMessage()."<br><br>";
+			 echo $e->getMessage()."<br><br>";
 		 }
-		 
+
 		 usleep(10);
 
 		 $step_breaks--;

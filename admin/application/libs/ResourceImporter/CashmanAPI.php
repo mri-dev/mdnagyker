@@ -3,6 +3,7 @@ namespace ResourceImporter;
 
 use ResourceImporter\ResourceImportInterface;
 use ResourceImporter\CashmanFxApi;
+use DatabaseManager\Database;
 
 /**
  *
@@ -26,6 +27,12 @@ class CashmanAPI extends ResourceImportBase
     $this->api = new CashmanFxApi($serv, $szla, $szlapdf, $sztmp, $etmp);
 
     return parent::__construct( $arg );
+  }
+
+  public function reconnectDB()
+  {
+    $this->db = new Database();
+    return $this;
   }
 
   public function incFixRowData( &$row )
@@ -83,7 +90,7 @@ class CashmanAPI extends ResourceImportBase
     foreach ( (array)$list as $row )
     {
       $s++;
-      if($s >= 1000) break;
+      //if($s >= 1000) break;
       $each = array();
 
       if ($row['cikkszam'] == '' || $row['vonalkod'] == '') {
@@ -221,6 +228,8 @@ class CashmanAPI extends ResourceImportBase
     //print_r($insert_row);
     //exit;
 
+    $this->reconnectDB();
+
     /* */
     if (!empty($insert_row)) {
       $dbx = $this->db->multi_insert_v2(
@@ -347,6 +356,7 @@ class CashmanAPI extends ResourceImportBase
 
   public function __destruct()
   {
+    $this->db= null;
     $this->api = null;
     parent::__destruct();
   }

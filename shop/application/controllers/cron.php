@@ -105,6 +105,8 @@ class cron extends Controller{
 					$products = $crm->getProducts();
 					$prep = $crm->autoImportProducts( 1, (array)$products['data'] );
 
+					$newdb = null;
+
 					echo $prep;
 
 					/*echo '<pre>';
@@ -127,7 +129,7 @@ class cron extends Controller{
 						'cikkszam' => 'KDC-X5200BT',
 						// Kiegészítés:
 						'minimum' => 25,
-						
+
 					);
 
 					$ins = $crm->addProduct( $items );
