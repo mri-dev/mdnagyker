@@ -265,10 +265,10 @@ class Products
 
 		// Kötelező mezők ellenőrzése
 		if( !$product->getName() ) throw new \Exception('Termék nevének megadása kötelező!');
-		if(	!$product->getManufacturerId() ) throw new \Exception('Márka kiválasztása kötelező!');
+		//if(	!$product->getManufacturerId() ) throw new \Exception('Márka kiválasztása kötelező!');
 		if( !$product->getTransportTimeId() ) throw new \Exception('Szállítási időt kötelező kiválasztani!');
 		if( !$product->getStatusId() ) throw new \Exception('Állapotot kötelező kiválasztani!');
-		if( !$product->getCategoryList() ) throw new \Exception('Termék kategória kiválasztása kötelező!');
+		//if( !$product->getCategoryList() ) throw new \Exception('Termék kategória kiválasztása kötelező!');
 
 		if( true ){
 			$cikkszam 		= $product->getItemNumber();

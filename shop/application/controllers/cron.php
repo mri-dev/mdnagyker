@@ -100,19 +100,27 @@ class cron extends Controller{
 					echo '</pre>';
 				break;
 
+				case 'clear':
+					echo memory_get_usage();
+				break;
+
+				case 'syncProducts':
+					$res = new ResourceImport(array('db' => $this->db));
+					$res->syncTempProducts();
+				break;
+
 				case 'importProducts':
 					$res = new ResourceImport(array('db' => $this->db));
 					$products = $crm->getProducts();
 					$prep = $crm->autoImportProducts( 1, (array)$products['data'] );
 
-					$newdb = null;
+					//echo $prep;
 
-					echo $prep;
-
-					/*echo '<pre>';
+					/* * /
+					echo '<pre>';
 					print_r($products);
 					echo '</pre>';
-					*/
+					/* */
 				break;
 				case 'updateProduct':
 					$items = array();

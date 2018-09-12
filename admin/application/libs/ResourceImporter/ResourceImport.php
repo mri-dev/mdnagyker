@@ -21,6 +21,11 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
     return $raktar;
   }
 
+  public function syncTempProducts()
+  {
+    $this->pushToTermekek( 1 );
+  }
+
   public function groupCat( $content = false )
   {
     $group = array();

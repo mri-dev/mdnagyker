@@ -289,6 +289,7 @@ class Database
 			$this->db->commit();
 		 } catch (\PDOException $e){
 			 echo $e->getMessage()."<br><br>";
+			 $this->db = null;
 		 }
 
 		 usleep(10);

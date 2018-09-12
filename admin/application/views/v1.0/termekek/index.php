@@ -151,11 +151,12 @@
             <? endif; ?>
             </td>
             <td>
-            	<select class="form-control  action"  mode="marka" tid="<?=$d['product_id']?>" style="max-width:120px;">
-                	<? foreach($this->markak as $m): ?>
-                    <option value="<?=$m[ID]?>" <?=($m['ID'] == $d['marka_id'])?'selected':''?>><?=$m['neve']?></option>
-                    <? endforeach; ?>
-                </select>
+            	<select class="form-control action"  mode="marka" tid="<?=$d['product_id']?>" style="max-width:120px;">
+                <option value="" selected="selected">--</option>
+              	<? foreach($this->markak as $m): ?>
+                  <option value="<?=$m[ID]?>" <?=($m['ID'] == $d['marka_id'])?'selected="selected"':''?>><?=$m['neve']?></option>
+                  <? endforeach; ?>
+              </select>
             </td>
             <td class="center">
               <strong><?php echo \Helper::cashFormat($d['price_groups']['set']['ar1']['brutto']); ?> Ft</strong><br>
@@ -211,7 +212,7 @@
               <div class="virtrack">
                 (<?=$d['virtualis_keszlet']?>)
               </div>
-              <?php if (false): ?>                
+              <?php if (false): ?>
                 <input type="number" step="any" class="form-control action" mode="raktar_keszlet" tid="<?=$d['product_id']?>" min="-1" value="<?=$d['raktar_keszlet']?>" />
               <?php endif; ?>
             </td>

@@ -106,6 +106,7 @@ class CashmanAPI extends ResourceImportBase
       $each['prod_id'] = (int)trim($fulldata['id']);
       $each['termek_nev'] = $row['megnevezes'];
       $each['termek_keszlet'] = $row['keszlet'];
+      $each['keszlet_min'] = $fulldata['keszlet_min'];
       $each['ean_code'] = $row['vonalkod'];
       $each['beszerzes_netto'] = $fulldata['netto_beszerzes'];
       $each['arucsoport'] = $fulldata['termekcsoport'];
@@ -127,8 +128,15 @@ class CashmanAPI extends ResourceImportBase
     }
     unset($each);
 
+    /* * /
+    echo '<pre>';
+    print_r($prepare);
+    echo '</pre>';
+    return false;
+    /* */
+
     $insert_row = array();
-    $insert_header = array('hashkey', 'origin_id', 'cikkszam', 'gyarto_kod', 'prod_id', 'last_updated', 'termek_nev', 'termek_leiras', 'termek_leiras2', 'beszerzes_netto', 'arucsoport', 'nagyker_ar_netto', 'kisker_ar_netto', 'termek_keszlet', 'termek_kep_urls', 'ean_code', 'marka_nev', 'kisker_ar_netto_akcios', 'nagyker_ar_netto_akcios', 'ar1','ar2','ar3','ar4','ar5','ar6','ar7','ar8','ar9','ar10', 'io', 'mennyisegegyseg');
+    $insert_header = array('hashkey', 'origin_id', 'cikkszam', 'gyarto_kod', 'prod_id', 'last_updated', 'termek_nev', 'termek_leiras', 'termek_leiras2', 'beszerzes_netto', 'arucsoport', 'nagyker_ar_netto', 'kisker_ar_netto', 'termek_keszlet', 'termek_kep_urls', 'ean_code', 'marka_nev', 'kisker_ar_netto_akcios', 'nagyker_ar_netto_akcios', 'ar1','ar2','ar3','ar4','ar5','ar6','ar7','ar8','ar9','ar10', 'io', 'mennyisegegyseg', 'virtualis_keszlet');
 
     foreach ( (array)$prepare as $r )
     {
@@ -201,7 +209,8 @@ class CashmanAPI extends ResourceImportBase
           'ar9' => (float)$r['ar9'],
           'ar10' => (float)$r['ar10'],
           'io' => 1,
-          'mennyisegegyseg' => (trim($r['mennyisegegyseg']))
+          'mennyisegegyseg' => (trim($r['mennyisegegyseg'])),
+          'virtualis_keszlet' => (float)$r['keszlet_min']
         );
 
         /*if (!is_array($r['kepek'])) {
@@ -239,7 +248,7 @@ class CashmanAPI extends ResourceImportBase
         array(
           'debug' => true,
           'steplimit' => 50,
-          'duplicate_keys' => array('hashkey', 'cikkszam', 'gyarto_kod', 'prod_id', 'termek_nev', 'last_updated', 'termek_leiras', 'termek_leiras2', 'beszerzes_netto', 'nagyker_ar_netto', 'kisker_ar_netto', 'termek_keszlet', 'termek_kep_urls', 'ean_code', 'marka_nev', 'kisker_ar_netto_akcios', 'nagyker_ar_netto_akcios','arucsoport', 'ar1','ar2','ar3','ar4','ar5','ar6','ar7','ar8','ar9','ar10', 'io', 'mennyisegegyseg' )
+          'duplicate_keys' => array('hashkey', 'cikkszam', 'gyarto_kod', 'prod_id', 'termek_nev', 'last_updated', 'termek_leiras', 'termek_leiras2', 'beszerzes_netto', 'nagyker_ar_netto', 'kisker_ar_netto', 'termek_keszlet', 'termek_kep_urls', 'ean_code', 'marka_nev', 'kisker_ar_netto_akcios', 'nagyker_ar_netto_akcios','arucsoport', 'ar1','ar2','ar3','ar4','ar5','ar6','ar7','ar8','ar9','ar10', 'io', 'mennyisegegyseg', 'virtualis_keszlet' )
         )
       );
     }
