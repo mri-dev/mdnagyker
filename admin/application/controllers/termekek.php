@@ -706,7 +706,8 @@ class termekek extends Controller
 						'termek_site_url' 	=> $_POST['termek_site_url'],
 						'show_stock' 		=> $_POST['show_stock'],
 						'referer_price_discount' => $_POST['referer_price_discount'],
-						'sorrend' 			=>  (isset($_POST['sorrend']) ? $_POST['sorrend'] : 100)
+						'sorrend' 			=>  (isset($_POST['sorrend']) ? $_POST['sorrend'] : 100),
+						'crm' => $_POST['crm']
 					) ) );
 
 					Helper::reload( '/termekek/uj/?backmsg=success&msg='.$re);

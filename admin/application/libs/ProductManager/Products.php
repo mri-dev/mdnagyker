@@ -41,6 +41,12 @@ class Products
 	{
 		$uploadedProductId = 0;
 
+		print_r($product);
+
+		$this->syncUpCRMProduct( 1, $product->getVariable('crm') );
+
+		exit;
+
 		$szallitasID 	= $product->getTransportTimeId();
 		$keszletID 		= $product->getStatusId();
 
@@ -2162,6 +2168,11 @@ class Products
 		$items[] = $in;
 
 		$ins = $this->crm->addProduct( $items );
+
+		// Létrehozás esetén prod_id lekérése, create után
+		if ($torzs['prod_id'] == '' && $ins['error'] == 0 && $ins['uzenet'] != '') {
+			$torzs['prod_id'] = (int)$ins['uzenet'];
+		}
 
 		$save_xml_query = rtrim($save_xml_query, ', ');
 		$save_xml_query .= " WHERE origin_id = ".$origin." and prod_id = ".$torzs['prod_id'];

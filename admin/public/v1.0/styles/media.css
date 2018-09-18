@@ -87,6 +87,10 @@ h1, h2, h3, h4{
 	margin-left:0;
 	margin-right:0;
 }
+.row-neg{
+  margin-left: -15px;
+  margin-right: -15px;
+}
 .row.np div[class^=col-md],
 .row.np div[class^=col-sm]
 {
