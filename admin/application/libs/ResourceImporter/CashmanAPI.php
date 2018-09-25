@@ -98,7 +98,7 @@ class CashmanAPI extends ResourceImportBase
       }
 
       $fulldata = $this->getProduct($row['cikkszam']);
-      $hashkey = md5($originid.'_'.$fulldata['id'].'_'.$row['vonalkod']);
+      $hashkey = md5($originid.'_'.$fulldata['id']);
 
       $each['hashkey'] = $hashkey;
       $each['cikkszam'] = $row['cikkszam'];

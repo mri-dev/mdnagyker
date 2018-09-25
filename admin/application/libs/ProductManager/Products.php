@@ -40,12 +40,21 @@ class Products
 	public function create(Product $product)
 	{
 		$uploadedProductId = 0;
+		$xml_origin = NULL;
+		$xml_temp_id = 0;
 
-		print_r($product);
+		//print_r($product);
 
-		$this->syncUpCRMProduct( 1, $product->getVariable('crm') );
-
-		exit;
+		// Cashman synx upload
+		$crmup = $this->syncUpCRMProduct( 1, $product->getVariable('crm') );
+		if ( $crmup['error'] == 1 )
+		{
+			throw new \Exception("CashmanFX API: ".$crmup['hiba']);
+		} else {
+			$crm_res_id = $crmup['uzenet'];
+			$xml_temp_id = $crmup['xmlid'];
+			$xml_origin = 1;
+		}
 
 		$szallitasID 	= $product->getTransportTimeId();
 		$keszletID 		= $product->getStatusId();
@@ -150,7 +159,10 @@ class Products
 					'ajanlorendszer_kiemelt' => $ajanlorendszer_kiemelt,
 					'referer_price_discount' => $referer_price_discount,
 					'sorrend' => $sorrend,
-					'show_stock' => $show_stock
+					'show_stock' => $show_stock,
+					'xml_import_origin' => $xml_origin,
+					'xml_import_res_id' => $xml_temp_id,
+					'nagyker_kod' => $crm_res_id
 				)
 			);
 
@@ -2138,6 +2150,8 @@ class Products
 			return false;
 		}
 
+		$xmlid = 0;
+		$creation = ((int)$torzs['prod_id'] != 0) ? false : true;
 		$save_xml_query = "UPDATE xml_temp_products SET ";
 		$save_term_query = "UPDATE shop_termekek SET ";
 
@@ -2148,10 +2162,11 @@ class Products
 			'afa' => 27,
 			'mennyisegiegyseg' => 'darab',
 			'termek' => 1,
-			'termek_id' => $torzs['prod_id'],
+			'termek_id' => (int)$torzs['prod_id'],
 			'vonalkod' => $torzs['ean_code'],
 			'megnevezes' => trim($torzs['termek_nev']),
 			'netto_egysegar' => $torzs['ar'][1],
+			'netto_beszerzes' => $torzs['netto_beszerzes'],
 			'cikkszam' => $torzs['cikkszam'],
 			// Kiegészítés:
 			'minimum' => (float)$torzs['keszlet_min'],
@@ -2184,20 +2199,49 @@ class Products
 
 		if ($ins[error] == 0)
 		{
-			$this->db->query( $save_xml_query );
-			$this->db->query( $save_term_query );
+			if (!$creation) {
+				$this->db->query( $save_xml_query );
+				$this->db->query( $save_term_query );
 
-			$this->db->update(
-				'xml_temp_products',
-				array(
-					'last_sync_up' => date('Y-m-d H:i:s'),
-					'last_updated' => date('Y-m-d H:i:s'),
-				),
-				sprintf("origin_id = %d and prod_id = %d", $origin, $torzs['prod_id'])
-			);
+				$this->db->update(
+					'xml_temp_products',
+					array(
+						'last_sync_up' => date('Y-m-d H:i:s'),
+						'last_updated' => date('Y-m-d H:i:s'),
+					),
+					sprintf("origin_id = %d and prod_id = %d", $origin, $torzs['prod_id'])
+				);
+			} else {
+				$xmlins = array(
+					'hashkey' => md5('1_'.$torzs['prod_id']),
+					'origin_id' => 1,
+					'cikkszam' => $torzs['cikkszam'],
+					'gyarto_kod' => $torzs['cikkszam'],
+					'prod_id' => $torzs['prod_id'],
+					'termek_nev' => $torzs['termek_nev'],
+					'kisker_ar_netto' => $torzs['ar'][1],
+					'virtualis_keszlet' => (float)$torzs['keszlet_min'],
+					'io' => 1,
+					'arucsoport' => 'Termékcsoport',
+					'mennyisegegyseg' => 'darab'
+				);
+
+				for ($i=1; $i <= 10 ; $i++) {
+					$xmlins['ar'.$i] = $torzs['ar'][$i];
+				}
+				/* */
+				$this->db->insert(
+					'xml_temp_products',
+					$xmlins
+				);
+				$lsid = $this->db->lastInsertId();
+				$xmlid = (int)$lsid;
+				/* */
+			}
 		} else {
 
 		}
+		$ins['xmlid'] = $xmlid;
 		return $ins;
 	}
 

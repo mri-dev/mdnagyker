@@ -651,8 +651,11 @@ class termekek extends Controller
 		function uj(){
 			// Termék márkák
 			$this->view->markak = $this->AdminUser->getMarkak();
+			// CRM
+			$crm = new CashmanAPI( array( 'db' => $this->db ) );
 			// Termékek
 			$products = new Products( array( 'db' => $this->db ) );
+			$products->setCRMHandler( $crm );
 
 			// Kategória lista
 			/*$categories = new Categories( false, array( 'db' => $this->db ) );
