@@ -89,6 +89,9 @@
 										<label for="crm_cikkszam">Cikkszám *</label>
 										<input type="text" name="crm[cikkszam]" onblur="$('#nagyker_kod').val($(this).val())" id="crm_cikkszam" value="<?=(isset($_POST['crm']['cikkszam']))?$_POST[crm][cikkszam]:''?>" class="form-control">
 									</div>
+									<div class="col-md-4">
+										<div id="cikkszam_check_text"></div>
+									</div>
 								</div>
 								<br>
 								<div class="row">
@@ -329,6 +332,23 @@
 	var brutto = 0;
 
 	$(function(){
+		$('#crm_cikkszam').bind('keyup', function(){
+			var v = $(this).val();
+
+			$('#cikkszam_check_text').html('<label>Cikkszám ellenőrzés:</label><br><span style="color:orange;">Cikkszám ellenőrzése...</span>');
+
+			$.post("<?=AJAX_POST?>",{
+				type 	: 'checkProductCikkszam',
+				id: v
+			},function(d){
+				if (d.data === false) {
+					$('#cikkszam_check_text').html('<label>Cikkszám ellenőrzés:</label><br><span style="color:green;">OK! Cikkszám szabad!</span>');
+				} else if(d.data.ID) {
+					$('#cikkszam_check_text').html('<label>Cikkszám ellenőrzés:</label><br><span style="color:red;">Cikkszám használatban!<br>Termék: <a target="_blank" href="/termekek/t/edit/'+d.data.ID+'">'+d.data.nev+'</a></span>');
+				}
+			},"json");
+
+		});
 		$('#marka').bind('change',function(){
 			if($(this).val() == '0'){
 				$('#ujMarka').show(0).focus();

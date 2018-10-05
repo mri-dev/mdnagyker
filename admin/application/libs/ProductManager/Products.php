@@ -43,7 +43,16 @@ class Products
 		$xml_origin = NULL;
 		$xml_temp_id = 0;
 
-		//print_r($product);
+		$szallitasID 	= $product->getTransportTimeId();
+		$keszletID 		= $product->getStatusId();
+
+		// Kötelező mezők ellenőrzése
+		if( !$product->getName() ) throw new \Exception('Termék nevének megadása kötelező!');
+		if( !$product->getTransportTimeId() ) throw new \Exception('Szállítási időt kötelező kiválasztani!');
+		if( !$product->getStatusId() ) throw new \Exception('Állapotot kötelező kiválasztani!');
+		//if(	!$product->getManufacturerId() ) throw new \Exception('Márka kiválasztása kötelező!');
+		//if( !$product->getCategoryList() ) throw new \Exception('Termék kategória kiválasztása kötelező!');
+		//if( !$product->getPrice() ) throw new \Exception('Termék árát kötelező megadni!');
 
 		// Cashman synx upload
 		$crmup = $this->syncUpCRMProduct( 1, $product->getVariable('crm') );
@@ -55,17 +64,6 @@ class Products
 			$xml_temp_id = $crmup['xmlid'];
 			$xml_origin = 1;
 		}
-
-		$szallitasID 	= $product->getTransportTimeId();
-		$keszletID 		= $product->getStatusId();
-
-		// Kötelező mezők ellenőrzése
-		if( !$product->getName() ) throw new \Exception('Termék nevének megadása kötelező!');
-		if(	!$product->getManufacturerId() ) throw new \Exception('Márka kiválasztása kötelező!');
-		if( !$product->getTransportTimeId() ) throw new \Exception('Szállítási időt kötelező kiválasztani!');
-		if( !$product->getStatusId() ) throw new \Exception('Állapotot kötelező kiválasztani!');
-		if( !$product->getCategoryList() ) throw new \Exception('Termék kategória kiválasztása kötelező!');
-		if( !$product->getPrice() ) throw new \Exception('Termék árát kötelező megadni!');
 
 		if( true ){
 			$cikkszam 		= $product->getItemNumber();
@@ -332,6 +330,7 @@ class Products
 			$referer_price_discount 	= (!$product->getVariable('referer_price_discount')) ? 0 : $product->getVariable('referer_price_discount');
 			$sorrend 			= (!$product->getVariable('sorrend')) ? 0 : $product->getVariable('sorrend');
 
+			// Cashman sync
 			$this->syncUpCRMProduct( 1, $product->getVariable('crm') );
 
 			// Csatolt hivatkozások előkészítése
