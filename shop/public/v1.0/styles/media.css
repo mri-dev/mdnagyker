@@ -3461,7 +3461,7 @@ body.singlepage .website .page.covered-page .side-menu {
 }
 /* line 2032, sass/_base.scss */
 .product-view > .product-data .nav > .pagi {
-  flex-basis: 70%;
+  flex-basis: 100%;
   text-align: left;
 }
 /* line 2037, sass/_base.scss */

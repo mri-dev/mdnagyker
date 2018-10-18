@@ -213,6 +213,7 @@
           </div>
           <div class="divider"></div>
           <div class="group-infos">
+            <?php if (!empty($this->product['in_cats']['name'])): ?>
             <div class="cats">
               <div class="flex">
                 <div class="title">
@@ -220,33 +221,40 @@
                 </div>
                 <div class="val">
                   <div class="wrapper">
-                    ...
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="keywords">
-              <div class="flex">
-                <div class="title">
-                  Címke:
-                </div>
-                <div class="val">
-                  <div class="wrapper">
                     <div class="labels">
-                      <div>
-                        <a href="#">Pioneer</a>
+                      <?php
+                      $ci = 0;
+                      foreach ((array)$this->product['in_cats']['name'] as $cat ): $ci++; ?>
+                      <div class="">
+                        <a href="<?=$this->product['in_cats']['url'][$ci]?>"><?=$cat?></a>
                       </div>
-                      <div>
-                        <a href="#">Autórádió</a>
-                      </div>
-                      <div>
-                        <a href="#">Fejegység</a>
-                      </div>
+                      <?php endforeach; unset($ci); ?>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <?php endif; ?>
+            <?php if (!empty($this->product['kulcsszavak'])): ?>
+            <div class="keywords">
+              <div class="flex">
+                <div class="title">
+                  Címkék:
+                </div>
+                <div class="val">
+                  <div class="wrapper">
+                    <div class="labels">
+                      <?php foreach ( (array)$this->product['kulcsszavak'] as $kulcsszavak ): ?>
+                      <div>
+                        <a href="/termekek/?src=<?=$kulcsszavak?>"><?=$kulcsszavak?></a>
+                      </div>
+                      <?php endforeach; ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <?php endif; ?>
             <div class="shares">
               <div class="flex">
                 <div class="title">

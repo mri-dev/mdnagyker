@@ -615,6 +615,7 @@ class Products
 			p.ajandek,
 			p.rovid_leiras,
 			p.xml_import_origin,
+			p.kulcsszavak,
 			p.fotermek,
 			getTermekAr(p.ID, ".$uid.") as ar,
 			(SELECT GROUP_CONCAT(kategoria_id) FROM shop_termek_in_kategoria WHERE termekID = p.ID ) as in_cat,
@@ -991,6 +992,9 @@ class Products
 			$d['profil_kep_mid'] 	=  \PortalManager\Formater::productImage( $kep, 300, self::TAG_IMG_NOPRODUCT );
 			$d['profil_kep_small'] 	=  \PortalManager\Formater::productImage( $kep, 150, self::TAG_IMG_NOPRODUCT );
 
+			$this->makeKeywordsArray($d['kulcsszavak']);
+
+
 			/*
 			$arInfo	= $this->getProductPriceCalculate( $d['marka_id'], $brutto_ar );
 			$akcios_arInfo 	= $this->getProductPriceCalculate( $d['marka_id'], $akcios_brutto_ar );
@@ -1024,6 +1028,18 @@ class Products
 		$this->products = $bdata;
 
 		return $this;
+	}
+
+	public function makeKeywordsArray( &$keywords )
+	{
+		if ($keywords == '') {
+			return array();
+		}
+		
+		$keywords = str_replace(", ", ",", $keywords);
+		$keywords = explode(",", $keywords);
+
+		return $keywords;
 	}
 
 	public function priceGroupList()
@@ -1462,6 +1478,7 @@ class Products
 			if ($get_names) {
 				$cat_ids['id'][] = $v['kategoria_id'];
 				$cat_ids['name'][] = $v['neve'];
+				$cat_ids['url'][] = '/termekek/'.\Helper::makeSafeUrl($v['neve'],'_-'.$v['kategoria_id']);
 				$cat_ids['hashkey'][] = $v['hashkey'];
 
 				if( $v['oldal_hashkeys'] ) {
@@ -1723,6 +1740,7 @@ class Products
 		$data['arres_szazalek'] 	= $arInfo['arres'];
 		$data['hasonlo_termek_ids'] = $this->getProductRelatives( $product_id );
 		$in_kat = $this->getProductInCategory( $product_id, true );
+		$data['in_cats'] 				= $in_kat;
 		$data['in_cat_ids'] 		= $in_kat['id'];
 		$data['in_cat_names'] 		= $in_kat['name'];
 		$data['in_cat_hashkey']		= $in_kat['hashkey'];
@@ -1731,6 +1749,8 @@ class Products
 		$data['parameters']			= $this->getParameters( $product_id, $data['alapertelmezett_kategoria'] );
 		$data['related_products_ids']	= $this->getRelatedIDS( $product_id );
 		$data['nav'] = array_reverse($categories->getCategoryParentRow((int)$data['alapertelmezett_kategoria'], false));
+
+		$this->makeKeywordsArray($data['kulcsszavak']);
 
 		$vehicles_compatiblity = $this->vehicles->getProductCompatibilityList( $product_id );
 		$data['vehicles_compatiblity'] = $vehicles_compatiblity['list'];
