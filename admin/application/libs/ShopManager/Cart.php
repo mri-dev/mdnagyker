@@ -43,6 +43,7 @@ class Cart
 			c.termekID,
 			c.me,
 			c.hozzaadva,
+			c.configs,
 			t.pickpackszallitas,
 			CONCAT(m.neve,' ',t.nev) as termekNev,
 			t.meret,
@@ -83,16 +84,55 @@ class Cart
 			$totalPrice += $d[me] * $d[ar];
 			$d['url'] 	= '/termek/'.\PortalManager\Formater::makeSafeUrl($d['termekNev'],'_-'.$d['termekID']);
 			$d['profil_kep'] = \PortalManager\Formater::productImage($d['profil_kep'], 75, \ProductManager\Products::TAG_IMG_NOPRODUCT );
+			$d['configs'] = $this->collectConfigData($d['configs']);
 
 			$dt[] = $d;
 		}
 
-		$re[itemNum]			= $itemNum;
-		$re[totalPrice]			= $totalPrice;
-		$re[totalPriceTxt]		= number_format($totalPrice,0,""," ");
-		$re[items] 				= $dt;
+		$re[itemNum] = $itemNum;
+		$re[totalPrice] = $totalPrice;
+		$re[totalPriceTxt] = number_format($totalPrice ,0, "", " ");
+		$re[items] = $dt;
 
 		return $re;
+	}
+
+	public function collectConfigData( $rawconfig )
+	{
+		if ($rawconfig == '') {
+			return false;
+		}
+		parse_str($rawconfig, $configs);
+
+		if (count($configs) == 0) {
+			return false;
+		}
+
+		$list = array();
+		foreach ((array)$configs as $cp => $cv) {
+			$paramid = (int)str_replace("p","",$cp);
+			$value = $this->db->squery("SELECT
+				c.config_value as value,
+				c.parameter_id,
+				p.parameter as nev
+			FROM shop_termek_variation_configs as c
+			LEFT OUTER JOIN shop_termek_kategoria_parameter as p ON p.ID = c.parameter_id
+			WHERE 1=1 and c.ID = :id
+			ORDER BY CAST(p.priority as unsigned) ASC
+			", array('id' => $cv));
+			if ($value->rowCount() != 0) {
+				$value = $value->fetch(\PDO::FETCH_ASSOC);
+				$list[$paramid] = array(
+					'ID' => (int)$cv,
+					'param_id' => $paramid,
+					'parameter' => $value['nev'],
+					'value' => $value['value']
+				);
+			}
+
+		}
+
+		return $list;
 	}
 
 	public function __destruct()

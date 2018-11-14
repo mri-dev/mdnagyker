@@ -309,6 +309,7 @@ class termekek extends Controller
 					// Termék adatainak lekérése
 					$this->out( 'products', $products );
 					$this->out( 'termek', $products->get( $this->view->gets[3] ) );
+
 					if ( $this->view->termek['related_products_ids'] ) {
 						$termek_kapcsolatok = new Products( array( 'db' => $this->db ) );
 						$termek_kapcsolatok = $termek_kapcsolatok->prepareList( array(
@@ -427,6 +428,22 @@ class termekek extends Controller
 					$this->view->szallitas 	= $this->AdminUser->getSzallitasIdoLista();
 
 					$this->view->parameterek = $this->AdminUser->getParameterOnTermekKategoria($this->view->termek['alapertelmezett_kategoria']);
+
+					$params = $this->AdminUser->getParameterOnTermekKategoria($this->view->termek['alapertelmezett_kategoria']);
+
+					$this->view->parameterek = array_filter(
+						$params,
+						function( $i ){
+							if($i['kulcs'] == 0) return $i;
+						}
+					);
+
+					$this->view->config_parameterek = array_filter(
+						$params,
+						function( $i ){
+							if($i['kulcs'] == 1) return $i;
+						}
+					);
 
 				break;
 				case 'delListingFromKat':

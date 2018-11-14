@@ -157,28 +157,18 @@
 
               <div class="configs">
                 <div class="list">
-                  <?php if (false): ?>
+                  <?php foreach ((array)$this->product[variation_config] as $vconf): if(count($vconf['values']) == 0) continue; ?>
                   <div class="conf">
-                    <label for="conf_szin">Szín:</label>
+                    <label for="conf_c<?=$vconf['ID']?>"><?=$vconf['parameter']?>:</label>
                     <div class="sel-inp-wrapper">
-                      <select class="" name="config[szin]">
-                        <option value="">Fekete</option>
-                        <option value="">Szürke</option>
+                      <select data-paramid="<?=$vconf['ID']?>" name="config[<?=$vconf['ID']?>]">
+                        <?php foreach ((array)$vconf['values'] as $cv): ?>
+                        <option value="<?=$cv['ID']?>" <?=($cv['selected']==1)?'selected="selected"':''?>><?=$cv['value']?></option>
+                        <?php endforeach; ?>
                       </select>
                     </div>
                   </div>
-                  <div class="conf">
-                    <label for="conf_meret">Méret:</label>
-                    <div class="sel-inp-wrapper">
-                      <select class="" name="config[meret]">
-                        <option value="">110mm</option>
-                        <option value="">115mm</option>
-                      </select>
-                    </div>
-                  </div>
-
-
-                  <?php endif; ?>
+                  <?php endforeach; ?>
                   <?php if ( !$this->product['without_price'] ): ?>
                   <div class="conf men">
                     <label for="darab">Darab:</label>
@@ -197,7 +187,8 @@
                     <div class="price"><?=\PortalManager\Formater::cashFormat($ar)?> Ft</div>
                   </div>
                   <div class="buttonorder">
-                    <button id="addtocart" cart-data="<?=$this->product['ID']?>" cart-remsg="cart-msg" title="Kosárba rakom" class="tocart cart-btn"> <img src="<?=IMG?>cart-shop.svg" alt=""> <?=__('kosárba rakom')?></i></button>
+                    <input type="hidden" name="" id="cart_item<?=$this->product['ID']?>_configs" value="">
+                    <button id="addtocart" cart-data="<?=$this->product['ID']?>" data-configs="" cart-remsg="cart-msg" title="Kosárba rakom" class="tocart cart-btn"> <img src="<?=IMG?>cart-shop.svg" alt=""> <?=__('kosárba rakom')?></i></button>
                   </div>
                 <?php else: ?>
                   <div class="requestbutton">
@@ -223,7 +214,7 @@
                   <div class="wrapper">
                     <div class="labels">
                       <?php
-                      $ci = 0;
+                      $ci = -1;
                       foreach ((array)$this->product['in_cats']['name'] as $cat ): $ci++; ?>
                       <div class="">
                         <a href="<?=$this->product['in_cats']['url'][$ci]?>"><?=$cat?></a>
@@ -246,7 +237,7 @@
                     <div class="labels">
                       <?php foreach ( (array)$this->product['kulcsszavak'] as $kulcsszavak ): ?>
                       <div>
-                        <a href="/termekek/?src=<?=$kulcsszavak?>"><?=$kulcsszavak?></a>
+                        <a href="/tag/<?=$kulcsszavak?>"><?=$kulcsszavak?></a>
                       </div>
                       <?php endforeach; ?>
                     </div>
@@ -488,6 +479,11 @@
             document.location.href = $(this).attr('link');
         });
 
+        findConfigCart(<?=$this->product['ID']?>);
+        $('select[name*=config]').change(function(){
+          findConfigCart(<?=$this->product['ID']?>);
+        });
+
         $('.product-view .images .all img').hover(function(){
             changeProfilImg( $(this).attr('i') );
         });
@@ -536,6 +532,17 @@
           autoplay: true
         });
     })
+
+    function findConfigCart(id) {
+      var configs = $('select[name*=config]');
+      var p = {};
+
+      $.each(configs, function(i,v){
+        p['p'+$(v).data('paramid')] =  $(v).val();
+      });
+
+      $('#cart_item'+id+'_configs').val($.param(p));
+    }
 
     function switchTab( tab ) {
       $('.tab-holder.showed').removeClass('showed');

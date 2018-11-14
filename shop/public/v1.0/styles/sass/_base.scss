@@ -3401,15 +3401,16 @@ md-toast{
 	}
 
 	.item {
+		display: -webkit-box;
+	  display: -ms-flexbox;
+	  display: flex;
+		flex-wrap: nowrap;
 		position: relative;
 		padding: 12px;
 		border-bottom: 1px solid #eceff2;
 
 		.img {
-			float: left;
-			margin: 0 8px 0 0;
-			width: 75px;
-			height: 75px;
+			flex-basis: 75px;
 		}
 		.img img {
 			max-width: 68px;
@@ -3421,6 +3422,8 @@ md-toast{
 			text-align: left;
 			line-height: 24px;
 			font-size: 0.8em;
+			flex: 1;
+			padding: 0 0 0 10px;
 		}
 		.adder {
 			position: absolute;
@@ -3455,6 +3458,7 @@ md-toast{
 		.info .sub .tipus{
 			font-size: 1.1em;
 			color: #acacac;
+			margin-right: 5px;
 		}
 		.info .sub .tipus .val {
 			font-weight: bold;

@@ -314,7 +314,7 @@
 						</div>
 						<div class="form-group col-md-9">
 							<label for="kulcsszavak">Kulcsszavak <?=\PortalManager\Formater::tooltip('A kulcsszavak meghatározása fontos dolog, mivel ezek alapján tud pontosabb keresési találatot kapni a felhasználó. <br> <strong>A kulcsszavakat szóközzel elválasztva adja meg. Pl.: fekete úszó rövidnadrág</strong>')?></label>
-							<input type="text" class="form-control" name="kulcsszavak" id="kulcsszavak" value="<?=$this->termek['kulcsszavak']?>">
+							<input type="text" class="form-control" name="kulcsszavak" id="kulcsszavak" value="<?=implode(", ",$this->termek['kulcsszavak'])?>">
 						</div>
 					</div>
 
@@ -464,40 +464,71 @@
 			<? if( $this->termek['alapertelmezett_kategoria'] ): ?>
 	     	<div class="con con-extra">
 	     		<div style="float: right;"><a href="/kategoriak/parameterek">Paraméter beállítások <i class="fa fa-gear"></i></a></div>
-            	<h3>Paraméterek</h3>
-                <div style="">
-                <? if(count($this->parameterek) == 0): ?> <span class="subt"><i class="fa fa-info-circle"></i> nincsennek paraméterek meghatározva</span><? endif; ?>
-                <form action="" method="post">
-                	<input type="hidden" name="tid" value="<?=$this->termek[ID]?>">
-                 	<input type="hidden" name="kid" value="<?=$this->termek[alapertelmezett_kategoria]?>">
-                <? foreach($this->parameterek as $d): ?>
-                <div class="row">
-                	<div class="col-sm-12"><strong><?=$d[parameter]?></strong></div>
-               	</div>
-				<div class="row">
-					<div class="col-sm-12">
+          <h3>Paraméterek</h3>
+          <div style="">
+          <? if(count($this->parameterek) == 0): ?> <span class="subt"><i class="fa fa-info-circle"></i> nincsennek paraméterek meghatározva</span><? endif; ?>
+          <form action="" method="post">
+          	<input type="hidden" name="tid" value="<?=$this->termek[ID]?>">
+           	<input type="hidden" name="kid" value="<?=$this->termek[alapertelmezett_kategoria]?>">
+          <? foreach($this->parameterek as $d): ?>
+          <div class="row">
+          	<div class="col-sm-12"><strong><?=$d[parameter]?></strong></div>
+         	</div>
+					<div class="row">
+						<div class="col-sm-12">
 				    	<div class="input-group">
 				    	<input type="text" name="param[<?=$d[ID]?>]" value="<?=$this->termek['parameters'][$d[ID]][ertek]?>" class="form-control">
 				        <span class="input-group-addon"><?=$d[mertekegyseg]?></span>
 				        </div>
 				    </div>
-				</div>
-				<br>
-				<? endforeach; ?>
-                <? if(count($this->parameterek) > 0): ?>
-                <div class="" align="right">
-                    <button name="saveTermekParams" class="btn btn-success btn-2x">Mentés <i class="fa fa-check"></i></button>
-                </div>
-                <? endif; ?>
-                </form>
-                </div>
-            </div>
+					</div>
+					<br>
+					<? endforeach; ?>
+          <? if(count($this->parameterek) > 0): ?>
+          <div class="" align="right">
+              <button name="saveTermekParams" class="btn btn-success btn-2x">Mentés <i class="fa fa-check"></i></button>
+          </div>
+          <? endif; ?>
+          </form>
+          </div>
+        </div>
+			<? endif; ?>
 
-
-
-            <? endif; ?>
-
-
+			<?php if (!empty($this->config_parameterek)): ?>
+			<div class="con con-extra">
+				<h3>
+					Variációs értékek
+					<div class="info">
+						Konfigurációs kulcs paraméter alapján meghatározva.
+					</div>
+				</h3>
+				<form class="" action="" method="post">
+					<input type="hidden" name="tid" value="<?=$this->termek[ID]?>">
+					<div class="">
+						<?php foreach ((array)$this->config_parameterek as $confp): ?>
+						<div class="row">
+	          	<div class="col-sm-12"><strong><i class="fa fa-key"></i> <?=$confp[parameter]?> (<?=count($this->termek[variation_config][$confp['ID']]['values'])?>)</strong></div>
+	         	</div>
+						<?php if (count($this->termek[variation_config][$confp['ID']]['values']) == 0): ?>
+							<div class="row">
+								<div class="col-md-12">
+									x nincs meghatározott config érték.
+								</div>
+							</div>
+						<?php else: ?>
+							<?php foreach ((array)$this->termek[variation_config][$confp['ID']]['values'] as $c): ?>
+							<div class="row">
+								<div class="col-md-12">
+									-> <?=$c['value']?>
+								</div>
+							</div>
+							<?php endforeach; ?>
+						<?php endif; ?>
+						<?php endforeach; ?>
+					</div>
+				</form>
+			</div>
+			<?php endif; ?>
 	</form>
 
             <div class="con con-extra">

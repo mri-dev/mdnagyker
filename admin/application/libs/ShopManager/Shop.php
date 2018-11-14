@@ -967,35 +967,34 @@ class Shop
 			$this->db->query("UPDATE shop_kosar SET me = me - 1  WHERE termekID = $termekID and gepID = $mid");
 		}
 	}
-	public function addToCart($mid, $termekID, $me){
+	public function addToCart($mid, $termekID, $me, $config){
 		if($mid == '')
 		throw new \Exception('Nem sikerült hozzáadni a terméket a kosárhoz. Frissítse le az oldalt és próbálja újra!');
 
-		$ci = $this->db->query("SELECT ID FROM shop_kosar WHERE termekID = $termekID and gepID = $mid;");
+		$ci = $this->db->query("SELECT ID FROM shop_kosar WHERE termekID = $termekID and gepID = $mid and configs = '$config';");
 
 		if($ci->rowCount() == 0){
-
 			//$c = $ci->fetch(\PDO::FETCH_ASSOC);
-
 			$this->db->insert('shop_kosar',
 				array(
 					'termekID' => $termekID,
 					'gepID' => $mid,
-					'me' => $me
+					'me' => $me,
+					'configs' => ($config == '' || empty($config) || !isset($config)) ? NULL : $config
 				)
 			);
 
 		}else{
-			$this->db->query("UPDATE shop_kosar SET me = me + $me  WHERE termekID = $termekID and gepID = $mid");
+			$this->db->query("UPDATE shop_kosar SET me = me + $me  WHERE termekID = $termekID and gepID = $mid and configs = '$config'");
 		}
 
 	}
-	public function removeFromCart($mid, $termekID){
+	public function removeFromCart($mid, $cartID){
 		if($mid == '')
 			throw new \Exception('Nem sikerült hozzáadni a terméket a kosárhoz. Frissítse le az oldalt és próbálja újra!');
-		if($termekID == '')
+		if($cartID == '')
 			throw new \Exception('Termék azonosító hiányzik!');
-		$q = "DELETE FROM shop_kosar WHERE termekID = $termekID and gepID = $mid";
+		$q = "DELETE FROM shop_kosar WHERE ID = $cartID and gepID = $mid";
 		$this->db->query($q);
 	}
 

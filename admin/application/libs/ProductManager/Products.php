@@ -608,6 +608,7 @@ class Products
 			p.without_price,
 			p.szin,
 			p.csoport_kategoria,
+			p.alapertelmezett_kategoria,
 			p.ajanlatunk,
 			p.meret,
 			p.garancia_honap,
@@ -1013,6 +1014,7 @@ class Products
 			$d['link'] 				= DOMAIN.'termek/'.\PortalManager\Formater::makeSafeUrl( $d['product_nev'], '_-'.$d['product_id'] );
 			$d['hasonlo_termek_ids']= $this->getProductRelatives( $d['product_id'] );
 			$d['parameters'] 		= $this->getParameters( $d['product_id'], $d['alapertelmezett_kategoria'] );
+			$d['variation_config'] = $this->getVariationConfig( $d['product_id'], $d['alapertelmezett_kategoria'] );
 			$d['price_groups'] 	= $this->priceGroups( $d['xml_import_origin'], $d['nagyker_kod'] );
 			$d['inKatList'] 		= $in_cat;
 			//$d['ar'] 				= $arInfo['ar'];
@@ -1035,7 +1037,7 @@ class Products
 		if ($keywords == '') {
 			return array();
 		}
-		
+
 		$keywords = str_replace(", ", ",", $keywords);
 		$keywords = explode(",", $keywords);
 
@@ -1152,7 +1154,7 @@ class Products
 			FROM shop_termek_parameter as tp
 			LEFT OUTER JOIN shop_termek_kategoria_parameter as tk ON tk.ID = tp.parameterID
 			WHERE 1=1 and tp.termekID IN (".implode(",", $ids).")
-			ORDER BY tk.priority ASC
+			ORDER BY CAST(tk.priority as unsigned) ASC
 			";
 
 			//echo $q;
@@ -1369,7 +1371,7 @@ class Products
 			$q .= " and katID = $katID ";
 		}
 		$q .= "
-		 ORDER BY pm.priority ASC";
+		 ORDER BY CAST(pm.priority as unsigned) ASC";
 		extract($this->db->q($q,array('multi'=> '1')));
 		$back = array();
 		foreach($data as $d){
@@ -1747,6 +1749,7 @@ class Products
 		$data['in_cat_page_hashkeys']= $in_kat['page_hashkeys'];
 		$data['images'] 			= $this->getProductImages( $product_id );
 		$data['parameters']			= $this->getParameters( $product_id, $data['alapertelmezett_kategoria'] );
+		$data['variation_config'] = $this->getVariationConfig( $product_id, $data['alapertelmezett_kategoria'] );
 		$data['related_products_ids']	= $this->getRelatedIDS( $product_id );
 		$data['nav'] = array_reverse($categories->getCategoryParentRow((int)$data['alapertelmezett_kategoria'], false));
 
@@ -1774,6 +1777,33 @@ class Products
 		}
 
 		return $data;
+	}
+
+	public function getVariationConfig( $tid, $alapkat_id )
+	{
+		$list = array();
+
+		if ((int)$alapkat_id == 0) {
+			return $list;
+		}
+
+
+		$confparams = $this->db->squery("SELECT ID, parameter, mertekegyseg FROM shop_termek_kategoria_parameter WHERE kategoriaID = :id and kulcs = 1 ORDER BY CAST(priority as unsigned) ASC ", array('id' => $alapkat_id))->fetchAll(\PDO::FETCH_ASSOC);
+
+		if (empty($confparams)) {
+			return $list;
+		}
+
+		foreach ((array)$confparams as $cp)
+		{
+			$values = $this->db->squery("SELECT ID, defvalue as selected, config_value as value FROM shop_termek_variation_configs WHERE product_id = :tid and parameter_id = :pid ORDER BY config_value ASC ", array('tid' => $tid, 'pid' => $cp['ID']))->fetchAll(\PDO::FETCH_ASSOC);
+			$cp['values'] = $values;
+			$list[$cp['ID']] = $cp;
+		}
+
+		//shop_termek_variation_configs
+
+		return $list;
 	}
 
 	public function checkProductTransportName( $szallitasID, $keszlet = 1 )

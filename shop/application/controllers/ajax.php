@@ -164,7 +164,7 @@ class ajax extends Controller{
 							if(!$err && ($m == '' || $m == 0)) $err = $this->escape('Kérjük adja meg hogy hány terméket szeretne a kosárba helyezni!',$ret);
 
 							try{
-								$this->shop->addToCart(Helper::getMachineID(), $t, $m);
+								$this->shop->addToCart(Helper::getMachineID(), $t, $m, $config);
 							}catch(Exception $e){
 								$err = $this->escape($e->getMessage(),$ret);
 							}

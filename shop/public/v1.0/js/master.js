@@ -381,9 +381,18 @@ function Cart(){
 				'<i class="fa fa-minus-square" title="Kevesebb" onclick="Cart.removeItem('+i.termekID+')"></i>'+
 				'<i class="fa fa-plus-square" title="Több" onclick="Cart.addItem('+i.termekID+')"></i>'+
 			'</div>'+
-			'<div class="remove"><i class="fa fa-times "  onclick="Cart.remove('+i.termekID+');" title="Eltávolítás"></i></div>'+
+			'<div class="remove"><i class="fa fa-times "  onclick="Cart.remove('+i.termekID+', '+i.ID+');" title="Eltávolítás"></i></div>'+
 			'<div class="name"><a href="'+i.url+'">'+i.termekNev+'</a> <span class="in">x '+i.me+'</span></div>'+
-			'<div class="sub"><div class="tipus">Variáció: <span class="val">'+((i.szin) ? i.szin+'</span>' : '')+''+( (i.meret)?', Kiszerelés: <span class="val">'+i.meret+'</span>':'')+'</div><span class="ar">'+( (i.ar != '-1')? i.ar+' Ft / db' : 'Ár: érdeklődjön' )+'</span></div>'+
+			'<div class="sub">';
+			if (i.configs) {
+				ec += '<div>';
+				$.each(i.configs, function(i,v){
+					ec += '<span class="tipus">'+v.parameter+': <strong class="val">'+v.value+'</strong></span>';
+				});
+				ec += '</div>';
+			}
+			ec += '<span class="ar">'+( (i.ar != '-1')? i.ar+' Ft / db' : 'Ár: érdeklődjön' )+'</span>';
+			ec + '</div>'+
 		'</div>'+
 		'<div class="clr"></div></div>';
 		if(oi.length == 0){
@@ -432,7 +441,7 @@ function Cart(){
 		$(this.content).html('<div class="noItem"><div class="inf">A kosár üres</div></div>');
 		buildCartItems(e);
 	}
-	this.remove = function(id){
+	this.remove = function(tid, id){
 		var c = this.content;
 		var parent = this;
 		$.post('/ajax/post/',{
@@ -499,7 +508,6 @@ function openCloseBox(elem, flag){
 		$(elem).toggle("slide");
 	}
 
-	console.log(flagState);
 }
 function removeFilterItem(e){
 	var key = e.attr('key');
@@ -572,9 +580,10 @@ function searchFilters(){
 	});
 
 	$('button[cart-data]').click(function(){
-
 		var key = $(this).attr('cart-data');
 		var rem = $(this).attr('cart-remsg');
+		var config = $('#cart_item'+key+'_configs').val();
+		console.log(config);
 		var me 	= $('input[type=number][cart-count='+key+']').val();
 		var progress = $(this).attr('cart-progress');
 
@@ -591,7 +600,7 @@ function searchFilters(){
 
 		$('#'+rem).html('<div class="in-progress"><i class="fa fa-spin fa-spinner"></i> kosárba helyezés folyamatban...</div>');
 
-		addToCart(key, me, function(success, msg){
+		addToCart(key, me, config, function(success, msg){
 			if (success == 1) {
 				$('#'+rem).html('<div class="success">'+msg+'</div>');
 			} else {
@@ -646,13 +655,14 @@ function refreshCart(p){
 		$('.cart .whattodo').removeClass('active');
 	}
 }
-function addToCart(termekID, me, callback){
+function addToCart(termekID, me, config, callback){
 
 	$.post('/ajax/post/',{
 		type : 'cart',
 		mode : 'add',
 		t 	 : termekID,
-		m    : me
+		m    : me,
+		config: config
 	},function(d){
 		var p = $.parseJSON(d);
 		if(p.success == 1){

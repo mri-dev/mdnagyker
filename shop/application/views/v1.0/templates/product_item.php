@@ -53,6 +53,22 @@
     </div>
 
     <div class="add">
+      <?php
+        if ($variation_config) {
+          $configstring = '';
+          foreach ((array)$variation_config as $confg) {
+            if ($confg['values']) {
+              foreach ((array)$confg['values'] as $cfg) {
+                if ($cfg['selected'] == 1) {
+                  $configstring .= 'p'.$confg['ID'].'='.$cfg['ID'].'&';
+                }
+              }
+            }
+          }
+          $configstring = rtrim($configstring,'&');
+        }
+      ?>
+      <input type="hidden" name="" id="cart_item<?=$product_id?>_configs" value="<?=$configstring?>">
       <button type="button" id="btn-add-p<?=$product_id?>" cart-data="<?=$product_id?>" cart-progress="btn-add-p<?=$product_id?>" cart-me="1" cart-remsg="cart-msg" class="cart tocart"><img src="<?=IMG?>shopcart-ico.svg" alt="Kosárba"> Kosárba</button>
     </div>
 
