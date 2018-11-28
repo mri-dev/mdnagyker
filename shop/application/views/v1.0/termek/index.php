@@ -66,15 +66,15 @@
                 <?php else: ?>
                   <div class="netto">
                     <div class="pricehead">Kiskereskedelmi <strong>nettó ár</strong>:</div>
-                    <span class="price"><?=\PortalManager\Formater::cashFormat($ar/1.27)?> <?=$this->valuta?></span>
+                    <span class="price"><?=\PortalManager\Formater::cashFormat($ar/1.27)?> <?=$this->valuta?><? if($this->product['mertekegyseg'] != ''): ?><span class="unit-text">/<?=($this->product['mertekegyseg_ertek']!=1)?$this->product['mertekegyseg_ertek']:''?><?=$this->product['mertekegyseg']?></span><? endif; ?></span>
                   </div>
                   <div class="brutto">
                     <div class="pricehead">Kiskereskedelmi <strong>bruttó ár</strong>:</div>
-                    <span class="price current <?=( $this->product['akcios'] == '1' && $this->product['akcios_fogy_ar'] > 0)?'discounted':''?>"><?=\PortalManager\Formater::cashFormat($ar)?> <?=$this->valuta?></span>
+                    <span class="price current <?=( $this->product['akcios'] == '1' && $this->product['akcios_fogy_ar'] > 0)?'discounted':''?>"><?=\PortalManager\Formater::cashFormat($ar)?> <?=$this->valuta?><? if($this->product['mertekegyseg'] != ''): ?><span class="unit-text">/<?=($this->product['mertekegyseg_ertek']!=1)?$this->product['mertekegyseg_ertek']:''?><?=$this->product['mertekegyseg']?></span><? endif; ?></span>
                     <?  if( $this->product['akcios'] == '1' && $this->product['akcios_fogy_ar'] > 0):
                         $ar = $this->product['akcios_fogy_ar'];
                     ?>
-                    <span class="price old"><strike><?=\PortalManager\Formater::cashFormat($this->product['ar'])?> <?=$this->valuta?></strike></span>
+                    <span class="price old"><strike><?=\PortalManager\Formater::cashFormat($this->product['ar'])?> <?=$this->valuta?><? if($this->product['mertekegyseg'] != ''): ?><span class="unit-text">/<?=$this->product['mertekegyseg']?></span><? endif; ?></strike></span>
                     <? endif; ?>
                   </div>
                 <?php endif; ?>
@@ -129,6 +129,24 @@
 
           <div class="cart-info">
             <div id="cart-msg"></div>
+            <div class="group">
+              <div class="configs full">
+                <div class="list">
+                  <?php foreach ((array)$this->product[variation_config] as $vconf): if(count($vconf['values']) == 0) continue; ?>
+                  <div class="conf">
+                    <label for="conf_c<?=$vconf['ID']?>"><?=$vconf['parameter']?>:</label>
+                    <div class="sel-inp-wrapper">
+                      <select data-paramid="<?=$vconf['ID']?>" name="config[<?=$vconf['ID']?>]">
+                        <?php foreach ((array)$vconf['values'] as $cv): ?>
+                        <option value="<?=$cv['ID']?>" <?=($cv['selected']==1)?'selected="selected"':''?>><?=$cv['value']?></option>
+                        <?php endforeach; ?>
+                      </select>
+                    </div>
+                  </div>
+                  <?php endforeach; ?>
+                </div>
+              </div>
+            </div>
 
             <? if($this->settings['stock_outselling'] == '0' && $this->product['raktar_keszlet'] <= 0): ?>
             <div class="out-of-stock">
@@ -157,21 +175,9 @@
 
               <div class="configs">
                 <div class="list">
-                  <?php foreach ((array)$this->product[variation_config] as $vconf): if(count($vconf['values']) == 0) continue; ?>
-                  <div class="conf">
-                    <label for="conf_c<?=$vconf['ID']?>"><?=$vconf['parameter']?>:</label>
-                    <div class="sel-inp-wrapper">
-                      <select data-paramid="<?=$vconf['ID']?>" name="config[<?=$vconf['ID']?>]">
-                        <?php foreach ((array)$vconf['values'] as $cv): ?>
-                        <option value="<?=$cv['ID']?>" <?=($cv['selected']==1)?'selected="selected"':''?>><?=$cv['value']?></option>
-                        <?php endforeach; ?>
-                      </select>
-                    </div>
-                  </div>
-                  <?php endforeach; ?>
                   <?php if ( !$this->product['without_price'] ): ?>
                   <div class="conf men">
-                    <label for="darab">Darab:</label>
+                    <label for="darab"><?=($this->product['mertekegyseg'] == '')?'Mennyiség:': ( ($this->product['mertekegyseg_ertek'] != 1) ? $this->product['mertekegyseg_ertek'].' '.$this->product['mertekegyseg'] : ucfirst($this->product['mertekegyseg']) ) .':'?></label>
                     <div class="num-inp-wrapper">
                       <input type="number" name="" id="add_cart_num" cart-count="<?=$this->product['ID']?>" value="1" min="1">
                     </div>
@@ -184,7 +190,12 @@
                 <?php if ( !$this->product['without_price'] ): ?>
                   <div class="finalprice">
                     Bruttó összeg:<br>
-                    <div class="price"><?=\PortalManager\Formater::cashFormat($ar)?> Ft</div>
+                    <div class="price"><?=\PortalManager\Formater::cashFormat($ar)?> <?=$this->valuta?><? if($this->product['mertekegyseg'] != ''): ?><span class="unit-text">/<?=($this->product['mertekegyseg_ertek']!=1)?$this->product['mertekegyseg_ertek']:''?><?=$this->product['mertekegyseg']?></span><? endif; ?></div>
+                    <?php if ($this->product['mertekegyseg_egysegar']): ?>
+                    <div class="egysegar">
+                     Egységár: <strong><?php echo $this->product['mertekegyseg_egysegar']; ?></strong> 
+                    </div>
+                    <?php endif; ?>
                   </div>
                   <div class="buttonorder">
                     <input type="hidden" name="" id="cart_item<?=$this->product['ID']?>_configs" value="">

@@ -319,9 +319,17 @@
 					</div>
 
 					<div class="row">
-						<div class="form-group col-md-12">
+						<div class="form-group col-md-6">
 							<label for="tudastar_url">Tudástár URL <?=\PortalManager\Formater::tooltip('A termék adatlapon megjelenő tudástár hivatkozásra kattintva erre az URL-re fog érkezni a látogató. Ez lehet egy előzetesen leszűrt (kulcsszó vagy konkrét cikk alapján) tudástár hivatkozás, mely a termékkel kapcsolatos cikk(ek)et listázza ki.')?></label>
 							<input type="text" class="form-control" name="tudastar_url" id="tudastar_url" value="<?=$this->termek['tudastar_url']?>">
+						</div>
+						<div class="form-group col-md-3">
+							<label for="mertekegyseg">Mértékegység</label>
+							<input type="text" class="form-control" name="mertekegyseg" id="mertekegyseg" value="<?=$this->termek['mertekegyseg']?>">
+						</div>
+						<div class="form-group col-md-3">
+							<label for="mertekegyseg_ertek">Mértékegység érték</label>
+							<input type="text" class="form-control" name="mertekegyseg_ertek" id="mertekegyseg_ertek" value="<?=$this->termek['mertekegyseg_ertek']?>">
 						</div>
 					</div>
 

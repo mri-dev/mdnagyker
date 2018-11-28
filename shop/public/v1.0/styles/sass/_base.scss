@@ -2197,6 +2197,11 @@ body.singlepage{
 								font-size: 0.85em;
 		    				font-weight: 100;
 							}
+
+							.unit-text{
+								font-size: 0.5em;
+								font-weight: 400;
+							}
 						}
 
 						& > div {
@@ -2348,7 +2353,7 @@ body.singlepage{
 							}
 
 							&.configs{
-								flex: 1;
+								flex-basis: 40%;
 
 								& > .list{
 									display: -webkit-box;
@@ -2379,10 +2384,14 @@ body.singlepage{
 										flex-basis: 70px;
 									}
 								}
+
+								&.full{
+									flex-basis: 100%;
+								}
 							}
 
 							&.order{
-								flex-basis: 261px;
+								flex: 1;
 								display: -webkit-box;
 							  display: -ms-flexbox;
 							  display: flex;
@@ -2401,7 +2410,20 @@ body.singlepage{
 										font-weight: bold;
 										color: $color-red;
 										margin: 10px 0 0 0;
-										font-size: 1.5em;
+										font-size: 1.8em;
+										.unit-text{
+											font-size: 0.7em;
+											font-weight: 400;
+										}
+									}
+
+									.egysegar{
+										font-size: 0.8em;
+										margin: 4px 0 0 0;
+										color: #8c8c8c;
+										strong {
+											color: #434343;
+										}
 									}
 								}
 

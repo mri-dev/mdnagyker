@@ -107,6 +107,9 @@ class Products
 			$referer_price_discount 	= (!$product->getVariable('referer_price_discount')) ? 0 : $product->getVariable('referer_price_discount');
 			$sorrend 			= (!$product->getVariable('sorrend')) ? 0 : $product->getVariable('sorrend');
 
+			$mertekegyseg = (!$product->getVariable('mertekegyseg')) ? NULL : $product->getVariable('mertekegyseg');
+			$mertekegyseg_ertek = (!$product->getVariable('mertekegyseg_ertek')) ? 1 : $product->getVariable('mertekegyseg_ertek');
+
 			// Csatolt hivatkozások előkészítése
 			if( $link_list ) {
 				foreach( $link_list as $lnev => $url ){
@@ -160,7 +163,9 @@ class Products
 					'show_stock' => $show_stock,
 					'xml_import_origin' => $xml_origin,
 					'xml_import_res_id' => $xml_temp_id,
-					'nagyker_kod' => $crm_res_id
+					'nagyker_kod' => $crm_res_id,
+					'mertekegyseg' => $mertekegyseg,
+					'mertekegyseg_ertek' => $mertekegyseg_ertek,
 				)
 			);
 
@@ -330,6 +335,9 @@ class Products
 			$referer_price_discount 	= (!$product->getVariable('referer_price_discount')) ? 0 : $product->getVariable('referer_price_discount');
 			$sorrend 			= (!$product->getVariable('sorrend')) ? 0 : $product->getVariable('sorrend');
 
+			$mertekegyseg = (!$product->getVariable('mertekegyseg')) ? NULL : $product->getVariable('mertekegyseg');
+			$mertekegyseg_ertek = (!$product->getVariable('mertekegyseg_ertek')) ? 1 : $product->getVariable('mertekegyseg_ertek');
+
 			// Cashman sync
 			$this->syncUpCRMProduct( 1, $product->getVariable('crm') );
 
@@ -388,7 +396,9 @@ class Products
 					'tudastar_url' => $tudastar_url,
 					'referer_price_discount' => $referer_price_discount,
 					'sorrend' => $sorrend,
-					'show_stock' => $show_stock
+					'show_stock' => $show_stock,
+					'mertekegyseg' => $mertekegyseg,
+					'mertekegyseg_ertek' => $mertekegyseg_ertek,
 				),
 				sprintf("ID = %d", $product->getId())
 			);
@@ -1017,6 +1027,7 @@ class Products
 			$d['variation_config'] = $this->getVariationConfig( $d['product_id'], $d['alapertelmezett_kategoria'] );
 			$d['price_groups'] 	= $this->priceGroups( $d['xml_import_origin'], $d['nagyker_kod'] );
 			$d['inKatList'] 		= $in_cat;
+			$d['mertekegyseg_egysegar'] = $this->calcEgysegAr($d['mertekegyseg'], $d['mertekegyseg_ertek'], $d['ar']);
 			//$d['ar'] 				= $arInfo['ar'];
 			//$d['akcios_fogy_ar']	= $akcios_arInfo['ar'];
 			//$d['arres_szazalek'] 	= $arInfo['arres'];
@@ -1030,6 +1041,27 @@ class Products
 		$this->products = $bdata;
 
 		return $this;
+	}
+
+	public function calcEgysegAr( $me, $mevar, $price)
+	{
+		$ea = 0;
+		$mert = $me;
+		switch ( $me ) {
+			case 'méter':
+				$ea = $price / $mevar;
+			break;
+			case 'ml':
+				$ea = $price / $mevar * 1000;
+				$mert = 'l';
+			break;
+		}
+
+		if ($ea == 0 || $mevar == 1) {
+			return false;
+		} else {
+			return number_format($ea,2, ".", " ") . ' Ft/'.$mert;
+		}
 	}
 
 	public function makeKeywordsArray( &$keywords )
@@ -1767,6 +1799,9 @@ class Products
 		$data['documents'] = $this->getTermDocuments( $product_id );
 		// Linkek
 		$data['link_lista']	= $this->getProductLinksFromStr( $data['linkek'] );
+
+		$data['mertekegyseg_egysegar'] = $this->calcEgysegAr($data['mertekegyseg'], $data['mertekegyseg_ertek'], $data['ar']);
+
 		// Csatolt link hivatkozások
 		$this->getProductLinksFromCategoryHashkeys( $data['in_cat_page_hashkeys'], $data['link_lista'] );
 

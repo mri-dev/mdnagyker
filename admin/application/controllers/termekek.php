@@ -292,12 +292,14 @@ class termekek extends Controller
 								'ajandek' => $_POST['ajandek'],
 								'termek_site_url' => $_POST['termek_site_url'],
 								'tudastar_url' => $_POST['tudastar_url'],
+								'mertekegyseg' => $_POST['mertekegyseg'],
+								'mertekegyseg_ertek' => $_POST['mertekegyseg_ertek'],
 								'referer_price_discount' => $_POST['referer_price_discount'],
 								'show_stock' => $_POST['show_stock'],
 								'sorrend' =>  (isset($_POST['sorrend']) ? $_POST['sorrend'] : 100),
 								'meta_title' => $_POST['meta_title'],
 								'meta_desc' => $_POST['meta_desc'],
-								'crm' => $_POST['crm']
+								'crm' => $_POST['crm'],
 							) ) );
 							Helper::reload( '/termekek/t/edit/'.$this->view->gets[3].'/?backmsg=success&msg='.$save);
 						} catch (Exception $e){
@@ -724,6 +726,9 @@ class termekek extends Controller
 						'csoport_kategoria' => $_POST['csoport_kategoria'],
 						'ajandek' 			=> $_POST['ajandek'],
 						'termek_site_url' 	=> $_POST['termek_site_url'],
+						'tudastar_url' => $_POST['tudastar_url'],
+						'mertekegyseg' => $_POST['mertekegyseg'],
+						'mertekegyseg_ertek' => $_POST['mertekegyseg_ertek'],
 						'show_stock' 		=> $_POST['show_stock'],
 						'referer_price_discount' => $_POST['referer_price_discount'],
 						'sorrend' 			=>  (isset($_POST['sorrend']) ? $_POST['sorrend'] : 100),
