@@ -4,7 +4,7 @@
     if( $akcios == '1' ) $ar = $akcios_fogy_ar;
   ?>
   <div class="wrapper">
-    <div class="image">
+    <div class="image autocorrett-height-by-width" data-image-ratio="4:3">
       <?php if ( $akcios == '1' ): ?>
       <div class="discount-percent">
         <div class="p">

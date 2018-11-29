@@ -308,6 +308,11 @@ $(function(){
 
 	} );
 
+	setTimeout(function() {
+	  autoResizeHeight();
+	}, 10);
+
+
 	// Mobile Device max Width
 	$('*.mobile-max-width').each( function(){
 		if ( width <= 480 ) {
@@ -318,6 +323,31 @@ $(function(){
 		}
 	});
 })
+
+function autoResizeHeight() {
+		jQuery.each($('.autocorrett-height-by-width'), function(i,e){
+	    var ew = $(e).width();
+	    var ap = $(e).data('image-ratio');
+	    var respunder = $(e).data('image-under');
+			var pw = $(window).width();
+	    ap = (typeof ap !== 'undefined') ? ap : '4:3';
+	    var aps = ap.split(":");
+	    var th = ew / parseInt(aps[0])  * parseInt(aps[1]);
+
+			if (respunder) {
+				if (pw < respunder) {
+					$(e).css({
+		        height: th
+		      });
+				}
+			} else{
+				$(e).css({
+	        height: th
+	      });
+			}
+
+	  });
+}
 
 function autoresizeImages(){
 	var images = $('.img-auto-cuberatio');

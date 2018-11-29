@@ -12,7 +12,7 @@
       <div class="top-datas">
         <div class="images">
           <?php if (true): ?>
-          <div class="main-img img-auto-cuberatio">
+          <div class="main-img by-width autocorrett-height-by-width" data-image-ratio="4:3">
             <? if( $ar >= $this->settings['cetelem_min_product_price'] && $ar <= $this->settings['cetelem_max_product_price'] && $this->product['no_cetelem'] != 1 ): ?>
                 <img class="cetelem" src="<?=IMG?>cetelem_badge.png" alt="Cetelem Online Hitel">
             <? endif; ?>
@@ -25,8 +25,8 @@
           </div>
           <div class="all">
             <?  foreach ( $this->product['images'] as $img ) { ?>
-            <div class="imgslide img-auto-cuberatio__">
-              <div class="wrp">
+            <div class="imgslide">
+              <div class="wrp autocorrett-height-by-width" data-image-ratio="4:3">
                 <img class="aw" i="<?=\PortalManager\Formater::productImage($img)?>" src="<?=\PortalManager\Formater::productImage($img, 150)?>" alt="<?=$this->product['nev']?>">
               </div>
             </div>
@@ -193,7 +193,7 @@
                     <div class="price"><?=\PortalManager\Formater::cashFormat($ar)?> <?=$this->valuta?><? if($this->product['mertekegyseg'] != ''): ?><span class="unit-text">/<?=($this->product['mertekegyseg_ertek']!=1)?$this->product['mertekegyseg_ertek']:''?><?=$this->product['mertekegyseg']?></span><? endif; ?></div>
                     <?php if ($this->product['mertekegyseg_egysegar']): ?>
                     <div class="egysegar">
-                     Egységár: <strong><?php echo $this->product['mertekegyseg_egysegar']; ?></strong> 
+                     Egységár: <strong><?php echo $this->product['mertekegyseg_egysegar']; ?></strong>
                     </div>
                     <?php endif; ?>
                   </div>
@@ -359,7 +359,7 @@
             <div class="description tab-holder showed" id="tab-content-description">
               <div class="c">
                 <?php if ( !empty($this->product['leiras']) ): ?>
-                <?=$this->product['leiras']?>
+                <?=\ProductManager\Product::modifyDescription($this->product['leiras'])?>
                 <?php else: ?>
                   <div class="no-data">
                     <i class="fa fa-info-circle"></i> A terméknek nincs leírása.

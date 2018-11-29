@@ -3,7 +3,7 @@
     <?php
       $belyeg_kep = ($belyeg_kep == '') ? IMG.'no-image.png' : \PortalManager\Formater::sourceImg($belyeg_kep);
     ?>
-    <div class="img"><a href="/hirek/<?=$eleres?>"><img src="<?=$belyeg_kep?>" alt="<?=$cim?>"></a></div>
+    <div class="img autocorrett-height-by-width" data-image-ratio="4:3"><a href="/hirek/<?=$eleres?>"><img src="<?=$belyeg_kep?>" alt="<?=$cim?>"></a></div>
     <div class="title">
       <h2><a href="/hirek/<?=$eleres?>"><?=$cim?></a></h2>
     </div>

@@ -502,7 +502,10 @@ body.singlepage{
 					background: white;
 					img {
 						position: absolute;
-						width: 110%;
+						width: auto;
+						max-width: initial;
+						height: 100%;
+						max-height: 100%;
 						left: 50%;
 						top: 50%;
 						-webkit-transform: translate(-50%,-50%);
@@ -794,13 +797,19 @@ body.singlepage{
 				}
 
 				img {
-					width: 80%;
-					max-width: 80%;
+					width: 90%;
+					max-width: 90%;
 					margin: 0 auto;
+					position: absolute;
+					left: 50%;
+					top: 50%;
+
+					-webkit-transform: translate(-50%,-50%);
+					transform: translate(-50%,-50%);
 				}
 				.short-desc {
 					z-index: 2;
-					background:rgba(240, 240, 240, 0.81);
+					background:rgba(240, 240, 240, 0.8);
 					padding: 5px;
 					font-size: 0.8em;
 					text-align: left;
@@ -2476,8 +2485,8 @@ body.singlepage{
 			}
 		}
 		.more-datas{
-			background: #fafafa;
-			border-top: 1px solid #949494;
+			background: #ffffff;
+			border-top: 2px solid #dbdbdb;
 			margin: 50px 0 0 0;
     	padding: 25px 0;
 

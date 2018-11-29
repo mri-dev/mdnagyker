@@ -19,16 +19,16 @@
 			if(strpos($item,"::") !== false){
 				$ext 	= explode("::",$item);
 				$pl 	= $ext[0] .'/'. $ext[1].'.php';
-				$item 	= '';	 
+				$item 	= '';
 			}else{
-				$pl 	= '/index.php';	
+				$pl 	= '/index.php';
 			}
-			
+
 			$vw = array(
 				VIEW . $item . $pl,
-				VIEW . $item . '.php'				
+				VIEW . $item . '.php'
 			);
-			
+
 			if($this->called != null){
 				 $call = VIEW . $item . '/' . $this->called . '.php';
                     if(!file_exists($call)){
@@ -43,10 +43,10 @@
                 $step++;
 				$target = (file_exists($vw[0])) ? $vw[0] : false ;
 			}
-			
+
 			if(!$target){
                 $step++;
-				$target = (file_exists($vw[1])) ? $vw[1] : false ;	
+				$target = (file_exists($vw[1])) ? $vw[1] : false ;
 			}
 
 			if($target){
@@ -60,53 +60,53 @@
 				}
 			}
 		}
-		
+
 		function openSubPage($fl){
-			
+
 			$fl 	= str_replace(".php","",$fl);
 			$st 	= substr(VIEW,0,-1);
-			$ex 	= substr($fl,strpos($fl,$st)+strlen($st)+1); 
+			$ex 	= substr($fl,strpos($fl,$st)+strlen($st)+1);
 			$exi 	= explode("/",$ex);
 			$param 	= Helper::getParam();
 			$par 	= ($param[0] != null) ? $param[0].'.php' : 'index.php' ;
-			
+
 			$exp 	= VIEW . $exi[0] .'/'. $exi[1] .'/'.$par;
-			
+
 			if(file_exists($exp)){
 				@require $exp;
 			}else{
 				@require VIEW . $exi[0] .'/'. $exi[1].'/index.php';
 			}
 		}
-		
+
 		function setStyle($type = "default"){
-			return STYLE . $type . '.css';	
+			return STYLE . $type . '.css';
 		}
-		
+
 		function addStyle($style, $after = '', $source = true){
 			if($source){
-				return '<link rel="stylesheet" type="text/css" href="' . STYLE . $style .'.css" '.$after.'/>'."\n\r";
+				return '<link rel="stylesheet" type="text/css" href="' . STYLE . $style .'.css'. ( (defined('DEVMODE') && DEVMODE === true)?'?t='.uniqid():'' ) .'" '.$after.'/>'."\n\r";
 			}else{
-				return '<link rel="stylesheet" type="text/css" href="' . SSTYLE . $style .'.css" '.$after.'/>'."\n\r";
+				return '<link rel="stylesheet" type="text/css" href="' . SSTYLE . $style .'.css'. ( (defined('DEVMODE') && DEVMODE === true)?'?t='.uniqid():'' ) .'" '.$after.'/>'."\n\r";
 			}
 		}
-		
+
 		// Facebook content
 		function addOG($type, $content){
 			return '<meta property="og:'.$type.'" content="'.$content.'" />'."\n\r";
 		}
-		
+
 		// Meta content
 		function addMeta($name, $content){
 			return '<meta name="'.$name.'" content="'.$content.'" />'."\n\r";
 		}
-		
+
 		function addJS($file, $type = false, $source = true){
 			if($source){
-				$wt = (!$type) ? JS.$file.'.js' : $file ;
+				$wt = (!$type) ? JS.$file.'.js'.( (defined('DEVMODE') && DEVMODE === true)?'?t='.uniqid():'' ) : $file ;
 				return '<script type="text/javascript" src="'.$wt.'"></script>'."\n\r";
 			}else{
-				$wt = (!$type) ? SJS.$file.'.js' : $file ;
+				$wt = (!$type) ? SJS.$file.'.js'.( (defined('DEVMODE') && DEVMODE === true)?'?t='.uniqid():'' ) : $file ;
 				return '<script type="text/javascript" src="'.$wt.'"></script>'."\n\r";
 			}
 		}
