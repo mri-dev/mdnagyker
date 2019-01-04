@@ -52,6 +52,20 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
     return $prepared;
   }
 
+  public function findOldWebshopProducts( $products, $old_cats, $new_cats )
+  {
+    $data = array();
+
+    foreach ($products as $p) {
+      $prod = $this->findProductBySKU($p['sku']);
+      //if(!$prod) continue;
+      $p['dbdata'] = $prod;
+      $data[] = $p;
+    }
+
+    return $data;
+  }
+
   public function __destruct()
   {
     parent::__destruct();

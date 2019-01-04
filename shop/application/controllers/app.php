@@ -1,5 +1,7 @@
 <?
 use ProductManager\Products;
+use ResourceImporter\ResourceImport;
+use Applications\CSVParser;
 
 class app extends Controller{
 		function __construct(){
@@ -20,6 +22,54 @@ class app extends Controller{
 			$SEO .= $this->view->addOG('site_name',TITLE);
 
 			$this->view->SEOSERVICE = $SEO;
+		}
+
+		public function sync()
+		{
+			$rs = new ResourceImport(array('db' => $this->db));
+
+			// Régi kategória azonosítók előkészítése @ $cats
+			$oldcats = new CSVParser('/home/webprohu/autoradiokeret.web-pro.hu/admin/src/json/keycategory.csv');
+			$oldcats = $oldcats->getResult();
+			$cats = array();
+
+			if ($oldcats) {
+				foreach ((array)$oldcats as $oc) {
+					$cats[trim($oc['category'])] = $oc['ID'];
+				}
+			}
+
+			// Kategóriák új illesztési pontjai @ $ncats
+			$newcats = $this->db->squery("SELECT ID, neve, hashkey FROM shop_termek_kategoriak")->fetchAll(\PDO::FETCH_ASSOC);
+			$ncats = array();
+
+			foreach ((array)$newcats as $nc) {
+				if($nc['hashkey'] == '') continue;
+				$ncats[$nc['hashkey']] = array(
+					'nev' => $nc['neve'],
+					'ID' => $nc['ID']
+				);
+			}
+
+			// Products json betöltése a régi weboldalról
+			$wsjson = '/home/webprohu/autoradiokeret.web-pro.hu/admin/src/json/products.json';
+			$jsonopen = file_get_contents($wsjson);
+			$json_prod = json_decode($jsonopen, true);
+
+			$prepared_products = $rs->findOldWebshopProducts( $json_prod, $cats, $ncats );
+
+			////////////////////////////////////////////////////////////////
+
+			echo '<pre>';
+			print_r($prepared_products);
+
+			unset($jsonopen);
+			unset($json_prod);
+			unset($cats);
+			unset($ncats);
+			unset($oldcats);
+			unset($newcats);
+
 		}
 
 		/**

@@ -35,7 +35,7 @@
 							<input type="number" id="sortnumber" name="sortnumber" value="<?=($this->err ? $_POST['sortnumber']:($this->category ? $this->category->getSortNumber() : '0'))?>" class="form-control">
 						</div>
 					</div>
-					<? if( false ): ?>
+					<? if( true ): ?>
 					<br>
 					<div class="row np">
 						<div class="col-md-12">

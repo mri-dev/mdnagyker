@@ -37,6 +37,19 @@ class ResourceImportBase
     //$this->memo();
   }
 
+  public function findProductBySKU( $sku )
+  {
+    $data = false;
+
+    $p = $this->db->squery("SELECT * FROM shop_termekek WHERE cikkszam = :cikkszam", array('cikkszam' => $sku));
+
+    if ($p->rowCount() != 0) {
+      $data = $p->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    return $data;
+  }
+
   public function delSource()
   {
     extract($_POST);
