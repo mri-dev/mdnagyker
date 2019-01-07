@@ -24,7 +24,7 @@ class termek extends Controller{
 
 			// Nincs kép a termékről - átirányítás
 			if( strpos( $product['profil_kep'] , 'no-product-img' ) !== false ) {
-				Helper::reload('/');
+				//Helper::reload('/');
 			}
 
 			// Termék kérdés
