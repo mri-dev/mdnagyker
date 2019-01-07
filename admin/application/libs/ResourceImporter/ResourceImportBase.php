@@ -1584,6 +1584,63 @@ class ResourceImportBase
     return $value;
   }
 
+  public function reconnectProductCategories( $termek_id, $catids = array(), $remove_previous = false )
+  {
+    if (count($catids) == 0 || empty($catids)) {
+      return false;
+    }
+
+    if ($remove_previous) {
+      $this->db->query("DELETE FROM shop_termek_in_kategoria WHERE bysync = 1 and termekID = {$termek_id}");
+    }
+
+
+    $inserts = array();
+    foreach ((array)$catids as $cid) {
+      $inserts[] = array($termek_id, $cid, 1);
+    }
+
+
+    if ($inserts) {
+      $this->db->multi_insert(
+        'shop_termek_in_kategoria',
+        array(
+          'termekID', 'kategoria_id',  'bysync'
+        ),
+        $inserts
+      );
+    }
+
+  }
+
+  public function manufacturerAdder( $id, $value )
+  {
+    if($value == '') return false;
+    
+    $check = $this->db->squery("SELECT ID FROM shop_markak WHERE neve = :m", array('m' => trim($value)));
+
+    if ($check->rowCount() == 0) {
+      $this->db->insert(
+        'shop_markak',
+        array(
+          'neve' => trim($value),
+          'arres_mod' => 0,
+          'fix_arres' => 0.0001,
+          'originid' => $id,
+        )
+      );
+    } else {
+      $ch = $check->fetch(\PDO::FETCH_ASSOC);
+      $this->db->update(
+        'shop_markak',
+        array(
+          'originid' => $id
+        ),
+        sprintf("ID = %d", (int)$ch['ID'])
+      );
+    }
+  }
+
   function memo() {
       $mem_usage = memory_get_usage(true);
 

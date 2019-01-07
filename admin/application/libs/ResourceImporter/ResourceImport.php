@@ -58,12 +58,68 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
 
     foreach ($products as $p) {
       $prod = $this->findProductBySKU($p['sku']);
-      //if(!$prod) continue;
+      if(!$prod) continue;
+      $p['pushtocats'] = $this->connectSyncCategories($p['cats'], $old_cats, $new_cats);
       $p['dbdata'] = $prod;
       $data[] = $p;
     }
 
     return $data;
+  }
+
+  public function connectSyncCategories($catarr = array(), $old, $new)
+  {
+    $cats = array();
+
+    foreach ((array)$catarr as $c) {
+      $find = $new[$old[trim($c['name'])]];
+      if ($find) {
+        if (!in_array($find['ID'],(array)$cats['ids'])) {
+          $cats['ids'][] = $find['ID'];
+          $cats['list'][] = array(
+            'search' => $c,
+            'keyid' => $old[trim($c['name'])],
+            'obj' => $find,
+            'connectDBID' => $find['ID']
+          );
+        }
+      }
+
+    }
+    return $cats;
+  }
+
+  public function updateJoomlaPreparedProductContent( $products = array() )
+  {
+    foreach ( (array)$products as $p )
+    {
+      if ($p['dbdata']) {
+        // termekid
+        $pid = $p['dbdata']['ID'];
+
+        // kategória sync
+        if (!empty($p['pushtocats']['ids'])) {
+          //$this->reconnectProductCategories($pid, $p['pushtocats']['ids'], true);
+        }
+
+        // create manufacturer
+        $this->manufacturerAdder((int)$p['gyarto_id'], trim($p['gyarto']));
+
+        $update = array(
+          'rovid_leiras' => addslashes($p['rovid_leiras']),
+          'leiras' => addslashes($p['leiras']),
+          'meta_title' => ($p['meta_title'] == '') ? NULL : addslashes($p['meta_title']),
+          'meta_desc' => ($p['meta_desc'] == '') ? NULL : addslashes($p['meta_desc']),
+          'marka' => (int)$p['gyarto_id']
+        );
+
+        $this->db->update(
+          'shop_termekek',
+          $update,
+          sprintf("ID = %d", $pid)
+        );
+      }
+    }
   }
 
   public function __destruct()

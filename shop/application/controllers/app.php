@@ -60,6 +60,8 @@ class app extends Controller{
 
 			////////////////////////////////////////////////////////////////
 
+			$rs->updateJoomlaPreparedProductContent($prepared_products);
+
 			echo '<pre>';
 			print_r($prepared_products);
 
@@ -69,6 +71,7 @@ class app extends Controller{
 			unset($ncats);
 			unset($oldcats);
 			unset($newcats);
+			unset($prepared_products);
 
 		}
 
