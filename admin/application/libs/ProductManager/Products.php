@@ -1016,8 +1016,6 @@ class Products
 			$d['profil_kep_small'] 	=  \PortalManager\Formater::productImage( $kep, 150, self::TAG_IMG_NOPRODUCT );
 
 			$this->makeKeywordsArray($d['kulcsszavak']);
-
-
 			/*
 			$arInfo	= $this->getProductPriceCalculate( $d['marka_id'], $brutto_ar );
 			$akcios_arInfo 	= $this->getProductPriceCalculate( $d['marka_id'], $akcios_brutto_ar );
