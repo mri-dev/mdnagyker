@@ -717,8 +717,25 @@ class Products
 			$size_whr .= $add;
 		}
 
-		if ( $arg['in_cat'] ) {
-			$add = " and FIND_IN_SET(".$arg['in_cat'].",(SELECT GROUP_CONCAT(kategoria_id) FROM shop_termek_in_kategoria WHERE termekID = p.ID )) ";
+		if ( isset($arg['in_cat']) ) {
+			$in_cats = array();
+			$catid = (int)$arg['in_cat'];
+			$in_cats[] = $catid;
+
+			$cat_children = $this->getCategoryChildren($catid);
+			if ($cat_children)
+			{
+				$in_cats = array_merge($in_cats, $cat_children);
+			}
+
+			$in_cat_str = ' and (';
+			foreach ((array)$in_cats as $ic) {
+				$in_cat_str .= "FIND_IN_SET(".$ic.",(SELECT GROUP_CONCAT(kategoria_id) FROM shop_termek_in_kategoria WHERE termekID = p.ID )) or ";
+			}
+			$in_cat_str = rtrim($in_cat_str, " or ");
+			$in_cat_str .= ')';
+
+			$add = $in_cat_str;
 			$whr .= $add;
 			$size_whr .= $add;
 		}
@@ -1511,6 +1528,7 @@ class Products
 			LEFT OUTER JOIN 	shop_termek_kategoriak as kat ON kat.ID = k.kategoria_id
 			LEFT OUTER JOIN 	shop_termek_kategoriak as p ON p.ID = kat.szulo_id
 			WHERE 				k.termekID = %d
+			GROUP BY k.termekID
 			ORDER BY 			p.sorrend ASC, kat.sorrend ASC", $product_id ) );
 
 		if( $qry->rowCount() == 0 ) return $cat_ids;
@@ -2337,6 +2355,29 @@ class Products
 		}
 		$ins['xmlid'] = $xmlid;
 		return $ins;
+	}
+
+	/**
+	*  Kategóriák ID-jának leszármazottjai
+	**/
+	public function getCategoryChildren( $cat_id )
+	{
+		$set = array();
+		$walk = true;
+
+		$q = $this->db->squery("SELECT ID FROM shop_termek_kategoriak WHERE szulo_id = :cid;", array('cid' => $cat_id));
+
+		if ($q->rowCount() == 0) {
+			return false;
+		}
+
+		$qd = $q->fetchAll(\PDO::FETCH_ASSOC);
+
+		foreach ( (array)$qd as $cid ) {
+			$set[] = (int)$cid['ID'];
+		}
+
+		return $set;
 	}
 
 	/*===============================

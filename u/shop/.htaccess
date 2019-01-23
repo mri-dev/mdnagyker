@@ -18,14 +18,19 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 
-RewriteRule ^kapcsolat(/)?$ index.php?tag=p/kapcsolat [QSA,L]
-
+RewriteRule ^viszontelado(/)?$ index.php?tag=user/regisztracio&group=company [QSA,L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 
-RewriteRule ^tag/([0-9\p{L}íáéűúőóö\s]+)$ index.php?tag=termekek&src=$1 [QSA,L] 
+RewriteRule ^kapcsolat(/)?$ index.php?tag=p/kapcsolat [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule ^tag/([0-9\p{L}íáéűúőóö\s]+)$ index.php?tag=termekek&src=$1 [QSA,L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

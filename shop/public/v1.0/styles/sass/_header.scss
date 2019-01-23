@@ -46,7 +46,7 @@ header {
 				}
 			}
 		}
-		
+
 		.navs{
 			.flex {
 				& > div {
@@ -383,6 +383,10 @@ header {
 		& > .pw > .flex {
 			justify-content: space-between;
 			padding-left: $size-sidebar;
+		}
+		& > .pw > .flex.goleft {
+			justify-content: space-between;
+			padding-left: 0;
 		}
 
 		.nav{

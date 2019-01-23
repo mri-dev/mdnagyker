@@ -40,17 +40,30 @@ class Products
 	public function create(Product $product)
 	{
 		$uploadedProductId = 0;
+		$xml_origin = NULL;
+		$xml_temp_id = 0;
 
 		$szallitasID 	= $product->getTransportTimeId();
 		$keszletID 		= $product->getStatusId();
 
 		// Kötelező mezők ellenőrzése
 		if( !$product->getName() ) throw new \Exception('Termék nevének megadása kötelező!');
-		if(	!$product->getManufacturerId() ) throw new \Exception('Márka kiválasztása kötelező!');
 		if( !$product->getTransportTimeId() ) throw new \Exception('Szállítási időt kötelező kiválasztani!');
 		if( !$product->getStatusId() ) throw new \Exception('Állapotot kötelező kiválasztani!');
-		if( !$product->getCategoryList() ) throw new \Exception('Termék kategória kiválasztása kötelező!');
-		if( !$product->getPrice() ) throw new \Exception('Termék árát kötelező megadni!');
+		//if(	!$product->getManufacturerId() ) throw new \Exception('Márka kiválasztása kötelező!');
+		//if( !$product->getCategoryList() ) throw new \Exception('Termék kategória kiválasztása kötelező!');
+		//if( !$product->getPrice() ) throw new \Exception('Termék árát kötelező megadni!');
+
+		// Cashman synx upload
+		$crmup = $this->syncUpCRMProduct( 1, $product->getVariable('crm') );
+		if ( $crmup['error'] == 1 )
+		{
+			throw new \Exception("CashmanFX API: ".$crmup['hiba']);
+		} else {
+			$crm_res_id = $crmup['uzenet'];
+			$xml_temp_id = $crmup['xmlid'];
+			$xml_origin = 1;
+		}
 
 		if( true ){
 			$cikkszam 		= $product->getItemNumber();
@@ -93,6 +106,9 @@ class Products
 			$tudastar_url 	= (!$product->getVariable('tudastar_url')) ? NULL : $product->getVariable('tudastar_url');
 			$referer_price_discount 	= (!$product->getVariable('referer_price_discount')) ? 0 : $product->getVariable('referer_price_discount');
 			$sorrend 			= (!$product->getVariable('sorrend')) ? 0 : $product->getVariable('sorrend');
+
+			$mertekegyseg = (!$product->getVariable('mertekegyseg')) ? NULL : $product->getVariable('mertekegyseg');
+			$mertekegyseg_ertek = (!$product->getVariable('mertekegyseg_ertek')) ? 1 : $product->getVariable('mertekegyseg_ertek');
 
 			// Csatolt hivatkozások előkészítése
 			if( $link_list ) {
@@ -144,7 +160,12 @@ class Products
 					'ajanlorendszer_kiemelt' => $ajanlorendszer_kiemelt,
 					'referer_price_discount' => $referer_price_discount,
 					'sorrend' => $sorrend,
-					'show_stock' => $show_stock
+					'show_stock' => $show_stock,
+					'xml_import_origin' => $xml_origin,
+					'xml_import_res_id' => $xml_temp_id,
+					'nagyker_kod' => $crm_res_id,
+					'mertekegyseg' => $mertekegyseg,
+					'mertekegyseg_ertek' => $mertekegyseg_ertek,
 				)
 			);
 
@@ -265,10 +286,10 @@ class Products
 
 		// Kötelező mezők ellenőrzése
 		if( !$product->getName() ) throw new \Exception('Termék nevének megadása kötelező!');
-		if(	!$product->getManufacturerId() ) throw new \Exception('Márka kiválasztása kötelező!');
+		//if(	!$product->getManufacturerId() ) throw new \Exception('Márka kiválasztása kötelező!');
 		if( !$product->getTransportTimeId() ) throw new \Exception('Szállítási időt kötelező kiválasztani!');
 		if( !$product->getStatusId() ) throw new \Exception('Állapotot kötelező kiválasztani!');
-		if( !$product->getCategoryList() ) throw new \Exception('Termék kategória kiválasztása kötelező!');
+		//if( !$product->getCategoryList() ) throw new \Exception('Termék kategória kiválasztása kötelező!');
 
 		if( true ){
 			$cikkszam 		= $product->getItemNumber();
@@ -314,6 +335,10 @@ class Products
 			$referer_price_discount 	= (!$product->getVariable('referer_price_discount')) ? 0 : $product->getVariable('referer_price_discount');
 			$sorrend 			= (!$product->getVariable('sorrend')) ? 0 : $product->getVariable('sorrend');
 
+			$mertekegyseg = (!$product->getVariable('mertekegyseg')) ? NULL : $product->getVariable('mertekegyseg');
+			$mertekegyseg_ertek = (!$product->getVariable('mertekegyseg_ertek')) ? 1 : $product->getVariable('mertekegyseg_ertek');
+
+			// Cashman sync
 			$this->syncUpCRMProduct( 1, $product->getVariable('crm') );
 
 			// Csatolt hivatkozások előkészítése
@@ -371,7 +396,9 @@ class Products
 					'tudastar_url' => $tudastar_url,
 					'referer_price_discount' => $referer_price_discount,
 					'sorrend' => $sorrend,
-					'show_stock' => $show_stock
+					'show_stock' => $show_stock,
+					'mertekegyseg' => $mertekegyseg,
+					'mertekegyseg_ertek' => $mertekegyseg_ertek,
 				),
 				sprintf("ID = %d", $product->getId())
 			);
@@ -582,6 +609,7 @@ class Products
 			p.szallitasID,
 			p.keszletID,
 			p.raktar_keszlet,
+			p.virtualis_keszlet,
 			p.raktar_articleid,
 			p.profil_kep,
 			p.kep_mappa,
@@ -590,6 +618,7 @@ class Products
 			p.without_price,
 			p.szin,
 			p.csoport_kategoria,
+			p.alapertelmezett_kategoria,
 			p.ajanlatunk,
 			p.meret,
 			p.garancia_honap,
@@ -597,6 +626,7 @@ class Products
 			p.ajandek,
 			p.rovid_leiras,
 			p.xml_import_origin,
+			p.kulcsszavak,
 			p.fotermek,
 			getTermekAr(p.ID, ".$uid.") as ar,
 			(SELECT GROUP_CONCAT(kategoria_id) FROM shop_termek_in_kategoria WHERE termekID = p.ID ) as in_cat,
@@ -624,9 +654,17 @@ class Products
 		$add = '';
 
 		if (!$admin_listing) {
-			$add = " and p.lathato = 1 and p.profil_kep IS NOT NULL ";
+			$add = " and p.lathato = 1 ";
 			$whr .= $add;
 			$size_whr .= $add;
+
+			// Kép restrict
+
+			if (false) {
+				$add = " and p.profil_kep IS NOT NULL ";
+				$whr .= $add;
+				$size_whr .= $add;
+			}
 
 			if(!empty($arg['meret']) && $arg['meret'][0] != ''){
 				$add = " and p.meret IN ('".trim(implode("','",$arg['meret']))."') ";
@@ -859,12 +897,15 @@ class Products
 				$whr .= $add;
 				$qry .= $add;
 			} else {
+
 				if( !empty($arg['meret']) ) {
-					$add = "GROUP BY p.raktar_articleid";
+					//$add = "GROUP BY p.raktar_articleid";
+					$add = "GROUP BY p.ID";
 					$whr .= $add;
 					$qry .= $add;
 				} else {
-					$add = "GROUP BY p.raktar_articleid";
+					//$add = "GROUP BY p.raktar_articleid";
+					$add = "GROUP BY p.ID";
 					$whr .= $add;
 					$qry .= $add;
 				}
@@ -951,6 +992,7 @@ class Products
 		CAST(p.meret as unsigned) ASC ";*/
 		$sqry .= " ORDER BY CAST(p.meret as unsigned) ASC";
 
+
 		$s_qry_data = $this->db->query( $sqry )->fetchAll(\PDO::FETCH_ASSOC);
 
 		foreach ( $s_qry_data as $s ) {
@@ -973,6 +1015,7 @@ class Products
 			$d['profil_kep_mid'] 	=  \PortalManager\Formater::productImage( $kep, 300, self::TAG_IMG_NOPRODUCT );
 			$d['profil_kep_small'] 	=  \PortalManager\Formater::productImage( $kep, 150, self::TAG_IMG_NOPRODUCT );
 
+			$this->makeKeywordsArray($d['kulcsszavak']);
 			/*
 			$arInfo	= $this->getProductPriceCalculate( $d['marka_id'], $brutto_ar );
 			$akcios_arInfo 	= $this->getProductPriceCalculate( $d['marka_id'], $akcios_brutto_ar );
@@ -991,8 +1034,10 @@ class Products
 			$d['link'] 				= DOMAIN.'termek/'.\PortalManager\Formater::makeSafeUrl( $d['product_nev'], '_-'.$d['product_id'] );
 			$d['hasonlo_termek_ids']= $this->getProductRelatives( $d['product_id'] );
 			$d['parameters'] 		= $this->getParameters( $d['product_id'], $d['alapertelmezett_kategoria'] );
+			$d['variation_config'] = $this->getVariationConfig( $d['product_id'], $d['alapertelmezett_kategoria'] );
 			$d['price_groups'] 	= $this->priceGroups( $d['xml_import_origin'], $d['nagyker_kod'] );
 			$d['inKatList'] 		= $in_cat;
+			$d['mertekegyseg_egysegar'] = $this->calcEgysegAr($d['mertekegyseg'], $d['mertekegyseg_ertek'], $d['ar']);
 			//$d['ar'] 				= $arInfo['ar'];
 			//$d['akcios_fogy_ar']	= $akcios_arInfo['ar'];
 			//$d['arres_szazalek'] 	= $arInfo['arres'];
@@ -1006,6 +1051,39 @@ class Products
 		$this->products = $bdata;
 
 		return $this;
+	}
+
+	public function calcEgysegAr( $me, $mevar, $price)
+	{
+		$ea = 0;
+		$mert = $me;
+		switch ( $me ) {
+			case 'méter':
+				$ea = $price / $mevar;
+			break;
+			case 'ml':
+				$ea = $price / $mevar * 1000;
+				$mert = 'l';
+			break;
+		}
+
+		if ($ea == 0 || $mevar == 1) {
+			return false;
+		} else {
+			return number_format($ea,2, ".", " ") . ' Ft/'.$mert;
+		}
+	}
+
+	public function makeKeywordsArray( &$keywords )
+	{
+		if ($keywords == '') {
+			return array();
+		}
+
+		$keywords = str_replace(", ", ",", $keywords);
+		$keywords = explode(",", $keywords);
+
+		return $keywords;
 	}
 
 	public function priceGroupList()
@@ -1118,7 +1196,7 @@ class Products
 			FROM shop_termek_parameter as tp
 			LEFT OUTER JOIN shop_termek_kategoria_parameter as tk ON tk.ID = tp.parameterID
 			WHERE 1=1 and tp.termekID IN (".implode(",", $ids).")
-			ORDER BY tk.priority ASC
+			ORDER BY CAST(tk.priority as unsigned) ASC
 			";
 
 			//echo $q;
@@ -1335,7 +1413,7 @@ class Products
 			$q .= " and katID = $katID ";
 		}
 		$q .= "
-		 ORDER BY pm.priority ASC";
+		 ORDER BY CAST(pm.priority as unsigned) ASC";
 		extract($this->db->q($q,array('multi'=> '1')));
 		$back = array();
 		foreach($data as $d){
@@ -1444,6 +1522,7 @@ class Products
 			if ($get_names) {
 				$cat_ids['id'][] = $v['kategoria_id'];
 				$cat_ids['name'][] = $v['neve'];
+				$cat_ids['url'][] = '/termekek/'.\Helper::makeSafeUrl($v['neve'],'_-'.$v['kategoria_id']);
 				$cat_ids['hashkey'][] = $v['hashkey'];
 
 				if( $v['oldal_hashkeys'] ) {
@@ -1705,14 +1784,18 @@ class Products
 		$data['arres_szazalek'] 	= $arInfo['arres'];
 		$data['hasonlo_termek_ids'] = $this->getProductRelatives( $product_id );
 		$in_kat = $this->getProductInCategory( $product_id, true );
+		$data['in_cats'] 				= $in_kat;
 		$data['in_cat_ids'] 		= $in_kat['id'];
 		$data['in_cat_names'] 		= $in_kat['name'];
 		$data['in_cat_hashkey']		= $in_kat['hashkey'];
 		$data['in_cat_page_hashkeys']= $in_kat['page_hashkeys'];
 		$data['images'] 			= $this->getProductImages( $product_id );
 		$data['parameters']			= $this->getParameters( $product_id, $data['alapertelmezett_kategoria'] );
+		$data['variation_config'] = $this->getVariationConfig( $product_id, $data['alapertelmezett_kategoria'] );
 		$data['related_products_ids']	= $this->getRelatedIDS( $product_id );
 		$data['nav'] = array_reverse($categories->getCategoryParentRow((int)$data['alapertelmezett_kategoria'], false));
+
+		$this->makeKeywordsArray($data['kulcsszavak']);
 
 		$vehicles_compatiblity = $this->vehicles->getProductCompatibilityList( $product_id );
 		$data['vehicles_compatiblity'] = $vehicles_compatiblity['list'];
@@ -1726,6 +1809,9 @@ class Products
 		$data['documents'] = $this->getTermDocuments( $product_id );
 		// Linkek
 		$data['link_lista']	= $this->getProductLinksFromStr( $data['linkek'] );
+
+		$data['mertekegyseg_egysegar'] = $this->calcEgysegAr($data['mertekegyseg'], $data['mertekegyseg_ertek'], $data['ar']);
+
 		// Csatolt link hivatkozások
 		$this->getProductLinksFromCategoryHashkeys( $data['in_cat_page_hashkeys'], $data['link_lista'] );
 
@@ -1736,6 +1822,33 @@ class Products
 		}
 
 		return $data;
+	}
+
+	public function getVariationConfig( $tid, $alapkat_id )
+	{
+		$list = array();
+
+		if ((int)$alapkat_id == 0) {
+			return $list;
+		}
+
+
+		$confparams = $this->db->squery("SELECT ID, parameter, mertekegyseg FROM shop_termek_kategoria_parameter WHERE kategoriaID = :id and kulcs = 1 ORDER BY CAST(priority as unsigned) ASC ", array('id' => $alapkat_id))->fetchAll(\PDO::FETCH_ASSOC);
+
+		if (empty($confparams)) {
+			return $list;
+		}
+
+		foreach ((array)$confparams as $cp)
+		{
+			$values = $this->db->squery("SELECT ID, defvalue as selected, config_value as value FROM shop_termek_variation_configs WHERE product_id = :tid and parameter_id = :pid ORDER BY config_value ASC ", array('tid' => $tid, 'pid' => $cp['ID']))->fetchAll(\PDO::FETCH_ASSOC);
+			$cp['values'] = $values;
+			$list[$cp['ID']] = $cp;
+		}
+
+		//shop_termek_variation_configs
+
+		return $list;
 	}
 
 	public function checkProductTransportName( $szallitasID, $keszlet = 1 )
@@ -2131,6 +2244,8 @@ class Products
 			return false;
 		}
 
+		$xmlid = 0;
+		$creation = ((int)$torzs['prod_id'] != 0) ? false : true;
 		$save_xml_query = "UPDATE xml_temp_products SET ";
 		$save_term_query = "UPDATE shop_termekek SET ";
 
@@ -2141,11 +2256,11 @@ class Products
 			'afa' => 27,
 			'mennyisegiegyseg' => 'darab',
 			'termek' => 1,
-
-			'termek_id' => $torzs['prod_id'],
+			'termek_id' => (int)$torzs['prod_id'],
 			'vonalkod' => $torzs['ean_code'],
 			'megnevezes' => trim($torzs['termek_nev']),
 			'netto_egysegar' => $torzs['ar'][1],
+			'netto_beszerzes' => $torzs['netto_beszerzes'],
 			'cikkszam' => $torzs['cikkszam'],
 			// Kiegészítés:
 			'minimum' => (float)$torzs['keszlet_min'],
@@ -2163,6 +2278,11 @@ class Products
 
 		$ins = $this->crm->addProduct( $items );
 
+		// Létrehozás esetén prod_id lekérése, create után
+		if ($torzs['prod_id'] == '' && $ins['error'] == 0 && $ins['uzenet'] != '') {
+			$torzs['prod_id'] = (int)$ins['uzenet'];
+		}
+
 		$save_xml_query = rtrim($save_xml_query, ', ');
 		$save_xml_query .= " WHERE origin_id = ".$origin." and prod_id = ".$torzs['prod_id'];
 
@@ -2173,19 +2293,49 @@ class Products
 
 		if ($ins[error] == 0)
 		{
-			$this->db->query( $save_xml_query );
-			$this->db->query( $save_term_query );
+			if (!$creation) {
+				$this->db->query( $save_xml_query );
+				$this->db->query( $save_term_query );
 
-			$this->db->update(
-				'xml_temp_products',
-				array(
-					'last_sync_up' => date('Y-m-d H:i:s')
-				),
-				sprintf("origin_id = %d and prod_id = %d", $origin, $torzs['prod_id'])
-			);
+				$this->db->update(
+					'xml_temp_products',
+					array(
+						'last_sync_up' => date('Y-m-d H:i:s'),
+						'last_updated' => date('Y-m-d H:i:s'),
+					),
+					sprintf("origin_id = %d and prod_id = %d", $origin, $torzs['prod_id'])
+				);
+			} else {
+				$xmlins = array(
+					'hashkey' => md5('1_'.$torzs['prod_id']),
+					'origin_id' => 1,
+					'cikkszam' => $torzs['cikkszam'],
+					'gyarto_kod' => $torzs['cikkszam'],
+					'prod_id' => $torzs['prod_id'],
+					'termek_nev' => $torzs['termek_nev'],
+					'kisker_ar_netto' => $torzs['ar'][1],
+					'virtualis_keszlet' => (float)$torzs['keszlet_min'],
+					'io' => 1,
+					'arucsoport' => 'Termékcsoport',
+					'mennyisegegyseg' => 'darab'
+				);
+
+				for ($i=1; $i <= 10 ; $i++) {
+					$xmlins['ar'.$i] = $torzs['ar'][$i];
+				}
+				/* */
+				$this->db->insert(
+					'xml_temp_products',
+					$xmlins
+				);
+				$lsid = $this->db->lastInsertId();
+				$xmlid = (int)$lsid;
+				/* */
+			}
 		} else {
 
 		}
+		$ins['xmlid'] = $xmlid;
 		return $ins;
 	}
 

@@ -8,7 +8,7 @@
             </div>
             <div class="grid-row products">
               <div>
-                  <? if($this->parent_menu && count($this->parent_menu) > 0): ?>
+                  <? if($this->parent_menu&& count($this->parent_menu) > 0): ?>
                   <div class="sub-categories">
                       <div class="title">
                           <h3><? $subk = ''; foreach($this->parent_row as $sc) { $subk .= $sc.' / '; } echo rtrim($subk,' / '); ?> alkategóriái</h3>
@@ -37,7 +37,6 @@
                         </div>
                       <?php elseif($this->category->getName() != ''): ?>
                         <h1><?=$this->category->getName()?></h1>
-
                       <?php else: ?>
                         <h1>Termékek</h1>
                         <?php if (isset($this->searched_by)): ?>
@@ -48,12 +47,6 @@
                           </div>
                         <?php endif; ?>
                       <?php endif; ?>
-                      <div class="prod-pager">
-                        <div class="itemnums"><?php echo $this->products->getItemNumbers(); ?> db termék</div>
-                        <div class="page-det">
-                          <?php echo $this->products->getMaxPage(); ?> / <strong><?php echo $this->products->getCurrentPage(); ?>. oldal</strong>
-                        </div>
-                      </div>
                       <?php $navh = '/termekek/'; ?>
                       <ul class="cat-nav">
                         <li><a href="/"><i class="fa fa-home"></i></a></li>

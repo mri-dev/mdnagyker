@@ -1,0 +1,1 @@
+<iframe src="<?=$_POST[url]?>" width="<?=$_POST[jwidth]?>" height="<?=$_POST[jheight]?>"></iframe>
