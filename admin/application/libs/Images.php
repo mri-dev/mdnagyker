@@ -125,8 +125,8 @@ class Images
                 $fileName = $fls . '.jpg';
 
                 if (isset($arg['fileName'])) {
-                    $fls      = $arg[fileName] . '__' . $mt[0];
-                    $fileName = $fls . "." . pathinfo($src[name][$step], PATHINFO_EXTENSION);
+                  $fls      = $arg[fileName] . '__' . $mt[0];
+                  $fileName = $fls . "." . pathinfo($src[name][$step], PATHINFO_EXTENSION);
                 }
 
                 $fln = $fileName;
@@ -253,7 +253,7 @@ class Images
         $max  = count($ct);
         $im   = $ct[$max - 1];
         $root = str_replace($im, "", $src);
-        if ($im == 'noimg.png') {
+        if ($im == 'no-product-img.png') {
             $thmb = '/' . $root . $im;
         } else {
             $thmb = '/' . $root . 'thb' . $type . '_' . $im;

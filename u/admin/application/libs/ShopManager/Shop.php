@@ -1037,7 +1037,7 @@ class Shop
 			t.pickpackszallitas,
 			t.no_cetelem,
 			m.elorendelheto,
-			t.nev as termekNev,
+			CONCAT(m.neve,' ',t.nev) as termekNev,
 			t.szin,
 			t.meret,
 			t.raktar_keszlet,

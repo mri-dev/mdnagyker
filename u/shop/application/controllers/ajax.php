@@ -483,7 +483,7 @@ class ajax extends Controller{
 				break;
 				case 'cartInfo':
 					$mid 	= Helper::getMachineID();
-					$cart = new Cart($mid, array( 'db' => $this->db, 'user' => $this->User->get(), 'settings' => $this->view->settings ));
+					$cart 	= new Cart($mid, array( 'db' => $this->db, 'user' => $this->User->get(), 'settings' => $this->view->settings ));
 					echo json_encode($cart->get());
 				break;
 

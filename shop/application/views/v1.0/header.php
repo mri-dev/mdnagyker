@@ -94,7 +94,11 @@
               <a href="/viszontelado"><i class="fa fa-users"></i> Viszonteladók jelentkezése</a>
             </div>
             <div class="login">
+              <?php if ($this->user): ?>
+              <a href="/user/"><i class="fa fa-user"></i> Fiókom</a>
+              <?php else: ?>
               <a href="/user/login"><i class="fa fa-user"></i> Belépés</a>
+              <?php endif; ?>
             </div>
             <div class="div"></div>
             <div class="kedvencek">

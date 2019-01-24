@@ -71,90 +71,87 @@ class Controller {
         $this->out( 'db',   $this->db );
         $this->out( 'user', $this->User->get( self::$user_opt ) );
 
-        // Ha nem ajax requestről van szó
-        if ($this->gets[0] != 'ajax')
+        // Only admin
+        if ( !defined('PRODUCTIONSITE') )
         {
-          // Only admin
-          if ( !defined('PRODUCTIONSITE') )
-          {
-            $this->out( 'modules', $this->installer->listModules(array('only_active' => true)) );
-          }
-          // Kategóriák
-          if ( defined('PRODUCTIONSITE') )
-          {
-            $this->Categories = new Categories(array( 'db' => $this->db ));
-            $this->Categories->getTree();
-            $this->out( 'categories', $this->Categories );
-          }
-          // redirector
-          if ( defined('PRODUCTIONSITE') )
-          {
-            $redrirector = new Redirector('shop', ltrim($_SERVER['REQUEST_URI'], '/'), array('db' => $this->db));
-            $redrirector->start();
-          }
-
-          $templates = new Template( VIEW . 'templates/' );
-          $this->out( 'templates', $templates );
-          $this->out( 'highlight_text', $this->Portal->getHighlightItems() );
-          $this->out( 'slideshow', $this->Portal->getSlideshow() );
-
-          // Menük
-          $tree = null;
-          $menu_header  = new Menus( false, array( 'db' => $this->db ) );
-          
-          // Header menü
-          $menu_header->addFilter( 'menu_type', 'header' );
-          $menu_header->isFinal(true);
-          $tree   = $menu_header->getTree();
-          $this->out( 'menu_header',  $tree );
-
-          // Footer menü
-          $tree = null;
-          $menu_footer  = new Menus( false, array( 'db' => $this->db ) );
-          $menu_footer->addFilter( 'menu_type', 'footer' );
-          $menu_footer->isFinal(true);
-          $tree   = $menu_footer->getTree();
-          $this->out( 'menu_footer',  $tree );
-
-          unset($tree);
-
-          // Kapcsolat menü üzenet
-          if ( Post::on('contact_form') ) {
-                try {
-                  $this->Portal->sendContactMsg();
-                  Helper::reload('?msgkey=page_msg&page_msg=Üzenetét sikeresen elküldte. Hamarosan válaszolni fogunk rá!');
-                } catch (Exception $e) {
-                  $this->out( 'page_msg', Helper::makeAlertMsg('pError', $e->getMessage()) );
-                }
-          }
-
-          if ( $_GET['msgkey'] ) {
-              $this->out( $_GET['msgkey'], Helper::makeAlertMsg('pSuccess', $_GET[$_GET['msgkey']]) );
-          }
-
-          $this->out( 'states', array(
-              0=>"Bács-Kiskun",
-              1=>"Baranya",
-              2=>"Békés",
-              3=>"Borsod-Abaúj-Zemplén",
-              4=>"Budapest",
-              5=>"Csongrád",
-              6=>"Fejér",
-              7=>"Győr-Moson-Sopron",
-              8=>"Hajdú-Bihar",
-              9=>"Heves",
-              10=>"Jász-Nagykun-Szolnok",
-              11=>"Komárom-Esztergom",
-              12=>"Nógrád",
-              13=>"Pest",
-              14=>"Somogy",
-              15=>"Szabolcs-Szatmár-Bereg",
-              16=>"Tolna",
-              17=>"Vas",
-              18=>"Veszprém",
-              19=>"Zala",
-          ) );
+          $this->out( 'modules', $this->installer->listModules(array('only_active' => true)) );
         }
+
+        // Kategóriák
+        if ( defined('PRODUCTIONSITE') )
+        {
+          $this->Categories = new Categories(array( 'db' => $this->db ));
+          $this->Categories->getTree();
+          $this->out( 'categories', $this->Categories );
+        }
+
+        // redirector
+        if ( defined('PRODUCTIONSITE') )
+        {
+          $redrirector = new Redirector('shop', ltrim($_SERVER['REQUEST_URI'], '/'), array('db' => $this->db));
+          $redrirector->start();
+        }
+
+        $templates = new Template( VIEW . 'templates/' );
+        $this->out( 'templates', $templates );
+        $this->out( 'highlight_text', $this->Portal->getHighlightItems() );
+        $this->out( 'slideshow', $this->Portal->getSlideshow() );
+
+        // Menük
+        $tree = null;
+        $menu_header  = new Menus( false, array( 'db' => $this->db ) );
+        // Header menü
+        $menu_header->addFilter( 'menu_type', 'header' );
+        $menu_header->isFinal(true);
+        $tree   = $menu_header->getTree();
+        $this->out( 'menu_header',  $tree );
+
+        // Footer menü
+        $tree = null;
+        $menu_footer  = new Menus( false, array( 'db' => $this->db ) );
+        $menu_footer->addFilter( 'menu_type', 'footer' );
+        $menu_footer->isFinal(true);
+        $tree   = $menu_footer->getTree();
+        $this->out( 'menu_footer',  $tree );
+
+        unset($tree);
+
+        // Kapcsolat menü üzenet
+        if ( Post::on('contact_form') ) {
+              try {
+                $this->Portal->sendContactMsg();
+                Helper::reload('?msgkey=page_msg&page_msg=Üzenetét sikeresen elküldte. Hamarosan válaszolni fogunk rá!');
+              } catch (Exception $e) {
+                $this->out( 'page_msg', Helper::makeAlertMsg('pError', $e->getMessage()) );
+              }
+        }
+
+        if ( $_GET['msgkey'] ) {
+            $this->out( $_GET['msgkey'], Helper::makeAlertMsg('pSuccess', $_GET[$_GET['msgkey']]) );
+        }
+
+        $this->out( 'states', array(
+            0=>"Bács-Kiskun",
+            1=>"Baranya",
+            2=>"Békés",
+            3=>"Borsod-Abaúj-Zemplén",
+            4=>"Budapest",
+            5=>"Csongrád",
+            6=>"Fejér",
+            7=>"Győr-Moson-Sopron",
+            8=>"Hajdú-Bihar",
+            9=>"Heves",
+            10=>"Jász-Nagykun-Szolnok",
+            11=>"Komárom-Esztergom",
+            12=>"Nógrád",
+            13=>"Pest",
+            14=>"Somogy",
+            15=>"Szabolcs-Szatmár-Bereg",
+            16=>"Tolna",
+            17=>"Vas",
+            18=>"Veszprém",
+            19=>"Zala",
+        ) );
 
         if(!$arg[hidePatern]){ $this->hidePatern = false; }
 

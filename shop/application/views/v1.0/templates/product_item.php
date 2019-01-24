@@ -1,6 +1,6 @@
 <div class="item">
   <?php
-    $wo_price = ($without_price == '1') ? true : false;
+    $wo_price = ($without_price == '1' || (float)$ar == 0 ) ? true : false;
     if( $akcios == '1' ) $ar = $akcios_fogy_ar;
   ?>
   <div class="wrapper">
@@ -12,7 +12,7 @@
         </div>
       </div>
       <?php endif; ?>
-			<a href="<?=$link?>"><img title="<?=$product_nev?>" src="<?=$profil_kep?>" alt="<?=$product_nev?>"></a>
+			<a href="<?=$link?>"><img title="<?=$product_nev?>" src="<?=Images::getThumbImg(300, $profil_kep)?>" alt="<?=$product_nev?>"></a>
       <div class="short-desc">
         <?php echo $rovid_leiras; ?>
       </div>
@@ -34,8 +34,12 @@
       <div class="wrapper <?=($wo_price)?'wo-price':''?>">
         <?php if ( $wo_price ): ?>
           <div class="ar">
-            <strong>ÉRDEKLŐDJÖN!</strong><br>
-            Kérje szakértőnk tanácsát!
+            <div class="">
+               <strong>ÉRDEKLŐDJÖN!</strong>
+            </div>
+            <div class="">
+              Kérje szakértőnk tanácsát!
+            </div>
           </div>
         <?php else: ?>
           <?php if ( $akcios == '1' ): ?>
@@ -52,6 +56,7 @@
       </div>
     </div>
 
+    <?php if (!$wo_price): ?>
     <div class="add">
       <?php
         if ($variation_config) {
@@ -71,6 +76,7 @@
       <input type="hidden" name="" id="cart_item<?=$product_id?>_configs" value="<?=$configstring?>">
       <button type="button" id="btn-add-p<?=$product_id?>" cart-data="<?=$product_id?>" cart-progress="btn-add-p<?=$product_id?>" cart-me="1" cart-remsg="cart-msg" class="cart tocart"><img src="<?=IMG?>shopcart-ico.svg" alt="Kosárba"> Kosárba</button>
     </div>
+    <?php endif; ?>
 
     <div class="buttons">
       <div class="link">

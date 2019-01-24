@@ -125,8 +125,8 @@ class Images
                 $fileName = $fls . '.jpg';
 
                 if (isset($arg['fileName'])) {
-                    $fls      = $arg[fileName] . '__' . $mt[0];
-                    $fileName = $fls . "." . pathinfo($src[name][$step], PATHINFO_EXTENSION);
+                  $fls      = $arg[fileName] . '__' . $mt[0];
+                  $fileName = $fls . "." . pathinfo($src[name][$step], PATHINFO_EXTENSION);
                 }
 
                 $fln = $fileName;
@@ -139,14 +139,15 @@ class Images
 
                 // Bélyegképek
                 if ($arg[makeThumbImg]) {
-                    self::makeThumbnail($updir . $fln, $updir, $fls, 'thb150_', 150);
-                    self::makeThumbnail($updir . $fln, $updir, $fls, 'thb75_', 75);
+                  self::makeThumbnail($updir . $fln, $updir, $fls, 'thb300_', 300);
+                  self::makeThumbnail($updir . $fln, $updir, $fls, 'thb150_', 150);
+                  self::makeThumbnail($updir . $fln, $updir, $fls, 'thb75_', 75);
                 }
 
                 // Vízjelezés
                 if ($arg[makeWaterMark]) {
-                    $kep = $updir . $fln;
-                    self::makeWatermarkedImage(WATERMARK_IMG, $kep, 'középen');
+                  $kep = $updir . $fln;
+                  self::makeWatermarkedImage(WATERMARK_IMG, $kep, 'középen');
                 }
 
                 $p++;

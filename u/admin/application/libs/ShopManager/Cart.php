@@ -30,7 +30,7 @@ class Cart
 			return false;
 		}
 
-		$re = array();
+		$re 		= array();
 		$itemNum 	= 0;
 		$totalPrice = 0;
 		$uid = (int)$this->user[data][ID];
@@ -45,7 +45,7 @@ class Cart
 			c.hozzaadva,
 			c.configs,
 			t.pickpackszallitas,
-			t.nev as termekNev,
+			CONCAT(m.neve,' ',t.nev) as termekNev,
 			t.meret,
 			t.szin,
 			ta.elnevezes as allapot,

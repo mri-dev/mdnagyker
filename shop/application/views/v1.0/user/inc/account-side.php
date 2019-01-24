@@ -2,6 +2,11 @@
   <div class="logged-as">
     Belépve, mint <br>
     <strong><?php echo $this->user['data']['nev']; ?></strong>
+    <?php if ($this->user['data']['user_group'] == 'company' && !empty($this->user['data']['company_name'])): ?>
+      <div class="company">
+        <strong>(<?php echo $this->user['data']['company_name']; ?>)</strong> 
+      </div>
+    <?php endif; ?>
   </div>
   <ul>
       <li class="<?=($this->gets[1] == '')?'active':''?>"><a href="/user/">Megrendeléseim</a></li>

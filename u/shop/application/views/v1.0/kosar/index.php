@@ -6,7 +6,7 @@
     		<? if($this->gets[1] != 'done'): ?>
 	    	<form method="post" action="">
 	            <div class="cartItems">
-	        <?
+	            	<?
 					$no_ppp_itemNum = 0;
 						$szuperakcios_termekek_ara = 0;
 					?>
@@ -397,7 +397,7 @@
 												<div class="megrendel">
 														<button name="orderState" value="start"  type="submit" class="btn btn-success">Megrendelés folytatása <i class="fa fa-arrow-circle-right"></i></button>
 												</div>
-												<?php if ( isset($this->settings['elofoglalas_ora']) && $this->settings['elofoglalas_ora'] != 0 && $this->user && $this->user['data']['user_group'] == 'company'): ?>
+												<?php if ( isset($this->settings['elofoglalas_ora']) && $this->settings['elofoglalas_ora'] != 0 ): ?>
 												<div class="elofoglalas">
 													<a class="help" target="_blank" href="/p/aszf/#elofoglalas" title="Foglalja le a termékeket <?=$this->settings['elofoglalas_ora']?> órára."><i class="fa fa-question-circle-o"></i></a>
 													<a class="b" href="/kosar/elofoglalas"><i class="fa fa-pause-circle-o"></i> Előfoglalás</a>

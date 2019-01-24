@@ -360,6 +360,7 @@ class termekek extends Controller
 								'upDir' 	=> $folder,
 								'fileName' 	=> $imgName,
 								'makeThumbImg' => true,
+								'makeWaterMark' => true,
 								'maxFileSize' => 5150
 							));
 						}catch(Exception $e){

@@ -165,7 +165,7 @@
   </div>
   <div class="bottom">
     <div class="pw">
-      <div class="flex">
+      <div class="flex <?=(!in_array($this->gets[0], array('termekek','home', 't', 'termek')))?'goleft':''?>">
         <div class="nav nav-fix">
           <ul>
             <?php if ($this->product): ?>
