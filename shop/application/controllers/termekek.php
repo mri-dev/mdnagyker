@@ -79,7 +79,7 @@ class termekek extends Controller {
 				$order['by'] 	= $xord[0];
 				$order['how'] 	= $xord[1];
 			}
-			
+
 			$arg = array(
 				'filters' 	=> $filters,
 				'paramfilters' 	=> $paramfilters,

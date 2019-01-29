@@ -79,7 +79,7 @@ class termekek extends Controller {
 				$order['by'] 	= $xord[0];
 				$order['how'] 	= $xord[1];
 			}
-
+			
 			$arg = array(
 				'filters' 	=> $filters,
 				'paramfilters' 	=> $paramfilters,
@@ -92,7 +92,7 @@ class termekek extends Controller {
 			);
 
 			if (isset($_GET['src']) && $_GET['src'] != '') {
-				$search = explode(" ", trim($_GET['src']));
+				$search = explode(",", trim($_GET['src']));
 				if (!empty($search)) {
 					$this->shop->logSearching($_GET['src']);
 					$arg['search'] = $search;

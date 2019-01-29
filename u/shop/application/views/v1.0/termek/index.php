@@ -107,10 +107,12 @@
             </div>
             <?php endif; ?>
           </div>
-          <div class="divider"></div>
-          <div class="short-desc">
-            <?=$this->product['rovid_leiras']?>
-          </div>
+          <?php if (!empty($this->product['rovid_leiras'])): ?>
+            <div class="divider"></div>
+            <div class="short-desc">
+              <?=$this->product['rovid_leiras']?>
+            </div>
+          <?php endif; ?>          
           <?
           if( count($this->product['hasonlo_termek_ids']['colors']) > 1 ):
               $colorset = $this->product['hasonlo_termek_ids']['colors'];
@@ -215,6 +217,16 @@
           </div>
           <div class="divider"></div>
           <div class="group-infos">
+            <div class="cikkszam">
+              <div class="flex">
+                <div class="title">
+                  Cikkszám:
+                </div>
+                <div class="val">
+                  <?php echo $this->product['cikkszam']; ?>
+                </div>
+              </div>
+            </div>
             <?php if (!empty($this->product['in_cats']['name'])): ?>
             <div class="cats">
               <div class="flex">

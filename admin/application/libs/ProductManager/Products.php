@@ -546,6 +546,7 @@ class Products
 		LEFT OUTER JOIN shop_termekek as t ON t.ID = v.termekID
 		LEFT OUTER JOIN shop_markak as m ON m.ID = t.marka
 		WHERE v.mID = '$mID' and t.ID IS NOT NULL and t.lathato = 1
+		GROUP BY t.ID
 		ORDER BY v.idopont DESC
 		LIMIT 0,$limit";
 

@@ -737,9 +737,7 @@ body.singlepage{
 	}
 }
 
-.related-products .items{
-	margin: -10px;
-}
+
 .webshop-product-top,
 .related-products {
 	.items {
@@ -750,6 +748,7 @@ body.singlepage{
 		flex-wrap: wrap;
 		border-right: none;
 		border-bottom: none;
+		margin: -10px;
 
 		.item {
 			flex-basis: calc(100%/3);
@@ -2869,11 +2868,7 @@ body.singlepage{
 				.description{
 					.c {
 						color: #404040;
-						line-height: 1.5;
-
-						h1, h2, h3, h4, h5{
-							margin: 5px 0 10px 0;
-						}
+						line-height: 1.4;
 
 						/* width */
 						&::-webkit-scrollbar {

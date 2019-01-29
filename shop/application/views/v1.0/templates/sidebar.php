@@ -120,15 +120,15 @@
         <? foreach ( $this->top_products_list as $topp ) { ?>
           <div class="item">
             <div class="img">
-              <a href="<?php echo $livep['link']; ?>"><img src="<?php echo $livep['profil_kep']; ?>" alt="<?php echo $livep['product_nev']; ?>"></a>
+              <a href="<?php echo $topp['link']; ?>"><img src="<?php echo $topp['profil_kep']; ?>" alt="<?php echo $topp['product_nev']; ?>"></a>
             </div>
             <div class="data">
-              <a href="<?php echo $livep['link']; ?>">
+              <a href="<?php echo $topp['link']; ?>">
                 <div class="name">
-                  <?php echo $livep['product_nev']; ?>
+                  <?php echo $topp['product_nev']; ?>
                 </div>
                 <div class="desc">
-                  <?php echo $livep['csoport_kategoria']; ?>
+                  <?php echo $topp['csoport_kategoria']; ?>
                 </div>
               </a>
             </div>
@@ -149,15 +149,15 @@
         <? foreach ( $this->viewed_products_list as $viewed ) { ?>
           <div class="item">
             <div class="img">
-              <a href="<?php echo $livep['link']; ?>"><img src="<?php echo $livep['profil_kep']; ?>" alt="<?php echo $livep['product_nev']; ?>"></a>
+              <a href="<?php echo $viewed['link']; ?>"><img src="<?php echo $viewed['profil_kep']; ?>" alt="<?php echo $viewed['product_nev']; ?>"></a>
             </div>
             <div class="data">
-              <a href="<?php echo $livep['link']; ?>">
+              <a href="<?php echo $viewed['link']; ?>">
                 <div class="name">
-                  <?php echo $livep['product_nev']; ?>
+                  <?php echo $viewed['product_nev']; ?>
                 </div>
                 <div class="desc">
-                  <?php echo $livep['csoport_kategoria']; ?>
+                  <?php echo $viewed['csoport_kategoria']; ?>
                 </div>
               </a>
             </div>
