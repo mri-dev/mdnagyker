@@ -27,7 +27,7 @@
             <?  foreach ( $this->product['images'] as $img ) { ?>
             <div class="imgslide">
               <div class="wrp autocorrett-height-by-width" data-image-ratio="4:3">
-                <img class="aw" i="<?=\PortalManager\Formater::productImage($img)?>" src="<?=\PortalManager\Formater::productImage($img, 150)?>" alt="<?=$this->product['nev']?>">
+                <img class="aw" i="<?=\PortalManager\Formater::productImage($img)?>" src="<?=\PortalManager\Formater::productImage($img)?>" alt="<?=$this->product['nev']?>">
               </div>
             </div>
             <? } ?>

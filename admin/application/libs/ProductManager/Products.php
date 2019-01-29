@@ -526,7 +526,7 @@ class Products
 			$d['profil_kep_small'] 	=  \PortalManager\Formater::productImage( $kep, 75, self::TAG_IMG_NOPRODUCT );
 			$d['link'] = DOMAIN.'termek/'.\PortalManager\Formater::makeSafeUrl( $d['product_nev'], '_-'.$d['product_id'] );
 
-			$bdata[]	 			= $d;
+			$bdata[]= $d;
 		}
 
 		return $bdata;

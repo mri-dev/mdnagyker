@@ -12,7 +12,7 @@
         </div>
       </div>
       <?php endif; ?>
-			<a href="<?=$link?>"><img title="<?=$product_nev?>" src="<?=Images::getThumbImg(300, $profil_kep)?>" alt="<?=$product_nev?>"></a>
+			<a href="<?=$link?>"><img title="<?=$product_nev?>" src="<?=$profil_kep?>" alt="<?=$product_nev?>"></a>
       <div class="short-desc">
         <?php echo $rovid_leiras; ?>
       </div>
@@ -56,7 +56,7 @@
       </div>
     </div>
 
-    <?php if (!$wo_price): ?>
+    <?php if ( !$wo_price ): ?>
     <div class="add">
       <?php
         if ($variation_config) {

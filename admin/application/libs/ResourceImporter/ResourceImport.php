@@ -60,7 +60,7 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
     $li = 0;
     foreach ($products as $p) {
       $li++;
-      if ($li > 5 ) { break; }
+      //if ($li > 5 ) { break; }
       $prod = $this->findProductBySKU($p['sku']);
       if(!$prod) continue;
       $p['pushtocats'] = $this->connectSyncCategories($p['cats'], $old_cats, $new_cats);
@@ -81,6 +81,7 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
     {
       $medias[] = array(
         'hashkey' => md5($p['id']),
+        'ordering' => (int)$p['ordering'],
         'path' => 'src/products/import/'.str_replace('images/stories/virtuemart/product/', '', $p['image'])
       );
     }
@@ -168,10 +169,32 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
           }
         }
 
+        $image_insert = array();
         if ( $p['medias'] ) {
+          $this->db->squery("DELETE FROM shop_termek_kepek WHERE byimport = 1 and termekID = :id", array('id' => $pid));
           foreach ( (array)$p['medias'] as $media )
           {
+            $image_insert[] = array(
+              'hashkey' => $media['hashkey'],
+              'termekID' => $pid,
+              'kep' => $media['path'],
+              'sorrend' => $media['ordering'],
+              'byimport' => 1
+            );
+
+            if ( $media['ordering'] == 1 )
+            {
+              $this->db->query("UPDATE shop_termekek SET profil_kep = '{$media['path']}' WHERE xml_import_origin = {$p['dbdata']['xml_import_origin']} and ID = {$pid}");
+            }
           }
+        }
+
+        if ($image_insert) {
+          $this->db->multi_insert_v2(
+            'shop_termek_kepek',
+            array('hashkey', 'termekID', 'kep', 'sorrend', 'byimport'),
+            $image_insert
+          );
         }
 
         $this->db->update(

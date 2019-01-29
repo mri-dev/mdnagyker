@@ -37,7 +37,7 @@ class Database{
 					SELECT xml_import_res_id INTO resid FROM shop_termekek WHERE ID = tid;
 
 					IF uid = 0 THEN
-						SELECT ar1 INTO felh_ar FROM xml_temp_products WHERE ID = resid;
+						SELECT kisker_ar_netto INTO felh_ar FROM xml_temp_products WHERE ID = resid;
 					ELSE
 						SELECT sp.groupkey INTO pricegroup FROM felhasznalok as f LEFT OUTER JOIN shop_price_groups as sp ON sp.ID = f.price_group WHERE f.ID = uid;
 						IF pricegroup = 'ar1' THEN

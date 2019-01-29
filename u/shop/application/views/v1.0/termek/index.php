@@ -39,11 +39,14 @@
             <div class="pagi">
               <?php
                 $navh = '/termekek/';
-                $lastcat = end($this->product['nav']);
+                $lastcat = $this->product['in_cats']['name'][0];
               ?>
               <ul class="cat-nav">
                 <li><a href="/"><i class="fa fa-home"></i></a></li>
                 <li><a href="<?=$navh?>">Webshop</a></li>
+                <?php if ( !$this->product['nav'][0] && $lastcat ): ?>
+                <li><a href="<?=$this->product['in_cats']['url'][0]?>"><?php echo $lastcat; ?></a></li>
+                <?php endif; ?>
                 <?php
                 foreach ( $this->product['nav'] as $nav ): $navh = \Helper::makeSafeUrl($nav['neve'],'_-'.$nav['ID']); ?>
                 <li><a href="/termekek/<?=$navh?>"><?php echo $nav['neve']; ?></a></li>
@@ -112,7 +115,7 @@
             <div class="short-desc">
               <?=$this->product['rovid_leiras']?>
             </div>
-          <?php endif; ?>          
+          <?php endif; ?>
           <?
           if( count($this->product['hasonlo_termek_ids']['colors']) > 1 ):
               $colorset = $this->product['hasonlo_termek_ids']['colors'];

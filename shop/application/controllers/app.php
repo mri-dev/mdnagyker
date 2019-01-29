@@ -60,7 +60,7 @@ class app extends Controller{
 
 			////////////////////////////////////////////////////////////////
 
-			//$rs->updateJoomlaPreparedProductContent($prepared_products);
+			$rs->updateJoomlaPreparedProductContent($prepared_products);
 
 			echo '<pre>';
 			print_r($prepared_products);
