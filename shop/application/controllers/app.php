@@ -60,9 +60,8 @@ class app extends Controller{
 
 			////////////////////////////////////////////////////////////////
 
-			$rs->updateJoomlaPreparedProductContent($prepared_products);
-
 			echo '<pre>';
+			$rs->updateJoomlaPreparedProductContent($prepared_products);
 			print_r($prepared_products);
 
 			unset($jsonopen);

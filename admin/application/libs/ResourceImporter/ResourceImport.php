@@ -62,7 +62,9 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
       $li++;
       //if ($li > 5 ) { break; }
       $prod = $this->findProductBySKU($p['sku']);
-      if(!$prod) continue;
+      if ($prod) {
+        continue;
+      }
       $p['pushtocats'] = $this->connectSyncCategories($p['cats'], $old_cats, $new_cats);
       $p['dbdata'] = $prod;
       $p['prices'] = $this->preparePricesFromOldVirtuemart( $p['prices'] );
@@ -132,8 +134,10 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
 
   public function updateJoomlaPreparedProductContent( $products = array() )
   {
+
     foreach ( (array)$products as $p )
     {
+      // SAVE
       if ($p['dbdata']) {
         // termekid
         $pid = $p['dbdata']['ID'];
@@ -202,6 +206,10 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
           $update,
           sprintf("ID = %d", $pid)
         );
+      }
+      else
+      {
+        // Létrehozás
       }
     }
   }
