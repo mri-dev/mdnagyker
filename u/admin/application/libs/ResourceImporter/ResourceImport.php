@@ -17,13 +17,15 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
   public function getRaktarXML()
   {
     $raktar = $this->loadResource( 2 );
-
     return $raktar;
   }
 
   public function syncTempProducts()
   {
     $this->pushToTermekek( 1 );
+
+    // xml_import_res_id fixálás, ha eltérő
+    $this->db->query("UPDATE `shop_termekek` as s SET s.xml_import_res_id = (SELECT x.ID FROM xml_temp_products as x WHERE x.origin_id = s.xml_import_origin and s.cikkszam = x.cikkszam)  WHERE (SELECT x.ID FROM xml_temp_products as x WHERE x.origin_id = s.xml_import_origin and s.cikkszam = x.cikkszam) != s.xml_import_res_id");
   }
 
   public function groupCat( $content = false )

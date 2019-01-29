@@ -57,16 +57,54 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
   public function findOldWebshopProducts( $products, $old_cats, $new_cats )
   {
     $data = array();
-
+    $li = 0;
     foreach ($products as $p) {
+      $li++;
+      if ($li > 5 ) { break; }
       $prod = $this->findProductBySKU($p['sku']);
       if(!$prod) continue;
       $p['pushtocats'] = $this->connectSyncCategories($p['cats'], $old_cats, $new_cats);
       $p['dbdata'] = $prod;
+      $p['prices'] = $this->preparePricesFromOldVirtuemart( $p['prices'] );
+      $p['medias'] = $this->prepareMediasFromOldVirtuemart( $p['medias'] );
       $data[] = $p;
     }
 
     return $data;
+  }
+
+  private function prepareMediasFromOldVirtuemart( $list )
+  {
+    $medias = array();
+
+    foreach ( (array)$list as $p )
+    {
+      $medias[] = array(
+        'hashkey' => md5($p['id']),
+        'path' => 'src/products/import/'.str_replace('images/stories/virtuemart/product/', '', $p['image'])
+      );
+    }
+
+    return $medias;
+  }
+
+  private function preparePricesFromOldVirtuemart( $list )
+  {
+    $prices = array();
+
+    foreach ((array)$list as $p) {
+      if ($p['name'] == 'Kiskeredkedelmi') {
+        $prices['ar1'] = $p['net_price'];
+      }
+      if ($p['name'] == 'Viszonteladó') {
+        $prices['ar2'] = $p['net_price'];
+      }
+      if ($p['name'] == 'Nagykereskedő') {
+        $prices['ar2'] = $p['net_price'];
+      }
+    }
+
+    return $prices;
   }
 
   public function connectSyncCategories($catarr = array(), $old, $new)
@@ -114,6 +152,27 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
           'meta_desc' => ($p['meta_desc'] == '') ? NULL : addslashes($p['meta_desc']),
           'marka' => (int)$p['gyarto_id']
         );
+
+        // XML adatok frissítése adatbázisban
+        if ( $p['prices'] )
+        {
+          foreach ( (array)$p['prices'] as $pricekey => $price )
+          {
+            $xmlupdateparams = array();
+            $xmlupdateparams['cikkszam'] = trim($p['dbdata']['cikkszam']);
+            $xmlupdateparams['originid'] = (int)($p['dbdata']['xml_import_origin']);
+            $xmlupdateparams['priceval'] = (float)($price);
+
+            $arqry = "UPDATE xml_temp_products SET {$pricekey} = :priceval WHERE origin_id = :originid and cikkszam = :cikkszam and {$pricekey} != :priceval";
+            $this->db->squery($arqry, $xmlupdateparams);
+          }
+        }
+
+        if ( $p['medias'] ) {
+          foreach ( (array)$p['medias'] as $media )
+          {
+          }
+        }
 
         $this->db->update(
           'shop_termekek',
