@@ -374,7 +374,6 @@
 										<div class="stepzerostarter">
 												<div class="cartInfo">
 													<? $vcash = $this->storedString[0][virtual_cash]; ?>
-
 														<span class="tetel"><?=$k[itemNum]?> db tétel</span>
 														<span class="totalPrice">
 															<? if($this->kosar[kedvezmeny] > 0 || (is_numeric($vcash) && $vcash != "0" && isset($vcash))): ?>
@@ -384,7 +383,6 @@
 																		$calc_final_total = $this->kosar['totalPrice'] - (int)$vcash;
 																		$this->kosar[kedvezmeny] = $vcash;
 																	}
-
 																?>
 																<span class="standardPrice">Eredeti ár: <strong><?=Helper::cashFormat($this->kosar[totalPrice_before_discount])?> Ft</strong></span>
 																	<span class="kedvPrice">kedvezményesen <strong><?=Helper::cashFormat($calc_final_total)?> Ft</strong></span>

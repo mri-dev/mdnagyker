@@ -24,6 +24,24 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 
+RewriteRule ^regisztracio(/)?$ index.php?tag=user/regisztracio&group=user [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule ^belepes(/)?$ index.php?tag=user/belepes [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule ^jelszoemlekezteto(/)?$ index.php?tag=user/jelszoemlekezteto [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
 RewriteRule ^kapcsolat(/)?$ index.php?tag=p/kapcsolat [QSA,L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
