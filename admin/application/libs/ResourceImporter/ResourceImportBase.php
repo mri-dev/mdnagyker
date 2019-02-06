@@ -41,7 +41,7 @@ class ResourceImportBase
   {
     $data = false;
 
-    $p = $this->db->squery("SELECT * FROM shop_termekek WHERE cikkszam = :cikkszam", array('cikkszam' => $sku));
+    $p = $this->db->squery("SELECT * FROM xml_temp_products WHERE cikkszam = :cikkszam", array('cikkszam' => $sku));
 
     if ($p->rowCount() != 0) {
       $data = $p->fetch(\PDO::FETCH_ASSOC);
@@ -1616,7 +1616,7 @@ class ResourceImportBase
   public function manufacturerAdder( $id, $value )
   {
     if($value == '') return false;
-    
+
     $check = $this->db->squery("SELECT ID FROM shop_markak WHERE neve = :m", array('m' => trim($value)));
 
     if ($check->rowCount() == 0) {

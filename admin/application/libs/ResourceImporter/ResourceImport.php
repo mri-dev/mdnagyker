@@ -8,9 +8,13 @@ use ResourceImporter\ResourceImportInterface;
  */
 class ResourceImport extends ResourceImportBase implements ResourceImportInterface
 {
-
+  public $crm = null;
   function __construct( $arg = array() )
   {
+    if (isset($arg['crm'])) {
+      $this->crm = $arg['crm'];
+    }
+
     return parent::__construct( $arg );
   }
 
@@ -54,7 +58,7 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
     return $prepared;
   }
 
-  public function findOldWebshopProducts( $products, $old_cats, $new_cats )
+  public function findOldWebshopProducts( $products, $old_cats, $new_cats, $onlynews = false )
   {
     $data = array();
     $li = 0;
@@ -62,9 +66,10 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
       $li++;
       //if ($li > 5 ) { break; }
       $prod = $this->findProductBySKU($p['sku']);
-      if ($prod) {
-        continue;
-      }
+
+      if ($onlynews && $prod) {continue;}
+      //if ($p['sku'] != '571965/TT/C') {continue;}
+
       $p['pushtocats'] = $this->connectSyncCategories($p['cats'], $old_cats, $new_cats);
       $p['dbdata'] = $prod;
       $p['prices'] = $this->preparePricesFromOldVirtuemart( $p['prices'] );
@@ -134,6 +139,8 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
 
   public function updateJoomlaPreparedProductContent( $products = array() )
   {
+    $new_insert = array();
+    $ins_header = array('hashkey', 'origin_id', 'cikkszam', 'gyarto_kod', 'prod_id', 'last_sync_up', 'termek_nev', 'termek_leiras', 'beszerzes_netto','ean_code', 'marka_nev', 'io', 'mennyisegegyseg', 'kisker_ar_netto');
 
     foreach ( (array)$products as $p )
     {
@@ -210,7 +217,86 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
       else
       {
         // Létrehozás
+        if ( $this->crm )
+        {
+          $items = array();
+          $item = array(
+						'termek_id' => 0,
+						'cikkszam' => trim($p['sku']),
+						'gyarto_cikkszam' => trim($p['sku']),
+						'gyartocikkszam' => trim($p['sku']),
+						'megnevezes' => trim($p['name']),
+						//'vonalkod' => '1000001000004',
+						'megjegyzes' => trim($p['rovid_leiras']),
+						'afa' => 27,
+						'netto_egysegar' => (float)$p['prices']['ar1'],
+						'termekcsoport_id' => 1,
+						'koltseghely_id' => 2,
+						'termek' => 1,
+						'mennyisegiegyseg' => trim($p['unit'])
+					);
+
+          if ($p['prices']) {
+            foreach ((array)$p['prices'] as $priceid => $price ) {
+              if ($priceid == 'ar1') {
+                continue;
+              }
+              $priceid = str_replace("ar", "", $priceid);
+
+              $item['afa'.$priceid] = 27;
+              $item['netto_egysegar'.$priceid] = (float)$price;
+            }
+          }
+
+					$items[] = $item;
+
+					//$ins = $this->crm->addProduct( $items );
+
+          if ($ins['error'] == 0)
+          {
+            // Ha rögzítésre került a termék a cashmanban és nincs hiba
+            $hashkey = md5('1_'.$ins['uzenet']);
+            $pin = array(
+              'hashkey' => $hashkey,
+              'origin_id' => 1,
+              'prod_id' => $ins['uzenet'],
+              'cikkszam' => trim($p['sku']),
+              'gyarto_kod' => trim($p['sku']),
+              'last_sync_up' => NOW,
+              'termek_nev' => trim($p['name']),
+              'termek_leiras' => addslashes($p['leiras']),
+              'beszerzes_netto' => 0,
+              'ean_code' => $ins['uzenet'],
+              'marka_nev' => $p['gyarto'],
+              'io' => 1,
+              'mennyisegegyseg' => $p['unit'],
+              'kisker_ar_netto' => (float)$p['prices']['ar1']
+            );
+
+            if ($p['prices']) {
+              foreach ((array)$p['prices'] as $priceid => $price ) {
+                $pin[$priceid] = (float)$price;
+                $ins_header[] = $priceid;
+              }
+            }
+
+            $new_insert[] = $pin;
+          } else {
+            echo 'CashmanFX API - Rögzítés: ['.$p['sku'].'] ' . $ins['hiba'] . "<br>";
+          }
+        }
+
       }
+    }
+
+    // Új termékek importálása a temp mappába
+    if ($new_insert && false)
+    {
+      $this->db->multi_insert_v2(
+        'xml_temp_products',
+        $ins_header,
+        $new_insert
+      );
     }
   }
 

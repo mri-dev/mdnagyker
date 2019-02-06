@@ -105,14 +105,14 @@ class cron extends Controller{
 				break;
 
 				case 'syncProducts':
-					$res = new ResourceImport(array('db' => $this->db));
-					$res->syncTempProducts();
+					//$res = new ResourceImport(array('db' => $this->db));
+					//$res->syncTempProducts();
 				break;
 
 				case 'importProducts':
-					$res = new ResourceImport(array('db' => $this->db));
-					$products = $crm->getProducts();
-					$prep = $crm->autoImportProducts( 1, (array)$products['data'] );
+					//$res = new ResourceImport(array('db' => $this->db));
+					//$products = $crm->getProducts();
+					//$prep = $crm->autoImportProducts( 1, (array)$products['data'] );
 
 					//echo $prep;
 
@@ -146,7 +146,7 @@ class cron extends Controller{
 					echo '</pre>';
 				break;
 				case 'getProduct':
-					$data = $crm->getProduct($this->gets[3]);
+					$data = $crm->getProduct($_GET['id']);
 					echo '<pre>';
 					print_r($data);
 					echo '</pre>';
