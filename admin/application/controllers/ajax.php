@@ -1,6 +1,7 @@
 <?
 use PortalManager\Template;
 use PortalManager\Traffic;
+use PortalManager\Vehicles;
 use ProductManager\Products;
 use Applications\Lookbooks;
 
@@ -433,6 +434,44 @@ class ajax extends Controller{
 				/**
 				* ANGULAR ACTIONS
 				**/
+				case 'Vehicles':
+					$key = $_POST['key'];
+
+					$vehicles = new Vehicles(array('db' => $this->db));
+
+					$re = array(
+						'error' => 0,
+						'msg' => null,
+						'data' 	=> array()
+					);
+					$re['pass'] = $_POST;
+
+					switch ($key) {
+						case 'getVehicles':
+							$list =  $vehicles->getTree();
+							$re['data'] = $list->tree;
+						break;
+						case 'loadArticleCompatibility':
+							$re['data'] = $vehicles->getProductCompatibilityList( $id );
+						break;
+						case 'registerConfig':
+							$config['manufacturer'] = ($config['manufacturer'] == 'false') ? false : $config['manufacturer'];
+							$config['type'] = ($config['type'] == 'false') ? false : $config['type'];
+							$config['title'] = ($config['title'] == 'false') ? false : $config['title'];
+							$config['evejarat_start'] = ($config['evejarat_start'] == 'false') ? false : $config['evejarat_start'];
+							$config['evejarat_end'] = ($config['evejarat_end'] == 'false') ? false : $config['evejarat_end'];
+							$vehicles->registerProductCarRestriction( $id, $config['manufacturer']['ID'], $config['type']['ID'], $config['title'], $config['evejarat_start'], $config['evejarat_end'] );
+						break;
+						case 'removeRestriction':
+							$re['data'] = $vehicles->removeRestriction( $restid );
+						break;
+						case 'removeModel':
+							$re['data'] = $vehicles->removeModel( $mid );
+						break;
+
+					}
+					echo json_encode( $re );
+				break;
 				case 'Documents':
 					$key = $_POST['key'];
 

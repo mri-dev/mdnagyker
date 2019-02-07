@@ -100,7 +100,7 @@
 		}
     </script>
 </head>
-<body class="<? if(!$this->adm->logged): ?>blured-bg<? endif; ?>">
+<body class="<? if(!$this->adm->logged): ?>blured-bg<? endif; ?>" ng-app="Autoradiokeret">
 <div id="top" class="container-fluid">
 	<div class="row">
 		<? if(!$this->adm->logged): ?>

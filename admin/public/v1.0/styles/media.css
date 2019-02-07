@@ -3243,3 +3243,58 @@ md-toast.mode-warning .md-toast-content{
 md-toast.mode-success .md-toast-content{
   background-color: #29bc40;
 }
+.compatibility-list .manufacturer .header{
+  background: #3395ff;
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin: 2px 0;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 1.3rem;
+}
+.compatibility-list .manufacturer .header .comaptible-with-all{
+  font-weight: 300;
+  font-size: 1rem;
+  text-transform: none;
+  color: #c2fa9c;
+}
+.compatibility-list .manufacturer .models{
+  margin: 0 10px;
+}
+.compatibility-list .manufacturer .models .model{
+  background: #e6e6e6;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 2px 0;
+  font-weight: bold;
+  color: black;
+}
+.compatibility-list .manufacturer .models .model .type-restricts{
+  background: #fff;
+  padding: 0;
+}
+.compatibility-list .manufacturer .models .model .type-restricts .restrict{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: #8c8c8c;
+  padding: 5px;
+  border-bottom: 0.5px solid #bdbdbd;
+}
+.compatibility-list .manufacturer .models .model .type-restricts .restrict .title{
+  flex: 1;
+  text-align: left;
+}
+.compatibility-list .manufacturer .models .model .type-restricts .restrict .year{
+  flex-basis: 25%;
+  text-align: center;
+}
+.compatibility-list .manufacturer .models .model .type-restricts .restrict .act{
+  flex-basis: 25px;
+  text-align: center;
+}

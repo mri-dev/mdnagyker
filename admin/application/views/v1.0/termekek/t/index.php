@@ -380,7 +380,7 @@
 					</div>
 
 				</div>
-				<div class="con" ng-app="Documents" ng-controller="List" ng-init="init(<?=$this->termek['ID']?>)">
+				<div class="con" ng-controller="DocumentList" ng-init="init(<?=$this->termek['ID']?>)">
 					<h3>Csatolt dokumentumok, hivatkozások<em class="info">Csatolja hozzá ehhez a termékhez azokat a dokumentumokat, amelyek érdekesek vagy szükségesek lehetnek a vásárló részére.</em></h3>
 					<div class="row">
 						<div class="col-md-12">
@@ -598,30 +598,103 @@
       <? endif; ?>
 
 			<? if( true ): ?>
-	        <div class="con con-extra">
-            	<h3>Ajánlott termékek <em class="info">Fűzzön a termékhez ajánlott termékeket.</em></h3>
-               	<div class="row">
-               		<div class="col-md-12">
-               			<label for="productRelativesText">Keresés</label>
-               			<input type="text" id="productRelativesText" exc-id="<?=$this->termek['ID']?>" value="" placeholder="termék keresése..." class="form-control">
-               		</div>
-               	</div>
-               	<br>
-               	<div class="row">
-               		<div class="col-md-12">
-               			<label for="">Keresési találatok (<span id="productRelativesNumber">0</span>)</label>
-               			<div class="productRelativesList" id="productRelativesList"></div>
-               		</div>
-               	</div>
+				<div class="con con-extra" ng-controller="VehicleArticleConfig" ng-init="init(<?=$this->termek['ID']?>)">
+					<h3>Gépjármű kompatibilitás</h3>
+					<div class="row">
+						<div class="col-md-12">
+							<h4>Új gépjármű jegyzése</h4>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<label for="vman">Autó márka</label>
+							<select id="vman" class="form-control" ng-model="cvehicle.manufacturer" ng-options="man.title for man in vehicles"></select>
+						</div>
+						<div class="col-md-6" ng-show="cvehicle.manufacturer.child">
+							<label for="vtype">Autó típus</label>
+							<select id="vtype" class="form-control" ng-model="cvehicle.type" ng-options="man.title for man in cvehicle.manufacturer.child"></select>
+						</div>
+					</div>
+					<div class="" ng-show="cvehicle.type">
+						<br>
+						<div class="row">
+							<div class="col-md-12">
+								<label for="vseries">Széria megnevezés / megjegyzés</label>
+								<input type="text" class="form-control" ng-model="cvehicle.title" placeholder="{{cvehicle.manufacturer.title}} {{cvehicle.type.title}} széria megnevezés, megjegyzés...">
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-md-6">
+								<label for="vystart">Évjárat -tól (pl.: 2004.00)</label>
+								<input type="text" class="form-control" ng-model="cvehicle.evejarat_start">
+							</div>
+							<div class="col-md-6">
+								<label for="vyend">Évjárat -ig (pl.: 2008.07)</label>
+								<input type="text" class="form-control" ng-model="cvehicle.evejarat_end">
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row" ng-show="cvehicle.manufacturer">
+						<div class="col-md-12 right">
+							<button type="button" class="btn btn-sm btn-primary" ng-show="!saveing_config" ng-click="addConfig()">Rögzít <i class="fa fa-plus-circle"></i></button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+								<h4>Rögzített kompatibilitások</h4>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+								<div class="compatibility-list">
+									<div class="manufacturer" ng-repeat="man in compatible.list">
+										<div class="header">{{man.title}}<span class="comaptible-with-all" ng-show="!man.models"> - Az összes modellel kompatibilis.</span></div>
+										<div class="models" ng-show="man.models.length!=0">
+											<div class="model" ng-repeat="model in man.models">
+												{{model.title}} <i ng-show="false" class="fa fa-times" ng-click="removeModel(model.ID)"></i>
+												<div class="type-restricts" ng-show="model.creation_restricts">
+													<div class="restrict" ng-repeat="rest in model.creation_restricts">
+														<div class="title">{{rest.title}}</div>
+														<div class="year" ng-bind-html="rest.ydate"></div>
+														<div class="act"><i class="fa fa-times" ng-click="removeRestriction(rest.ID)"></i></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+						</div>
+					</div>
+				</div>
+			<? endif; ?>
 
-               	<div class="row">
-               		<div class="col-md-12">
-               			<label for="">Aktív ajánlott termékek (<?=($this->termek['related_products_ids']) ? count($this->termek['related_products_ids']) : 0?>)</label>
-               			<div><?=$this->kapcsolatok?></div>
-               		</div>
-               	</div>
-            </div>
-        	<? endif; ?>
+			<? if( true ): ?>
+        <div class="con con-extra">
+          	<h3>Ajánlott termékek <em class="info">Fűzzön a termékhez ajánlott termékeket.</em></h3>
+             	<div class="row">
+             		<div class="col-md-12">
+             			<label for="productRelativesText">Keresés</label>
+             			<input type="text" id="productRelativesText" exc-id="<?=$this->termek['ID']?>" value="" placeholder="termék keresése..." class="form-control">
+             		</div>
+             	</div>
+             	<br>
+             	<div class="row">
+             		<div class="col-md-12">
+             			<label for="">Keresési találatok (<span id="productRelativesNumber">0</span>)</label>
+             			<div class="productRelativesList" id="productRelativesList"></div>
+             		</div>
+             	</div>
+
+             	<div class="row">
+             		<div class="col-md-12">
+             			<label for="">Aktív ajánlott termékek (<?=($this->termek['related_products_ids']) ? count($this->termek['related_products_ids']) : 0?>)</label>
+             			<div><?=$this->kapcsolatok?></div>
+             		</div>
+             	</div>
+          </div>
+      	<? endif; ?>
 
 	    </div>
 	</div>

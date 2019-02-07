@@ -383,6 +383,56 @@ class Vehicles implements InstallModules
     return $ret;
   }
 
+  public function registerProductCarRestriction( $pid, $manufacturer_id = false, $type_id = false, $title = false, $date_start = false, $date_end = false  )
+  {
+    // Ha típus ki lett választva
+    if ( $type_id && !empty($type_id) ) {
+      // Típus rögzítése
+      $this->db->insert(
+        self::DBSHOPXREF,
+        array(
+          'vehicle_id' => $type_id,
+          'termek_id' => $pid
+        )
+      );
+
+      // Restrict rögzítése
+      if ($title || $date_start || $date_start)
+      {
+        $this->db->insert(
+          self::DBXREFCREATIONRESTRICT,
+          array(
+            'xref_id' => $pid,
+            'title' => ($title) ? $title : NULL,
+            'ydate_start' => ($date_start) ? $date_start : NULL,
+            'ydate_end' => ($date_end) ? $date_end : NULL
+          )
+        );
+      }
+    } else {
+      // Gyártó márka van csak meghatárotva
+      if ($manufacturer_id) {
+        $this->db->insert(
+          self::DBSHOPXREF,
+          array(
+            'vehicle_id' => $manufacturer_id,
+            'termek_id' => $pid
+          )
+        );
+      }
+    }
+  }
+
+  public function removeRestriction( $id )
+  {
+    $this->db->squery("DELETE FROM ".self::DBXREFCREATIONRESTRICT." WHERE ID = :id", array('id' => $id));
+  }
+
+  public function removeModel( $id )
+  {
+    // code...
+  }
+
   public function getChildIDS( $parent_id = 0 )
   {
     $q = "SELECT v.ID FROM ".self::DBTABLE." as v WHERE v.parent_id = ".$parent_id;
