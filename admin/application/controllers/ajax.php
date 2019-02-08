@@ -465,10 +465,12 @@ class ajax extends Controller{
 						case 'removeRestriction':
 							$re['data'] = $vehicles->removeRestriction( $restid );
 						break;
-						case 'removeModel':
-							$re['data'] = $vehicles->removeModel( $mid );
+						case 'removeModelConfig':
+							$re['data'] = $vehicles->removeModel( $id, $mid, $xid );
 						break;
-
+						case 'removeManufactureModelsAndRestricts':
+							$re['data'] = $vehicles->removeManufactureModelsAndRestricts( $id, $mid, $xid );
+						break;
 					}
 					echo json_encode( $re );
 				break;

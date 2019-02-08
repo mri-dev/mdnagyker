@@ -184,10 +184,11 @@ a.controller("VehicleArticleConfig", ['$scope', '$http', '$mdToast', function($s
 	$scope.error = false;
 
 	$scope.init = function( id ){
+		$scope.loading = true;
 		$scope.termid = id;
 		$scope.loadVehicles( function(){
 			$scope.loadArticleCompatibility(function(){
-
+				$scope.loading = false;
 			});
 		});
 	}
@@ -212,7 +213,7 @@ a.controller("VehicleArticleConfig", ['$scope', '$http', '$mdToast', function($s
     });
 	}
 
-	$scope.removeModel = function( id )
+	$scope.removeModel = function( id, xid )
 	{
 		$http({
       method: 'POST',
@@ -222,7 +223,27 @@ a.controller("VehicleArticleConfig", ['$scope', '$http', '$mdToast', function($s
         type: "Vehicles",
 				id: $scope.termid,
 				mid: id,
+				xid: xid,
         key: 'removeModelConfig'
+      })
+    }).success(function( r ){
+			console.log(r);
+			$scope.init($scope.termid);
+    });
+	}
+
+	$scope.removeManufactureModelsAndRestricts = function( id, xid )
+	{
+		$http({
+      method: 'POST',
+      url: '/ajax/get',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: $.param({
+        type: "Vehicles",
+				id: $scope.termid,
+				mid: id,
+				xid: xid,
+        key: 'removeManufactureModelsAndRestricts'
       })
     }).success(function( r ){
 			console.log(r);

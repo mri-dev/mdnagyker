@@ -282,6 +282,7 @@ class Vehicles implements InstallModules
           if($d['compatible']){
             $cmnum++;
           }
+          $ret[$d['parent_id']]['ID'] = $d['xid'];
           $ret[$d['parent_id']]['title'] = $d['parent_title'];
           $ret[$d['parent_id']]['vehicle_id'] = $d['parent_id'];
           $ret[$d['parent_id']]['parent_id'] = null;
@@ -385,16 +386,42 @@ class Vehicles implements InstallModules
 
   public function registerProductCarRestriction( $pid, $manufacturer_id = false, $type_id = false, $title = false, $date_start = false, $date_end = false  )
   {
+    // Ellenőrzés
+
+    if ($type_id && !empty($type_id))
+    {
+      $chq = "SELECT ID FROM ".self::DBSHOPXREF." WHERE termek_id = :tid and manufacture_id = :man and type_id = :type";
+      $ch = $this->db->squery( $chq, array('tid' => $pid, 'man' => $manufacturer_id, 'type' => $type_id) );
+    }  else {
+      $chq = "SELECT ID FROM ".self::DBSHOPXREF." WHERE termek_id = :tid and manufacture_id = :man and type_id IS NULL";
+      $ch = $this->db->squery( $chq, array('tid' => $pid, 'man' => $manufacturer_id) );
+    }
+
+    if ($ch->rowCount() != 0) {
+      $chdata = $ch->fetch(\PDO::FETCH_ASSOC);
+      $chID = $chdata['ID'];
+    }
+
     // Ha típus ki lett választva
-    if ( $type_id && !empty($type_id) ) {
+    if ( $type_id && !empty($type_id) )
+    {
       // Típus rögzítése
-      $this->db->insert(
-        self::DBSHOPXREF,
-        array(
-          'vehicle_id' => $type_id,
-          'termek_id' => $pid
-        )
-      );
+      if ( !$chID )
+      {
+        $this->db->insert(
+          self::DBSHOPXREF,
+          array(
+            'manufacture_id' => $manufacturer_id,
+            'type_id' => $type_id,
+            'vehicle_id' => $type_id,
+            'termek_id' => $pid
+          )
+        );
+
+        $xrefid = $this->db->lastInsertId();
+      } else {
+        $xrefid = $chID;
+      }
 
       // Restrict rögzítése
       if ($title || $date_start || $date_start)
@@ -402,7 +429,10 @@ class Vehicles implements InstallModules
         $this->db->insert(
           self::DBXREFCREATIONRESTRICT,
           array(
-            'xref_id' => $pid,
+            'manufacture_id' => $manufacturer_id,
+            'type_id' => $type_id,
+            'xref_id' => $xrefid,
+            'termek_id' => $pid,
             'title' => ($title) ? $title : NULL,
             'ydate_start' => ($date_start) ? $date_start : NULL,
             'ydate_end' => ($date_end) ? $date_end : NULL
@@ -411,10 +441,12 @@ class Vehicles implements InstallModules
       }
     } else {
       // Gyártó márka van csak meghatárotva
-      if ($manufacturer_id) {
+      if ($manufacturer_id && !$chID) {
         $this->db->insert(
           self::DBSHOPXREF,
           array(
+            'manufacture_id' => $manufacturer_id,
+            'type_id' => $type_id,
             'vehicle_id' => $manufacturer_id,
             'termek_id' => $pid
           )
@@ -428,9 +460,20 @@ class Vehicles implements InstallModules
     $this->db->squery("DELETE FROM ".self::DBXREFCREATIONRESTRICT." WHERE ID = :id", array('id' => $id));
   }
 
-  public function removeModel( $id )
+  public function removeModel( $pid, $vehicle_id, $xid )
   {
-    // code...
+    // Delete restricts
+    $this->db->squery("DELETE FROM ".self::DBXREFCREATIONRESTRICT." WHERE xref_id = :xid", array('xid' => $xid));
+    // Delete vehicle reg
+    $this->db->squery("DELETE FROM ".self::DBSHOPXREF." WHERE termek_id = :tid and type_id = :v and ID = :xid", array('tid' => $pid, 'xid' => $xid, 'v' => $vehicle_id));
+  }
+
+  public function removeManufactureModelsAndRestricts( $pid, $vehicle_id, $xid )
+  {
+    // Delete restricts
+    $this->db->squery("DELETE FROM ".self::DBXREFCREATIONRESTRICT." WHERE xref_id = :xid", array('xid' => $xid));
+    // Delete manufacturer
+    $this->db->squery("DELETE FROM ".self::DBSHOPXREF." WHERE termek_id = :tid and manufacture_id = :m", array('tid' => $pid ,'m' => $vehicle_id));
   }
 
   public function getChildIDS( $parent_id = 0 )

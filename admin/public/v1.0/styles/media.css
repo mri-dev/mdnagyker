@@ -3262,6 +3262,7 @@ md-toast.mode-success .md-toast-content{
 .compatibility-list .manufacturer .models{
   margin: 0 10px;
 }
+
 .compatibility-list .manufacturer .models .model{
   background: #e6e6e6;
   border-radius: 5px;
@@ -3269,6 +3270,16 @@ md-toast.mode-success .md-toast-content{
   margin: 2px 0;
   font-weight: bold;
   color: black;
+}
+.compatibility-list .manufacturer > .header > i,
+.compatibility-list .manufacturer .models .model > i{
+  float: right;
+  color: #aa4c4c;
+  cursor: pointer;
+}
+.compatibility-list .manufacturer .models .model .type-restricts i {
+  color: #aa4c4c;
+  cursor: pointer;
 }
 .compatibility-list .manufacturer .models .model .type-restricts{
   background: #fff;

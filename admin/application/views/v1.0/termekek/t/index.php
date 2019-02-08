@@ -637,8 +637,13 @@
 					</div>
 					<br>
 					<div class="row" ng-show="cvehicle.manufacturer">
-						<div class="col-md-12 right">
-							<button type="button" class="btn btn-sm btn-primary" ng-show="!saveing_config" ng-click="addConfig()">Rögzít <i class="fa fa-plus-circle"></i></button>
+						<div class="col-md-12 ">
+							<div class="alert alert-sm alert-info" ng-show="saveing_config">
+								Gépjármű kompatibilitás rögzítése...<i class="fa fa-spin fa-spinner"></i>
+							</div>
+							<div class="right">
+								<button type="button" class="btn btn-sm btn-primary" ng-show="!saveing_config" ng-click="addConfig()">Rögzít <i class="fa fa-plus-circle"></i></button>
+							</div>
 						</div>
 					</div>
 					<div class="row">
@@ -648,17 +653,22 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12">
+								<div class="" ng-show="loading">
+									<div class="alert alert-sm alert-warning" ng-show="saveing_config">
+										Gépjármű kompatibilitási adatok rögzítése...<i class="fa fa-spin fa-spinner"></i>
+									</div>
+								</div>
 								<div class="compatibility-list">
 									<div class="manufacturer" ng-repeat="man in compatible.list">
-										<div class="header">{{man.title}}<span class="comaptible-with-all" ng-show="!man.models"> - Az összes modellel kompatibilis.</span></div>
+										<div class="header">{{man.title}}<span class="comaptible-with-all" ng-show="!man.models"> - Az összes modellel kompatibilis.</span> <i title="Végleges törlés" class="fa fa-times" ng-click="removeManufactureModelsAndRestricts(man.vehicle_id, man.ID)"></i></div>
 										<div class="models" ng-show="man.models.length!=0">
 											<div class="model" ng-repeat="model in man.models">
-												{{model.title}} <i ng-show="false" class="fa fa-times" ng-click="removeModel(model.ID)"></i>
+												{{model.title}} <i class="fa fa-times" ng-click="removeModel(model.vehicle_id, model.xid)" title="Végleges törlés"></i>
 												<div class="type-restricts" ng-show="model.creation_restricts">
 													<div class="restrict" ng-repeat="rest in model.creation_restricts">
 														<div class="title">{{rest.title}}</div>
 														<div class="year" ng-bind-html="rest.ydate"></div>
-														<div class="act"><i class="fa fa-times" ng-click="removeRestriction(rest.ID)"></i></div>
+														<div class="act"><i class="fa fa-times" title="Végleges törlés" ng-click="removeRestriction(rest.ID)"></i></div>
 													</div>
 												</div>
 											</div>
