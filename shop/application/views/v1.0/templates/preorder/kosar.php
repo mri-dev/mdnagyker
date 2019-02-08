@@ -13,11 +13,11 @@
     <h2>Foglalási adatok megadása</h2>
     <div class="input-line">
       <label class="ilb" for="preorder_name">Az Ön neve *</label>
-      <input type="text" id="preorder_name" name="preorder[name]" value="<?=$_POST['preorder']['name']?>" class="form-control" required="required">
+      <input type="text" id="preorder_name" name="preorder[name]" value="<?=(isset($_POST['preorder']['name'])) ? $_POST['preorder']['name'] : $this->user['data']['nev']?>" class="form-control" required="required">
     </div>
     <div class="input-line">
       <label class="ilb" for="preorder_email">Az Ön e-mail címe *</label>
-      <input type="email" id="preorder_email" name="preorder[email]" value="<?=$_POST['preorder']['email']?>" class="form-control" required="required">
+      <input type="email" id="preorder_email" name="preorder[email]" value="<?=(isset($_POST['preorder']['email'])) ? $_POST['preorder']['email'] : $this->user['data']['email']?>" class="form-control" required="required">
     </div>
     <div class="input-line">
       <div class="lb-check">

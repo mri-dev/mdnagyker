@@ -311,20 +311,22 @@
           <div class="wrapper">
             <div class="fav">
               <div aria-label="Hozzáadás a kedvencekhez." class="fav" ng-class="(fav_ids.indexOf(<?=$this->product['ID']?>) !== -1)?'selected':''" ng-click="productAddToFav(<?=$this->product['ID']?>)">
-                <div class="wrapper" title="Kedvencekhez adás">
+                <div class="wrapper">
                   <i class="fa fa-star" ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) !== -1"></i>
                   <i class="fa fa-star-o" ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) === -1"></i>
-                  Kedvencekhez
+                  <span ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) === -1">Kedvenc</span>
+                  <span ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) !== -1">Kedvenem</span>
                 </div>
                 <md-tooltip md-direction="bottom">
                   Hozzáadás a kedvencekhez.
                 </md-tooltip>
               </div>
             </div>
+            <?php if ($this->user && $this->user['data']['user_group'] == 'company'): ?>
             <div class="sep"></div>
             <div class="lefoglal">
               <div aria-label="Hozzáadás a kedvencekhez." class="fav" ng-class="(fav_ids.indexOf(<?=$this->product['ID']?>) !== -1)?'selected':''" ng-click="productAddToFav(<?=$this->product['ID']?>)">
-                <div class="wrapper" title="Kedvencekhez adás">
+                <div class="wrapper">
                   <i class="fa fa-pause-circle" ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) !== -1"></i>
                   <i class="fa fa-pause-circle-o" ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) === -1"></i>
                   Lefoglal
@@ -334,6 +336,7 @@
                 </md-tooltip>
               </div>
             </div>
+            <?php endif; ?>
           </div>
         </div>
         <nav class="tab-header">

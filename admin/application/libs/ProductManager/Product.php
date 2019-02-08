@@ -188,6 +188,10 @@ class Product
 		return ($this->product['pickpackpont'] == 1 ? true : false );
 	}
 
+	public function isAllowToCsomagautomata()
+	{
+		return ($this->product['csomagautomata'] == 1 ? true : false );
+	}
 	public function isAllowCetelem()
 	{
 		return ($this->product['no_cetelem'] == 0 ? true : false );

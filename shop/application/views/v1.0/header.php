@@ -104,10 +104,12 @@
             <div class="kedvencek">
               <a href="/kedvencek"><i class="fa fa-star"></i> Kedvencek <span class="badge">{{fav_num}}</span></a>
             </div>
+            <?php if (!$this->user || ($this->user && $this->user['data']['user_group'] == 'company')): ?>
             <div class="div"></div>
             <div class="elofoglalas">
-              <a href="/elofoglalasok"><i class="fa fa-pause-circle-o"></i> Előfoglalás <span class="badge">{{fav_num}}</span></a>
+              <a href="/elofoglalasok"><i class="fa fa-pause-circle-o"></i> Előfoglalás <span class="badge">{{prodres_num}}</span></a>
             </div>
+            <?php endif; ?>
           </div>
         </div>
       </div>

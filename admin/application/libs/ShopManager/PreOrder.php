@@ -132,7 +132,7 @@ class PreOrder
       i.*,
 			t.cikkszam,
 			t.profil_kep,
-			IF(t.marka > 0, CONCAT(m.neve,' ',t.nev), t.nev) as nev,
+			t.nev as nev,
 			m.neve as markaNev
     FROM ".\ShopManager\PreOrders::DBITEMS." as i
 		LEFT OUTER JOIN shop_termekek as t ON t.ID = i.termekID

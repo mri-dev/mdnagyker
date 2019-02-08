@@ -80,8 +80,11 @@
 						<div class="">
 							<input type="checkbox" name="arukereso" id="arukereso" <?=($this->termek['arukereso'] == 1)?'checked':''?>/> <label for="arukereso">ÁRUKERESŐ listába</label>
 						</div>
-						<div class="">
+						<div class="" style="display: none;">
 							<input type="checkbox" <?=($this->termek['pickpackszallitas'] == 1)?'checked':''?> name="pickpackszallitas" id="pickpackszallitas" /> <label for="pickpackszallitas">Pick Pack Pont-ra szállítható</label>
+						</div>
+						<div class="">
+							<input type="checkbox" <?=($this->termek['csomagautomata'] == 1)?'checked':''?> name="csomagautomata" id="csomagautomata" /> <label for="csomagautomata">Csomag automatára szállítható</label>
 						</div>
 						<div class="" style="display: none;">
 							<input type="checkbox" <?=($this->termek['no_cetelem'] == 1)?'checked':''?> name="no_cetelem" id="no_cetelem" /> <label for="no_cetelem">Cetelem hitel alól KIZÁRVA</label>

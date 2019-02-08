@@ -9,6 +9,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.vehicle_saving = false;
 
   $scope.fav_num = 0;
+  $scope.prodres_num = 0;
   $scope.fav_ids = [];
   $scope.in_progress_favid = false;
   $scope.requesttermprice = {};
@@ -170,8 +171,13 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       $scope.vehicle_num = n;
       $scope.vehicles_selected = vehicles;
     });
+
     $scope.syncFavs(function(err, n){
       $scope.fav_num = n;
+    });
+
+    $scope.syncPreorders(function(err, n){
+      $scope.prodres_num = n;
     });
 
     if (typeof ordernow !== 'undefined' && ordernow === true ) {
@@ -294,7 +300,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       		}).success(function(r) {
       			$scope.sending = false;
             $scope.requesttermprice = {};
-            console.log(r);
 
       			if (r.error == 1) {
       				$scope.toast(r.msg, 'alert', 10000);
@@ -332,7 +337,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         id: id
       })
     }).success(function(r){
-      console.log(r);
       if (r.error == 1) {
         $scope.toast(r.msg, 'alert', 10000);
       } else {
@@ -384,6 +388,23 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     }).success(function(r){
       if (typeof callback === 'function') {
         callback(r.num, r.ids);
+      }
+    });
+  }
+
+  $scope.syncPreorders = function( callback ){
+    $http({
+      method: 'POST',
+      url: '/ajax/post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: $.param({
+        type: "Preorders",
+        action: 'getNum',
+        own: 1
+      })
+    }).success(function(r){
+      if (typeof callback === 'function') {
+        callback(r.error, r.num);
       }
     });
   }
@@ -578,8 +599,6 @@ app.controller('ActionButtons', ['$scope', '$http', '$mdDialog', '$mdToast', fun
       		}).success(function(r){
       			$scope.sending = false;
       			$scope.ajanlat = {};
-
-            console.log(r);
 
             if (r.error == 1) {
               $scope.toast(r.msg, 'alert', 10000);
@@ -1119,7 +1138,6 @@ app.controller('popupReceiver', ['$scope', '$sce', '$cookies', '$http', '$locati
 			sessionid	: ctrl.getSessionID()
 
 		}).success(function(d,s,h,c){
-			console.log(d);
 		});
 	}
 

@@ -125,7 +125,8 @@
         <div class="desc">
           <i class="fa fa-question-circle-o"></i>
           <h4>Mit jelent az előfoglalás?</h4>
-          Az Önnek megtetsző termékeket lefoglalhatja <strong><?=$this->settings['elofoglalas_ora']?> órára</strong>. A lefoglalt tételeket a megrendelés leadásáig elrakjuk, így más nem vásárolhatja meg.<br>Tegye kosárba a termékeket és válassza az előfoglalás opciót az előfoglalás rögzítéséhez.
+          Az Önnek megtetsző termékeket lefoglalhatja <strong><?=$this->settings['elofoglalas_ora']?> órára</strong>. A lefoglalt tételeket a megrendelés leadásáig elrakjuk üzleti partnereinkek, így más nem vásárolhatja meg.<br>Tegye kosárba a termékeket és válassza az előfoglalás opciót az előfoglalás rögzítéséhez.<br><br>
+          <strong style="color:#e07d80;">A szolgáltatás kizárólag nagykereskedelmi és viszonteladó felhasználóinknak érhető el!</strong>
         </div>
       </div>
     <?php endif; ?>

@@ -70,6 +70,7 @@ class Products
 			$marka 			= $product->getManufacturerId();
 			$lathato 		= $product->isVisible();
 			$pickpackszallitas 	= ( !$product->isAllowToPickPackPont() ) ? 0 : 1;
+			$csomagautomata 	= ( !$product->isAllowToCsomagautomata() ) ? 0 : 1;
 			$no_cetelem 	= ( $product->isAllowCetelem() ) ? 0 : 1;
 			$akcios 		= ( !$product->isDiscounted() ) ? 0 : 1;
 			$netto_ar 		= $product->getPrice( 'netto' );
@@ -135,6 +136,7 @@ class Products
 					'brutto_ar' => $brutto_ar,
 					'lathato' => $lathato,
 					'pickpackszallitas' => $pickpackszallitas,
+					'csomagautomata' => $csomagautomata,
 					'no_cetelem' => $no_cetelem,
 					'akcios' => $akcios,
 					'akcios_netto_ar' => $akcios_n_ar,
@@ -296,6 +298,7 @@ class Products
 			$marka 			= $product->getManufacturerId();
 			$lathato 		= $product->isVisible();
 			$pickpackszallitas 	= ( !$product->isAllowToPickPackPont() ) ? 0 : 1;
+			$csomagautomata 	= ( !$product->isAllowToCsomagautomata() ) ? 0 : 1;
 			$no_cetelem 	= ( $product->isAllowCetelem() ) ? 0 : 1;
 			$akcios 		= ( !$product->isDiscounted() ) ? 0 : 1;
 			$netto_ar 		= $product->getPrice( 'netto' );
@@ -369,6 +372,7 @@ class Products
 					'letoltesek' => $letoltesek,
 					'lathato' => $lathato,
 					'pickpackszallitas' => $pickpackszallitas,
+					'csomagautomata' => $csomagautomata,
 					'no_cetelem' => $no_cetelem,
 					'akcios' => $akcios,
 					'szallitasID' => $szallitasID,
@@ -836,7 +840,7 @@ class Products
 						$size_whr .= $add;
 					break;
 					case 'nev':
-						$add = " and p.".$key." LIKE '%".$v."%' ";
+						$add = " and (p.".$key." LIKE '%".$v."%' or p.cikkszam = '".trim($v)."') ";
 						$whr .= $add;
 						$size_whr .= $add;
 					break;

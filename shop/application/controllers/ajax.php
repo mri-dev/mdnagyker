@@ -332,6 +332,25 @@ class ajax extends Controller{
 					if(!$err) $this->setSuccess( $remsg ,$ret );
 
 				break;
+				case 'Preorders':
+					$mid = Helper::getMachineID();
+					$ret['pass'] = $_POST;
+					$err = false;
+
+					switch ($_POST['action']) {
+						case 'getNum':
+							$num = 0;
+							$own = ($_POST['own'] == '1') ? true : false;
+
+							if ($own) {
+								$iq = "SELECT count(ID) FROM preorder WHERE gepID = '{$mid}' and valid_to >= now()";
+								$getn = (int)$this->db->query( $iq )->fetchColumn();
+								$num = $getn;
+								$ret['num'] = $num;
+							}
+						break;
+					}
+				break;
 				case 'productFavorite':
 					$mid = Helper::getMachineID();
 					$ret['pass'] = $_POST;
