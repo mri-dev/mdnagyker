@@ -28,7 +28,7 @@ class app extends Controller{
 		public function sync()
 		{
 			$crm = new CashmanAPI(array('db' => $this->db));
-			
+
 			$rs = new ResourceImport(array(
 				'db' => $this->db,
 				'crm' => $crm
@@ -63,18 +63,17 @@ class app extends Controller{
 			$json_prod = json_decode($jsonopen, true);
 
 			// Az összes
-			//$prepared_products = $rs->findOldWebshopProducts( $json_prod, $cats, $ncats, false );
+			$prepared_products = $rs->findOldWebshopProducts( $json_prod, $cats, $ncats, false );
 			// Csak a nem létezők
-			$prepared_products = $rs->findOldWebshopProducts( $json_prod, $cats, $ncats, true );
+			//$prepared_products = $rs->findOldWebshopProducts( $json_prod, $cats, $ncats, true );
 
 			////////////////////////////////////////////////////////////////
 
 			$rs->updateJoomlaPreparedProductContent( $prepared_products );
 
-			/*echo '<pre>';
-			print_r($prepared_products);*/
-
-			echo count($prepared_products);
+			echo '<pre>';
+			print_r($prepared_products);
+			//print_r($json_prod);
 
 			unset($jsonopen);
 			unset($json_prod);

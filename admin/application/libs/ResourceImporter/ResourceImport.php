@@ -52,9 +52,7 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
   public function prepareContext( $context = false )
   {
     $prepared = array();
-
     $prepared = $context;
-
     return $prepared;
   }
 
@@ -67,8 +65,8 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
       //if ($li > 5 ) { break; }
       $prod = $this->findProductBySKU($p['sku']);
 
-      if ($onlynews && $prod) {continue;}
-      //if ($p['sku'] != '571965/TT/C') {continue;}
+      if ($onlynews && $prod) { continue; }
+      //if ($p['sku'] != '381320-30-1') {continue;}
 
       $p['pushtocats'] = $this->connectSyncCategories($p['cats'], $old_cats, $new_cats);
       $p['dbdata'] = $prod;
@@ -108,7 +106,7 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
         $prices['ar2'] = $p['net_price'];
       }
       if ($p['name'] == 'Nagykereskedő') {
-        $prices['ar2'] = $p['net_price'];
+        $prices['ar3'] = $p['net_price'];
       }
     }
 
@@ -172,10 +170,11 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
           {
             $xmlupdateparams = array();
             $xmlupdateparams['cikkszam'] = trim($p['dbdata']['cikkszam']);
-            $xmlupdateparams['originid'] = (int)($p['dbdata']['xml_import_origin']);
+            $xmlupdateparams['originid'] = 1;
             $xmlupdateparams['priceval'] = (float)($price);
 
             $arqry = "UPDATE xml_temp_products SET {$pricekey} = :priceval WHERE origin_id = :originid and cikkszam = :cikkszam and {$pricekey} != :priceval";
+
             $this->db->squery($arqry, $xmlupdateparams);
           }
         }
@@ -195,7 +194,8 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
 
             if ( $media['ordering'] == 1 )
             {
-              $this->db->query("UPDATE shop_termekek SET profil_kep = '{$media['path']}' WHERE xml_import_origin = {$p['dbdata']['xml_import_origin']} and ID = {$pid}");
+              $q = "UPDATE shop_termekek SET profil_kep = '{$media['path']}' WHERE xml_import_origin = 1 and ID = {$pid}";
+              $this->db->query( $q );
             }
           }
         }
@@ -252,7 +252,7 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
 
 					//$ins = $this->crm->addProduct( $items );
 
-          if ($ins['error'] == 0)
+          if ($ins && $ins['error'] == 0)
           {
             // Ha rögzítésre került a termék a cashmanban és nincs hiba
             $hashkey = md5('1_'.$ins['uzenet']);

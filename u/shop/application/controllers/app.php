@@ -2,6 +2,7 @@
 use ProductManager\Products;
 use ResourceImporter\ResourceImport;
 use Applications\CSVParser;
+use ResourceImporter\CashmanAPI;
 
 class app extends Controller{
 		function __construct(){
@@ -26,7 +27,12 @@ class app extends Controller{
 
 		public function sync()
 		{
-			$rs = new ResourceImport(array('db' => $this->db));
+			$crm = new CashmanAPI(array('db' => $this->db));
+			
+			$rs = new ResourceImport(array(
+				'db' => $this->db,
+				'crm' => $crm
+			));
 
 			// Régi kategória azonosítók előkészítése @ $cats
 			$oldcats = new CSVParser('/home/webprohu/autoradiokeret.web-pro.hu/admin/src/json/keycategory.csv');
@@ -56,14 +62,19 @@ class app extends Controller{
 			$jsonopen = file_get_contents($wsjson);
 			$json_prod = json_decode($jsonopen, true);
 
-			$prepared_products = $rs->findOldWebshopProducts( $json_prod, $cats, $ncats );
+			// Az összes
+			//$prepared_products = $rs->findOldWebshopProducts( $json_prod, $cats, $ncats, false );
+			// Csak a nem létezők
+			$prepared_products = $rs->findOldWebshopProducts( $json_prod, $cats, $ncats, true );
 
 			////////////////////////////////////////////////////////////////
 
-			$rs->updateJoomlaPreparedProductContent($prepared_products);
+			$rs->updateJoomlaPreparedProductContent( $prepared_products );
 
-			echo '<pre>';
-			print_r($prepared_products);
+			/*echo '<pre>';
+			print_r($prepared_products);*/
+
+			echo count($prepared_products);
 
 			unset($jsonopen);
 			unset($json_prod);
@@ -72,6 +83,7 @@ class app extends Controller{
 			unset($oldcats);
 			unset($newcats);
 			unset($prepared_products);
+
 		}
 
 		/**
