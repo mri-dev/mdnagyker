@@ -46,6 +46,9 @@
                                   <div class="col-md-6 col-pright"><label for="company_adoszam">Adószám:</label><input required="required" type="text" id="company_adoszam" name="company[company_adoszam]" value="<?=($this->msg)?$_POST['company']['company_adoszam']:''?>" class="form-control <?=($this->err == 2003)?'input-text-error':''?>" excCode="2003"/></div>
                                   <div class="col-md-6 col-pleft"><label for="company_address">Cég postacím:</label><input required="required" type="text" id="company_address" name="company[company_address]" value="<?=($this->msg)?$_POST['company']['company_address']:''?>" class="form-control <?=($this->err == 2004)?'input-text-error':''?>" excCode="2004" /></div>
                               </div>
+                              <div class="row">
+                                  <div class="col-md-6 col-pright"><label for="company_bankszamlaszam">Bankszámlaszám:</label><input required="required" type="text" id="company_bankszamlaszam" name="company[company_bankszamlaszam]" value="<?=($this->msg)?$_POST['company']['company_bankszamlaszam']:''?>" class="form-control <?=($this->err == 2005)?'input-text-error':''?>" excCode="2005"/></div>
+                              </div>
                           </div>
                       </div>
                       <? endif; ?>

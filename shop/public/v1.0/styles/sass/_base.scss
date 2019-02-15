@@ -2254,6 +2254,18 @@ body.singlepage{
 						& > div {
 							flex-basis: calc(100% / 2);
 						}
+						& > .kisker-addon-price{
+							flex-basis: 100%;
+							font-size: 1.1rem;
+							margin: 15px 0 0 0;
+							.price {
+								font-size: 0.9rem;
+								color: black;
+								.net {
+									font-weight: normal;
+								}
+							}
+						}
 					}
 				}
 
@@ -2452,6 +2464,7 @@ body.singlepage{
 									font-size: 0.9em;
 									padding: 10px;
 									text-align: center;
+									border-radius: 5px;
 									border: 0.5px solid #e1dfdf;
 
 									.price{
@@ -2481,9 +2494,28 @@ body.singlepage{
 								& > div.buttonorder
 								{
 									padding-left: 10px;
+									position: relative;
+
+									&:before{
+										content:"";
+										position: absolute;
+										left: -10px;
+										top: 50%;
+										transform:translateY(-50%);
+										-moz-transform:translateY(-50%);
+										border-color: transparent #f40034 transparent transparent;
+										border-style: solid;
+										border-width: 10px;
+									}
+
+									&:hover:before{
+
+										border-color: transparent #a2092a transparent transparent;
+									}
 								}
 
 								button {
+									text-transform: uppercase;
 									width: 100%;
 									background: #f40034;
 									color: white;
@@ -5308,7 +5340,7 @@ md-toast{
 		margin: 0 0 15px 0;
 		padding: 0 0 15px 0;
 		border-bottom: 1px solid #f1f1f1;
-		color: #7c7c7c;
+		color: #008fcb;
 		line-height: 1.4;
 
 		strong{
@@ -5319,6 +5351,16 @@ md-toast{
 		.company strong{
 			font-size: 1em;
 			color: black;
+		}
+
+		.price-group{
+			color: white;
+	    background: #00a0e3;
+	    padding: 4px;
+	    border-radius: 4px;
+	    margin: 10px auto 0 auto;
+	    font-size: 0.7rem;
+	    width: 80%;
 		}
 	}
 }

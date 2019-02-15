@@ -701,6 +701,7 @@ class Users
 		if($company_address == '') 			throw new \Exception('A cég címe hiányzik. Kérjük adja meg!');
 		if($company_hq == '') 				throw new \Exception('A cég telephelye hiányzik. Kérjük adja meg!');
 		if($company_adoszam == '') 			throw new \Exception('A cég adószáma hiányzik. Kérjük adja meg!');
+		if($company_bankszamlaszam == '') throw new \Exception('A cég bankszámlaszáma hiányzik. Kérjük adja meg!');
 
 		foreach ( $post as $key => $value )
 		{
@@ -801,7 +802,13 @@ class Users
 
 	function getData($what, $by = 'email'){
 		if($what == '') return false;
-		$q = "SELECT *, refererID(ID) as refererID FROM ".self::TABLE_NAME." WHERE `".$by."` = '$what'";
+		$q = "SELECT
+			u.*,
+			pg.title as price_group_title,
+			refererID(u.ID) as refererID
+		FROM ".self::TABLE_NAME." as u
+		LEFT OUTER JOIN shop_price_groups as pg ON pg.ID = u.price_group
+		WHERE `u`.`".$by."` = '$what'";
 
 		extract($this->db->q($q));
 
@@ -1079,6 +1086,7 @@ class Users
 			if( empty($data[self::USERGROUP_COMPANY]['company_hq']) ) 		throw new \Exception('Kérjük, hogy adja meg a cég székhelyét!', 2002);
 			if( empty($data[self::USERGROUP_COMPANY]['company_adoszam']) ) 	throw new \Exception('Kérjük, hogy adja meg a cég adószámát!', 2003);
 			if( empty($data[self::USERGROUP_COMPANY]['company_address']) ) 	throw new \Exception('Kérjük, hogy adja meg a cég postacímét!', 2004);
+			if( empty($data[self::USERGROUP_COMPANY]['company_bankszamlaszam']) ) 	throw new \Exception('Kérjük, hogy adja meg a cég bankszámlaszámát!', 2005);
 		}
 		/* */
 
@@ -1125,8 +1133,8 @@ class Users
 				$this->addAccountDetail( $uid, 'company_hq', $data[self::USERGROUP_COMPANY]['company_hq'] );
 				$this->addAccountDetail( $uid, 'company_adoszam', $data[self::USERGROUP_COMPANY]['company_adoszam'] );
 				$this->addAccountDetail( $uid, 'company_address', $data[self::USERGROUP_COMPANY]['company_address'] );
+				$this->addAccountDetail( $uid, 'company_bankszamlaszam', $data[self::USERGROUP_COMPANY]['company_bankszamlaszam'] );
 				/* */
-
 			}
 		}
 

@@ -1834,6 +1834,7 @@ class Products
 		$data['link_lista']	= $this->getProductLinksFromStr( $data['linkek'] );
 
 		$data['mertekegyseg_egysegar'] = $this->calcEgysegAr($data['mertekegyseg'], $data['mertekegyseg_ertek'], $data['ar']);
+		$data['kisker_ar'] = $this->getProductPriceByGroup( $product_id, 'ar1');
 
 		// Csatolt link hivatkozások
 		$this->getProductLinksFromCategoryHashkeys( $data['in_cat_page_hashkeys'], $data['link_lista'] );
@@ -1845,6 +1846,24 @@ class Products
 		}
 
 		return $data;
+	}
+
+	public function getProductPriceByGroup( $id, $group = 'ar1' )
+	{
+		$price = array();
+
+		$res_id = $this->db->squery("SELECT xml_import_res_id FROM shop_termekek WHERE ID = :id", array('id' => $id))->fetchColumn();
+
+		$price['xml_res_id'] = $res_id;
+
+		$netprice = $this->db->squery("SELECT {$group} FROM xml_temp_products WHERE ID = :id", array('id' => $res_id))->fetchColumn();
+
+		if ($netprice) {
+			$price['netto'] = (float)$netprice;
+			$price['brutto'] = round((float)$netprice * 1.27);
+		}
+
+		return $price;
 	}
 
 	public function getVariationConfig( $tid, $alapkat_id )

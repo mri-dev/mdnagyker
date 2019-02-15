@@ -86,6 +86,10 @@
                     <div class="col-md-9"><input name="company_adoszam" type="text" class="form-control" value="<?=$this->user[data][company_adoszam]?>" /></div>
                 </div>
                 <div class="row np">
+                    <div class="col-md-3 form-text-md"><strong>Cég bankszámlaszáma:</strong></div>
+                    <div class="col-md-9"><input name="company_bankszamlaszam" type="text" class="form-control" value="<?=$this->user[data][company_bankszamlaszam]?>" /></div>
+                </div>
+                <div class="row np">
                     <div class="col-md-12 right"><button name="saveCompany" class="btn btn-sec btn-sm"><i class="fa fa-save"></i> Változások mentése</button></div>
                 </div>
             </form>

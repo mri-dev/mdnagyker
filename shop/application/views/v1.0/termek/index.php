@@ -67,12 +67,31 @@
                     ÉRDEKLŐDJÖN!
                   </div>
                 <?php else: ?>
+                  <?php
+                    $price_title_prefix = 'Kiskeredkedelmi';
+                    $show_kisker_prices = false;
+                    if ($this->user) {
+                      switch ($this->user['data']['price_group_title']) {
+                        case 'Viszonteladó':
+                          $price_title_prefix = 'Viszonteladói';
+                          $show_kisker_prices = true;
+                        break;
+                        case 'Nagyker vásárló':
+                          $price_title_prefix = 'Nagykereskedői';
+                          $show_kisker_prices = true;
+                        break;
+                      }
+                    }
+
+                  ?>
+                  <?php if ($this->user && $this->user[data][user_group] == 'company'): ?>
                   <div class="netto">
-                    <div class="pricehead">Kiskereskedelmi <strong>nettó ár</strong>:</div>
+                    <div class="pricehead"><?=$price_title_prefix?> <strong>nettó ár</strong>:</div>
                     <span class="price"><?=\PortalManager\Formater::cashFormat($ar/1.27)?> <?=$this->valuta?><? if($this->product['mertekegyseg'] != ''): ?><span class="unit-text">/<?=($this->product['mertekegyseg_ertek']!=1)?$this->product['mertekegyseg_ertek']:''?><?=$this->product['mertekegyseg']?></span><? endif; ?></span>
                   </div>
+                  <?php endif; ?>
                   <div class="brutto">
-                    <div class="pricehead">Kiskereskedelmi <strong>bruttó ár</strong>:</div>
+                    <div class="pricehead"><?=$price_title_prefix?> <strong>bruttó ár</strong>:</div>
                     <span class="price current <?=( $this->product['akcios'] == '1' && $this->product['akcios_fogy_ar'] > 0)?'discounted':''?>"><?=\PortalManager\Formater::cashFormat($ar)?> <?=$this->valuta?><? if($this->product['mertekegyseg'] != ''): ?><span class="unit-text">/<?=($this->product['mertekegyseg_ertek']!=1)?$this->product['mertekegyseg_ertek']:''?><?=$this->product['mertekegyseg']?></span><? endif; ?></span>
                     <?  if( $this->product['akcios'] == '1' && $this->product['akcios_fogy_ar'] > 0):
                         $ar = $this->product['akcios_fogy_ar'];
@@ -80,6 +99,12 @@
                     <span class="price old"><strike><?=\PortalManager\Formater::cashFormat($this->product['ar'])?> <?=$this->valuta?><? if($this->product['mertekegyseg'] != ''): ?><span class="unit-text">/<?=$this->product['mertekegyseg']?></span><? endif; ?></strike></span>
                     <? endif; ?>
                   </div>
+                  <?php if ($show_kisker_prices && $this->product[kisker_ar] && $this->product[kisker_ar][brutto] != '0'): ?>
+                  <div class="kisker-addon-price">
+                    <div class="pricehead">Kiskereskedelmi ár:</div>
+                    <span class="price"><?php echo \PortalManager\Formater::cashFormat($this->product['kisker_ar']['brutto']); ?> <?=$this->valuta?> <span class="net">(<?php echo \PortalManager\Formater::cashFormat($this->product['kisker_ar']['netto']); ?> <?=$this->valuta?> + ÁFA)</span></span>
+                  </div>
+                  <?php endif; ?>
                 <?php endif; ?>
               </div>
               <div class="cimkek">
@@ -325,11 +350,10 @@
             <?php if ($this->user && $this->user['data']['user_group'] == 'company'): ?>
             <div class="sep"></div>
             <div class="lefoglal">
-              <div aria-label="Hozzáadás a kedvencekhez." class="fav" ng-class="(fav_ids.indexOf(<?=$this->product['ID']?>) !== -1)?'selected':''" ng-click="productAddToFav(<?=$this->product['ID']?>)">
+              <div aria-label="Termék lefoglalása." class="fav">
                 <div class="wrapper">
-                  <i class="fa fa-pause-circle" ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) !== -1"></i>
-                  <i class="fa fa-pause-circle-o" ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) === -1"></i>
-                  Lefoglal
+                  <i class="fa fa-pause-circle-o"></i>
+                  <a href="?reserve=now">Lefoglal</a>
                 </div>
                 <md-tooltip md-direction="bottom">
                   Termék lefoglalása 24 órára.
@@ -499,6 +523,11 @@
         $('#add_cart_num').val(1);
         $('#addtocart').trigger('click');
         setTimeout( function(){ document.location.href='/kosar' }, 1000);
+        <? endif; ?>
+        <? if( $_GET['reserve'] == 'now'): ?>
+        $('#add_cart_num').val(1);
+        $('#addtocart').trigger('click');
+        setTimeout( function(){ document.location.href='/kosar/elofoglalas' }, 1000);
         <? endif; ?>
         $('.number-select > div[num]').click( function (){
             $('#add_cart_num').val($(this).attr('num'));
