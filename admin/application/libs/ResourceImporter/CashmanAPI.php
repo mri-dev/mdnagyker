@@ -295,12 +295,21 @@ class CashmanAPI extends ResourceImportBase
 
   public function getProduct( $cikkszam )
   {
+    $this->api->termekTomb = false;
     $param = array();
     $param[0] = array(
       'cikkszam' => $cikkszam
     );
     $this->incFixRowData($param[0]);
     $this->api->termekadatok($param);
+
+    if ($this->api->hiba != '') {
+      if ($this->api->hiba == 'HIBA:076 Nincs ilyen termék!') {
+        return false;
+      } else {
+        return $this->api->hiba;
+      }
+    }
 
     return array(
       'id' =>  $this->api->termekTomb[0],

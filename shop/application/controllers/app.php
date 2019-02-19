@@ -85,6 +85,18 @@ class app extends Controller{
 
 		}
 
+		public function registerMissingProducts()
+		{
+			$crm = new CashmanAPI(array('db' => $this->db));
+
+			$rs = new ResourceImport(array(
+				'db' => $this->db,
+				'crm' => $crm
+			));
+			
+			$rs->registerUnregisteredProductToCashman();
+		}
+
 		/**
 		 * Documents click log
 		 * */

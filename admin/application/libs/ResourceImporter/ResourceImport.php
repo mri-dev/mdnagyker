@@ -300,6 +300,142 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
     }
   }
 
+  public function registerUnregisteredProductToCashman( )
+  {
+    if (!$this->crm) {
+      return false;
+    }
+
+    $q = $this->db->squery("SELECT r.* FROM xml_temp_products as r WHERE 1=1");
+
+    if ($q->rowCount() != 0) {
+      $data = $q->fetchAll(\PDO::FETCH_ASSOC);
+
+      //echo '<pre>';
+      /*print_r($data);
+      echo '</pre>';
+      exit;
+      */
+
+      foreach ($data as $d)
+      {
+        $cikkszam = trim($d['cikkszam']);
+        //echo "<br>".$cikkszam ;
+        $check_cm = $this->crm->getProduct($cikkszam);
+        //var_dump($check_cm);
+        $ins = false;
+        //continue;
+
+        if (true)
+        {
+          if ( $check_cm === false )
+          {
+            // Ha nem létezik a cashman-ben, akkor létrehozás
+            $items = array();
+            $item = array(
+              'termek_id' => 0,
+              'cikkszam' => $cikkszam,
+              'gyarto_cikkszam' => $cikkszam,
+              'gyartocikkszam' => $cikkszam,
+              'megnevezes' => trim($d['termek_nev']),
+              //'vonalkod' => '1000001000004',
+              'megjegyzes' => '',
+              'afa' => 27,
+              'netto_egysegar' => (float)$d['ar1'],
+              'termekcsoport_id' => 1,
+              'koltseghely_id' => 2,
+              'termek' => 1,
+              'mennyisegiegyseg' => trim($d['mennyisegegyseg'])
+            );
+
+            for ($i=0; $i <= 10 ; $i++) {
+              $priceid = $i;
+              $price = (float)$d['ar'.$i];
+
+              if ($price != 0) {
+                $item['afa'.$priceid] = 27;
+                $item['netto_egysegar'.$priceid] = $price;
+              }
+            }
+
+            $items[] = $item;
+
+            //$ins = $this->crm->addProduct( $items );
+            //echo 'INSERT: ';
+            //print_r($item);
+
+            if ($ins && $ins['error'] == 0)
+            {
+              $this->db->update(
+                'xml_temp_products',
+                array(
+                  'prod_id' => (int)trim($ins['uzenet'])
+                ),
+                sprintf("origin_id = %d and cikkszam = '%s'", 1, $cikkszam)
+              );
+            }
+            $ins = false;
+            $items = array();
+            $item = array();
+
+          } else {
+            // Ha már létezik a cashmanban
+
+            $items = array();
+            $item = array(
+              // Kötelezőek
+              'termek_id' => $check_cm['id'],
+              // Vonalkód a prod_id (cm ID) ha nincs vonalkód definiálva, ha van, akkor az ean_code frissül
+              'vonalkod' => ($d['ean_code'] == '') ? $check_cm['id'] : trim($d['ean_code']),
+              'megnevezes' => trim($d['termek_nev']),
+              'termekcsoport_id' => 1,
+              'afa' => 27,
+              'mennyisegiegyseg' => trim($d['mennyisegegyseg']),
+              'netto_egysegar' =>  (float)$d['ar1'],
+              'termek' => 1,
+              'cikkszam' => $cikkszam,
+              // Kiegészítés:
+              'minimum' => (int)$d['virtualis_keszlet']
+
+            );
+            for ($i=0; $i <= 10 ; $i++) {
+              $priceid = $i;
+              $price = (float)$d['ar'.$i];
+
+              if ($price != 0) {
+                $item['afa'.$priceid] = 27;
+                $item['netto_egysegar'.$priceid] = $price;
+              }
+            }
+            $items[] = $item;
+            $ins = $this->crm->addProduct( $items );
+
+            //echo 'UPDATE: ';
+            //print_r($ins);
+
+            if ($ins && $ins['error'] == 0)
+            {
+              // update prod_id
+              $this->db->update(
+                'xml_temp_products',
+                array(
+                  'prod_id' => (int)trim($check_cm['id'])
+                ),
+                sprintf("origin_id = %d and cikkszam = '%s'", 1, $cikkszam)
+              );
+            }
+
+            $ins = false;
+            $items = array();
+            $item = array();
+          }
+        }
+      }
+    }
+
+    return false;
+  }
+
   public function __destruct()
   {
     parent::__destruct();
