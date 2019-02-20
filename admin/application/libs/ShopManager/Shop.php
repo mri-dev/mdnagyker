@@ -967,11 +967,19 @@ class Shop
 			$this->db->query("UPDATE shop_kosar SET me = me - 1  WHERE termekID = $termekID and gepID = $mid");
 		}
 	}
+
 	public function addToCart($mid, $termekID, $me, $config){
 		if($mid == '')
 		throw new \Exception('Nem sikerült hozzáadni a terméket a kosárhoz. Frissítse le az oldalt és próbálja újra!');
 
-		$ci = $this->db->query("SELECT ID FROM shop_kosar WHERE termekID = $termekID and gepID = $mid and configs = '$config';");
+
+		$cq = "SELECT ID FROM shop_kosar WHERE termekID = $termekID and gepID = $mid";
+		if ($config == '' || empty($config) || !isset($config)) {
+			$cq .= " and configs IS NULL";
+		} else {
+			$cq .= " and configs = '{$config}'";
+		}
+		$ci = $this->db->query( $cq );
 
 		if($ci->rowCount() == 0){
 			//$c = $ci->fetch(\PDO::FETCH_ASSOC);
@@ -985,10 +993,17 @@ class Shop
 			);
 
 		}else{
-			$this->db->query("UPDATE shop_kosar SET me = me + $me  WHERE termekID = $termekID and gepID = $mid and configs = '$config'");
+			$uq = "UPDATE shop_kosar SET me = me + $me  WHERE termekID = $termekID and gepID = $mid";
+			if ($config == '' || empty($config) || !isset($config)) {
+
+			} else {
+				$cq .= " and configs = '{$config}'";
+			}
+			$this->db->query($uq);
 		}
 
 	}
+
 	public function removeFromCart($mid, $cartID){
 		if($mid == '')
 			throw new \Exception('Nem sikerült hozzáadni a terméket a kosárhoz. Frissítse le az oldalt és próbálja újra!');

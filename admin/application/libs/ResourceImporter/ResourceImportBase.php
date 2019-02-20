@@ -646,7 +646,7 @@ class ResourceImportBase
     {
       $data = $data->fetchAll(\PDO::FETCH_ASSOC);
 
-      $insert_header = array('cikkszam', 'nagyker_kod', 'nev', 'leiras', 'keszletID', 'szallitasID', 'netto_ar', 'brutto_ar', 'xml_import_origin', 'xml_import_res_id', 'xml_import_done', 'lathato', 'garancia_honap', 'raktar_keszlet', 'virtualis_keszlet');
+      $insert_header = array('cikkszam', 'nagyker_kod', 'nev', 'leiras', 'keszletID', 'szallitasID', 'netto_ar', 'brutto_ar', 'xml_import_origin', 'xml_import_res_id', 'xml_import_done', 'lathato', 'garancia_honap', 'raktar_keszlet', 'virtualis_keszlet', 'mertekegyseg');
       $this->prePushInsertHeaderModifier($originid, $insert_header);
       $insert_row = array();
 
@@ -674,6 +674,7 @@ class ResourceImportBase
           'garancia_honap' => 0,
           'raktar_keszlet' => (int)$d['termek_keszlet'],
           'virtualis_keszlet' => (int)$d['virtualis_keszlet'],
+          'mertekegyseg' => $d['mennyisegegyseg'],
         );
 
         $insert_row[] = $irow;
@@ -814,7 +815,8 @@ class ResourceImportBase
           keszletID,
           szallitasID,
           raktar_keszlet,
-          virtualis_keszlet
+          virtualis_keszlet,
+          mertekegyseg
         FROM shop_termekek
         WHERE 1=1 and
         xml_import_origin = {$originid} and
@@ -976,6 +978,14 @@ class ResourceImportBase
       $wupdate['field']['virtualis_keszlet'] = array(
         'new' => $tempdata['virtualis_keszlet'],
         'old' => $current_data['virtualis_keszlet']
+      );
+    }
+
+    if ($tempdata['mennyisegegyseg'] != $current_data['mertekegyseg']) {
+      $wupdate['what'][] = 'mertekegyseg';
+      $wupdate['field']['mertekegyseg'] = array(
+        'new' => $tempdata['mennyisegegyseg'],
+        'old' => $current_data['mertekegyseg']
       );
     }
 

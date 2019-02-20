@@ -422,7 +422,7 @@ function Cart(){
 				});
 				ec += '</div>';
 			}
-			ec += '<span class="ar">'+( (i.ar != '-1')? i.ar+' Ft / db' : 'Ár: érdeklődjön' )+'</span>';
+			ec += '<span class="ar">'+( (i.ar != '-1')? '<span class="me">'+i.me+' '+i.mertekegyseg+' x </span>'+i.ar+' Ft'+( (i.me != 1)?' = <span class="sum">'+i.sum_ar+' Ft</span>':'' ) : 'Ár: érdeklődjön' )+'</span>';
 			ec + '</div>'+
 		'</div>'+
 		'<div class="clr"></div></div>';

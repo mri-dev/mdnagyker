@@ -162,7 +162,8 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
           'leiras' => addslashes($p['leiras']),
           'meta_title' => ($p['meta_title'] == '') ? NULL : addslashes($p['meta_title']),
           'meta_desc' => ($p['meta_desc'] == '') ? NULL : addslashes($p['meta_desc']),
-          'marka' => (int)$p['gyarto_id']
+          'marka' => (int)$p['gyarto_id'],
+          'mertekegyseg' => $p['mennyisegegyseg']
         );
 
         // XML adatok frissítése adatbázisban

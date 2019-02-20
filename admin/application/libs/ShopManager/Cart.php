@@ -48,6 +48,8 @@ class Cart
 			t.nev as termekNev,
 			t.meret,
 			t.szin,
+			t.mertekegyseg,
+			t.mertekegyseg_ertek,
 			ta.elnevezes as allapot,
 			t.profil_kep,
 			getTermekAr(c.termekID, ".$uid.") as ar,
@@ -70,6 +72,8 @@ class Cart
 		}
 
 		foreach($data as $d){
+			$d['mertekegyseg'] = trim($d['mertekegyseg']);
+
 			if( $kedvezmenyes ) {
 				\PortalManager\Formater::discountPrice( $d[ar], $this->user[kedvezmeny], true );
 				\PortalManager\Formater::discountPrice( $d[sum_ar], $this->user[kedvezmeny], true );
@@ -83,7 +87,7 @@ class Cart
 			$itemNum 	+= $d[me];
 			$totalPrice += $d[me] * $d[ar];
 			$d['url'] 	= '/termek/'.\PortalManager\Formater::makeSafeUrl($d['termekNev'],'_-'.$d['termekID']);
-			$d['profil_kep'] = \PortalManager\Formater::productImage($d['profil_kep'], 75, \ProductManager\Products::TAG_IMG_NOPRODUCT );
+			$d['profil_kep'] = \PortalManager\Formater::productImage($d['profil_kep'], false, \ProductManager\Products::TAG_IMG_NOPRODUCT );
 			$d['configs'] = $this->collectConfigData($d['configs']);
 
 			$dt[] = $d;
