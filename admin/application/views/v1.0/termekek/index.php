@@ -130,7 +130,7 @@
                 <? if($d['ujdonsag'] == '1'): ?><span class="ujdonsag itemInf" title="Újdonság termék">U</span><? endif; ?>
                 <? if($d['kiemelt'] == '1'): ?><span class="kiemelt itemInf" title="Kiemelt termék">K</span><? endif; ?>
             </div>
-            <div class="img"><a class="zoom" href="<?=$d['profil_kep']?>" target="_blank"><img src="<?=$d['profil_kep_small']?>" alt="" /></a></div>
+            <div class="img"><a class="zoom" href="<?=$d['profil_kep']?>" target="_blank"><img src="<?=$d['profil_kep']?>" alt="" /></a></div>
 		         <div class="nev">
 				       <a title="Szerkesztés" href="/termekek/t/edit/<?=$d['product_id']?>" style="color:black;" ><?=$d['product_nev']?></a>
              </div>

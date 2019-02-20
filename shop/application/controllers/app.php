@@ -71,8 +71,8 @@ class app extends Controller{
 
 			$rs->updateJoomlaPreparedProductContent( $prepared_products );
 
-			echo '<pre>';
-			print_r($prepared_products);
+			//echo '<pre>';
+			//print_r($prepared_products);
 			//print_r($json_prod);
 
 			unset($jsonopen);
@@ -93,7 +93,7 @@ class app extends Controller{
 				'db' => $this->db,
 				'crm' => $crm
 			));
-			
+
 			$rs->registerUnregisteredProductToCashman();
 		}
 

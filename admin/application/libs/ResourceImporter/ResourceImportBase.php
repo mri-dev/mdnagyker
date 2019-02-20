@@ -41,7 +41,11 @@ class ResourceImportBase
   {
     $data = false;
 
-    $p = $this->db->squery("SELECT * FROM xml_temp_products WHERE cikkszam = :cikkszam", array('cikkszam' => $sku));
+    $p = $this->db->squery("SELECT
+      xml.*, t.ID as termekID
+    FROM xml_temp_products as xml
+    LEFT OUTER JOIN shop_termekek as t ON t.xml_import_res_id = xml.ID
+    WHERE xml.cikkszam = :cikkszam", array('cikkszam' => $sku));
 
     if ($p->rowCount() != 0) {
       $data = $p->fetch(\PDO::FETCH_ASSOC);
@@ -666,7 +670,7 @@ class ResourceImportBase
           'xml_import_origin' => $originid,
           'xml_import_res_id' => $d['ID'],
           'xml_import_done' => 0,
-          'lathato' => 0,
+          'lathato' => 1,
           'garancia_honap' => 0,
           'raktar_keszlet' => (int)$d['termek_keszlet'],
           'virtualis_keszlet' => (int)$d['virtualis_keszlet'],

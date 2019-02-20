@@ -631,6 +631,7 @@ class Products
 			p.ajandek,
 			p.rovid_leiras,
 			p.xml_import_origin,
+			p.xml_import_res_id,
 			p.kulcsszavak,
 			p.fotermek,
 			getTermekAr(p.ID, ".$uid.") as ar,
@@ -1057,7 +1058,7 @@ class Products
 			$d['hasonlo_termek_ids']= $this->getProductRelatives( $d['product_id'] );
 			$d['parameters'] 		= $this->getParameters( $d['product_id'], $d['alapertelmezett_kategoria'] );
 			$d['variation_config'] = $this->getVariationConfig( $d['product_id'], $d['alapertelmezett_kategoria'] );
-			$d['price_groups'] 	= $this->priceGroups( $d['xml_import_origin'], $d['nagyker_kod'] );
+			$d['price_groups'] 	= $this->priceGroups( $d['xml_import_origin'], $d['xml_import_res_id'] );
 			$d['inKatList'] 		= $in_cat;
 			$d['mertekegyseg_egysegar'] = $this->calcEgysegAr($d['mertekegyseg'], $d['mertekegyseg_ertek'], $d['ar']);
 			//$d['ar'] 				= $arInfo['ar'];
@@ -1127,7 +1128,7 @@ class Products
 		return $bdata;
 	}
 
-	public function priceGroups( $originid = 0, $prodid )
+	public function priceGroups( $originid = 0, $xml_res_id )
 	{
 		if ($originid == 0) {
 			return false;
@@ -1142,9 +1143,10 @@ class Products
 		}
 		$qkey = rtrim($qkey,", ");
 
-		$prodid = addslashes($prodid);
+		$xml_res_id = addslashes($xml_res_id);
 
-		$q = "SELECT ".$qkey." FROM xml_temp_products as t WHERE t.origin_id = {$originid} and t.prod_id = '$prodid'";
+		$q = "SELECT ".$qkey." FROM xml_temp_products as t WHERE t.origin_id = {$originid} and t.ID = '$xml_res_id'";
+
 		$prices = $this->db->query($q);
 
 		if ( $prices->rowCount() != 0 ) {
@@ -1253,7 +1255,7 @@ class Products
 					$back[$d['paramID']]['mertekegyseg'] = trim($fn[2][0]);
 				}
 
-				if (!in_array($v, $back[$d['paramID']]['hints'])) {
+				if (!in_array($v, (array)$back[$d['paramID']]['hints'])) {
 					if (is_numeric($v)) {
 						$back[$d['paramID']]['is_range'] = true;
 					}
@@ -1842,7 +1844,7 @@ class Products
 		// CRM - Cashman FX
 		if ( $this->crm && gettype($this->crm) == 'object' )
 		{
-			$data['crm'] = $this->crm->getFullItemData( 1, $data['nagyker_kod'] );
+			$data['crm'] = $this->crm->getFullItemData( 1, $data['xml_import_res_id'] );
 		}
 
 		return $data;

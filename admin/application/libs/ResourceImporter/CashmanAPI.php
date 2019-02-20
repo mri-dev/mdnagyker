@@ -59,7 +59,7 @@ class CashmanAPI extends ResourceImportBase
     FROM xml_temp_products as x WHERE 1=1 ";
 
     $q .= " and x.origin_id = ".$originid;
-    $q .= " and x.prod_id = :prod_id ";
+    $q .= " and x.ID = :prod_id ";
 
     $qry = $this->db->squery( $q, array(
       'prod_id' => $id

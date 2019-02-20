@@ -179,7 +179,13 @@
 									<div class="row">
 										<div class="col-md-12">
 											<label for="crm_ar<?=$ap?>">Ár #<?=$ap?> nettó <? if(array_key_exists('ar'.$ap, $this->price_groups)): ?>- <strong style="color:green;"><?=$this->price_groups['ar'.$ap]['title']?></strong><? endif; ?></label>
-											<input <?=(!array_key_exists('ar'.$ap, $this->price_groups)) ? 'disabled="disabled"' : ''?> type="number" min="0" name="crm[ar][<?=$ap?>]" id="crm_ar<?=$ap?>" value="<?=$this->termek[crm]['ar'.$ap]?>" class="form-control">
+
+											<div class="input-group">
+												<input <?=(!array_key_exists('ar'.$ap, $this->price_groups)) ? 'disabled="disabled"' : ''?> type="number" min="0" name="crm[ar][<?=$ap?>]" id="crm_ar<?=$ap?>" value="<?=$this->termek[crm]['ar'.$ap]?>" class="form-control">
+												<div class="input-group-addon">
+													<?=(!array_key_exists('ar'.$ap, $this->price_groups)) ? '' : 'bruttó '.Helper::cashFormat((round($this->termek[crm]['ar'.$ap] * 1.27))).' Ft'?>
+												</div>
+											</div>
 											<small><?=(!array_key_exists('ar'.$ap, $this->price_groups)) ? 'Nincs árcsoporthoz kapcsolva. <a href="/arcsoportok">Beállítás</a>' : ''?></small>
 										</div>
 									</div>

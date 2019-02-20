@@ -66,7 +66,7 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
       $prod = $this->findProductBySKU($p['sku']);
 
       if ($onlynews && $prod) { continue; }
-      //if ($p['sku'] != '381320-30-1') {continue;}
+      //if ($p['sku'] != 'GA-RS165SLlM') {continue;}
 
       $p['pushtocats'] = $this->connectSyncCategories($p['cats'], $old_cats, $new_cats);
       $p['dbdata'] = $prod;
@@ -140,16 +140,18 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
     $new_insert = array();
     $ins_header = array('hashkey', 'origin_id', 'cikkszam', 'gyarto_kod', 'prod_id', 'last_sync_up', 'termek_nev', 'termek_leiras', 'beszerzes_netto','ean_code', 'marka_nev', 'io', 'mennyisegegyseg', 'kisker_ar_netto');
 
+    $ii = 0;
     foreach ( (array)$products as $p )
     {
       // SAVE
       if ($p['dbdata']) {
         // termekid
-        $pid = $p['dbdata']['ID'];
+        $pid = $p['dbdata']['termekID'];
+        if (!$pid) { continue; }
 
         // kategória sync
-        if (!empty($p['pushtocats']['ids'])) {
-          //$this->reconnectProductCategories($pid, $p['pushtocats']['ids'], true);
+        if ($pid && !empty($p['pushtocats']['ids'])) {
+          $this->reconnectProductCategories($pid, $p['pushtocats']['ids'], true);
         }
 
         // create manufacturer
@@ -216,81 +218,143 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
       }
       else
       {
+        $ii++;
         // Létrehozás
         if ( $this->crm )
         {
-          $items = array();
-          $item = array(
-						'termek_id' => 0,
-						'cikkszam' => trim($p['sku']),
-						'gyarto_cikkszam' => trim($p['sku']),
-						'gyartocikkszam' => trim($p['sku']),
-						'megnevezes' => trim($p['name']),
-						//'vonalkod' => '1000001000004',
-						'megjegyzes' => trim($p['rovid_leiras']),
-						'afa' => 27,
-						'netto_egysegar' => (float)$p['prices']['ar1'],
-						'termekcsoport_id' => 1,
-						'koltseghely_id' => 2,
-						'termek' => 1,
-						'mennyisegiegyseg' => trim($p['unit'])
-					);
+          $check_cm = $this->crm->getProduct(trim($p['sku']));
 
-          if ($p['prices']) {
-            foreach ((array)$p['prices'] as $priceid => $price ) {
-              if ($priceid == 'ar1') {
-                continue;
-              }
-              $priceid = str_replace("ar", "", $priceid);
+          /* * /
+          echo $ii.'# CHECK - '.$p["sku"].':'."<br>";
+          print_r($check_cm);
+          echo "<br>";
+          /* */
 
-              $item['afa'.$priceid] = 27;
-              $item['netto_egysegar'.$priceid] = (float)$price;
-            }
-          }
-
-					$items[] = $item;
-
-					//$ins = $this->crm->addProduct( $items );
-
-          if ($ins && $ins['error'] == 0)
+          if ( $check_cm === false )
           {
-            // Ha rögzítésre került a termék a cashmanban és nincs hiba
-            $hashkey = md5('1_'.$ins['uzenet']);
-            $pin = array(
-              'hashkey' => $hashkey,
-              'origin_id' => 1,
-              'prod_id' => $ins['uzenet'],
+            $items = array();
+            $item = array(
+              'termek_id' => 0,
               'cikkszam' => trim($p['sku']),
-              'gyarto_kod' => trim($p['sku']),
-              'last_sync_up' => NOW,
-              'termek_nev' => trim($p['name']),
-              'termek_leiras' => addslashes($p['leiras']),
-              'beszerzes_netto' => 0,
-              'ean_code' => $ins['uzenet'],
-              'marka_nev' => $p['gyarto'],
-              'io' => 1,
-              'mennyisegegyseg' => $p['unit'],
-              'kisker_ar_netto' => (float)$p['prices']['ar1']
+              'gyarto_cikkszam' => trim($p['sku']),
+              'gyartocikkszam' => trim($p['sku']),
+              'megnevezes' => trim($p['name']),
+              //'vonalkod' => '1000001000004',
+              'megjegyzes' => trim($p['rovid_leiras']),
+              'afa' => 27,
+              'netto_egysegar' => (float)$p['prices']['ar1'],
+              'termekcsoport_id' => 1,
+              'koltseghely_id' => 2,
+              'termek' => 1,
+              'mennyisegiegyseg' => trim($p['unit'])
             );
 
             if ($p['prices']) {
               foreach ((array)$p['prices'] as $priceid => $price ) {
-                $pin[$priceid] = (float)$price;
-                $ins_header[] = $priceid;
+                if ($priceid == 'ar1') {
+                  continue;
+                }
+                $priceid = str_replace("ar", "", $priceid);
+
+                $item['afa'.$priceid] = 27;
+                $item['netto_egysegar'.$priceid] = (float)$price;
               }
             }
 
-            $new_insert[] = $pin;
+            $items[] = $item;
+
+            //$ins = $this->crm->addProduct( $items );
+
+            if ($ins && $ins['error'] == 0)
+            {
+              // Ha rögzítésre került a termék a cashmanban és nincs hiba
+              $ins['uzenet'] = (int)trim($ins['uzenet']);
+              $hashkey = md5('1_'.$ins['uzenet']);
+              $pin = array(
+                'hashkey' => $hashkey,
+                'origin_id' => 1,
+                'prod_id' => $ins['uzenet'],
+                'cikkszam' => trim($p['sku']),
+                'gyarto_kod' => trim($p['sku']),
+                'last_sync_up' => NOW,
+                'termek_nev' => trim($p['name']),
+                'termek_leiras' => addslashes($p['leiras']),
+                'beszerzes_netto' => 0,
+                'ean_code' => $ins['uzenet'],
+                'marka_nev' => $p['gyarto'],
+                'io' => 1,
+                'mennyisegegyseg' => $p['unit'],
+                'kisker_ar_netto' => (float)$p['prices']['ar1']
+              );
+
+              if ($p['prices']) {
+                foreach ((array)$p['prices'] as $priceid => $price ) {
+                  $pin[$priceid] = (float)$price;
+                  $ins_header[] = $priceid;
+                }
+              }
+
+              $new_insert[] = $pin;
+            } else {
+              //echo 'CashmanFX API - Rögzítés: ['.$p['sku'].'] ' . $ins['hiba'] . "<br>";
+            }
           } else {
-            echo 'CashmanFX API - Rögzítés: ['.$p['sku'].'] ' . $ins['hiba'] . "<br>";
+            // Ha a Cashmanben már létezik, de az xml ideiglenes táblában nem - LÉTREHOZÁS
+            // Ha rögzítésre került a termék a cashmanban és nincs hiba
+
+            if(isset($check_cm['id']) && $check_cm['id'] != '')
+            {
+              $check_cm['id'] = (int)trim($check_cm['id']);
+              $check_prod_id = $this->db->squery("SELECT ID FROM xml_temp_products WHERE prod_id = :prodid", array('prodid' => $check_cm['id'] ));
+
+              if ($check_prod_id->rowCount() == 0)
+              {
+              $hashkey = md5('1_'.$check_cm['id']);
+                $pin = array(
+                  'hashkey' => $hashkey,
+                  'origin_id' => 1,
+                  'prod_id' => $check_cm['id'],
+                  'cikkszam' => trim($check_cm['cikkszam']),
+                  'gyarto_kod' => trim($check_cm['cikkszam']),
+                  'last_sync_up' => NOW,
+                  'termek_nev' => trim($check_cm['megnevezes']),
+                  'termek_leiras' => NULL,
+                  'beszerzes_netto' => 0,
+                  'ean_code' => $check_cm['vonalkod'],
+                  'marka_nev' => $check_cm['gyarto'],
+                  'io' => 1,
+                  'mennyisegegyseg' => $check_cm['mennyisegegyseg'],
+                  'kisker_ar_netto' => (float)$check_cm['netto']
+                );
+
+                if (!in_array('virtualis_keszlet', $ins_header)) {
+                  $ins_header[] = 'virtualis_keszlet';
+                }
+                $pin['virtualis_keszlet'] = (float)$check_cm['keszlet_min'];
+
+                if (!in_array('ar1', $ins_header)) {
+                  $ins_header[] = 'ar1';
+                }
+                $pin['ar1'] = (float)$check_cm['netto'];
+
+                for ($pi=2; $pi <= 8 ; $pi++) {
+                  $priceid = 'netto'.$pi;
+                  $pin['ar'.$pi] = (float)$check_cm[$priceid];
+                  if (!in_array('ar'.$pi, $ins_header)) {
+                    $ins_header[] = 'ar'.$pi;
+                  }
+                }
+
+                $new_insert[] = $pin;
+              }
+            }
           }
         }
-
       }
     }
 
     // Új termékek importálása a temp mappába
-    if ($new_insert && false)
+    if ($new_insert)
     {
       $this->db->multi_insert_v2(
         'xml_temp_products',
