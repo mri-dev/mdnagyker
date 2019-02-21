@@ -34,7 +34,7 @@ class Categories
 		$name = ($data['name']) ?: false;
 		$sort = ($data['sortnumber']) ?: 0;
 		$parent = ($data['parent_category']) ?: NULL;
-		$hashkey = ($new_data['hashkey']) ?: NULL;
+		$hashkey = ($data['hashkey']) ?: NULL;
 		$oldal_hashkeys = (count($new_data['oldal_hashkeys']) > 0) ? implode(",",$new_data['oldal_hashkeys']) : NULL;
 
 		if ($parent) {
