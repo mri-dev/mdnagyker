@@ -216,9 +216,17 @@ class ajax extends Controller{
 					$products 	= new Products( array( 'db' => $this->db ) );
 					$products->disconnectProducts( $idfrom, $idto );
 				break;
+				case 'removeProductReplacementConnects':
+					$products 	= new Products( array( 'db' => $this->db ) );
+					$products->disconnectReplacementProducts( $idfrom, $idto );
+				break;
 				case 'addProductConnects':
 					$products 	= new Products( array( 'db' => $this->db ) );
 					$products->connectProducts( $idfrom, $idto );
+				break;
+				case 'addProductReplacementConnects':
+					$products 	= new Products( array( 'db' => $this->db ) );
+					$products->connectReplacementProducts( $idfrom, $idto );
 				break;
 				case 'loadProducts':
 					$json = array();

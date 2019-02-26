@@ -497,21 +497,44 @@
               </div>
             </div>
           </div>
-          <?php if ( $this->related_list ): ?>
           <div class="related-products">
-            <div class="c">
-              <div class="items">
-              <?php if ( $this->related_list ): ?>
-                <? foreach ( $this->related_list as $p ) {
-                    $p['itemhash'] = hash( 'crc32', microtime() );
-                    $p = array_merge( $p, (array)$this );
-                    echo $this->template->get( 'product_item', $p );
-                } ?>
-              <?php endif; ?>
+            <?php if ( $this->related_list ): ?>
+              <div class="head">
+                <h3>Ajánlott termékek</h3>
               </div>
-            </div>
+              <div class="c">
+                <div class="items">
+                <?php if ( $this->related_list ): ?>
+                  <? foreach ( $this->related_list as $p ) {
+                      $p['itemhash'] = hash( 'crc32', microtime() );
+                      $p['sideproducts'] = true;
+                      $p = array_merge( $p, (array)$this );
+                      echo $this->template->get( 'product_item', $p );
+                  } ?>
+                <?php endif; ?>
+                </div>
+              </div>
+            <?php endif; ?>
+
+            <?php if ( $this->replacements_list ): ?>            
+              <div class="head">
+                <h3>Helyettesítő termékek</h3>
+              </div>
+              <div class="c">
+                <div class="items">
+                <?php if ( $this->replacements_list ): ?>
+                  <? foreach ( $this->replacements_list as $p ) {
+                      $p['itemhash'] = hash( 'crc32', microtime() );
+                      $p['sideproducts'] = true;
+                      $p = array_merge( $p, (array)$this );
+                      echo $this->template->get( 'product_item', $p );
+                  } ?>
+                <?php endif; ?>
+                </div>
+              </div>
+            <?php endif; ?>
           </div>
-          <?php endif; ?>
+
         </div>
       </div>
     </div>

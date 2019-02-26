@@ -379,6 +379,13 @@
 								<br>
                 <div class="row np">
                     <div class="col-md-12">
+                        <label for="basics_account_reseller_description">Viszonteladói regisztráció ismertető szöveg</label>
+                        <textarea type="text" id="basics_account_reseller_description" name="account_reseller_description" class="form-control"><?=$this->settings['account_reseller_description']?></textarea>
+                    </div>
+                </div>
+								<br>
+                <div class="row np">
+                    <div class="col-md-12">
                         <label for="basics_round_price_5">Árak kerekítése 5-tel osztható számokra</label>
                         <select name="round_price_5" id="basics_round_price_5" class="form-control">
                             <option value="0" <?=($this->settings['round_price_5'] == '0' ? 'selected="selected"' : '')?>>Nem</option>

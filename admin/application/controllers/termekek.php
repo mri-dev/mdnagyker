@@ -158,10 +158,13 @@ class termekek extends Controller
 				'item_limit' => 28
 			)))->render() );
 
+			unset($products);
+			unset($products_list);
+
 			// Márkák
 			$this->view->markak 	= $this->AdminUser->getMarkak();
 			// Kategóriák
-			$this->view->kategoria  = $this->AdminUser->getTermekKategoriak();
+			//$this->view->kategoria  = $this->AdminUser->getTermekKategoriak();
 
 			// Készlet lista
 			$this->view->keszlet 	= $this->AdminUser->getKeszletLista();
@@ -313,6 +316,7 @@ class termekek extends Controller
 					$this->out( 'products', $products );
 					$this->out( 'termek', $products->get( $this->view->gets[3] ) );
 
+					// Kapcsolódó termékek
 					if ( $this->view->termek['related_products_ids'] ) {
 						$termek_kapcsolatok = new Products( array( 'db' => $this->db ) );
 						$termek_kapcsolatok = $termek_kapcsolatok->prepareList( array(
@@ -327,6 +331,31 @@ class termekek extends Controller
 							'kapcsolatok',
 							$kapcsolat_template->get(
 								'products_relatives',
+								array(
+									'list' 	=> $termek_kapcsolatok,
+									'mode' 	=> 'remove',
+									'id' 	=> $this->view->termek['ID']
+								)
+							)
+						);
+					}
+
+					// Helyettesítő termékek
+
+					if ( $this->view->termek['replacement_products_ids'] ) {
+						$termek_kapcsolatok = new Products( array( 'db' => $this->db ) );
+						$termek_kapcsolatok = $termek_kapcsolatok->prepareList( array(
+							'limit' => -1,
+							'admin' => true,
+							'filters' => array(
+								'ID' => $this->view->termek['replacement_products_ids']
+							)
+						) )->getList();
+						$kapcsolat_template = new Template( VIEW  . 'templates/' );
+						$this->out(
+							'replacements',
+							$kapcsolat_template->get(
+								'products_replacementrelatives',
 								array(
 									'list' 	=> $termek_kapcsolatok,
 									'mode' 	=> 'remove',

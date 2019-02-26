@@ -957,7 +957,6 @@ body.singlepage{
 					line-height: 32px;
 					height: 32px;
 					text-align: center;
-					font-size: 0.9em;
 					background: lighten($color-grey, 10%);
 					color: $color-grey-dark;
 				}
@@ -2937,6 +2936,9 @@ body.singlepage{
 
 			.related-products {
 				padding-left: 10px;
+				.c{
+					padding: 25px 5px;
+				}
 				.head{
 					padding: 10px 0;
 					h3{

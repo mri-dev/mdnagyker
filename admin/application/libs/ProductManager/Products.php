@@ -496,9 +496,28 @@ class Products
 		}
 	}
 
+	public function connectReplacementProducts( $id1, $id2 )
+	{
+		$c1 = $this->db->query("SELECT 1 FROM shop_termek_helyettesito_xref WHERE base_id = $id1 and target_id = $id2;");
+		if ( $c1->rowCount() == 0 ) {
+			$this->db->insert(
+				"shop_termek_helyettesito_xref",
+				array(
+					'base_id' => $id1,
+					'target_id' => $id2
+				)
+			);
+		}
+	}
+
 	public function disconnectProducts( $id1, $id2 )
 	{
 		$this->db->query("DELETE FROM shop_termek_ajanlo_xref WHERE (base_id = $id1 and target_id = $id2)");
+	}
+
+	public function disconnectReplacementProducts( $id1, $id2 )
+	{
+		$this->db->query("DELETE FROM shop_termek_helyettesito_xref WHERE (base_id = $id1 and target_id = $id2)");
 	}
 
 	public function getLiveviewedList( $mID, $limit = 5, $arg = array() )
@@ -1818,6 +1837,7 @@ class Products
 		$data['parameters']			= $this->getParameters( $product_id, $data['alapertelmezett_kategoria'] );
 		$data['variation_config'] = $this->getVariationConfig( $product_id, $data['alapertelmezett_kategoria'] );
 		$data['related_products_ids']	= $this->getRelatedIDS( $product_id );
+		$data['replacement_products_ids']	= $this->getReplacementIDS( $product_id );
 		$data['nav'] = array_reverse($categories->getCategoryParentRow((int)$data['alapertelmezett_kategoria'], false));
 
 		$this->makeKeywordsArray($data['kulcsszavak']);
@@ -1991,6 +2011,26 @@ class Products
 		if( $product_id === '' || !isset( $product_id ) ) return false;
 
 		$q = $this->db->squery("SELECT target_id FROM shop_termek_ajanlo_xref WHERE base_id = :id GROUP BY target_id;", array( 'id' => $product_id ) );
+
+		if ( $q->rowCount() == 0 ) {
+			return false;
+		}
+
+		foreach ($q->fetchAll(\PDO::FETCH_ASSOC) as $d )
+		{
+			$ids[] = $d['target_id'];
+		}
+
+		return $ids;
+	}
+
+	public function getReplacementIDS( $product_id )
+	{
+		$ids = array();
+
+		if( $product_id === '' || !isset( $product_id ) ) return false;
+
+		$q = $this->db->squery("SELECT target_id FROM shop_termek_helyettesito_xref WHERE base_id = :id GROUP BY target_id;", array( 'id' => $product_id ) );
 
 		if ( $q->rowCount() == 0 ) {
 			return false;

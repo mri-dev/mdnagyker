@@ -691,11 +691,24 @@
 
 			<? if( true ): ?>
         <div class="con con-extra">
-          	<h3>Ajánlott termékek <em class="info">Fűzzön a termékhez ajánlott termékeket.</em></h3>
+          	<h3>Kapcsolódó termékek <em class="info">Fűzzön a termékhez kapcsolódó termékeket.</em></h3>
+             	<div class="row">
+             		<div class="col-md-12">
+             			<label for="">Kapcsolódó termékek (<?=($this->termek['related_products_ids']) ? count($this->termek['related_products_ids']) : 0?>)</label>
+             			<div><?=$this->kapcsolatok?></div>
+             		</div>
+             	</div>
+							<br>
              	<div class="row">
              		<div class="col-md-12">
              			<label for="productRelativesText">Keresés</label>
-             			<input type="text" id="productRelativesText" exc-id="<?=$this->termek['ID']?>" value="" placeholder="termék keresése..." class="form-control">
+									<div class="input-group">
+										<input type="text" id="productRelativesText" exc-id="<?=$this->termek['ID']?>" value="" placeholder="termék keresése..." class="form-control">
+										<span class="input-group-btn">
+											<button type="button" class="btn btn-default" onclick="searchRealtives()" name="button">Keresés <i class="fa fa-search"></i> </button>
+										</span>
+									</div>
+
              		</div>
              	</div>
              	<br>
@@ -705,29 +718,61 @@
              			<div class="productRelativesList" id="productRelativesList"></div>
              		</div>
              	</div>
-
-             	<div class="row">
-             		<div class="col-md-12">
-             			<label for="">Aktív ajánlott termékek (<?=($this->termek['related_products_ids']) ? count($this->termek['related_products_ids']) : 0?>)</label>
-             			<div><?=$this->kapcsolatok?></div>
-             		</div>
-             	</div>
           </div>
       	<? endif; ?>
 
+				<? if( true ): ?>
+	        <div class="con con-extra">
+	          	<h3>Helyettesítő termékek</h3>
+	             	<div class="row">
+	             		<div class="col-md-12">
+	             			<label for="">Termékek (<?=($this->termek['rep_products_ids']) ? count($this->termek['rep_products_ids']) : 0?>)</label>
+	             			<div><?=$this->replacements?></div>
+	             		</div>
+	             	</div>
+								<br>
+	             	<div class="row">
+	             		<div class="col-md-12">
+	             			<label for="productRepText">Keresés</label>
+										<div class="input-group">
+											<input type="text" id="productRepText" exc-id="<?=$this->termek['ID']?>" value="" placeholder="termék keresése..." class="form-control">
+											<span class="input-group-btn">
+												<button type="button" class="btn btn-default" onclick="searchReplacementRealtives()" name="button">Keresés <i class="fa fa-search"></i> </button>
+											</span>
+										</div>
+
+	             		</div>
+	             	</div>
+	             	<br>
+	             	<div class="row">
+	             		<div class="col-md-12">
+	             			<label for="">Keresési találatok (<span id="productReplacementRelativesNumber">0</span>)</label>
+	             			<div class="productReplacementRelativesList" id="productReplacementRelativesList"></div>
+	             		</div>
+	             	</div>
+	          </div>
+	      	<? endif; ?>
 	    </div>
 	</div>
 
 <script type="text/javascript">
+
+	function searchRealtives() {
+		loadProductRelatives(function(d){
+
+		});
+	}
+
+	function searchReplacementRealtives() {
+		loadProductReplacementRealtives(function(d){
+
+		});
+	}
+
 	$(function(){
 		// Termék ajánlások becsatoláshoz
 		//loadProductRelatives();
 
-		$('#productRelativesText').bind( 'keyup', function(){
-			loadProductRelatives(function(d){
-
-			});
-		} );
 
 		$('.modkat i').click(function(){
 			$('.modkat .shinkat').hide(0);
@@ -737,7 +782,7 @@
 
 
 			if(sh == 0){
-				$('.modkat #inkatid'+key).show(0).html('<div style="padding:10px; text-align:center;"><i class="fa fa-spinner fa-spin"></i> betöltés...</div>');
+				$('.modkat #inkatid'+key).show(0).html('<div class="alert alert-warning" style="padding:10px; text-align:center;"><i class="fa fa-spinner fa-spin"></i> betöltés...</div>');
 				$(this).attr('sh',1);
 				$(this).addClass('showed');
 				loadKatValaszto(key);
@@ -790,12 +835,13 @@
 		$('.inkat .item:last').after('<div class="item new"><div class="selModszer i'+newKat+'"></div><div class="selGyujto i'+newKat+'"></div></div>');
 		loadModszerek();
 	}
+
 	function loadProductRelatives ( callback ) {
 		var handler = $('#productRelativesText');
 		var excid = handler.attr('exc-id');
 		var srctext = handler.val();
 
-		$('#productRelativesList').html( '<i class="fa fa-spinner fa-spin"></i> betöltés...' );
+		$('#productRelativesList').html( '<div  class="alert alert-warning"><i class="fa fa-spinner fa-spin"></i> betöltés...</div>' );
 
 		$.post("<?=AJAX_POST?>",{
 			type 	: 'loadProducts',
@@ -808,6 +854,28 @@
 			var ret = jQuery.parseJSON(d);
 			$('#productRelativesList').html( ret.result );
 			$('#productRelativesNumber').text( ret.info.results );
+		},"html");
+	}
+
+	function loadProductReplacementRealtives ( callback ) {
+		var handler = $('#productRepText');
+		var excid = handler.attr('exc-id');
+		var srctext = handler.val();
+
+		$('#productReplacementRelativesList').html( '<div  class="alert alert-warning"><i class="fa fa-spinner fa-spin"></i> betöltés...</div>' );
+
+		$.post("<?=AJAX_POST?>",{
+			type 	: 'loadProducts',
+			by  	: 'nev',
+			val 	: srctext,
+			template : 'replacementrelatives',
+			fromid 	: excid,
+			mode 	: 'json'
+		},function(d){
+			var ret = jQuery.parseJSON(d);
+			console.log(ret);
+			$('#productReplacementRelativesList').html( ret.result );
+			$('#productReplacemenRelativesNumber').text( ret.info.results );
 		},"html");
 	}
 
@@ -832,6 +900,34 @@
 
 		$.post("<?=AJAX_POST?>",{
 			type 	: 'removeProductConnects',
+			idfrom  : foid,
+			idto 	: tid
+		},function(d){
+			rtarget.remove();
+		},"html");
+	}
+
+	function connectProductReplacementRelatives( e, foid, tid ) {
+		$.post("<?=AJAX_POST?>",{
+			type 	: 'addProductReplacementConnects',
+			idfrom  : foid,
+			idto 	: tid
+		},function(d){
+			loadProductReplacementRealtives(function(d){
+
+			});
+		},"html");
+	}
+
+	function removeProductReplacementRelatives( e, foid, tid ) {
+		var rtarget = $('.product-li-items.mode-remove').find('li.item.item_'+foid+"_"+tid);
+
+		rtarget.css({ opacity: 0.5 });
+		rtarget.find('button').removeClass('btn-danger').addClass('btn-success');
+		rtarget.find('i').removeClass('fa-minus-circle').addClass('fa-spinner fa-spin');
+
+		$.post("<?=AJAX_POST?>",{
+			type 	: 'removeProductReplacementConnects',
 			idfrom  : foid,
 			idto 	: tid
 		},function(d){

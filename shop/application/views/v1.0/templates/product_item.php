@@ -80,11 +80,13 @@
 
     <div class="buttons">
       <div class="link">
-        <a href="<?=$link?>"><i class="fa fa-eye"></i> Megnézem</a>
+        <a href="<?=$link?>" title="Megnézem"><i class="fa fa-eye"></i>
+        <?php if (!$sideproducts): ?>Megnézem<?php endif; ?></a>
       </div>
       <div class="fav" ng-class="(fav_ids.indexOf(<?=$product_id?>) !== -1)?'selected':''" title="Kedvencekhez adom" ng-click="productAddToFav(<?=$product_id?>, $event)">
         <i class="fa fa-star" ng-show="fav_ids.indexOf(<?=$product_id?>) !== -1"></i>
-        <i class="fa fa-star-o" ng-show="fav_ids.indexOf(<?=$product_id?>) === -1"></i> Kedvencekhez
+        <i class="fa fa-star-o" ng-show="fav_ids.indexOf(<?=$product_id?>) === -1"></i>
+        <?php if (!$sideproducts): ?>Kedvencekhez<?php endif; ?>
       </div>
     </div>
   </div>

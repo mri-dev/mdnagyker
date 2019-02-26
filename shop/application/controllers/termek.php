@@ -72,7 +72,7 @@ class termek extends Controller{
 			$this->out( 'live_products_list', $live_products );
 
 
-			// További ajánlott termékek
+			// Kapcsolódó termékek
 			if ( $product['related_products_ids'] )
 			{
 				// Template
@@ -91,6 +91,27 @@ class termek extends Controller{
 
 				$this->out( 'related', $related );
 				$this->out( 'related_list', $related->getList() );
+			}
+
+			// Helyettesítő termékek
+			if ( $product['replacement_products_ids'] )
+			{
+				// Template
+				$temp = new Template( VIEW . 'templates/' );
+				$this->out( 'template', $temp );
+
+				$arg = array(
+					'except' => array(
+						'ID' => Product::getTermekIDFromUrl()
+					),
+					'limit' => 99999,
+					'in_ID' => $product['replacement_products_ids']
+				);
+
+				$replacement = $products->prepareList( $arg );
+
+				$this->out( 'replacements', $replacement );
+				$this->out( 'replacements_list', $replacement->getList() );
 			}
 
 			$title = $product['nev'].' | '.$product['csoport_kategoria'];

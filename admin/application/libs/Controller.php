@@ -101,7 +101,7 @@ class Controller {
           // Menük
           $tree = null;
           $menu_header  = new Menus( false, array( 'db' => $this->db ) );
-          
+
           // Header menü
           $menu_header->addFilter( 'menu_type', 'header' );
           $menu_header->isFinal(true);
@@ -262,10 +262,12 @@ class Controller {
             $this->view->render($subfolder.$this->theme_wire.'footer',$mode);
         }
         $this->db = null;
-       // $this->memory_usage();
 
         $this->finish_time = microtime(true);
         //$this->get_speed();
+        unset($this->view);
+        unset($this->model);
+        //$this->memory_usage();
     }
 }
 

@@ -65,13 +65,15 @@
             <div class="nev">
               <input type="text" name="nev" class="form-control" placeholder="termék elnevezése..." value="<?=$_COOKIE['filter_nev']?>" />
             </div>
-            <?php if (false): ?>
-              <div class="szin">
-                <input type="text" name="szin" class="form-control" placeholder="Variáció" value="<?=$_COOKIE['filter_szin']?>" />
-              </div>
-              <div class="meret">
-                <input type="text" name="meret" class="form-control" placeholder="Kiszerelés" value="<?=$_COOKIE['filter_meret']?>" />
-              </div>
+            <?php if (true): ?>
+            <div class="kat">
+              <select class="form-control" name="">
+                <option value="">-- kategória szűrés: összes --</option>
+                <? while( $this->categories->walk() ): $item = $this->categories->the_cat(); ?>
+                  <option value=""><?=str_repeat('-',(int)$item['deep'])?> <?=$item['neve']?></option>
+                <? endwhile; ?>
+              </select>
+            </div>
             <?php endif; ?>
           </div>
         </td>

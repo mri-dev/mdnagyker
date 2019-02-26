@@ -24,32 +24,17 @@ class home extends Controller{
 				$this->AdminUser->logout();
 			}
 
-			$portal = new Portal( array( 'db' => $this->db ) );
+			//$portal = new Portal( array( 'db' => $this->db ) );
 			// Nem használt termék képek
-			$this->out( 'unused_images', $portal->checkUnusedProductImage() );
+			//$this->out( 'unused_images', $portal->checkUnusedProductImage() );
 
 			// STATISZTIKÁK
 			/////////////////////////////////////////////////////////
 			// Általános statisztikák
 			$this->view->stats 		= $this->AdminUser->getStats();
 			// Forgalom statisztikák
-			$this->traffic     		= new Traffic( array( 'db' => $this->db ));
-			$this->view->tafficInfo = $this->traffic->calcTrafficInfo();
-
-			$arg 		= array();
-			$arg[limit] = 10;
-			$filters = Helper::getCookieFilter('filter',array('filtered'));
-			$filters['user_group'] 	= array('sales','reseller');
-
-			$arg['onlyreferersale'] = true;
-			$arg['order'] 			= "totalReferredOrderPrices DESC";
-
-			$arg['referertime'] = array(
-				'from' 	=> date('Y-m-d', strtotime('-30 days'))
-			);
-			$arg[filters] = $filters;
-
-			$this->view->refusers = $this->User->getUserList($arg);
+			//$this->traffic     		= new Traffic( array( 'db' => $this->db ));
+			//$this->view->tafficInfo = $this->traffic->calcTrafficInfo();
 
 			// SEO Információk
 			$SEO = null;
