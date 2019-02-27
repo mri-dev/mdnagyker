@@ -9,13 +9,21 @@
 <div class="product-view">
   <div class="product-data">
     <div class="page-width">
+      <?php if ($this->product_nav_row): ?>
+      <div class="product-row-nav">
+        <div class="prev">
+          <a href="<?php echo $this->product_nav_row['prev']['link']; ?>"><i class="fa fa-angle-left"></i> <?php echo $this->product_nav_row['prev']['nev']; ?></a>
+        </div>
+        <div class="next">
+          <a href="<?php echo $this->product_nav_row['next']['link']; ?>"><?php echo $this->product_nav_row['next']['nev']; ?> <i class="fa fa-angle-right"></i></a>
+        </div>
+      </div>
+      <?php endif; ?>
       <div class="top-datas">
         <div class="images">
           <?php if (true): ?>
           <div class="main-img by-width autocorrett-height-by-width" data-image-ratio="4:3">
-            <? if( $ar >= $this->settings['cetelem_min_product_price'] && $ar <= $this->settings['cetelem_max_product_price'] && $this->product['no_cetelem'] != 1 ): ?>
-                <img class="cetelem" src="<?=IMG?>cetelem_badge.png" alt="Cetelem Online Hitel">
-            <? endif; ?>
+
             <?  if( $this->product['akcios'] == '1' && $this->product['akcios_fogy_ar'] > 0): ?>
             <div class="discount-percent"><div class="p">-<? echo 100-round($this->product['akcios_fogy_ar'] / ($this->product['brutto_ar'] / 100)); ?>%</div></div>
             <? endif; ?>
@@ -24,7 +32,7 @@
             </div>
           </div>
           <div class="all">
-            <?  foreach ( $this->product['images'] as $img ) { ?>
+            <?  foreach ( (array)$this->product['images'] as $img ) { ?>
             <div class="imgslide">
               <div class="wrp autocorrett-height-by-width" data-image-ratio="4:3">
                 <img class="aw" i="<?=\PortalManager\Formater::productImage($img)?>" src="<?=\PortalManager\Formater::productImage($img)?>" alt="<?=$this->product['nev']?>">
@@ -35,6 +43,12 @@
           <?php endif; ?>
         </div>
         <div class="main-data">
+          <?php if ( true ): ?>
+          <h1><?=$this->product['nev']?></h1>
+          <div class="csoport">
+            <?=$this->product['csoport_kategoria']?>
+          </div>
+
           <div class="nav">
             <div class="pagi">
               <?php
@@ -48,18 +62,13 @@
                 <li><a href="<?=$this->product['in_cats']['url'][0]?>"><?php echo $lastcat; ?></a></li>
                 <?php endif; ?>
                 <?php
-                foreach ( $this->product['nav'] as $nav ): $navh = \Helper::makeSafeUrl($nav['neve'],'_-'.$nav['ID']); ?>
+                foreach ( (array)$this->product['nav'] as $nav ): $navh = \Helper::makeSafeUrl($nav['neve'],'_-'.$nav['ID']); ?>
                 <li><a href="/termekek/<?=$navh?>"><?php echo $nav['neve']; ?></a></li>
                 <?php endforeach; ?>
               </ul>
             </div>
           </div>
-          <?php if ( true ): ?>
 
-          <h1><?=$this->product['nev']?></h1>
-          <div class="csoport">
-            <?=$this->product['csoport_kategoria']?>
-          </div>
           <div class="prices">
               <div class="base">
                 <?php if ($this->product['without_price']): ?>
@@ -516,7 +525,7 @@
               </div>
             <?php endif; ?>
 
-            <?php if ( $this->replacements_list ): ?>            
+            <?php if ( $this->replacements_list ): ?>
               <div class="head">
                 <h3>Helyettesítő termékek</h3>
               </div>

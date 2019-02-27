@@ -23,6 +23,7 @@ class termekek extends Controller
 				$this->view->bmsg= Helper::makeAlertMsg('pSuccess', $_GET['msg']);
 			}
 
+
 			// Kategóriák
 			$cats = new Categories(  array( 'db' => $this->db )  );
 			$this->out( 'categories', $cats->getTree() );
@@ -81,6 +82,13 @@ class termekek extends Controller
 					setcookie('filter_nev','',time()-100,'/'.$this->view->gets[0]);
 				}
 
+				if($_POST['kategoria'] != ''){
+					setcookie('filter_kategoria',$_POST['kategoria'],time()+60*24,'/'.$this->view->gets[0]);
+					$filtered = true;
+				}else{
+					setcookie('filter_kategoria','',time()-100,'/'.$this->view->gets[0]);
+				}
+
 				if($_POST['marka'] != ''){
 					setcookie('filter_marka',$_POST['marka'],time()+60*24,'/'.$this->view->gets[0]);
 						$filtered = true;
@@ -115,6 +123,13 @@ class termekek extends Controller
 					setcookie('filter_fotermek','',time()-100,'/'.$this->view->gets[0]);
 				}
 
+				if(isset($_POST['showunlimit'])){
+					setcookie('filter_showunlimit',1,time()+60*24,'/'.$this->view->gets[0]);
+					$filtered = true;
+				}else{
+					setcookie('filter_showunlimit','',time()-100,'/'.$this->view->gets[0]);
+				}
+
 				if($filtered){
 					setcookie('filtered','1',time()+60*24*7,'/'.$this->view->gets[0]);
 				}else{
@@ -137,15 +152,12 @@ class termekek extends Controller
 			if (isset($_GET['article'])) {
 				$filters['raktar_articleid'] = $_GET['article'];
 			}
+			$lim = (isset($_COOKIE['filter_showunlimit'])) ? -1 : 50;
 			$arg = array(
 				'admin' => true,
 				'filters' => $filters,
-				'limit' => 50,
-				'page' => Helper::currentPageNum(),
-				'order' => array(
-					'by' => 'p.ID',
-					'how' => 'DESC'
-				)
+				'limit' => $lim,
+				'page' => Helper::currentPageNum()
 			);
 			$products_list = $products->prepareList( $arg )->getList();
 			$this->out( 'products', $products );
@@ -204,6 +216,7 @@ class termekek extends Controller
 			setcookie('filter_ID','',time()-100,'/'.$this->view->gets[0]);
 			setcookie('filter_cikkszam','',time()-100,'/'.$this->view->gets[0]);
 			setcookie('filter_nev','',time()-100,'/'.$this->view->gets[0]);
+			setcookie('filter_kategoria','',time()-100,'/'.$this->view->gets[0]);
 			setcookie('filter_szin','',time()-100,'/'.$this->view->gets[0]);
 			setcookie('filter_meret','',time()-100,'/'.$this->view->gets[0]);
 			setcookie('filter_lathato','',time()-100,'/'.$this->view->gets[0]);

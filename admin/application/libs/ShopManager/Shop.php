@@ -2561,6 +2561,9 @@ class Shop
 	}
 
 	function logTermekView($termekID){
+		if ($termekID == '' || !isset($termekID)) {
+			return false;
+		}
 		$date = date('Y-m-d');
 		$c = $this->db->query("SELECT 1 FROM stat_nezettseg_termek WHERE datum = '$date' and termekID = $termekID")->rowCount();
 

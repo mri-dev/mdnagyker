@@ -326,6 +326,10 @@ class ajax extends Controller{
 							$val = ($val == '') ? 'NULL' : "'".$val."'";
 							$this->db->query("UPDATE shop_termekek SET cikkszam = $val WHERE ID = $id");
 						break;
+						case 'sorrend':
+							$val = ($val == '') ? 100 : (int)$val;
+							$this->db->query("UPDATE shop_termekek SET sorrend = $val WHERE ID = $id");
+						break;
 						case 'raktar_keszlet':
 							$val = ($val == '') ? 0 : (int)$val;
 							$this->db->query("UPDATE shop_termekek SET raktar_keszlet = $val WHERE ID = $id");

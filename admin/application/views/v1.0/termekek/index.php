@@ -22,7 +22,8 @@
 </div>
 <?=$this->navigator?>
 <div>
-	<span class="label label-default"><input type="checkbox" id="showKats" /> részletek mutatása</span>
+	<span class="label label-default"><input style="vertical-align: middle;" type="checkbox" id="showKats" /> részletek mutatása</span>
+  <span class="label label-<?=($_COOKIE['filter_showunlimit'])?'success':'default'?>"><input style="vertical-align: middle;" type="checkbox" <?=($_COOKIE['filter_showunlimit'])?'checked="checked"':''?> id="showunlimitlist" /> összes listázása (rendezés végett)</span>
 </div>
 <div class="clr"></div>
 <? if($this->gets[2] != 'del'): ?>
@@ -48,13 +49,17 @@
       <th width="120">Állapot</th>
       <th width="65">Készlet</th>
       <th width="75">Aktív</th>
+      <th width="75">Sorrend</th>
       <!-- <th width="20" title="Főtermék">Fő</th>-->
       <th width="20"></th>
     </tr>
 	</thead>
     <tbody>
     	<tr class="search <? if($_COOKIE['filtered'] == '1'): ?>filtered<? endif;?>">
-    		<td><input type="text" name="ID" class="form-control" value="<?=$_COOKIE['filter_ID']?>" /></td>
+    		<td>
+          <input type="checkbox" class="hide" name="showunlimit" <?=($_COOKIE['filter_showunlimit'])?'checked="checked"':''?> id="showunlimit_form" class="form-control" value="<?=$_COOKIE['filter_showunlimit']?>" />
+          <input type="text" name="ID" class="form-control" value="<?=$_COOKIE['filter_ID']?>" />
+        </td>
     		<? if( true ): ?>
 			<td class="">
 				<input type="text" name="cikkszam" placeholder="azonosító..." class="form-control" value="<?=$_COOKIE['filter_cikkszam']?>" />
@@ -67,10 +72,10 @@
             </div>
             <?php if (true): ?>
             <div class="kat">
-              <select class="form-control" name="">
+              <select class="form-control" name="kategoria">
                 <option value="">-- kategória szűrés: összes --</option>
                 <? while( $this->categories->walk() ): $item = $this->categories->the_cat(); ?>
-                  <option value=""><?=str_repeat('-',(int)$item['deep'])?> <?=$item['neve']?></option>
+                  <option value="<?=$item['ID']?>" <?=($item['ID'] == $_COOKIE['filter_kategoria'])?'selected':''?>><?=str_repeat('&mdash;',(int)$item['deep'])?> <?=$item['neve']?></option>
                 <? endwhile; ?>
               </select>
             </div>
@@ -109,13 +114,15 @@
             <!--<td align="center">
                 <input type="checkbox" name="fotermek" <?=($_COOKIE['filter_fotermek'] == '1')?'checked="checked"':''?> >
             </td>-->
+        <td></td>
     		<td align="center">
-        	<button name="filterList" class="btn btn-default"><i class="fa fa-search"></i></button>
+        	<button id="filterList" name="filterList" class="btn btn-default"><i class="fa fa-search"></i></button>
         </td>
     	</tr>
     	<? if( $this->products->hasItems() ): foreach($this->termekek as $d):  ?>
-    	<tr>
+    	<tr class="data-tr">
 	    	<td align="center">
+        <i class="fa fa-arrows-v"></i>
 				<?=$d['product_id']?><br />
 				<input type="checkbox" name="selectedItem[]" value="<?=$d['product_id']?>" />
 			</td>
@@ -220,14 +227,17 @@
             </td>
             <td align="center"><? if($d['lathato'] == '1'): ?><i class="fa fa-check vtgl" title="Aktív / Kattintson az inaktiváláshoz" tid="<?=$d['product_id']?>"></i><? else: ?><i class="fa fa-times vtgl" title="Inaktív / Kattintson az aktiváláshoz" tid="<?=$d['product_id']?>"></i><? endif; ?></td>
             <!--<td align="center"><? if($d['fotermek'] == '1'): ?><i class="fa fa-check ftgl" title="Főtermék / Kattintson az inaktiváláshoz" tid="<?=$d['product_id']?>"></i><? else: ?><i class="fa fa-times ftgl" title="Nem főtermék / Kattintson az aktiváláshoz" tid="<?=$d['product_id']?>"></i><? endif; ?></td>-->
+            <td class="center">
+              <input type="number" step="1" class="form-control action" mode="sorrend" tid="<?=$d['product_id']?>" value="<?=$d['sorrend']?>" />
+            </td>
             <td align="center">
-            <div class="dropdown">
-            	<i class="fa fa-gears dropdown-toggle" title="Beállítások" id="dm<?=$d['product_id']?>" data-toggle="dropdown"></i>
-                  <ul class="dropdown-menu" role="menu" aria-labelledby="dm<?=$d['product_id']?>">
-                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="/termekek/t/edit/<?=$d['product_id']?>">szerkesztés <i class="fa fa-pencil"></i></a></li>
-				    <li role="presentation"><a role="menuitem" tabindex="-1" href="/termekek/t/del/<?=$d['product_id']?>">törlés <i class="fa fa-times"></i></a></li>
-				  </ul>
-            </div>
+              <div class="dropdown">
+              	<i class="fa fa-gears dropdown-toggle" title="Beállítások" id="dm<?=$d['product_id']?>" data-toggle="dropdown"></i>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dm<?=$d['product_id']?>">
+                    	<li role="presentation"><a role="menuitem" tabindex="-1" href="/termekek/t/edit/<?=$d['product_id']?>">szerkesztés <i class="fa fa-pencil"></i></a></li>
+          				    <li role="presentation"><a role="menuitem" tabindex="-1" href="/termekek/t/del/<?=$d['product_id']?>">törlés <i class="fa fa-times"></i></a></li>
+          				  </ul>
+              </div>
             </td>
         </tr>
         <tr>
@@ -480,6 +490,25 @@
 	$(function(){
 		autoShowInfos();
 
+    $('#showunlimitlist').click(function(){
+      var ts = $(this).is(':checked');
+      if (ts) {
+        $('#showunlimit_form').prop('checked', true);
+      } else {
+        $('#showunlimit_form').prop('checked', false);
+      }
+
+      $('button#filterList').trigger('click');
+    });
+
+    $('table.termeklista tbody').sortable({
+      update: function(ev,ui){
+        jQuery.each($('table.termeklista > tbody.ui-sortable > tr.data-tr'), function(i,ui){
+          $(ui).find('input[mode=sorrend]').val(i).trigger('change');
+        });
+      }
+    });
+
 		$('#selectAll').change(function(){
 			var sa 	= $(this).is(':checked');
 			var chs = $('.termeklista').find('input[type=checkbox]');
@@ -518,7 +547,6 @@
 		});
 		$('#showKats').click(function(){
 			var ch = $(this).is(':checked');
-			console.log('FlagChange: '+ch);
 			if(ch){
 				localStorage.setItem('showMoreInfoOnTermekList','1');
 			}else{
@@ -530,7 +558,6 @@
 
 	function autoShowInfos(){
 		var stored = localStorage.getItem('showMoreInfoOnTermekList');
-		console.log('StoredFlag: '+stored);
 
 		if(stored == null){
 			showMoreInfo = false;
@@ -544,8 +571,6 @@
 		}else{
 			$('.termeklista .in').hide(0);
 		}
-
-		console.log(showMoreInfo);
 	}
 
     function mainProductToggler(e){
@@ -612,7 +637,6 @@
 		var mode 	= e.attr('mode');
 		var tid 	= e.attr('tid');
 		var val 	= e.val();
-		console.log(mode+' : '+tid+' = '+val);
 		$.post("<?=AJAX_POST?>",{
 			type : 'termekChangeActions',
 			mode : mode,

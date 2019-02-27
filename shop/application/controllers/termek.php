@@ -18,6 +18,13 @@ class termek extends Controller{
 			$product =  $products->get( Product::getTermekIDFromUrl() );
 			$product['links'] = $products->getProductLinksFromStr($product['linkek']);
 
+			// Nav termék row
+			$prim_cat_id = (int)$product['in_cat_ids'][0];
+			$product_row = $products->getProductRowInCategory( $prim_cat_id, $product['ID'] );
+			$this->out( 'product_nav_row', $product_row );
+
+			//print_r($product_row);
+
 			$this->out( 'product', $product );
 			$this->out( 'slideshow', $this->Portal->getSlideshow( $product['nev'] ) );
 

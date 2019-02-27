@@ -653,6 +653,7 @@ class Products
 			p.xml_import_res_id,
 			p.kulcsszavak,
 			p.fotermek,
+			p.sorrend,
 			getTermekAr(p.ID, ".$uid.") as ar,
 			(SELECT GROUP_CONCAT(kategoria_id) FROM shop_termek_in_kategoria WHERE termekID = p.ID ) as in_cat,
 			(SELECT neve FROM shop_termek_kategoriak WHERE ID = p.alapertelmezett_kategoria ) as alap_kategoria";
@@ -833,6 +834,10 @@ class Products
 			foreach($arg['filters'] as $key => $v){
 				switch($key)
 				{
+					// disabled filter option
+					case 'showunlimit':
+					break;
+
 					case 'ID':
 						if( is_array($v) ) {
 							$value_set = false;
@@ -861,6 +866,11 @@ class Products
 					break;
 					case 'nev':
 						$add = " and (p.".$key." LIKE '%".$v."%' or p.cikkszam = '".trim($v)."') ";
+						$whr .= $add;
+						$size_whr .= $add;
+					break;
+					case 'kategoria':
+						$add = " and ( ".trim($v)." IN (SELECT ct.kategoria_id FROM shop_termek_in_kategoria as ct WHERE ct.termekID = p.ID) ) ";
 						$whr .= $add;
 						$size_whr .= $add;
 					break;
@@ -982,14 +992,15 @@ class Products
 					$add =  " ORDER BY ".$arg['order']['by']." ".$arg['order']['how'];
 					$qry .= $add;
 				} else {
-					$add =  " ORDER BY ar ASC, fotermek DESC, p.ID DESC ";
+					$add =  " ORDER BY sorrend ASC, ar ASC, fotermek DESC, p.ID DESC ";
 					$qry .= $add;
 				}
 			}
 		}
 
 		// Összes kategórián belüli termék ID összegyűjtése
-		$ids_query = $this->db->query( "SELECT p.ID FROM shop_termekek as p WHERE 1=1 ".$whr );
+		$idsqrystr = "SELECT p.ID FROM shop_termekek as p WHERE 1=1 ".$whr;
+		$ids_query = $this->db->query( $idsqrystr );
 
 		if ( $ids_query->rowCount() != 0 ) {
 			$ids_gets = $ids_query->fetchAll(\PDO::FETCH_ASSOC);
@@ -1777,6 +1788,11 @@ class Products
 	 */
 	public function get( $product_id, array $opt = array() ) {
 		if( $product_id === '' || !isset( $product_id ) ) return false;
+		$product_id = (int)$product_id;
+
+		if ($product_id == 0) {
+			return false;
+		}
 
 		$categories = new Categories( array( 'db' => $this->db ) );
 
@@ -1786,10 +1802,10 @@ class Products
 			$row = rtrim( $opt['rows'], ',' );
 		}
 
+
 		$uid = (int)$this->user[data][ID];
 
-		$q = $this->db->query("
-			SELECT 			$row,
+		$qq = "SELECT	$row,
 				getTermekAr(t.ID, ".$uid.") as ar,
 				k.neve as kategoriaNev,
 				ta.elnevezes as keszletNev,
@@ -1798,9 +1814,9 @@ class Products
 			LEFT OUTER JOIN shop_termek_kategoriak as k ON k.ID = t.alapertelmezett_kategoria
 			LEFT OUTER JOIN shop_termek_allapotok as ta ON ta.ID = t.keszletID
 			LEFT OUTER JOIN shop_szallitasi_ido as sza ON sza.ID = t.szallitasID
-			WHERE 			t.ID = $product_id
+			WHERE 			t.ID = $product_id";
 
-		");
+		$q = $this->db->query( $qq );
 
 		$data = $q->fetch(\PDO::FETCH_ASSOC);
 
@@ -1887,6 +1903,62 @@ class Products
 
 		return $price;
 	}
+
+	public function getProductRowInCategory( $cat_id, $product_id )
+	{
+		$row = array();
+
+		$uid = (int)$this->user[data][ID];
+
+		$q = "SELECT
+			t.ID,
+			t.nev,
+			t.sorrend,
+			getTermekAr(t.ID, ".$uid.") as ar
+		FROM shop_termekek as t
+		WHERE 1=1
+		and t.lathato = 1
+		and ( ".$cat_id." IN (SELECT k.kategoria_id FROM shop_termek_in_kategoria as k WHERE k.termekID = t.ID) )
+		GROUP BY t.ID
+		ORDER BY t.sorrend ASC, ar ASC, t.fotermek DESC, t.ID DESC
+		";
+
+		$qry = $this->db->query( $q );
+
+		if ($qry->rowCount() != 0) {
+			$data = $qry->fetchAll(\PDO::FETCH_ASSOC);
+			$i = 0;
+			foreach ((array)$data as $d) {
+				$d['link'] = DOMAIN.'termek/'.\PortalManager\Formater::makeSafeUrl( $d['nev'], '_-'.$d['ID'] );
+				$row['row'][] = $d;
+
+				if ($d['ID'] == $product_id) {
+					$d['index'] = $i;
+					$row['current'] = $d;
+				}
+				$i++;
+			}
+
+			$next_index = $row['current']['index'] + 1;
+			$prev_index = $row['current']['index'] - 1;
+			if ($next_index >= count($row['row'])) {
+				$next_index = 0;
+			}
+			if ($prev_index < 0) {
+				$prev_index = count($row['row']) -1;
+			}
+
+			//$row['next']['index'] = $next_index;
+			//$row['prev']['index'] = $prev_index;
+
+			$row['next'] = $row['row'][$next_index];
+			$row['prev'] = $row['row'][$prev_index];
+
+		}
+
+		return $row;
+	}
+
 
 	public function getVariationConfig( $tid, $alapkat_id )
 	{

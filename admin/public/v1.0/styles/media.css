@@ -992,6 +992,18 @@ span.label input[type=checkbox]{
 }
 table.termeklista > tbody > tr > td {
 	vertical-align:middle;
+  background: white;
+}
+table.termeklista > tbody > tr > td:first-child i {
+	color: #a5a5a5;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #eeeeee;
+  padding: 2px 4px;
+  text-align: center;
+  font-size: 12px;
+  cursor: row-resize;
 }
 table.termeklista > tbody > tr > td:nth-child(even) {
 	background: #f8f8f8;
