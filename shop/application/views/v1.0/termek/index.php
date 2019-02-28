@@ -373,7 +373,7 @@
           </div>
         </div>
         <nav class="tab-header">
-          <ul>
+          <ul ng-controller="ActionButtons">
             <li class="description active"><a href="#description" onclick="switchTab('description')">Leírás</a></li>
             <?php if ($this->product['parameters'] && !empty($this->product['parameters'])): ?>
             <li class="parameters"><a href="#parameters" onclick="switchTab('parameters')">Műszaki adatok</a></li>
@@ -382,6 +382,7 @@
             <li class="documents"><a href="#documents" onclick="switchTab('documents')">Dokumentumok</a></li>
             <?php endif; ?>
             <li class="compatiblity"><a href="#compatiblity" onclick="switchTab('compatiblity')">Kompatibilitási lista</a></li>
+            <li class="ask"><a href="javascript:void(0);" ng-click="requestTermekKerdes(<?=$this->product['ID']?>)">Kérdés a termékről <i class="fa fa-ask"></i> </a></li>
           </ul>
         </nav>
         <div class="holder">

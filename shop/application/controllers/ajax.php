@@ -327,6 +327,14 @@ class ajax extends Controller{
 								$err = $this->escape( $e->getMessage(), $ret );
 							}
 						break;
+						// Termék kérdés
+						case 'termekkerdes':
+							try {
+								$remsg = $this->shop->requestTermKerdes( $datas );
+							} catch (\Exception $e) {
+								$err = $this->escape( $e->getMessage(), $ret );
+							}
+						break;
 					}
 
 					if(!$err) $this->setSuccess( $remsg ,$ret );

@@ -1913,6 +1913,129 @@ class Shop
 		return 'Köszönjük megkeresését. Hamarosan felvesszük Önnel a kapcsolatot a termékkel kapcsolatban!';
 	}
 
+	public function requestTermKerdes($post)
+	{
+		extract($post);
+
+		if($name == '') throw new \Exception('Kérjük, ne felejtse megadni saját nevét!');
+		if($phone == '') throw new \Exception('Kérjük, ne felejtse megadni saját telefonszámát!');
+		if($email == '') throw new \Exception('Kérjük, ne felejtse megadni saját e-mail címét!');
+
+		$termek = '<style>
+			.mail-termek-row{
+				position: relative;
+				background: #f7f7f7;
+				padding: 10px;
+				border: 2px solid #e9e9e9;
+				border-radius: 5px;
+				margin: 15px 0;
+			}
+			.mail-termek-row .img{
+				float: left;
+				width: 20%;
+				max-width: 20%;
+				box-sizing: border-box;
+			}
+			.mail-termek-row .img img{
+				width: 100%;
+				max-width: 100%;
+			}
+			.mail-termek-row .data{
+				float: left;
+				width: 80%;
+				box-sizing: border-box;
+				padding-left: 15px;
+			}
+			.mail-termek-row .data .name a{
+				display: block;
+				color: #f09f0f;
+				font-weight: bold;
+				margin-bottom: 15px;
+				font-size: 18px;
+			}
+			.mail-termek-row .data .cat{
+				color: #575757;
+				font-size: 15px;
+			}
+			.mail-termek-row .data .cat strong {
+				color: #3a3a3a;
+			}
+			.mail-termek-row .data .sdesc{
+				color: #919191;
+				font-size: 12px;
+				line-height: 1.5;
+				text-align:justify;
+				margin-top: 5px;
+			}
+			.mail-termek-row .data .meta{
+				color: #acacac;
+				font-size: 10px;
+				margin-top: 5px;
+			}
+		</style>';
+		$termek .= '<div class="mail-termek-row" style>
+			<div class="img"><img src="'.$product['profil_kep'].'" alt="'.$product['nev'].'"/></div>
+			<div class="data">
+				<div class="name"><a href="'.$this->settings['page_url'].'/termek/'.\Helper::makeSafeUrl($product['nev'],'_-'.$product['ID']).'">'.$product['nev'].'</a></div>
+				<div class="cat"><strong>'.$product['in_cat_names'][0].'</div>
+				<div class="sdesc">'.$product['rovid_leiras'].'</div>
+				<div class="meta">#'.$product['ID'].' &nbsp; Cikkszám:'.$product['cikkszam'].'</div>
+			</div>
+			<div style="clear:both;"></div>
+		</div>';
+
+		// Admin értesítése beérkezésről
+		$mail = new Mailer( $this->settings['page_title'], SMTP_USER, $this->settings['mail_sender_mode'] );
+		$mail->add( $this->settings['alert_email'] );
+
+		$arg = array(
+			'settings' => $this->settings,
+			'name' => $name,
+			'phone' => $phone,
+			'email' => $email,
+			'termek' => $termek,
+			'message' => $message,
+			'targy' => 'Termék kérés'
+		);
+
+		$mail->setSubject( 'Értesítő: Termék kérdés érkezet.' );
+		$mail->setMsg( (new Template( VIEW . 'templates/mail/' ))->get( 'admin_requestask', $arg ) );
+		$re = $mail->sendMail();
+
+		// Felhasználó értesítés kézbesítésről
+		$mail = new Mailer( $this->settings['page_title'], SMTP_USER, $this->settings['mail_sender_mode'] );
+		$mail->add( $email );
+
+		$arg = array(
+			'settings' => $this->settings,
+			'name' => $name,
+			'phone' => $phone,
+			'email' => $email,
+			'message' => $message,
+			'termek' => $termek,
+			'termek_nev' => $product['nev'],
+			'targy' => 'Termék kérését fogadtuk'
+		);
+		$arg['mailtemplate'] = (new MailTemplates(array('db'=>$this->db)))->get('request_product_ask', $arg);
+
+		$mail->setSubject( 'Visszaigazolás: Termék kérését fogadtuk.' );
+		$mail->setMsg( (new Template( VIEW . 'templates/mail/' ))->get( 'mailtemplateholder', $arg ) );
+		$re = $mail->sendMail();
+
+		// Üzenet mentése
+		$this->logMessage(array(
+			'item_id' => $product['ID'],
+			'felado_nev' => $name,
+			'felado_telefon'=> $phone,
+			'felado_email'=> $email,
+			'tipus' => 'requesttermask',
+			'uzenet_targy' => 'Termék kérdés',
+			'uzenet' => $message
+		));
+
+		return 'Köszönjük megkeresését. Hamarosan felvesszük Önnel a kapcsolatot a termékkel kapcsolatban!';
+	}
+
 	const ORDER_COOKIE_KEY_STEP = 'orderStep';
 
 	public function doOrder($post, $arg = array()) {
@@ -2768,7 +2891,7 @@ class Shop
 		));
 	}
 
-	public $messageType = array( 'ajanlat', 'recall', 'requesttermprice' );
+	public $messageType = array( 'ajanlat', 'recall', 'requesttermprice', 'requesttermask' );
 
 	function logMessage($opts = array()){
 		$item_id 		= 'NULL';

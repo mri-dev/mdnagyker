@@ -3378,6 +3378,12 @@ md-dialog-actions{
 			background: $color-orange !important;
 		}
 	}
+	&.termekkerdes{
+		md-toolbar{
+			background: $color-blue !important;
+			color: white !important;
+		}
+	}
 	&.accept-order{
 		md-toolbar{
 			background: $color-red !important;

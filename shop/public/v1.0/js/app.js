@@ -453,7 +453,7 @@ app.controller('ActionButtons', ['$scope', '$http', '$mdDialog', '$mdToast', fun
 
   $scope.showHints = true;
   $scope.recall = {};
-  $scope.ajanlat = {};
+  $scope.termekkerdes = {};
 
   /**
   * Ingyenes visszahívás modal
@@ -547,22 +547,24 @@ app.controller('ActionButtons', ['$scope', '$http', '$mdDialog', '$mdToast', fun
   /**
   * Ajánlatkérés modal
   **/
-  $scope.requestAjanlat = function()
+  $scope.requestTermekKerdes = function( id )
   {
     var confirm = $mdDialog.confirm({
 			controller: ConfirmPackageOrder,
-			templateUrl: '/app/templates/ajanlatkeres',
+			templateUrl: '/app/templates/termekkerdes',
 			parent: angular.element(document.body),
 			locals: {
+        termid: id,
         showHints: $scope.showHints,
-        ajanlat: $scope.ajanlat
+        termekkerdes: $scope.termekkerdes
 			}
 		});
 
-		function ConfirmPackageOrder( $scope, $mdDialog, showHints, ajanlat) {
+		function ConfirmPackageOrder( $scope, $mdDialog, termid, showHints, termekkerdes) {
       $scope.showHints = showHints;
-      $scope.ajanlat = ajanlat;
+      $scope.termekkerdes = termekkerdes;
       $scope.sending = false;
+      $scope.termid = termid;
 
 			$scope.closeDialog = function(){
 				$mdDialog.hide();
@@ -572,10 +574,10 @@ app.controller('ActionButtons', ['$scope', '$http', '$mdDialog', '$mdToast', fun
         var phone_test = ''
 
         if (
-          (typeof $scope.ajanlat.name !== 'undefined' && $scope.ajanlat.name.length >= 5) &&
-          (typeof $scope.ajanlat.phone !== 'undefined' && !$scope.ajanlat.phone.$error) &&
-          (typeof $scope.ajanlat.email !== 'undefined' && !$scope.ajanlat.email.$error) &&
-          (typeof $scope.ajanlat.message !== 'undefined')
+          (typeof $scope.termekkerdes.name !== 'undefined' && $scope.termekkerdes.name.length >= 5) &&
+          (typeof $scope.termekkerdes.phone !== 'undefined' && !$scope.termekkerdes.phone.$error) &&
+          (typeof $scope.termekkerdes.email !== 'undefined' && !$scope.termekkerdes.email.$error) &&
+          (typeof $scope.termekkerdes.message !== 'undefined')
         ) {
           state = true;
         }
@@ -586,6 +588,7 @@ app.controller('ActionButtons', ['$scope', '$http', '$mdDialog', '$mdToast', fun
       $scope.sendModalMessage = function( type ){
         if (!$scope.sending) {
           $scope.sending = true;
+          $scope[type].termid = parseInt($scope.termid);
 
           $http({
       			method: 'POST',
@@ -597,8 +600,9 @@ app.controller('ActionButtons', ['$scope', '$http', '$mdDialog', '$mdToast', fun
               datas: $scope[type]
       			})
       		}).success(function(r){
+            console.log(r);
       			$scope.sending = false;
-      			$scope.ajanlat = {};
+      			$scope.termekkerdes = {};
 
             if (r.error == 1) {
               $scope.toast(r.msg, 'alert', 10000);
@@ -626,11 +630,27 @@ app.controller('ActionButtons', ['$scope', '$http', '$mdDialog', '$mdToast', fun
     	}
 		}
 
-		$mdDialog.show(confirm)
-		.then(function() {
-      $scope.status = 'You decided to get rid of your debt.';
-    }, function() {
-      $scope.status = 'You decided to keep your debt.';
+    $http({
+      method: 'POST',
+      url: '/ajax/post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: $.param({
+        type: "getTermItem",
+        id: id
+      })
+    }).success(function(r){
+      console.log(r);
+      if (r.error == 1) {
+        $scope.toast(r.msg, 'alert', 10000);
+      } else {
+        $scope.termekkerdes.product = r.product;
+        $mdDialog.show(confirm)
+    		.then(function() {
+          $scope.status = 'You decided to get rid of your debt.';
+        }, function() {
+          $scope.status = 'You decided to keep your debt.';
+        });
+      }
     });
   }
 
