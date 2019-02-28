@@ -69,13 +69,13 @@
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">
-                                          <div class="col-md-4 form-text"><strong>Város</strong></div>
-                                          <div class="col-md-8"><input required="required" type="text" id="szam_city" name="szam_city" class="form-control"/></div>
+                                          <div class="col-md-4 form-text"><strong>Irányítószám</strong></div>
+                                          <div class="col-md-8"><input required="required" type="text" ng-keyup="findCityByIrsz($event)" id="szam_irsz" name="szam_irsz" class="form-control"/></div>
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">
-                                          <div class="col-md-4 form-text"><strong>Irányítószám</strong></div>
-                                          <div class="col-md-8"><input required="required" type="text" id="szam_irsz" name="szam_irsz" class="form-control"/></div>
+                                          <div class="col-md-4 form-text"><strong>Város</strong></div>
+                                          <div class="col-md-8"><input required="required" type="text" id="szam_city" name="szam_city" class="form-control"/></div>
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">

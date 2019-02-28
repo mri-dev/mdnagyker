@@ -432,6 +432,11 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     });
   }
 
+  $scope.findCityByIrsz = function( event )
+  {
+    var val = event.target.value;
+  }
+
   $scope.toast = function( text, mode, delay ){
     mode = (typeof mode === 'undefined') ? 'simple' : mode;
     delay = (typeof delay === 'undefined') ? 5000 : delay;
