@@ -59,22 +59,17 @@
                                   <div class="col-md-6 col-pright">
                                       <h4>Számlázási adatok</h4>
                                       <div class="row">
-                                          <div class="col-md-4 form-text"><strong>Név</strong></div>
+                                          <div class="col-md-4 form-text"><strong>Név</strong> *</div>
                                           <div class="col-md-8"><input required="required" type="text" id="szam_nev" name="szam_nev" class="form-control"/></div>
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">
-                                          <div class="col-md-4 form-text"><strong>Utca, házszám</strong></div>
-                                          <div class="col-md-8"><input required="required" type="text" id="szam_uhsz" name="szam_uhsz" class="form-control"/></div>
-                                      </div>
-                                      <div class="divider-sm"></div>
-                                      <div class="row">
-                                          <div class="col-md-4 form-text"><strong>Irányítószám</strong></div>
+                                          <div class="col-md-4 form-text"><strong>Irányítószám</strong> *</div>
                                           <div class="col-md-8"><input autocomplete="off" required="required" type="text" ng-keyup="findCityByIrsz($event, 'szam_city')" id="szam_irsz" name="szam_irsz" class="form-control"/></div>
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">
-                                          <div class="col-md-4 form-text"><strong>Város</strong></div>
+                                          <div class="col-md-4 form-text"><strong>Település</strong> *</div>
                                           <div class="col-md-8 hint-holder-col"><input required="required" placeholder="Irányítószám megadása..." readonly="readonly" type="text" id="szam_city" name="szam_city" class="form-control"/><div class="hint-holder" ng-show="findedCity['szam_city'] && findedCity['szam_city'].length != 0" id="szam_city">
                                             <div class="hint-list">
                                               <div class="cityhint" ng-click="fillCityHint('szam_city', city)" ng-repeat="city in findedCity['szam_city']">{{city.varos}} <span ng-show="city.megye" class="megye">({{city.megye}} megye)</span></div>
@@ -83,43 +78,70 @@
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">
-                                          <div class="col-md-4 form-text"><strong>Megye</strong></div>
+                                          <div class="col-md-4 form-text"><strong>Kerület</strong></div>
+                                          <div class="col-md-8"><input type="text" id="szam_kerulet" name="szam_kerulet" class="form-control"/></div>
+                                      </div>
+                                      <div class="divider-sm"></div>
+                                      <div class="row">
+                                          <div class="col-md-4 form-text"><strong>Közterület neve</strong> *</div>
+                                          <div class="col-md-8"><input required="required" type="text" id="szam_kozterulet_nev" name="szam_kozterulet_nev" class="form-control"/></div>
+                                      </div>
+                                      <div class="divider-sm"></div>
+                                      <div class="row">
+                                          <div class="col-md-4 form-text"><strong>Közterület jellege</strong></div>
                                           <div class="col-md-8">
-                                              <select name="szam_state" class="form-control" id="szam_state">
+                                              <select name="szam_kozterulet_jelleg" class="form-control" id="szam_kozterulet_jelleg">
                                                   <option value="" selected="selected">-- válasszon --</option>
-                                                  <option value="" disabled="disabled"></option>
-                                                  <? foreach( $this->states as $s ): ?>
-                                                      <option value="<?=$s?>"><?=$s?></option>
+                                                  <? foreach( $this->kozterulet_jellege as $kj ): ?>
+                                                  <option value="<?=$kj?>" <?=(isset($_POST['szam_kozterulet_jellege']) && $_POST['szam_kozterulet_jellege'] == $kj) ? 'selected="selected"' : ( ($kj == 'utca') ? 'selected="selected"':'' )?>><?=$kj?></option>
                                                   <? endforeach; ?>
                                               </select>
                                           </div>
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">
-                                          <div class="col-md-12 form-text right" style="font-size:0.85em;"><a href="javascript:void(0);" id="copySzamToSzall">számlázási adatok másolása szállítási adatokhoz <i class="fa fa-arrow-right"></i> </a></div>
-
+                                          <div class="col-md-4 form-text"><strong>Házszám</strong> *</div>
+                                          <div class="col-md-8"><input required="required" type="text" id="szam_hazszam" name="szam_hazszam" class="form-control"/></div>
                                       </div>
-
+                                      <div class="divider-sm"></div>
+                                      <div class="row">
+                                          <div class="col-md-4 form-text"><strong>Épület</strong></div>
+                                          <div class="col-md-8"><input type="text" id="szam_epulet" name="szam_epulet" class="form-control"/></div>
+                                      </div>
+                                      <div class="divider-sm"></div>
+                                      <div class="row">
+                                          <div class="col-md-4 form-text"><strong>Lépcsőház</strong></div>
+                                          <div class="col-md-8"><input type="text" id="szam_lepcsohaz" name="szam_lepcsohaz" class="form-control"/></div>
+                                      </div>
+                                      <div class="divider-sm"></div>
+                                      <div class="row">
+                                          <div class="col-md-4 form-text"><strong>Szint</strong></div>
+                                          <div class="col-md-8"><input type="text" id="szam_szint" name="szam_szint" class="form-control"/></div>
+                                      </div>
+                                      <div class="divider-sm"></div>
+                                      <div class="row">
+                                          <div class="col-md-4 form-text"><strong>Ajtó</strong></div>
+                                          <div class="col-md-8"><input type="text" id="szam_ajto" name="szam_ajto" class="form-control"/></div>
+                                      </div>
+                                      <div class="divider-sm"></div>
+                                      <div class="row">
+                                          <div class="col-md-12 form-text right" style="font-size:0.85em;"><a href="javascript:void(0);" id="copySzamToSzall">számlázási adatok másolása szállítási adatokhoz <i class="fa fa-arrow-right"></i> </a></div>
+                                      </div>
                                   </div>
                                   <div class="col-md-6 col-pleft">
                                       <h4>Szállítási adatok</h4>
                                       <div class="row">
-                                          <div class="col-md-4 form-text"><strong>Név</strong></div>
+                                          <div class="col-md-4 form-text"><strong>Név</strong> *</div>
                                           <div class="col-md-8"><input required="required" type="text" id="szall_nev" name="szall_nev" class="form-control"/></div>
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">
-                                          <div class="col-md-4 form-text"><strong>Utca, házszám</strong></div>
-                                          <div class="col-md-8"><input required="required" type="text" id="szall_uhsz" name="szall_uhsz" class="form-control"/></div>
-                                      </div>
-                                      <div class="divider-sm"></div>
-                                      <div class="row">
-                                          <div class="col-md-4 form-text"><strong>Irányítószám</strong></div>
+                                          <div class="col-md-4 form-text"><strong>Irányítószám</strong> *</div>
                                           <div class="col-md-8"><input autocomplete="off" required="required" type="text" id="szall_irsz" ng-keyup="findCityByIrsz($event, 'szall_city')" name="szall_irsz" class="form-control"/></div>
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">
-                                          <div class="col-md-4 form-text"><strong>Város</strong></div>
+                                          <div class="col-md-4 form-text"><strong>Település</strong> *</div>
                                           <div class="col-md-8 hint-holder-col"><input required="required" placeholder="Irányítószám megadása..." type="text" id="szall_city" readonly="readonly" name="szall_city" class="form-control"/><div class="hint-holder" ng-show="findedCity['szall_city'] && findedCity['szall_city'].length != 0" id="szall_city">
                                             <div class="hint-list">
                                               <div class="cityhint" ng-click="fillCityHint('szall_city', city)" ng-repeat="city in findedCity['szall_city']">{{city.varos}} <span ng-show="city.megye" class="megye">({{city.megye}} megye)</span></div>
@@ -128,16 +150,50 @@
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">
-                                          <div class="col-md-4 form-text"><strong>Megye</strong></div>
+                                          <div class="col-md-4 form-text"><strong>Kerület</strong></div>
+                                          <div class="col-md-8"><input type="text" id="szall_kerulet" name="szall_kerulet" class="form-control"/></div>
+                                      </div>
+                                      <div class="divider-sm"></div>
+                                      <div class="row">
+                                          <div class="col-md-4 form-text"><strong>Közterület neve</strong> *</div>
+                                          <div class="col-md-8"><input required="required" type="text" id="szall_kozterulet_nev" name="szall_kozterulet_nev" class="form-control"/></div>
+                                      </div>
+                                      <div class="divider-sm"></div>
+                                      <div class="row">
+                                          <div class="col-md-4 form-text"><strong>Közterület jellege</strong></div>
                                           <div class="col-md-8">
-                                              <select name="szall_state" class="form-control" id="szall_state">
+                                              <select name="szall_kozterulet_jelleg" class="form-control" id="szall_kozterulet_jelleg">
                                                   <option value="" selected="selected">-- válasszon --</option>
-                                                  <option value="" disabled="disabled"></option>
-                                                  <? foreach( $this->states as $s ): ?>
-                                                      <option value="<?=$s?>"><?=$s?></option>
+                                                  <? foreach( $this->kozterulet_jellege as $kj ): ?>
+                                                  <option value="<?=$kj?>" <?=(isset($_POST['szall_kozterulet_jelleg']) && $_POST['szall_kozterulet_jelleg'] == $kj) ? 'selected="selected"' : ( ($kj == 'utca') ? 'selected="selected"':'' )?>><?=$kj?></option>
                                                   <? endforeach; ?>
                                               </select>
                                           </div>
+                                      </div>
+                                      <div class="divider-sm"></div>
+                                      <div class="row">
+                                          <div class="col-md-4 form-text"><strong>Házszám</strong> *</div>
+                                          <div class="col-md-8"><input required="required" type="text" id="szall_hazszam" name="szall_hazszam" class="form-control"/></div>
+                                      </div>
+                                      <div class="divider-sm"></div>
+                                      <div class="row">
+                                          <div class="col-md-4 form-text"><strong>Épület</strong></div>
+                                          <div class="col-md-8"><input type="text" id="szall_epulet" name="szall_epulet" class="form-control"/></div>
+                                      </div>
+                                      <div class="divider-sm"></div>
+                                      <div class="row">
+                                          <div class="col-md-4 form-text"><strong>Lépcsőház</strong></div>
+                                          <div class="col-md-8"><input type="text" id="szall_lepcsohaz" name="szall_lepcsohaz" class="form-control"/></div>
+                                      </div>
+                                      <div class="divider-sm"></div>
+                                      <div class="row">
+                                          <div class="col-md-4 form-text"><strong>Szint</strong></div>
+                                          <div class="col-md-8"><input type="text" id="szall_szint" name="szall_szint" class="form-control"/></div>
+                                      </div>
+                                      <div class="divider-sm"></div>
+                                      <div class="row">
+                                          <div class="col-md-4 form-text"><strong>Ajtó</strong></div>
+                                          <div class="col-md-8"><input type="text" id="szall_ajto" name="szall_ajto" class="form-control"/></div>
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">
@@ -188,7 +244,8 @@
                 var e = $(this).attr('name');
                  $('#register input[name=szall_'+e.replace('szam_','')+']').val($(this).val());
             });
-            $('#register select#szall_state option[value="'+$('#register select#szam_state').val()+'"]').prop('selected', true);
+
+            $('#register select#szall_kozterulet_jelleg option[value="'+$('#register select#szam_kozterulet_jelleg').val()+'"]').prop('selected', true);
         });
     })
 </script>

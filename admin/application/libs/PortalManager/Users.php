@@ -715,7 +715,15 @@ class Users
 		extract($post);
 		unset($post[saveSzallitasi]);
 
-		if($nev == '' || $city == '' || $irsz == '' || $uhsz == '' || $phone == '') throw new \Exception('Minden mező kitölétse kötelező!');
+		if(
+			$nev == '' ||
+			$city == '' ||
+			$irsz == '' ||
+			$kozterulet_jelleg == '' ||
+			$kozterulet_nev == '' ||
+			$hazszam == '' ||
+			$phone == ''
+		) throw new \Exception('Minden kötelező (*) mezőt töltsön ki!');
 
 		foreach ($post as $key => $value) {
 			$this->editAccountDetail( $userID, 'szallitas_'.$key, $value );
@@ -728,7 +736,13 @@ class Users
 		extract($post);
 		unset($post[saveSzamlazasi]);
 
-		if($nev == '' || $city == '' || $irsz == '' || $uhsz == '') throw new \Exception('Minden mező kitölétse kötelező!');
+		if($nev == '' ||
+		$city == '' ||
+		$irsz == '' ||
+		$kozterulet_jelleg == '' ||
+		$kozterulet_nev == '' ||
+		$hazszam == ''
+		) throw new \Exception('Minden kötelező (*) mezőt töltsön ki!');
 
 
 		foreach ($post as $key => $value) {
@@ -1120,7 +1134,6 @@ class Users
 			foreach ($szallitasi_keys as $key => $value) {
 				$this->addAccountDetail( $uid, 'szallitas_'.$key, $value );
 			}
-
 
 			/**
 			 * Céges reg esetén adatok mentése

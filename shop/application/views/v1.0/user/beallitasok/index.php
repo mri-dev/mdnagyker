@@ -2,13 +2,20 @@
     $szallnev = array(
         'nev' => 'Név',
         'phone' => 'Telefon',
-        'uhsz' => 'Utca, házszám',
         'irsz' => 'Irányítószám',
-        'city' => 'Város',
-        'state' => 'Megye'
+        'city' => 'Település',
+        'kerulet' => 'Kerület',
+        'kozterulet_nev' => 'Közterület neve',
+        'kozterulet_jelleg' => 'Közterület jellege',
+        'hazszam' => 'Házszám',
+        'epulet' => 'Épület',
+        'lepcsohaz' => 'Lepcsőház',
+        'szint' => 'Szint',
+        'ajto' => 'Ajtó',
     );
     $szmnev = $szallnev;
     $szmnev['adoszam'] = 'Adószám';
+    $req_items = array('nev', 'irsz', 'city', 'kozterulet_jelleg', 'kozterulet_nev', 'hazszam', 'phone');
 
     $missed_details = array();
     if( isset($_GET['missed_details']) ) {
@@ -28,36 +35,36 @@
         <?=$this->msg['alapadat']?>
         <div class="form-rows">
             <form action="#alapadat" method="post">
-                <div class="row np">
+                <div class="row">
                     <div class="col-md-3"><strong>E-mail cím:</strong></div>
                     <div class="col-md-9"><?=$this->user[email]?></div>
                 </div>
-                <div class="row np">
+                <div class="row">
                     <div class="col-md-3 form-text-md"><strong>Név</strong></div>
                     <div class="col-md-5"><input name="nev" type="text" class="form-control" value="<?=$this->user[data][nev]?>" /></div>
                 </div>
-                <div class="row np">
+                <div class="row">
                     <div class="col-md-3"><strong>Utoljára belépve</strong></div>
                     <div class="col-md-5"><?=$this->user[data][utoljara_belepett]?> (<?=Helper::distanceDate($this->user[data][utoljara_belepett])?>)</div>
                 </div>
-                <div class="row np">
+                <div class="row ">
                     <div class="col-md-3"><strong>Regisztráció</strong></div>
                     <div class="col-md-5"><?=$this->user[data][regisztralt]?> (<?=Helper::distanceDate($this->user[data][regisztralt])?>)</div>
                 </div>
                 <? if( false ): ?>
-                <div class="row np">
+                <div class="row">
                     <div class="col-md-12">
                         KEDVEZMÉNYEK
                     </div>
                 </div>
                 <? foreach( $this->user['kedvezmenyek'] as $kedv ): ?>
-                <div class="row np">
+                <div class="row">
                     <div class="col-md-3"><strong><?=$kedv['nev']?></strong></div>
                     <div class="col-md-5"><a href="<?=$kedv['link']?>" title="részletek"><?=$kedv['kedvezmeny']?>%</a> <? if($kedv['nev'] === 'Arena Water Card' && $kedv['kedvezmeny'] === 0): ?> <a href="javascript:void(0);" onclick="$('#add-watercard').slideToggle(400);" class="add-water-card">kártya regisztrálása</a> <? endif; ?> </div>
                 </div>
                 <? endforeach; ?>
                 <? endif; ?>
-                <div class="row np">
+                <div class="row">
                     <div class="col-md-12 right"><button name="saveDefault" class="btn btn-sec btn-sm"><i class="fa fa-save"></i> Változások mentése</button></div>
                 </div>
             </form>
@@ -69,27 +76,27 @@
         <?=$this->msg['ceg']?>
         <div class="form-rows">
             <form action="#ceg" method="post">
-                <div class="row np">
+                <div class="row">
                     <div class="col-md-3 form-text-md"><strong>Cég neve:</strong></div>
                     <div class="col-md-9"><input name="company_name" type="text" class="form-control" value="<?=$this->user[data][company_name]?>" /></div>
                 </div>
-                <div class="row np">
+                <div class="row">
                     <div class="col-md-3 form-text-md"><strong>Cég címe:</strong></div>
                     <div class="col-md-9"><input name="company_address" type="text" class="form-control" value="<?=$this->user[data][company_address]?>" /></div>
                 </div>
-                <div class="row np">
+                <div class="row">
                     <div class="col-md-3 form-text-md"><strong>Cég telephely:</strong></div>
                     <div class="col-md-9"><input name="company_hq" type="text" class="form-control" value="<?=$this->user[data][company_hq]?>" /></div>
                 </div>
-                <div class="row np">
+                <div class="row">
                     <div class="col-md-3 form-text-md"><strong>Cég adószám:</strong></div>
                     <div class="col-md-9"><input name="company_adoszam" type="text" class="form-control" value="<?=$this->user[data][company_adoszam]?>" /></div>
                 </div>
-                <div class="row np">
+                <div class="row">
                     <div class="col-md-3 form-text-md"><strong>Cég bankszámlaszáma:</strong></div>
                     <div class="col-md-9"><input name="company_bankszamlaszam" type="text" class="form-control" value="<?=$this->user[data][company_bankszamlaszam]?>" /></div>
                 </div>
-                <div class="row np">
+                <div class="row">
                     <div class="col-md-12 right"><button name="saveCompany" class="btn btn-sec btn-sm"><i class="fa fa-save"></i> Változások mentése</button></div>
                 </div>
             </form>
@@ -107,22 +114,32 @@
             <? foreach($szallnev as $dk => $dv):
                 $val = ($this->user[szallitasi_adat]) ? $this->user[szallitasi_adat][$dk] : '';
             ?>
-            <div class="row np">
-                <div class="col-md-3 form-text-md"><strong><?=$szallnev[$dk]?></strong></div>
-                <div class="col-md-9">
-                    <? if($dk != 'state'): ?>
-                    <input name="<?=$dk?>" type="text" class="form-control" value="<?=$val?>" />
-                    <? else: ?>
-                    <select name="<?=$dk?>" class="form-control" id="szall_state">
-                        <? foreach( $this->states as $s ): ?>
-                            <option value="<?=$s?>" <?=($val == $s) ? 'selected="selected"' : ''?>><?=$s?></option>
-                        <? endforeach; ?>
-                    </select>
-                    <? endif; ?>
+            <div class="row">
+                <div class="col-md-3 form-text-md"><strong><?=$szallnev[$dk]?></strong><?=(in_array($dk, $req_items))?' *':''?></div>
+                <div class="col-md-9 <?=($dk=='city')?'hint-holder-col':''?>">
+                <?php if ($dk == 'state'): ?>
+                <?php elseif( $dk == 'irsz'): ?>
+                  <input autocomplete="off" type="text" ng-keyup="findCityByIrsz($event, 'szall_city')" id="szall_irsz" name="irsz" class="form-control" value="<?=$val?>"/>
+                <?php elseif( $dk == 'city'): ?>
+                  <input autocomplete="off" readonly="readonly" type="text" id="szall_city" name="city" class="form-control" value="<?=$val?>"/><div class="hint-holder" ng-show="findedCity['szall_city'] && findedCity['szall_city'].length != 0" id="szall_city">
+                    <div class="hint-list">
+                      <div class="cityhint" ng-click="fillCityHint('szall_city', city)" ng-repeat="city in findedCity['szall_city']">{{city.varos}} <span ng-show="city.megye" class="megye">({{city.megye}} megye)</span></div>
+                    </div>
+                  </div>
+                <?php elseif( $dk == 'kozterulet_jelleg'): ?>
+                <select name="kozterulet_jelleg" class="form-control" id="szall_kozterulet_jelleg">
+                    <option value="" selected="selected">-- válasszon --</option>
+                    <? foreach( $this->kozterulet_jellege as $kj ): ?>
+                    <option value="<?=$kj?>" <?=($val !='' && $val == $kj) ? 'selected="selected"' : ''?>><?=$kj?></option>
+                    <? endforeach; ?>
+                </select>
+                <?php else: ?>
+                    <input name="<?=$dk?>" type="text" class="form-control" id="szall_<?=$dk?>" value="<?=$val?>" />
+                <?php endif; ?>
                 </div>
             </div>
             <? endforeach; ?>
-            <div class="row np">
+            <div class="row">
                 <div class="col-md-12 right"><button name="saveSzallitasi" class="btn btn-sec btn-sm"><i class="fa fa-save"></i> Változások mentése</button></div>
             </div>
             </form>
@@ -140,22 +157,33 @@
             <? foreach($szmnev  as $dk => $dv):  if($dk == 'phone') continue;
              $val = ($this->user[szamlazasi_adat]) ? $this->user[szamlazasi_adat][$dk] : '';
             ?>
-            <div class="row np">
-                <div class="col-md-3 form-text-md"><strong><?=$szmnev[$dk]?></strong></div>
-                <div class="col-md-9">
-                    <? if($dk != 'state'): ?>
-                    <input name="<?=$dk?>" type="text" class="form-control" value="<?=$val?>" />
-                    <? else: ?>
-                    <select name="<?=$dk?>" class="form-control" id="szall_state">
-                        <? foreach( $this->states as $s ): ?>
-                            <option value="<?=$s?>" <?=($val == $s) ? 'selected="selected"' : ''?>><?=$s?></option>
-                        <? endforeach; ?>
-                    </select>
-                    <? endif; ?>
+
+            <div class="row">
+                <div class="col-md-3 form-text-md"><strong><?=$szmnev[$dk]?></strong><?=(in_array($dk, $req_items))?' *':''?></div>
+                <div class="col-md-9 <?=($dk=='city')?'hint-holder-col':''?>">
+                <?php if ($dk == 'state'): ?>
+                <?php elseif( $dk == 'irsz'): ?>
+                  <input autocomplete="off" type="text" ng-keyup="findCityByIrsz($event, 'szam_city')" id="szam_irsz" name="irsz" class="form-control" value="<?=$val?>"/>
+                <?php elseif( $dk == 'city'): ?>
+                  <input autocomplete="off" readonly="readonly" type="text" id="szam_city" name="city" class="form-control" value="<?=$val?>"/><div class="hint-holder" ng-show="findedCity['szam_city'] && findedCity['szam_city'].length != 0" id="szam_city">
+                    <div class="hint-list">
+                      <div class="cityhint" ng-click="fillCityHint('szam_city', city)" ng-repeat="city in findedCity['szam_city']">{{city.varos}} <span ng-show="city.megye" class="megye">({{city.megye}} megye)</span></div>
+                    </div>
+                  </div>
+                <?php elseif( $dk == 'kozterulet_jelleg'): ?>
+                <select name="kozterulet_jelleg" class="form-control" id="szam_kozterulet_jelleg">
+                    <option value="" selected="selected">-- válasszon --</option>
+                    <? foreach( $this->kozterulet_jellege as $kj ): ?>
+                    <option value="<?=$kj?>" <?=($val !='' && $val == $kj) ? 'selected="selected"' : ''?>><?=$kj?></option>
+                    <? endforeach; ?>
+                </select>
+                <?php else: ?>
+                    <input name="<?=$dk?>" type="text" class="form-control" id="szam_<?=$dk?>" value="<?=$val?>" />
+                <?php endif; ?>
                 </div>
             </div>
             <? endforeach; ?>
-            <div class="row np">
+            <div class="row">
                 <div class="col-md-12 right"><button name="saveSzamlazasi" class="btn btn-sec btn-sm"><i class="fa fa-save"></i> Változások mentése</button></div>
             </div>
             </form>
