@@ -18,7 +18,7 @@
                   </div>
                   <?=$this->msg?>
                   <br><br>
-                  <form action="/user/regisztracio/<?=($_GET['group'] == 'company')?'?group=company':''?>" method="post" id="register" onsubmit="$('#registerBtn').click() return false;">
+                  <form autocomplete="off" action="/user/regisztracio/<?=($_GET['group'] == 'company')?'?group=company':''?>" method="post" id="register" onsubmit="$('#registerBtn').click() return false;">
                   <input type="hidden" name="group" value="<?=$_GET['group']?>">
                   <div class="" style="padding:0;">
                       <div class="stack">
@@ -70,12 +70,16 @@
                                       <div class="divider-sm"></div>
                                       <div class="row">
                                           <div class="col-md-4 form-text"><strong>Irányítószám</strong></div>
-                                          <div class="col-md-8"><input required="required" type="text" ng-keyup="findCityByIrsz($event)" id="szam_irsz" name="szam_irsz" class="form-control"/></div>
+                                          <div class="col-md-8"><input autocomplete="off" required="required" type="text" ng-keyup="findCityByIrsz($event, 'szam_city')" id="szam_irsz" name="szam_irsz" class="form-control"/></div>
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">
                                           <div class="col-md-4 form-text"><strong>Város</strong></div>
-                                          <div class="col-md-8"><input required="required" type="text" id="szam_city" name="szam_city" class="form-control"/></div>
+                                          <div class="col-md-8 hint-holder-col"><input required="required" placeholder="Irányítószám megadása..." readonly="readonly" type="text" id="szam_city" name="szam_city" class="form-control"/><div class="hint-holder" ng-show="findedCity['szam_city'] && findedCity['szam_city'].length != 0" id="szam_city">
+                                            <div class="hint-list">
+                                              <div class="cityhint" ng-click="fillCityHint('szam_city', city)" ng-repeat="city in findedCity['szam_city']">{{city.varos}} <span ng-show="city.megye" class="megye">({{city.megye}} megye)</span></div>
+                                            </div>
+                                          </div></div>
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">
@@ -110,13 +114,17 @@
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">
-                                          <div class="col-md-4 form-text"><strong>Város</strong></div>
-                                          <div class="col-md-8"><input required="required" type="text" id="szall_city"  name="szall_city" class="form-control"/></div>
+                                          <div class="col-md-4 form-text"><strong>Irányítószám</strong></div>
+                                          <div class="col-md-8"><input autocomplete="off" required="required" type="text" id="szall_irsz" ng-keyup="findCityByIrsz($event, 'szall_city')" name="szall_irsz" class="form-control"/></div>
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">
-                                          <div class="col-md-4 form-text"><strong>Irányítószám</strong></div>
-                                          <div class="col-md-8"><input required="required" type="text" id="szall_irsz" name="szall_irsz" class="form-control"/></div>
+                                          <div class="col-md-4 form-text"><strong>Város</strong></div>
+                                          <div class="col-md-8 hint-holder-col"><input required="required" placeholder="Irányítószám megadása..." type="text" id="szall_city" readonly="readonly" name="szall_city" class="form-control"/><div class="hint-holder" ng-show="findedCity['szall_city'] && findedCity['szall_city'].length != 0" id="szall_city">
+                                            <div class="hint-list">
+                                              <div class="cityhint" ng-click="fillCityHint('szall_city', city)" ng-repeat="city in findedCity['szall_city']">{{city.varos}} <span ng-show="city.megye" class="megye">({{city.megye}} megye)</span></div>
+                                            </div>
+                                          </div></div>
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">

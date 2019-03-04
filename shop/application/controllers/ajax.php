@@ -508,6 +508,29 @@ class ajax extends Controller{
 					$ret['pass'] = $_POST;
 					echo json_encode($ret);
 				break;
+				case 'irszCityHint':
+					$re = array();
+					$re['data'] = array();
+					$re['pass'] = $_POST;
+
+					$irsz = (int)$_POST['irsz'];
+
+					$q = "SELECT * FROM iranyitoszamok WHERE irsz = :irsz ORDER BY varos ASC";
+					$qry = $this->db->squery( $q, array( 'irsz' => $irsz ) );
+
+					if ($qry->rowCount() != 0) {
+						$data = $qry->fetchAll(\PDO::FETCH_ASSOC);
+						$red = array();
+						foreach ( (array)$data as $d ) {
+							$red[] = $d;
+						}
+						unset($data);
+						$re['data'] = $red;
+						unset($red);
+					}
+
+					echo json_encode( $re );
+				break;
 				case 'cartInfo':
 					$mid 	= Helper::getMachineID();
 					$cart = new Cart($mid, array( 'db' => $this->db, 'user' => $this->User->get(), 'settings' => $this->view->settings ));
