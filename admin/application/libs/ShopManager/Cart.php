@@ -89,6 +89,7 @@ class Cart
 			$d['url'] 	= '/termek/'.\PortalManager\Formater::makeSafeUrl($d['termekNev'],'_-'.$d['termekID']);
 			$d['profil_kep'] = \PortalManager\Formater::productImage($d['profil_kep'], false, \ProductManager\Products::TAG_IMG_NOPRODUCT );
 			$d['configs'] = $this->collectConfigData($d['configs']);
+			$d['mertekegyseg_egysegar'] = $this->calcEgysegAr($d['mertekegyseg'], $d['mertekegyseg_ertek'], $d['ar']);
 
 			$dt[] = $d;
 		}
@@ -137,6 +138,27 @@ class Cart
 		}
 
 		return $list;
+	}
+
+	public function calcEgysegAr( $me, $mevar, $price)
+	{
+		$ea = 0;
+		$mert = $me;
+		switch ( $me ) {
+			case 'méter':
+				$ea = $price / $mevar;
+			break;
+			case 'ml':
+				$ea = $price / $mevar * 1000;
+				$mert = 'l';
+			break;
+		}
+
+		if ($ea == 0 || $mevar == 1) {
+			return false;
+		} else {
+			return number_format($ea,2, ".", " ") . ' Ft/'.$mert;
+		}
 	}
 
 	public function __destruct()

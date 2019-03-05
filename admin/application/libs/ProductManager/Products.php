@@ -1106,7 +1106,7 @@ class Products
 		return $this;
 	}
 
-	public function calcEgysegAr( $me, $mevar, $price)
+	public static function calcEgysegAr( $me, $mevar, $price)
 	{
 		$ea = 0;
 		$mert = $me;

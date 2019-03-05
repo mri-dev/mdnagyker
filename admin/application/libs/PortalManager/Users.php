@@ -157,10 +157,11 @@ class Users
 
 		// Korábban rendelt, lezárt termékek össz. értéke
 		$q = "
-		SELECT 				SUM((o.me * o.egysegAr)) as ar,
-		 					(SELECT kedvezmeny FROM orders WHERE ID = o.orderKey)  as kedv
-		FROM 				`order_termekek` as o
-		WHERE 				o.userID = ".$ret[data][ID]." and (SELECT allapot FROM orders WHERE ID = o.orderKey) = ".$this->settings['flagkey_orderstatus_done'];
+		SELECT
+			SUM((o.me * o.egysegAr)) as ar,
+			(SELECT kedvezmeny FROM orders WHERE ID = o.orderKey)  as kedv
+		FROM `order_termekek` as o
+		WHERE	o.userID = ".$ret[data][ID]." and (SELECT allapot FROM orders WHERE ID = o.orderKey) = ".$this->settings['flagkey_orderstatus_done'];
 
 		$ordpc = $this->db->query($q)->fetch(\PDO::FETCH_ASSOC);
 

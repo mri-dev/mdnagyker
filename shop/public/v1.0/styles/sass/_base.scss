@@ -4366,6 +4366,11 @@ md-toast{
 	color: $color-blue;
 	line-height: 28px;
 }
+.cartItems .item .met,
+.cartItems .item .me-subt{
+	font-size: 0.8rem;
+	color: #acacac;
+}
 .cartItems .item-header{
 	color: #aaa;
 	font-family: 'Din Comp', sans-serif;
@@ -4432,11 +4437,13 @@ md-toast{
 	font-size: 2.2em;
 }
 .nextOrded .errMsg {
-	background-color: #f00;
-	color: white;
-	padding:2px 4px;
-	font-size: 0.9em;
-	display: block;
+	background-color: #ef7378;
+  color: white;
+  padding: 4px 6px;
+  font-size: 0.9em;
+  display: block;
+  margin: 3px 0;
+  border-radius: 4px;
 }
 
 .nextOrded .head {
@@ -4661,7 +4668,7 @@ md-toast{
 	background:#e3e3e3;
 }
 .nextOrded .atvetel > li > input[type=radio]:checked + label{
-	background: darken($color-pr, 5%);
+	background: #3a628e;
 	color:white;
 }
 .nextOrded .atvetel > li > input[type=radio]:disabled + label{
@@ -4678,7 +4685,7 @@ md-toast{
 	color:#bcbbbb;
 }
 .nextOrded .atvetel > li > input[type=radio]:checked + label:after{
-	color:#fff;
+	color:#84d770;
 }
 .nextOrded .atvetel > li > input[type=radio]:disabled + label:after{
 	content:'\f057';
@@ -4773,7 +4780,7 @@ md-toast{
 	font-size:16px;
 }
 .nextOrded .steps .price .p.end .ar{
-	color:$color-pr;
+	color: #007aff;
 }
 
 .nextOrded .step4 .kedvezmeny > div {
