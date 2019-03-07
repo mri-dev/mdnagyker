@@ -2292,6 +2292,8 @@ class Shop
 							c.*,
 							t.nev,
 							t.raktar_articleid,
+							t.mertekegyseg,
+							t.mertekegyseg_ertek,
 							getTermekUrl(t.ID,'".$this->settings['domain']."') as url,
 							getTermekAr(c.termekID, ".$uid.") as ar,
 							t.referer_price_discount,
@@ -2415,6 +2417,8 @@ class Shop
 								$levon = (int)$d['me'];
 								$this->db->query("UPDATE shop_termekek SET raktar_keszlet = raktar_keszlet - ".$levon." WHERE ID = ".$d['termekID']);
 							}
+
+							$d['configs'] = $this->collectConfigData($d['configs']);
 
 							$temp_cart[] = $d;
 						}

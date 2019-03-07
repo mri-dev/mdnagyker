@@ -467,25 +467,25 @@
 																				</select>
 																		</div>
 																		<div class="col-sm-3">
-																			<input type="text" class="form-control" name="szam_lepcsohaz" value="<?=($this->orderExc)?$_POST[szam_lepcsohaz]:(($this->storedString[1])?$this->storedString[1][szam_lepcsohaz]:$this->user[szamlazasi_adat][lepcsohaz])?>" placeholder="Lépcsőház" />
-																			<? if($this->orderExc && in_array('szam_lepcsohaz',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
-																		</div>
-																	</div>
-																	<div class="row">
-																		<div class="col-sm-3">
 																			<input type="text" class="form-control" name="szam_hazszam" value="<?=($this->orderExc)?$_POST[szam_hazszam]:(($this->storedString[1])?$this->storedString[1][szam_hazszam]:$this->user[szamlazasi_adat][hazszam])?>" placeholder="* Házszám" />
 																			<? if($this->orderExc && in_array('szam_hazszam',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
 																		</div>
+																	</div>
+																	<div class="row">
 																		<div class="col-sm-3">
 																			<input type="text" class="form-control" name="szam_epulet" value="<?=($this->orderExc)?$_POST[szam_epulet]:(($this->storedString[1])?$this->storedString[1][szam_epulet]:$this->user[szamlazasi_adat][epulet])?>" placeholder="Épület" />
 																			<? if($this->orderExc && in_array('szam_epulet',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
 																		</div>
 																		<div class="col-sm-3">
-																			<input type="text" class="form-control" name="szam_szint" value="<?=($this->orderExc)?$_POST[szam_szint]:(($this->storedString[1])?$this->storedString[1][szam_szint]:$this->user[szamlazasi_adat][hazszam])?>" placeholder="Szint" />
+																			<input type="text" class="form-control" name="szam_lepcsohaz" value="<?=($this->orderExc)?$_POST[szam_lepcsohaz]:(($this->storedString[1])?$this->storedString[1][szam_lepcsohaz]:$this->user[szamlazasi_adat][lepcsohaz])?>" placeholder="Lépcsőház" />
+																			<? if($this->orderExc && in_array('szam_lepcsohaz',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
+																		</div>
+																		<div class="col-sm-3">
+																			<input type="text" class="form-control" name="szam_szint" value="<?=($this->orderExc)?$_POST[szam_szint]:(($this->storedString[1])?$this->storedString[1][szam_szint]:$this->user[szamlazasi_adat][szint])?>" placeholder="Szint" />
 																			<? if($this->orderExc && in_array('szam_szint',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
 																		</div>
 																		<div class="col-sm-3">
-																			<input type="text" class="form-control" name="szam_ajto" value="<?=($this->orderExc)?$_POST[szam_ajto]:(($this->storedString[1])?$this->storedString[1][szam_ajto]:$this->user[szamlazasi_adat][hazszam])?>" placeholder="Ajtó" />
+																			<input type="text" class="form-control" name="szam_ajto" value="<?=($this->orderExc)?$_POST[szam_ajto]:(($this->storedString[1])?$this->storedString[1][szam_ajto]:$this->user[szamlazasi_adat][ajto])?>" placeholder="Ajtó" />
 																			<? if($this->orderExc && in_array('szam_ajto',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
 																		</div>
 																	</div>
@@ -543,25 +543,25 @@
 																				</select>
 																		</div>
 																		<div class="col-sm-3">
-																			<input type="text" class="form-control" name="szall_lepcsohaz" value="<?=($this->orderExc)?$_POST[szall_lepcsohaz]:(($this->storedString[1])?$this->storedString[1][szall_lepcsohaz]:$this->user[szallitasi_adat][lepcsohaz])?>" placeholder="Lépcsőház" />
-																			<? if($this->orderExc && in_array('szall_lepcsohaz',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
-																		</div>
-																	</div>
-																	<div class="row">
-																		<div class="col-sm-3">
 																			<input type="text" class="form-control" name="szall_hazszam" value="<?=($this->orderExc)?$_POST[szall_hazszam]:(($this->storedString[1])?$this->storedString[1][szall_hazszam]:$this->user[szallitasi_adat][hazszam])?>" placeholder="* Házszám" />
 																			<? if($this->orderExc && in_array('szall_hazszam',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
 																		</div>
+																	</div>
+																	<div class="row">
 																		<div class="col-sm-3">
 																			<input type="text" class="form-control" name="szall_epulet" value="<?=($this->orderExc)?$_POST[szall_epulet]:(($this->storedString[1])?$this->storedString[1][szall_epulet]:$this->user[szallitasi_adat][epulet])?>" placeholder="Épület" />
 																			<? if($this->orderExc && in_array('szall_epulet',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
 																		</div>
 																		<div class="col-sm-3">
-																			<input type="text" class="form-control" name="szall_szint" value="<?=($this->orderExc)?$_POST[szall_szint]:(($this->storedString[1])?$this->storedString[1][szall_szint]:$this->user[szallitasi_adat][hazszam])?>" placeholder="Szint" />
+																			<input type="text" class="form-control" name="szall_lepcsohaz" value="<?=($this->orderExc)?$_POST[szall_lepcsohaz]:(($this->storedString[1])?$this->storedString[1][szall_lepcsohaz]:$this->user[szallitasi_adat][lepcsohaz])?>" placeholder="Lépcsőház" />
+																			<? if($this->orderExc && in_array('szall_lepcsohaz',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
+																		</div>
+																		<div class="col-sm-3">
+																			<input type="text" class="form-control" name="szall_szint" value="<?=($this->orderExc)?$_POST[szall_szint]:(($this->storedString[1])?$this->storedString[1][szall_szint]:$this->user[szallitasi_adat][szint])?>" placeholder="Szint" />
 																			<? if($this->orderExc && in_array('szall_szint',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
 																		</div>
 																		<div class="col-sm-3">
-																			<input type="text" class="form-control" name="szall_ajto" value="<?=($this->orderExc)?$_POST[szall_ajto]:(($this->storedString[1])?$this->storedString[1][szall_ajto]:$this->user[szallitasi_adat][hazszam])?>" placeholder="Ajtó" />
+																			<input type="text" class="form-control" name="szall_ajto" value="<?=($this->orderExc)?$_POST[szall_ajto]:(($this->storedString[1])?$this->storedString[1][szall_ajto]:$this->user[szallitasi_adat][ajto])?>" placeholder="Ajtó" />
 																			<? if($this->orderExc && in_array('szam_ajto',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
 																		</div>
 																	</div>

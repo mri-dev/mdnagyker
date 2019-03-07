@@ -26,6 +26,10 @@
           color: white;
         }
 
+        .config {
+          margin: 5px 0 0 0;
+        }
+
         footer{
           background: #333333;
         }
