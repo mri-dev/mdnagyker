@@ -994,7 +994,7 @@ table.termeklista > tbody > tr > td {
 	vertical-align:middle;
   background: white;
 }
-table.termeklista > tbody > tr > td:first-child i {
+table.termeklista > tbody > tr > td:first-child i.sorter {
 	color: #a5a5a5;
   position: absolute;
   left: 0;
@@ -3014,6 +3014,15 @@ fieldset.block {
 }
 .hasRegisteredByCompany{
   background: #ff6945;
+  padding: 2px 4px;
+  color: #ffffff;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  font-size: 0.85em;
+}
+.hasRegisteredByUser{
+  background: #656565;
   padding: 2px 4px;
   color: #ffffff;
   -webkit-border-radius: 3px;

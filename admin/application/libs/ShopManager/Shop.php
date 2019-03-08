@@ -2572,6 +2572,8 @@ class Shop
 			t.meret,
 			t.szin,
 			t.cikkszam,
+			t.mertekegyseg,
+			t.mertekegyseg_ertek,
 			t.raktar_variantid,
 			getTermekUrl(t.ID,'".$this->settings['domain']."') as url,
 			getTermekAr(t.marka,IF(t.egyedi_ar IS NOT NULL,t.egyedi_ar,IF(t.akcios,t.akcios_brutto_ar,t.brutto_ar))) as ar,
@@ -2596,6 +2598,7 @@ class Shop
 				\PortalManager\Formater::discountPrice( $d[subAr], $d[kedvezmeny_szazalek] );
 				\PortalManager\Formater::discountPrice( $d[egysegAr], $d[kedvezmeny_szazalek] );
 			}
+			$d['configs'] = $this->collectConfigData($d['configs']);
 			$bdata[] = $d;
 		}
 

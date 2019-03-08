@@ -1,5 +1,4 @@
-
-<?
+<?php
 $nevek = array(
 	'nev' => 'Név',
 	'adoszam' => 'Adószám',
@@ -39,10 +38,11 @@ Megrendelések
     </span>
 </h1>
 <?=$this->msg?>
+<pre><?php //print_r($this->megrendelesek['data']); ?></pre>
 <form action="" method="post">
-    <div class="right" style="display:none;">
-        <button type="button" onclick="collectSprinterTrans();">Sprinter futár export (.csv)</button>
-    </div>
+<div class="right" style="display:none;">
+    <button type="button" onclick="collectSprinterTrans();">Sprinter futár export (.csv)</button>
+</div>
 <div class="tbl-container overflowed">
 <table class="table termeklista table-bordered">
 	<thead>
@@ -114,18 +114,17 @@ Megrendelések
 				<input type="hidden" name="accessKey[<?=$d[ID]?>]" value="<?=$d[accessKey]?>" />
             	<div class="nev"><?=$d[nev]?> (<em style="font-weight:normal;"><?=$d[email]?></em>)</div>
                 <div>
-                    <? if($d['userID']): ?>
-                    <span class="hasRegistered">Regisztrált tag <i class="fa fa-check"></i></span>
-										<?php if ($d['user'] && $d['user']['user_group'] == \PortalManager\Users::USERGROUP_COMPANY ): ?>
-											<span class="hasRegisteredByCompany" title="Cégként regisztrált">Cég</span>
-										<?php endif; ?>
-                    <? endif; ?>
-					<a href="<?=HOMEDOMAIN?>order/<?=$d[accessKey]?>" target="_blank">Publikus adatlap</a>
-					<? if( $d[comment] != '' ): ?>
-						&nbsp;&nbsp;<span style="color:#eb6464;"><i class="fa fa-file-text-o"></i> vásárlói megjegyzés</span>
-					<? endif; ?>
-                    <span class="sprinter-trans-export" style="display:none;">&nbsp;<label><input type="checkbox" class="sprinter_exp" name="sprinter_exp[]" value="<?=$d[accessKey]?>"> sprinter futár (.csv)</label></span>
-				</div>
+                <? if($d['userID']): ?>
+                <span class="hasRegistered">Regisztrált tag <i class="fa fa-check"></i></span>
+
+								<span class="hasRegisteredBy<?php if ($d['user'] && $d['user']['user_group'] == \PortalManager\Users::USERGROUP_COMPANY ){ echo 'Company'; }else{ echo 'User'; } ?>"><?php echo $d['user']['ar_csoport']; ?> [<?php echo $d['user']['price_group_key'] ?>]</span>
+                <? endif; ?>
+			<a href="<?=HOMEDOMAIN?>order/<?=$d[accessKey]?>" target="_blank">Adatlap</a>
+			<? if( $d[comment] != '' ): ?>
+				&nbsp;&nbsp;<span style="color:#eb6464;"><i class="fa fa-file-text-o"></i> Megjegyzés</span>
+			<? endif; ?>
+                <span class="sprinter-trans-export" style="display:none;">&nbsp;<label><input type="checkbox" class="sprinter_exp" name="sprinter_exp[]" value="<?=$d[accessKey]?>"> sprinter futár (.csv)</label></span>
+								</div>
             </td>
             <td class="center">
                 <strong style="color:<?=$this->allapotok[order][$d[allapot]][szin]?>;"><?=$this->allapotok[order][$d[allapot]][nev]?></strong>
@@ -181,17 +180,12 @@ Megrendelések
                                 $c_total = 0;
                                 foreach($d[items][data] as $item): $c_total += $item[subAr]; ?>
                     			<tr>
-                                	<td width="35"><div class="img"><img src="<?=\PortalManager\Formater::productImage($item[profil_kep], 75, \ProductManager\Products::TAG_IMG_NOPRODUCT)?>" alt="" /></div></td>
+                                	<td width="35"><div class="img"><img src="<?=\PortalManager\Formater::productImage($item[profil_kep], false, \ProductManager\Products::TAG_IMG_NOPRODUCT)?>" alt="" /></div></td>
                     				<td>
 									   <a href="<?=HOMEDOMAIN.'termek/'.\PortalManager\Formater::makeSafeUrl($item[termekNev],'_-'.$item[termekID])?>" target="_blank"><?=($item[termekNev]) ?: '-törölt termék-'?></a>
                                        <div class="item-number">
 																				 <span class="number tid" title="Termék ID">#<?=$item['termekID']?></span>
-																				 <?php if ( $item['szin'] != '' ): ?>
-																				 <span class="number tvar" title="Termék variáció">Var.: <strong><?php echo $item['szin']; ?></strong></span>
-																				 <?php endif; ?>
-																				 <?php if ( $item['meret'] != '' ): ?>
-																				 <span class="number tkisz" title="Termék kiszerelés">Kisz.: <strong><?php echo $item['meret']; ?></strong></span>
-																				 <?php endif; ?>
+																				 <span class="number tid" title="Cashman FX ID">CMFX #<?=$item['cmfx_id']?></span>
 																			</div>
                                     </td>
 																		<td class="center"><span class="cikkszam"><?=$item['cikkszam']?></span></td>

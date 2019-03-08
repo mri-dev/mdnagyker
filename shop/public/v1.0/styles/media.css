@@ -1367,7 +1367,7 @@ body.singlepage .website .cover-img {
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  box-shadow: inset 0 -200px 200px -80px rgba(0, 0, 0, 0.71);
+  box-shadow: inset 0 -200px 200px -80px rgba(0, 0, 0, 0);
 }
 /* line 92, sass/_base.scss */
 body.singlepage .website .page {
@@ -2151,7 +2151,7 @@ body.singlepage .website .page.covered-page .side-menu {
 .webshop-product-top .items .item .image .short-desc,
 .related-products .items .item .image .short-desc {
   z-index: 2;
-  background: rgba(240, 240, 240, 0.8);
+  background: rgba(240, 240, 240, 0);
   padding: 5px;
   font-size: 0.8em;
   text-align: left;
@@ -2947,7 +2947,7 @@ body.singlepage .website .page.covered-page .side-menu {
   z-index: 50;
   padding: 0.2px;
   border: 0.5px solid #d9d9d9;
-  box-shadow: 8px 8px 12px -5px rgba(0, 0, 0, 0.11);
+  box-shadow: 8px 8px 12px -5px rgba(0, 0, 0, 0);
 }
 /* line 1533, sass/_base.scss */
 .cat-menu > .title {
@@ -5739,7 +5739,7 @@ md-toast {
 /* line 400, scss/_base.scss */
 /* line 4200, sass/_base.scss */
 .dialogBox.overlayed {
-  background: rgba(74, 74, 74, 0.9);
+  background: rgba(74, 74, 74, 0);
   pointer-events: auto;
 }
 
@@ -6774,82 +6774,85 @@ md-toast {
   margin: 0 10px 0 0;
 }
 /* line 5053, sass/_base.scss */
+.order .items .img img {
+  max-width: 100%;
+}
+/* line 5057, sass/_base.scss */
 .order .items .name a {
   font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  font-size: 1.2em;
+  font-size: 1rem;
   font-weight: bold;
-  color: #d9d9d9;
-  line-height: 28px;
+  color: #007aff;
+  line-height: 1.3;
 }
-/* line 5061, sass/_base.scss */
+/* line 5064, sass/_base.scss */
 .order .orderpage .head {
   position: relative;
   padding: 20px 0;
 }
-/* line 5065, sass/_base.scss */
+/* line 5068, sass/_base.scss */
 .order .serial {
   float: right;
   font-size: 1.4em;
   font-family: "Roboto", sans-serif;
 }
-/* line 5071, sass/_base.scss */
+/* line 5074, sass/_base.scss */
 .order .orderState {
   padding: 30px 0;
   line-height: 2;
 }
-/* line 5075, sass/_base.scss */
+/* line 5078, sass/_base.scss */
 .order .orderState h5 {
   margin-bottom: 5px;
 }
-/* line 5080, sass/_base.scss */
+/* line 5083, sass/_base.scss */
 .order h1 {
   text-transform: uppercase;
   font-weight: bold;
   margin: 0 0 10px 0;
   font-family: "Roboto", sans-serif;
-  color: #d9d9d9;
+  color: #007aff;
 }
-/* line 5088, sass/_base.scss */
+/* line 5091, sass/_base.scss */
 .order .sub {
   color: #444444;
 }
-/* line 5091, sass/_base.scss */
+/* line 5094, sass/_base.scss */
 .order .sub em {
   color: #acacac;
 }
-/* line 5096, sass/_base.scss */
+/* line 5099, sass/_base.scss */
 .order .orderStatus {
   font-size: 1.8em;
 }
-/* line 5100, sass/_base.scss */
+/* line 5103, sass/_base.scss */
 .order h4 {
   font-size: 1.4em;
   padding: 12px;
-  background-color: #d6d9dc;
+  background-color: #5a5a5a;
   text-transform: uppercase;
   font-family: "Roboto", sans-serif;
   text-align: center;
   margin: 0;
   color: #d9d9d9;
 }
-/* line 5110, sass/_base.scss */
+/* line 5113, sass/_base.scss */
 .order .items-table {
   padding: 10px 0;
 }
-/* line 5113, sass/_base.scss */
+/* line 5116, sass/_base.scss */
 .order .items-table table {
   margin: 0;
 }
-/* line 5117, sass/_base.scss */
+/* line 5120, sass/_base.scss */
 .order .items td {
   vertical-align: middle;
 }
-/* line 5121, sass/_base.scss */
+/* line 5124, sass/_base.scss */
 .order .datas .data {
   padding: 10px 0;
 }
-/* line 5124, sass/_base.scss */
+/* line 5127, sass/_base.scss */
 .order .datas .data .payu-paid-done {
   background: green;
   color: white;
@@ -6857,7 +6860,7 @@ md-toast {
   padding: 2px 5px;
   line-height: 1.4;
 }
-/* line 5131, sass/_base.scss */
+/* line 5134, sass/_base.scss */
 .order .datas .data .payu-paidonly {
   background: orange;
   color: white;
@@ -6865,7 +6868,7 @@ md-toast {
   padding: 2px 5px;
   line-height: 1.4;
 }
-/* line 5140, sass/_base.scss */
+/* line 5143, sass/_base.scss */
 .order .datas .head {
   font-size: 1em;
   padding: 8px;
@@ -6873,22 +6876,22 @@ md-toast {
   font-family: "Roboto", sans-serif;
   margin: 10px 0 0 0;
 }
-/* line 5148, sass/_base.scss */
+/* line 5151, sass/_base.scss */
 .order .inforows {
   margin: 10px -10px;
 }
-/* line 5150, sass/_base.scss */
+/* line 5153, sass/_base.scss */
 .order .inforows div {
   margin-bottom: 5px;
   line-height: 20px;
 }
-/* line 5154, sass/_base.scss */
+/* line 5157, sass/_base.scss */
 .order .inforows div:nth-child(odd) {
   color: #aaa;
   font-size: 1em;
 }
 
-/* line 5162, sass/_base.scss */
+/* line 5165, sass/_base.scss */
 .mustSelect {
   color: white;
   background: #c83636;
@@ -6896,25 +6899,25 @@ md-toast {
   font-size: 0.9em;
 }
 
-/* line 5171, sass/_base.scss */
+/* line 5174, sass/_base.scss */
 .cartItems .action i {
   color: #d7d7d7;
   margin: 0 2px;
   cursor: pointer;
 }
 
-/* line 5176, sass/_base.scss */
+/* line 5179, sass/_base.scss */
 .cartItems .action i:hover {
   color: black;
 }
 
-/* line 5179, sass/_base.scss */
+/* line 5182, sass/_base.scss */
 .mustSelect a {
   text-decoration: underline;
   color: white;
 }
 
-/* line 5184, sass/_base.scss */
+/* line 5187, sass/_base.scss */
 .cart-float .totals {
   line-height: 30px;
   padding: 12px;
@@ -6922,7 +6925,7 @@ md-toast {
   box-shadow: 0 -5px 15px -8px #888888;
 }
 
-/* line 5190, sass/_base.scss */
+/* line 5193, sass/_base.scss */
 .cart-float .totals a {
   text-decoration: none;
   margin-top: 5px;
@@ -6935,16 +6938,16 @@ md-toast {
   font-family: "Roboto", sans-serif;
 }
 
-/* line 5202, sass/_base.scss */
+/* line 5205, sass/_base.scss */
 .account {
   padding: 30px 0;
 }
-/* line 5205, sass/_base.scss */
+/* line 5208, sass/_base.scss */
 .account .reseller-description {
   padding: 15px 0;
   line-height: 1.4;
 }
-/* line 5210, sass/_base.scss */
+/* line 5213, sass/_base.scss */
 .account h1 {
   text-transform: uppercase;
   font-weight: bold;
@@ -6953,11 +6956,11 @@ md-toast {
   margin-bottom: 10px;
   color: black;
 }
-/* line 5219, sass/_base.scss */
+/* line 5222, sass/_base.scss */
 .account .stack {
   margin-bottom: 10px;
 }
-/* line 5221, sass/_base.scss */
+/* line 5224, sass/_base.scss */
 .account .stack h3 {
   font-family: "Roboto", sans-serif;
   color: #565656;
@@ -6969,43 +6972,43 @@ md-toast {
   font-weight: 100;
   border-radius: 5px;
 }
-/* line 5233, sass/_base.scss */
+/* line 5236, sass/_base.scss */
 .account .stack h4 {
   margin: 5px 0 15px 0;
   text-align: center;
   font-style: italic;
 }
-/* line 5239, sass/_base.scss */
+/* line 5242, sass/_base.scss */
 .account .stack a {
   color: #007aff;
 }
-/* line 5244, sass/_base.scss */
+/* line 5247, sass/_base.scss */
 .account .row > div[class*=col-] {
   margin-bottom: 8px;
 }
-/* line 5247, sass/_base.scss */
+/* line 5250, sass/_base.scss */
 .account .row > div[class*=col-] label {
   margin: 10px 0;
 }
-/* line 5253, sass/_base.scss */
+/* line 5256, sass/_base.scss */
 .account .settings h4 {
   font-family: "Roboto", sans-serif;
   line-height: 1.5;
   margin: 15px 0 25px 0;
   font-size: 1.8em;
 }
-/* line 5260, sass/_base.scss */
+/* line 5263, sass/_base.scss */
 .account .settings .row {
   margin: 5px 0;
 }
-/* line 5266, sass/_base.scss */
+/* line 5269, sass/_base.scss */
 .account .orderpage .noItem {
   text-align: center;
   padding: 25px;
   color: #a7a6a6;
   font-size: 1.1em;
 }
-/* line 5272, sass/_base.scss */
+/* line 5275, sass/_base.scss */
 .account .orderpage h4 {
   font-family: "Roboto", sans-serif;
   line-height: 1.5;
@@ -7013,7 +7016,7 @@ md-toast {
   margin: 10px 0 25px 0;
   text-align: center;
 }
-/* line 5280, sass/_base.scss */
+/* line 5283, sass/_base.scss */
 .account .orderpage table thead tr td {
   font-size: 0.8em;
   text-align: center;
@@ -7021,13 +7024,13 @@ md-toast {
   background: #f7f7f7;
   font-weight: bold;
 }
-/* line 5287, sass/_base.scss */
+/* line 5290, sass/_base.scss */
 .account .orderpage table tbody tr td {
   font-size: 0.9em;
   vertical-align: middle;
   color: black;
 }
-/* line 5294, sass/_base.scss */
+/* line 5297, sass/_base.scss */
 .account .flatInfoBox {
   background: #eceff2;
   border: 1px solid #d2d2d2;
@@ -7036,50 +7039,50 @@ md-toast {
   display: table;
   width: 100%;
 }
-/* line 5302, sass/_base.scss */
+/* line 5305, sass/_base.scss */
 .account .flatInfoBox > div {
   width: 50%;
   display: table-cell;
   padding: 25px 10px;
   font-size: 1.2em;
 }
-/* line 5308, sass/_base.scss */
+/* line 5311, sass/_base.scss */
 .account .flatInfoBox > div:first-child {
   box-shadow: inset -1px 0 0 #d2d2d2;
 }
-/* line 5311, sass/_base.scss */
+/* line 5314, sass/_base.scss */
 .account .flatInfoBox > div:last-child {
   box-shadow: inset 1px 0 0 #ffffff;
 }
-/* line 5315, sass/_base.scss */
+/* line 5318, sass/_base.scss */
 .account .login-form {
   width: 500px;
   margin: 20px auto;
 }
-/* line 5319, sass/_base.scss */
+/* line 5322, sass/_base.scss */
 .account .success-reg-msg {
   text-align: center;
   padding: 50px 0;
 }
-/* line 5322, sass/_base.scss */
+/* line 5325, sass/_base.scss */
 .account .success-reg-msg h1 {
   color: black;
   margin: 0 0 15px 0;
 }
-/* line 5324, sass/_base.scss */
+/* line 5327, sass/_base.scss */
 .account .success-reg-msg h1 i {
   color: #63b363;
   font-size: 60px;
   margin-bottom: 20px;
 }
-/* line 5332, sass/_base.scss */
+/* line 5335, sass/_base.scss */
 .account .success-reg-msg p {
   font-size: 1.2em;
   text-align: center;
   line-height: 1.2;
   color: #7c7c7c;
 }
-/* line 5340, sass/_base.scss */
+/* line 5343, sass/_base.scss */
 .account .group-selector .groups {
   width: 80%;
   margin: 0 auto;
@@ -7089,12 +7092,12 @@ md-toast {
   flex-wrap: wrap;
   align-items: center;
 }
-/* line 5349, sass/_base.scss */
+/* line 5352, sass/_base.scss */
 .account .group-selector .groups > div {
   flex-basis: 50%;
   padding: 10px;
 }
-/* line 5354, sass/_base.scss */
+/* line 5357, sass/_base.scss */
 .account .group-selector .groups a {
   background: #eceff2;
   width: 100%;
@@ -7113,22 +7116,22 @@ md-toast {
   -webkit-transition: all .4s;
   transition: all .4s;
 }
-/* line 5369, sass/_base.scss */
+/* line 5372, sass/_base.scss */
 .account .group-selector .groups a:hover {
   background: #cd2a30;
   color: white;
 }
 
-/* line 5380, sass/_base.scss */
+/* line 5383, sass/_base.scss */
 .account .grid-layout > .grid-row-80 {
   padding: 0 20px 0 0 !important;
 }
-/* line 5383, sass/_base.scss */
+/* line 5386, sass/_base.scss */
 .account .grid-layout > .grid-row-20 {
   order: 2;
 }
 
-/* line 5389, sass/_base.scss */
+/* line 5392, sass/_base.scss */
 .side-menu ul li a {
   display: block;
   padding: 10px;
@@ -7139,26 +7142,26 @@ md-toast {
   text-decoration: none;
   border-right: 5px solid #eceff2;
 }
-/* line 5398, sass/_base.scss */
+/* line 5401, sass/_base.scss */
 .side-menu ul li a:hover {
   background-color: #eceff2;
 }
-/* line 5402, sass/_base.scss */
+/* line 5405, sass/_base.scss */
 .side-menu ul li {
   margin: 5px 0;
 }
-/* line 5406, sass/_base.scss */
+/* line 5409, sass/_base.scss */
 .side-menu ul li.logout a {
   color: #cd2a30;
   font-size: 0.9em;
   border: none !important;
   border-top: 1px solid #f7f7f7 !important;
 }
-/* line 5413, sass/_base.scss */
+/* line 5416, sass/_base.scss */
 .side-menu ul li.head:first-child {
   text-align: right;
 }
-/* line 5418, sass/_base.scss */
+/* line 5421, sass/_base.scss */
 .side-menu ul li.head a,
 .side-menu ul li.head {
   text-transform: uppercase;
@@ -7166,12 +7169,12 @@ md-toast {
   font-size: 1.1em;
   margin: 8px 0;
 }
-/* line 5424, sass/_base.scss */
+/* line 5427, sass/_base.scss */
 .side-menu ul li.active a {
   border-right: 5px solid #d9d9d9;
   font-weight: bold;
 }
-/* line 5429, sass/_base.scss */
+/* line 5432, sass/_base.scss */
 .side-menu .logged-as {
   text-align: center;
   font-size: 1.1em;
@@ -7181,17 +7184,17 @@ md-toast {
   color: #008fcb;
   line-height: 1.4;
 }
-/* line 5438, sass/_base.scss */
+/* line 5441, sass/_base.scss */
 .side-menu .logged-as strong {
   font-size: 1.6em;
   color: #0a8bc1;
 }
-/* line 5443, sass/_base.scss */
+/* line 5446, sass/_base.scss */
 .side-menu .logged-as .company strong {
   font-size: 1em;
   color: black;
 }
-/* line 5448, sass/_base.scss */
+/* line 5451, sass/_base.scss */
 .side-menu .logged-as .price-group {
   color: white;
   background: #00a0e3;
@@ -7202,19 +7205,19 @@ md-toast {
   width: 80%;
 }
 
-/* line 5460, sass/_base.scss */
+/* line 5463, sass/_base.scss */
 input[type=checkbox] {
   display: none;
 }
 
-/* line 5463, sass/_base.scss */
+/* line 5466, sass/_base.scss */
 input[type=checkbox] + label {
   margin-left: 30px !important;
   line-height: 24px !important;
   cursor: pointer;
 }
 
-/* line 5468, sass/_base.scss */
+/* line 5471, sass/_base.scss */
 input[type=checkbox] + label:before {
   position: absolute;
   content: "";
@@ -7225,7 +7228,7 @@ input[type=checkbox] + label:before {
   border: 0.5px solid #a6a6a6;
 }
 
-/* line 5477, sass/_base.scss */
+/* line 5480, sass/_base.scss */
 input[type=checkbox]:checked + label:before {
   content: "\f00c";
   font-family: FontAwesome;
@@ -7235,12 +7238,12 @@ input[type=checkbox]:checked + label:before {
   line-height: 24px;
 }
 
-/* line 5486, sass/_base.scss */
+/* line 5489, sass/_base.scss */
 .viewSwitcher {
   padding: 0;
 }
 
-/* line 5490, sass/_base.scss */
+/* line 5493, sass/_base.scss */
 .viewSwitcher > div {
   color: #000;
   font-weight: bold;
@@ -7254,7 +7257,7 @@ input[type=checkbox]:checked + label:before {
   cursor: pointer;
 }
 
-/* line 5502, sass/_base.scss */
+/* line 5505, sass/_base.scss */
 .viewSwitcher > div.bluebg {
   background: #396D9A;
   color: #FFF;
@@ -7262,38 +7265,38 @@ input[type=checkbox]:checked + label:before {
   border-bottom: none;
 }
 
-/* line 5508, sass/_base.scss */
+/* line 5511, sass/_base.scss */
 .viewSwitcher > div.bluebg.active {
   color: #000;
 }
 
-/* line 5511, sass/_base.scss */
+/* line 5514, sass/_base.scss */
 .viewSwitcher > div.active {
   background: #474747;
   border: 1px solid #474747;
   border-bottom: none;
 }
 
-/* line 5517, sass/_base.scss */
+/* line 5520, sass/_base.scss */
 .switcherView {
   display: none;
   background: #474747;
   padding: 10px;
 }
-/* line 5521, sass/_base.scss */
+/* line 5524, sass/_base.scss */
 .switcherView .inset {
   background: #fff;
   padding: 10px;
 }
 
-/* line 5528, sass/_base.scss */
+/* line 5531, sass/_base.scss */
 .switcherView.view-downloads a {
   line-height: 220%;
   color: #444;
   font-family: "Roboto", sans-serif;
   text-decoration: none;
 }
-/* line 5535, sass/_base.scss */
+/* line 5538, sass/_base.scss */
 .switcherView.view-downloads a:before {
   font-family: FontAwesome;
   content: "\f0c1";
@@ -7301,17 +7304,17 @@ input[type=checkbox]:checked + label:before {
   margin-right: 8px;
   text-decoration: none;
 }
-/* line 5543, sass/_base.scss */
+/* line 5546, sass/_base.scss */
 .switcherView.view-downloads a:hover {
   color: #d9d9d9;
 }
 
-/* line 5548, sass/_base.scss */
+/* line 5551, sass/_base.scss */
 .switcherView.switch-view-active {
   display: block;
 }
 
-/* line 5552, sass/_base.scss */
+/* line 5555, sass/_base.scss */
 .dropdown-list-container {
   background-color: #f1f1f3;
   padding: 0 13px;
@@ -7323,7 +7326,7 @@ input[type=checkbox]:checked + label:before {
   cursor: pointer;
 }
 
-/* line 5562, sass/_base.scss */
+/* line 5565, sass/_base.scss */
 .dropdown-list-container .dropdown-list-selecting {
   display: none;
   position: absolute;
@@ -7337,17 +7340,17 @@ input[type=checkbox]:checked + label:before {
   width: 100%;
 }
 
-/* line 5575, sass/_base.scss */
+/* line 5578, sass/_base.scss */
 .dropdown-list-container .dropdown-list-selecting > div {
   padding: 5px 0;
 }
 
-/* line 5578, sass/_base.scss */
+/* line 5581, sass/_base.scss */
 .dropdown-list-container .dropdown-list-selecting.showed {
   display: block;
 }
 
-/* line 5583, sass/_base.scss */
+/* line 5586, sass/_base.scss */
 .dropdown-list-container:hover {
   background-color: #e9e9e9;
 }
@@ -7356,34 +7359,34 @@ input[type=checkbox]:checked + label:before {
 	display: block;
 }
 */
-/* line 5590, sass/_base.scss */
+/* line 5593, sass/_base.scss */
 .dropdown-list-container .dropdown-list-selecting > div:hover {
   background-color: #c8c8c8;
   cursor: pointer;
 }
 
-/* line 5596, sass/_base.scss */
+/* line 5599, sass/_base.scss */
 .referring-view .kimelt-link {
   position: absolute;
   right: 15px;
   margin-top: 24px;
   font-size: 0.8em;
 }
-/* line 5603, sass/_base.scss */
+/* line 5606, sass/_base.scss */
 .referring-view .main-info {
   padding: 10px 0;
 }
-/* line 5606, sass/_base.scss */
+/* line 5609, sass/_base.scss */
 .referring-view .main-info .code-view {
   float: right;
   width: 33%;
   padding: 0 0 0 25px;
 }
-/* line 5611, sass/_base.scss */
+/* line 5614, sass/_base.scss */
 .referring-view .main-info .code-view .img {
   text-align: center;
 }
-/* line 5615, sass/_base.scss */
+/* line 5618, sass/_base.scss */
 .referring-view .main-info .code-view .code {
   background: #d9d9d9;
   color: white;
@@ -7394,14 +7397,14 @@ input[type=checkbox]:checked + label:before {
   text-align: center;
   box-shadow: 3px 3px 0 black;
 }
-/* line 5627, sass/_base.scss */
+/* line 5630, sass/_base.scss */
 .referring-view .main-info h2 {
   font-family: "Roboto", sans-serif;
   color: #d9d9d9;
   line-height: 1.3;
   font-size: 1em;
 }
-/* line 5634, sass/_base.scss */
+/* line 5637, sass/_base.scss */
 .referring-view .main-info .desc {
   float: left;
   width: 67%;
@@ -7411,49 +7414,49 @@ input[type=checkbox]:checked + label:before {
   text-align: justify;
   line-height: 135%;
 }
-/* line 5643, sass/_base.scss */
+/* line 5646, sass/_base.scss */
 .referring-view .main-info .desc strong {
   color: black;
 }
-/* line 5649, sass/_base.scss */
+/* line 5652, sass/_base.scss */
 .referring-view .partner-referer-orders h2 {
   font-weight: bold;
   line-height: 2.5;
 }
-/* line 5656, sass/_base.scss */
+/* line 5659, sass/_base.scss */
 .referring-view .partner-referer-orders .row {
   font-size: 0.9em;
   color: #8c8c8c;
   line-height: 1.2;
 }
-/* line 5662, sass/_base.scss */
+/* line 5665, sass/_base.scss */
 .referring-view .partner-referer-orders .row.head {
   color: black;
   line-height: 1.5;
   font-weight: bold;
 }
-/* line 5668, sass/_base.scss */
+/* line 5671, sass/_base.scss */
 .referring-view .partner-referer-orders .price {
   font-weight: bold;
   color: #d9d9d9;
 }
-/* line 5673, sass/_base.scss */
+/* line 5676, sass/_base.scss */
 .referring-view .partner-referer-orders .total {
   border: 1px solid #ECECEC;
   padding: 8px;
   font-size: 1.1em;
 }
-/* line 5679, sass/_base.scss */
+/* line 5682, sass/_base.scss */
 .referring-view .partner-referer-orders .total div {
   margin: 0;
   color: black;
 }
-/* line 5684, sass/_base.scss */
+/* line 5687, sass/_base.scss */
 .referring-view .partner-referer-orders .total strong {
   color: #d9d9d9;
 }
 
-/* line 5692, sass/_base.scss */
+/* line 5695, sass/_base.scss */
 .coupon-sale-view .coupon {
   background: #d9d9d9;
   padding: 8px;
@@ -7462,28 +7465,28 @@ input[type=checkbox]:checked + label:before {
   line-height: 1.2;
   margin: 10px 0 5px 0;
 }
-/* line 5700, sass/_base.scss */
+/* line 5703, sass/_base.scss */
 .coupon-sale-view .coupon strong {
   font-size: 1.15em;
   color: white;
 }
-/* line 5705, sass/_base.scss */
+/* line 5708, sass/_base.scss */
 .coupon-sale-view .coupon em {
   font-size: 0.8em;
 }
-/* line 5711, sass/_base.scss */
+/* line 5714, sass/_base.scss */
 .coupon-sale-view .orders .no-item {
   text-align: center;
   margin: 10px 0;
   color: black;
 }
 
-/* line 5720, sass/_base.scss */
+/* line 5723, sass/_base.scss */
 .referer-code label, .coupon-code label {
   margin: 8px 0;
 }
 
-/* line 5725, sass/_base.scss */
+/* line 5728, sass/_base.scss */
 .info-for-register {
   background: #d9d9d9;
   color: white;
@@ -7491,18 +7494,18 @@ input[type=checkbox]:checked + label:before {
   font-size: 0.8em;
   margin-top: 10px;
 }
-/* line 5732, sass/_base.scss */
+/* line 5735, sass/_base.scss */
 .info-for-register strong {
   font-size: 1.1em;
 }
-/* line 5736, sass/_base.scss */
+/* line 5739, sass/_base.scss */
 .info-for-register a {
   color: white;
   margin: 8px 0;
   font-size: 0.9em;
 }
 
-/* line 5743, sass/_base.scss */
+/* line 5746, sass/_base.scss */
 .partner-box {
   font-size: 0.8em;
   color: white;
@@ -7513,27 +7516,27 @@ input[type=checkbox]:checked + label:before {
   -ms-border-radius: 8px;
   border-radius: 8px;
 }
-/* line 5751, sass/_base.scss */
+/* line 5754, sass/_base.scss */
 .partner-box .title {
   line-height: 1.5;
 }
-/* line 5755, sass/_base.scss */
+/* line 5758, sass/_base.scss */
 .partner-box .partner {
   font-size: 1.3em;
   line-height: 1.5;
 }
-/* line 5759, sass/_base.scss */
+/* line 5762, sass/_base.scss */
 .partner-box .msg {
   text-align: center;
   font-size: 0.8em;
   line-height: 1;
 }
-/* line 5764, sass/_base.scss */
+/* line 5767, sass/_base.scss */
 .partner-box .msg i {
   font-size: 28px;
   width: 30px;
 }
-/* line 5770, sass/_base.scss */
+/* line 5773, sass/_base.scss */
 .partner-box .ico i {
   font-size: 34px;
   width: 35px;
@@ -7542,7 +7545,7 @@ input[type=checkbox]:checked + label:before {
   margin: 0 15px 0 0;
 }
 
-/* line 5778, sass/_base.scss */
+/* line 5781, sass/_base.scss */
 .partner-box:before {
   position: absolute;
   content: "";
@@ -7554,108 +7557,108 @@ input[type=checkbox]:checked + label:before {
   border-width: 13px;
 }
 
-/* line 5790, sass/_base.scss */
+/* line 5793, sass/_base.scss */
 .partner-box.partner-valid {
   background: #00b300;
 }
-/* line 5793, sass/_base.scss */
+/* line 5796, sass/_base.scss */
 .partner-box.partner-valid .ico i {
   font-size: 38px;
   width: 38px;
 }
 
-/* line 5798, sass/_base.scss */
+/* line 5801, sass/_base.scss */
 .partner-box.partner-valid:before {
   border-color: transparent transparent #00b300 transparent;
 }
 
-/* line 5801, sass/_base.scss */
+/* line 5804, sass/_base.scss */
 .partner-box.partner-invalid {
   background: #d9d9d9;
   text-align: left;
   line-height: 18px;
 }
 
-/* line 5806, sass/_base.scss */
+/* line 5809, sass/_base.scss */
 .partner-box.partner-invalid:before {
   border-color: transparent transparent #d9d9d9 transparent;
 }
 
-/* line 5810, sass/_base.scss */
+/* line 5813, sass/_base.scss */
 .partner-box.partner-info {
   background: #F78520;
   text-align: left;
   line-height: 18px;
 }
 
-/* line 5815, sass/_base.scss */
+/* line 5818, sass/_base.scss */
 .partner-box.partner-info:before {
   border-color: transparent transparent #F78520 transparent;
 }
 
-/* line 5821, sass/_base.scss */
+/* line 5824, sass/_base.scss */
 .coupon-code .partner-box {
   margin-top: 16px;
   text-align: left;
   line-height: 18px;
 }
 
-/* line 5827, sass/_base.scss */
+/* line 5830, sass/_base.scss */
 .divider {
   height: 1px;
   background: #c8cbcc;
   display: block;
 }
 
-/* line 5833, sass/_base.scss */
+/* line 5836, sass/_base.scss */
 .a-up a {
   font-size: 10px;
   color: #8c8c8c;
 }
 
-/* line 5839, sass/_base.scss */
+/* line 5842, sass/_base.scss */
 .documents h2 {
   color: black;
 }
-/* line 5842, sass/_base.scss */
+/* line 5845, sass/_base.scss */
 .documents .item {
   background: #4d4d4d;
   padding: 8px;
   margin: 8px 0;
   border-left: 5px solid transparent;
 }
-/* line 5848, sass/_base.scss */
+/* line 5851, sass/_base.scss */
 .documents .item .icon {
   margin: 0 5px;
 }
-/* line 5852, sass/_base.scss */
+/* line 5855, sass/_base.scss */
 .documents .item .extension {
   font-size: 0.8em;
   color: black;
 }
-/* line 5858, sass/_base.scss */
+/* line 5861, sass/_base.scss */
 .documents .item.unwatched {
   border-left: 5px solid silver;
   background: #d9d9d9;
 }
-/* line 5862, sass/_base.scss */
+/* line 5865, sass/_base.scss */
 .documents .item.unwatched a {
   color: white;
 }
-/* line 5866, sass/_base.scss */
+/* line 5869, sass/_base.scss */
 .documents .item.unwatched .icon {
   color: white;
 }
-/* line 5870, sass/_base.scss */
+/* line 5873, sass/_base.scss */
 .documents .item.unwatched .extension {
   color: white;
 }
 
-/* line 5877, sass/_base.scss */
+/* line 5880, sass/_base.scss */
 .alert-view h2 {
   color: #00a1e3;
 }
-/* line 5881, sass/_base.scss */
+/* line 5884, sass/_base.scss */
 .alert-view .item {
   border: 1px solid #eaeaea;
   background: #f5f5f5;
@@ -7669,15 +7672,15 @@ input[type=checkbox]:checked + label:before {
   -ms-border-radius: 3px;
   border-radius: 3px;
 }
-/* line 5892, sass/_base.scss */
+/* line 5895, sass/_base.scss */
 .alert-view .item .text {
   font-weight: bold;
 }
-/* line 5897, sass/_base.scss */
+/* line 5900, sass/_base.scss */
 .alert-view .item.info {
   border-left: 5px solid #8DDEFF;
 }
-/* line 5900, sass/_base.scss */
+/* line 5903, sass/_base.scss */
 .alert-view .item.info:before {
   content: "\f05a";
   line-height: 1;
@@ -7687,11 +7690,11 @@ input[type=checkbox]:checked + label:before {
   font-size: 22px;
   color: #8DDEFF;
 }
-/* line 5911, sass/_base.scss */
+/* line 5914, sass/_base.scss */
 .alert-view .item.alert {
   border-left: 5px solid #FF7077;
 }
-/* line 5914, sass/_base.scss */
+/* line 5917, sass/_base.scss */
 .alert-view .item.alert:before {
   content: "\f071";
   line-height: 1;
@@ -7701,7 +7704,7 @@ input[type=checkbox]:checked + label:before {
   font-size: 22px;
   color: #FF9CA0;
 }
-/* line 5925, sass/_base.scss */
+/* line 5928, sass/_base.scss */
 .alert-view .url {
   float: right;
   text-decoration: none;
@@ -7716,45 +7719,45 @@ input[type=checkbox]:checked + label:before {
   border-radius: 3px;
 }
 
-/* line 5937, sass/_base.scss */
+/* line 5940, sass/_base.scss */
 .menu-thanks {
   background: #474747;
   text-align: center;
 }
-/* line 5941, sass/_base.scss */
+/* line 5944, sass/_base.scss */
 .menu-thanks .head {
   background: #404040;
   border-bottom: 2px dashed #333333;
   font-weight: bold;
   text-transform: uppercase;
 }
-/* line 5948, sass/_base.scss */
+/* line 5951, sass/_base.scss */
 .menu-thanks .cont {
   color: #d9d9d9;
   padding-top: 10px;
   line-height: 1.3;
 }
-/* line 5953, sass/_base.scss */
+/* line 5956, sass/_base.scss */
 .menu-thanks .cont .number {
   font-family: "Roboto", sans-serif;
   font-size: 1.8em;
   font-weight: bold;
 }
 
-/* line 5963, sass/_base.scss */
+/* line 5966, sass/_base.scss */
 .casada-pont .row {
   margin-left: -5px;
   margin-right: -5px;
   font-size: 0.9em;
   color: #a2a2a2;
 }
-/* line 5969, sass/_base.scss */
+/* line 5972, sass/_base.scss */
 .casada-pont .row div[class*=col-sm] {
   padding-left: 5px;
   padding-right: 5px;
   position: relative;
 }
-/* line 5979, sass/_base.scss */
+/* line 5982, sass/_base.scss */
 .casada-pont * input[type=text],
 .casada-pont * input[type=tel],
 .casada-pont * input[type=email],
@@ -7773,58 +7776,58 @@ input[type=checkbox]:checked + label:before {
   -moz-box-shadow: none;
   box-shadow: none;
 }
-/* line 5994, sass/_base.scss */
+/* line 5997, sass/_base.scss */
 .casada-pont textarea::-webkit-input-placeholder,
 .casada-pont * input[type=text]::-webkit-input-placeholder {
   /* WebKit, Blink, Edge */
   color: #b7b7b7;
 }
-/* line 5998, sass/_base.scss */
+/* line 6001, sass/_base.scss */
 .casada-pont textarea:-moz-placeholder,
 .casada-pont * input[type=text]:-moz-placeholder {
   /* Mozilla Firefox 4 to 18 */
   color: #b7b7b7;
   opacity: 1;
 }
-/* line 6003, sass/_base.scss */
+/* line 6006, sass/_base.scss */
 .casada-pont textarea::-moz-placeholder,
 .casada-pont * input[type=text]::-moz-placeholder {
   /* Mozilla Firefox 19+ */
   color: #b7b7b7;
   opacity: 1;
 }
-/* line 6008, sass/_base.scss */
+/* line 6011, sass/_base.scss */
 .casada-pont textarea:-ms-input-placeholder,
 .casada-pont * input[type=text]:-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   color: #b7b7b7;
 }
-/* line 6012, sass/_base.scss */
+/* line 6015, sass/_base.scss */
 .casada-pont textarea:placeholder-shown,
 .casada-pont * input[type=text]:placeholder-shown {
   /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
   color: #b7b7b7;
 }
-/* line 6016, sass/_base.scss */
+/* line 6019, sass/_base.scss */
 .casada-pont * input[type=text]:focus {
   border: 1px solid #d9d9d9 !important;
 }
-/* line 6021, sass/_base.scss */
+/* line 6024, sass/_base.scss */
 .casada-pont .img-select label {
   cursor: pointer;
   border: 1px solid #d7d7d7;
   padding: 2px;
 }
-/* line 6027, sass/_base.scss */
+/* line 6030, sass/_base.scss */
 .casada-pont .img-select .text {
   text-align: center;
   line-height: 24px;
 }
-/* line 6032, sass/_base.scss */
+/* line 6035, sass/_base.scss */
 .casada-pont .img-select input[type=file] {
   display: none;
 }
-/* line 6037, sass/_base.scss */
+/* line 6040, sass/_base.scss */
 .casada-pont .head-shower {
   background: #8a8a8a;
   color: white;
@@ -7832,7 +7835,7 @@ input[type=checkbox]:checked + label:before {
   font-size: 0.85em;
   line-height: 180%;
 }
-/* line 6044, sass/_base.scss */
+/* line 6047, sass/_base.scss */
 .casada-pont .head-shower .number {
   float: left;
   margin: 0 25px 0 10px;
@@ -7840,7 +7843,7 @@ input[type=checkbox]:checked + label:before {
   line-height: 1;
   font-weight: bold;
 }
-/* line 6053, sass/_base.scss */
+/* line 6056, sass/_base.scss */
 .casada-pont .input-group-addon:first-child {
   background: transparent;
   color: #b2b2b2;
@@ -7852,58 +7855,58 @@ input[type=checkbox]:checked + label:before {
   -ms-border-radius: 0;
   border-radius: 0;
 }
-/* line 6060, sass/_base.scss */
+/* line 6063, sass/_base.scss */
 .casada-pont .input-group-addon:first-child i {
   margin-right: 3px;
 }
-/* line 6067, sass/_base.scss */
+/* line 6070, sass/_base.scss */
 .casada-pont .opens-head {
   background: #b2b2b2;
   color: white;
   padding: 8px 5px;
   font-size: 1.2em;
 }
-/* line 6074, sass/_base.scss */
+/* line 6077, sass/_base.scss */
 .casada-pont .opens {
   margin-bottom: 5px;
 }
-/* line 6077, sass/_base.scss */
+/* line 6080, sass/_base.scss */
 .casada-pont .opens .when {
   color: white;
   width: 40%;
   padding-right: 10px;
 }
-/* line 6082, sass/_base.scss */
+/* line 6085, sass/_base.scss */
 .casada-pont .opens .when .text {
   padding: 0 5px;
   background: #c7c7c7;
 }
-/* line 6087, sass/_base.scss */
+/* line 6090, sass/_base.scss */
 .casada-pont .opens .from {
   width: 25%;
 }
-/* line 6090, sass/_base.scss */
+/* line 6093, sass/_base.scss */
 .casada-pont .opens .sep {
   width: 10%;
   text-align: center;
 }
-/* line 6094, sass/_base.scss */
+/* line 6097, sass/_base.scss */
 .casada-pont .opens .to {
   width: 25%;
 }
-/* line 6098, sass/_base.scss */
+/* line 6101, sass/_base.scss */
 .casada-pont .opens select {
   height: 26px;
   line-height: 26px;
   width: 100%;
   border: 1px solid #d9d9d9;
 }
-/* line 6106, sass/_base.scss */
+/* line 6109, sass/_base.scss */
 .casada-pont .opens > div {
   float: left;
   line-height: 26px;
 }
-/* line 6110, sass/_base.scss */
+/* line 6113, sass/_base.scss */
 .casada-pont .opens:after {
   content: "";
   position: relative;
@@ -7911,21 +7914,21 @@ input[type=checkbox]:checked + label:before {
   clear: both;
   display: block;
 }
-/* line 6120, sass/_base.scss */
+/* line 6123, sass/_base.scss */
 .casada-pont .input-group-addon:first-child + input[type=text],
 .casada-pont .input-group-addon:first-child + input[type=tel],
 .casada-pont .input-group-addon:first-child + input[type=email] {
   border-left: none !important;
 }
-/* line 6124, sass/_base.scss */
+/* line 6127, sass/_base.scss */
 .casada-pont h2 {
   font-size: 1.3em;
 }
-/* line 6128, sass/_base.scss */
+/* line 6131, sass/_base.scss */
 .casada-pont h3 {
   font-size: 1.1em;
 }
-/* line 6132, sass/_base.scss */
+/* line 6135, sass/_base.scss */
 .casada-pont h2, .casada-pont h3 {
   color: #b2b2b2;
   font-weight: bold;
@@ -7933,13 +7936,13 @@ input[type=checkbox]:checked + label:before {
   margin: 5px 0;
   display: block;
 }
-/* line 6139, sass/_base.scss */
+/* line 6142, sass/_base.scss */
 .casada-pont h2 i, .casada-pont h3 i {
   margin-right: 10px;
   color: #a1a1a1;
 }
 
-/* line 6150, sass/_base.scss */
+/* line 6153, sass/_base.scss */
 input[type=text][required].ng-invalid + span:before,
 input[type=tel][required].ng-invalid + span:before,
 input[type=email][required].ng-invalid + span:before {
@@ -7962,7 +7965,7 @@ input[type=email][required].ng-invalid + span:before {
   border-radius: 20px;
 }
 
-/* line 6171, sass/_base.scss */
+/* line 6174, sass/_base.scss */
 input[type=text][required].ng-touched.ng-valid + span:before,
 input[type=tel][required].ng-touched.ng-valid + span:before,
 input[type=email][required].ng-touched.ng-valid + span:before {
@@ -7985,18 +7988,18 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   border-radius: 20px;
 }
 
-/* line 6189, sass/_base.scss */
+/* line 6192, sass/_base.scss */
 .need-fill-form {
   color: #d9d9d9;
   font-size: 0.8em;
 }
 
-/* line 6194, sass/_base.scss */
+/* line 6197, sass/_base.scss */
 .call-module-view * {
   color: black;
 }
 
-/* line 6198, sass/_base.scss */
+/* line 6201, sass/_base.scss */
 .call-module-view .holder-view {
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ebecec+100 */
   background: #ffffff;
@@ -8019,35 +8022,35 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   -ms-border-radius: 10px;
   border-radius: 10px;
 }
-/* line 6215, sass/_base.scss */
+/* line 6218, sass/_base.scss */
 .call-module-view .holder-view .tanacsado {
   color: black;
   text-align: center;
   font-size: 0.9em;
   line-height: 1;
 }
-/* line 6221, sass/_base.scss */
+/* line 6224, sass/_base.scss */
 .call-module-view .holder-view .tanacsado .cap {
   font-size: 1.2em;
   line-height: 1.5;
 }
-/* line 6226, sass/_base.scss */
+/* line 6229, sass/_base.scss */
 .call-module-view .holder-view .tanacsado strong {
   font-size: 1.1em;
   line-height: 1.2;
 }
-/* line 6232, sass/_base.scss */
+/* line 6235, sass/_base.scss */
 .call-module-view .holder-view .form {
   margin-bottom: 5px;
 }
-/* line 6235, sass/_base.scss */
+/* line 6238, sass/_base.scss */
 .call-module-view .holder-view .form input[type=text] {
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   -ms-border-radius: 8px;
   border-radius: 8px;
 }
-/* line 6240, sass/_base.scss */
+/* line 6243, sass/_base.scss */
 .call-module-view .holder-view .send button {
   background: #d9d9d9;
   color: white;
@@ -8064,79 +8067,79 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   -ms-border-radius: 8px;
   border-radius: 8px;
 }
-/* line 6252, sass/_base.scss */
+/* line 6255, sass/_base.scss */
 .call-module-view .holder-view .send button i {
   color: white;
   font-size: 18px;
   line-height: 2;
 }
-/* line 6261, sass/_base.scss */
+/* line 6264, sass/_base.scss */
 .call-module-view .holder-view .send {
   margin-bottom: 10px;
 }
-/* line 6265, sass/_base.scss */
+/* line 6268, sass/_base.scss */
 .call-module-view .holder-view .phone, .call-module-view .holder-view .kie {
   color: #d9d9d9;
   font-weight: bold;
 }
-/* line 6270, sass/_base.scss */
+/* line 6273, sass/_base.scss */
 .call-module-view .holder-view .phone {
   text-align: center;
   font-size: 1.35em;
 }
-/* line 6276, sass/_base.scss */
+/* line 6279, sass/_base.scss */
 .call-module-view .holder-view .kie {
   line-height: 2;
   text-transform: uppercase;
 }
 
-/* line 6283, sass/_base.scss */
+/* line 6286, sass/_base.scss */
 .call-module-view.map-mod .holder-view {
   font-size: 0.8em !important;
 }
-/* line 6286, sass/_base.scss */
+/* line 6289, sass/_base.scss */
 .call-module-view.map-mod .holder-view h4 {
   font-weight: bold;
   font-family: "Roboto", sans-serif;
 }
-/* line 6291, sass/_base.scss */
+/* line 6294, sass/_base.scss */
 .call-module-view.map-mod .holder-view strong {
   color: black;
 }
-/* line 6295, sass/_base.scss */
+/* line 6298, sass/_base.scss */
 .call-module-view.map-mod .holder-view img {
   width: 100%;
 }
 
-/* line 6303, sass/_base.scss */
+/* line 6306, sass/_base.scss */
 .casada-pont-view .details .head {
   background: #b2b2b2;
   color: white;
   padding: 5px;
   margin-bottom: 8px;
 }
-/* line 6310, sass/_base.scss */
+/* line 6313, sass/_base.scss */
 .casada-pont-view .details .image {
   width: 50%;
   border: 1px solid #d7d7d7;
   padding: 2px;
 }
-/* line 6315, sass/_base.scss */
+/* line 6318, sass/_base.scss */
 .casada-pont-view .details .image img {
   width: 100%;
 }
-/* line 6320, sass/_base.scss */
+/* line 6323, sass/_base.scss */
 .casada-pont-view .details .key {
   color: #cbcbcb;
   line-height: 1;
 }
-/* line 6325, sass/_base.scss */
+/* line 6328, sass/_base.scss */
 .casada-pont-view .details .value {
   color: #444;
   font-weight: bold;
   line-height: 1;
 }
-/* line 6331, sass/_base.scss */
+/* line 6334, sass/_base.scss */
 .casada-pont-view .want-allow {
   margin: 8px 0;
   padding: 8px;
@@ -8148,19 +8151,19 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   -ms-border-radius: 4px;
   border-radius: 4px;
 }
-/* line 6341, sass/_base.scss */
+/* line 6344, sass/_base.scss */
 .casada-pont-view .request-date {
   font-size: 0.7em;
   margin: 10px 0;
   color: #b7b7b7;
 }
-/* line 6346, sass/_base.scss */
+/* line 6349, sass/_base.scss */
 .casada-pont-view .request-date em {
   color: #8c8c8c;
 }
 
 /* Üzletkereső */
-/* line 6355, sass/_base.scss */
+/* line 6358, sass/_base.scss */
 .shop-search-view h1 {
   color: black;
   text-transform: uppercase;
@@ -8168,54 +8171,54 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   margin: 10px 0 20px 0;
   font-weight: bold;
 }
-/* line 6363, sass/_base.scss */
+/* line 6366, sass/_base.scss */
 .shop-search-view #map {
   height: 350px;
   background: #eaeaea;
 }
-/* line 6368, sass/_base.scss */
+/* line 6371, sass/_base.scss */
 .shop-search-view .near-of-me {
   background: #d9d9d9;
   padding: 8px;
   color: white;
 }
-/* line 6373, sass/_base.scss */
+/* line 6376, sass/_base.scss */
 .shop-search-view .near-of-me .infos {
   font-size: 0.8em;
   line-height: 135%;
 }
-/* line 6379, sass/_base.scss */
+/* line 6382, sass/_base.scss */
 .shop-search-view .near-of-me .place-details .head {
   font-size: 0.85em;
 }
-/* line 6382, sass/_base.scss */
+/* line 6385, sass/_base.scss */
 .shop-search-view .near-of-me .place-details .name {
   font-family: "Roboto", sans-serif;
   font-size: 1.3em;
   line-height: 1.6;
 }
-/* line 6390, sass/_base.scss */
+/* line 6393, sass/_base.scss */
 .shop-search-view .shop-list {
   padding: 10px;
 }
-/* line 6393, sass/_base.scss */
+/* line 6396, sass/_base.scss */
 .shop-search-view .shop-list .shop {
   margin: 30px 0;
   line-height: 130%;
   color: #8a8a8a;
 }
-/* line 6398, sass/_base.scss */
+/* line 6401, sass/_base.scss */
 .shop-search-view .shop-list .shop .name {
   font-family: "Roboto", sans-serif;
   color: #d9d9d9;
   font-weight: bold;
   text-transform: uppercase;
 }
-/* line 6405, sass/_base.scss */
+/* line 6408, sass/_base.scss */
 .shop-search-view .shop-list .shop .address {
   color: #444;
 }
-/* line 6408, sass/_base.scss */
+/* line 6411, sass/_base.scss */
 .shop-search-view .shop-list .shop .address .map-route {
   background: black;
   font-size: 0.8em;
@@ -8228,21 +8231,21 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   -ms-border-radius: 4px;
   border-radius: 4px;
 }
-/* line 6419, sass/_base.scss */
+/* line 6422, sass/_base.scss */
 .shop-search-view .shop-list .shop .opens {
   font-size: 0.9em;
 }
-/* line 6423, sass/_base.scss */
+/* line 6426, sass/_base.scss */
 .shop-search-view .shop-list .shop .infos {
   font-size: 0.8em;
   line-height: 135%;
 }
-/* line 6427, sass/_base.scss */
+/* line 6430, sass/_base.scss */
 .shop-search-view .shop-list .shop .infos .distributor {
   color: black;
   font-size: 1.2em;
 }
-/* line 6435, sass/_base.scss */
+/* line 6438, sass/_base.scss */
 .shop-search-view .comment {
   color: #acacac;
   font-size: #dadada;
@@ -8250,29 +8253,29 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   font-size: 0.8em;
 }
 
-/* line 6443, sass/_base.scss */
+/* line 6446, sass/_base.scss */
 .tanacsado-card {
   background: #ebedec;
   margin: 10px 0;
   color: #5b5b5b;
   font-size: 0.85em;
 }
-/* line 6449, sass/_base.scss */
+/* line 6452, sass/_base.scss */
 .tanacsado-card .pcode {
   background: #c5c7c6;
   color: #444;
   text-transform: uppercase;
 }
-/* line 6454, sass/_base.scss */
+/* line 6457, sass/_base.scss */
 .tanacsado-card .pcode .text, .tanacsado-card .pcode .code {
   padding: 5px;
 }
-/* line 6458, sass/_base.scss */
+/* line 6461, sass/_base.scss */
 .tanacsado-card .pcode .text {
   font-weight: bold;
   font-size: 1em;
 }
-/* line 6462, sass/_base.scss */
+/* line 6465, sass/_base.scss */
 .tanacsado-card .pcode .code {
   background: #d9d9d9;
   color: white;
@@ -8282,44 +8285,44 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   padding: 15px 0;
   letter-spacing: 2px;
 }
-/* line 6473, sass/_base.scss */
+/* line 6476, sass/_base.scss */
 .tanacsado-card .dist {
   padding: 0;
   line-height: 130%;
 }
-/* line 6477, sass/_base.scss */
+/* line 6480, sass/_base.scss */
 .tanacsado-card .dist .name {
   font-weight: bold;
   font-size: 1.1em;
   color: black;
 }
-/* line 6483, sass/_base.scss */
+/* line 6486, sass/_base.scss */
 .tanacsado-card .dist .face {
   width: 101px;
   height: 101px;
   float: left;
   margin-right: 5px;
 }
-/* line 6490, sass/_base.scss */
+/* line 6493, sass/_base.scss */
 .tanacsado-card .dist .details {
   padding-top: 5px;
 }
-/* line 6494, sass/_base.scss */
+/* line 6497, sass/_base.scss */
 .tanacsado-card .dist .phone {
   font-weight: bold;
   color: #d9d9d9;
   margin-top: 5px;
 }
-/* line 6499, sass/_base.scss */
+/* line 6502, sass/_base.scss */
 .tanacsado-card .dist .phone strong {
   font-size: 1.3em;
   font-family: "Roboto", sans-serif;
 }
-/* line 6506, sass/_base.scss */
+/* line 6509, sass/_base.scss */
 .tanacsado-card .shop {
   color: black;
 }
-/* line 6510, sass/_base.scss */
+/* line 6513, sass/_base.scss */
 .tanacsado-card .who {
   background: #f5f5f5;
   border-top: 1px solid #d7d7d7;
@@ -8331,17 +8334,17 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   box-shadow: inset 0 4px 8px -5px #888888;
 }
 
-/* line 6522, sass/_base.scss */
+/* line 6525, sass/_base.scss */
 .share-box {
   position: absolute;
   right: -65px;
   top: 80px;
 }
-/* line 6527, sass/_base.scss */
+/* line 6530, sass/_base.scss */
 .share-box div {
   background: #738a8d;
 }
-/* line 6529, sass/_base.scss */
+/* line 6532, sass/_base.scss */
 .share-box div a {
   font-size: 24px;
   display: block;
@@ -8349,43 +8352,43 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   color: white;
   text-align: center;
 }
-/* line 6537, sass/_base.scss */
+/* line 6540, sass/_base.scss */
 .share-box div.facebook {
   background: #305891;
 }
-/* line 6540, sass/_base.scss */
+/* line 6543, sass/_base.scss */
 .share-box div.googleplus {
   background: #DD5146;
 }
-/* line 6543, sass/_base.scss */
+/* line 6546, sass/_base.scss */
 .share-box div.twitter {
   background: #2ca8d2;
 }
-/* line 6546, sass/_base.scss */
+/* line 6549, sass/_base.scss */
 .share-box div.youtube {
   background: #df3930;
 }
 
-/* line 6551, sass/_base.scss */
+/* line 6554, sass/_base.scss */
 .searchResult {
   margin-top: 15px;
 }
-/* line 6554, sass/_base.scss */
+/* line 6557, sass/_base.scss */
 .searchResult .pagination {
   margin: 20px;
 }
-/* line 6559, sass/_base.scss */
+/* line 6562, sass/_base.scss */
 .searchResult .pagination > li > a, .searchResult .pagination > li > span {
   color: #d9d9d9;
 }
-/* line 6562, sass/_base.scss */
+/* line 6565, sass/_base.scss */
 .searchResult .pagination > .active > a, .searchResult .pagination > .active > span, .searchResult .pagination > .active > a:hover, .searchResult .pagination > .active > span:hover, .searchResult .pagination > .active > a:focus, .searchResult .pagination > .active > span:focus {
   background-color: #d9d9d9;
   border-color: #d9d9d9;
   color: white;
 }
 
-/* line 6569, sass/_base.scss */
+/* line 6572, sass/_base.scss */
 .not-enought-price-for-order {
   background: #EC4E4E;
   padding: 15px;
@@ -8395,31 +8398,31 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   margin-bottom: 10px;
 }
 
-/* line 6578, sass/_base.scss */
+/* line 6581, sass/_base.scss */
 .empty-cart {
   text-align: center;
   color: #1a1a1a;
   font-size: 1.1em;
   padding: 40px 0;
 }
-/* line 6584, sass/_base.scss */
+/* line 6587, sass/_base.scss */
 .empty-cart i.ico, .empty-cart strong {
   color: black;
 }
-/* line 6588, sass/_base.scss */
+/* line 6591, sass/_base.scss */
 .empty-cart i.ico {
   font-size: 64px;
 }
-/* line 6592, sass/_base.scss */
+/* line 6595, sass/_base.scss */
 .empty-cart strong {
   font-size: 1.4em;
   line-height: 1.5;
 }
-/* line 6597, sass/_base.scss */
+/* line 6600, sass/_base.scss */
 .empty-cart .srcform {
   margin: 25px 0;
 }
-/* line 6600, sass/_base.scss */
+/* line 6603, sass/_base.scss */
 .empty-cart .srcform input[type=text] {
   border: 1px solid #333333;
   padding: 12px;
@@ -8429,7 +8432,7 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   width: 50%;
   border-radius: 8px 0 0 8px;
 }
-/* line 6611, sass/_base.scss */
+/* line 6614, sass/_base.scss */
 .empty-cart .srcform button {
   height: 45px;
   border: none;
@@ -8438,21 +8441,21 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   border-radius: 0 8px 8px 0;
 }
 
-/* line 6621, sass/_base.scss */
+/* line 6624, sass/_base.scss */
 .referring-promo {
   padding: 10px 20px;
   color: black;
 }
-/* line 6627, sass/_base.scss */
+/* line 6630, sass/_base.scss */
 .referring-promo p {
   text-align: justify;
 }
-/* line 6631, sass/_base.scss */
+/* line 6634, sass/_base.scss */
 .referring-promo .useit {
   color: #d9d9d9;
   text-transform: uppercase;
 }
-/* line 6636, sass/_base.scss */
+/* line 6639, sass/_base.scss */
 .referring-promo .own-code {
   border: 1px solid #333333;
   padding: 15px;
@@ -8460,13 +8463,13 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   font-size: 1.3em;
   font-weight: bold;
 }
-/* line 6643, sass/_base.scss */
+/* line 6646, sass/_base.scss */
 .referring-promo .own-code .code {
   color: #d9d9d9;
   text-transform: uppercase;
   font-family: "Roboto", sans-serif;
 }
-/* line 6650, sass/_base.scss */
+/* line 6653, sass/_base.scss */
 .referring-promo .own-code.bg {
   background: #d9d9d9;
   color: white;
@@ -8474,23 +8477,23 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   font-weight: normal;
   font-family: "Roboto", sans-serif;
 }
-/* line 6657, sass/_base.scss */
+/* line 6660, sass/_base.scss */
 .referring-promo .own-code.bg a {
   color: white;
   text-decoration: underline;
 }
-/* line 6664, sass/_base.scss */
+/* line 6667, sass/_base.scss */
 .referring-promo .referer-user {
   font-size: 1.5em;
   font-family: "Roboto", sans-serif;
 }
-/* line 6668, sass/_base.scss */
+/* line 6671, sass/_base.scss */
 .referring-promo .referer-user .partner {
   color: #d9d9d9;
   font-size: 1.6em;
   text-transform: uppercase;
 }
-/* line 6674, sass/_base.scss */
+/* line 6677, sass/_base.scss */
 .referring-promo .referer-user .referer-code {
   margin-top: 35px;
   background: #d41c4f;
@@ -8502,7 +8505,7 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   text-align: center;
   box-shadow: 3px 3px 0 #5a5a5a;
 }
-/* line 6687, sass/_base.scss */
+/* line 6690, sass/_base.scss */
 .referring-promo h1, .referring-promo h2 {
   color: #d9d9d9;
   font-weight: bold;
@@ -8510,44 +8513,44 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   line-height: 2;
   font-size: 2.2em;
 }
-/* line 6695, sass/_base.scss */
+/* line 6698, sass/_base.scss */
 .referring-promo .step {
   font-family: "Roboto", sans-serif;
   line-height: 1.2;
   font-size: 1.1em;
 }
-/* line 6701, sass/_base.scss */
+/* line 6704, sass/_base.scss */
 .referring-promo .desc {
   font-size: 0.9em;
   letter-spacing: -0.3px;
   line-height: 1.3;
 }
-/* line 6709, sass/_base.scss */
+/* line 6712, sass/_base.scss */
 .referring-promo .shower > a > img {
   border: 1px solid #333333;
 }
-/* line 6713, sass/_base.scss */
+/* line 6716, sass/_base.scss */
 .referring-promo .shower {
   position: relative;
 }
-/* line 6715, sass/_base.scss */
+/* line 6718, sass/_base.scss */
 .referring-promo .shower .flowing {
   position: absolute;
   bottom: 0;
   left: 0;
   pointer-events: none;
 }
-/* line 6723, sass/_base.scss */
+/* line 6726, sass/_base.scss */
 .referring-promo small {
   color: #696969;
   font-size: 0.8em;
   letter-spacing: 0;
 }
-/* line 6729, sass/_base.scss */
+/* line 6732, sass/_base.scss */
 .referring-promo .row {
   margin: 25px -15px;
 }
-/* line 6733, sass/_base.scss */
+/* line 6736, sass/_base.scss */
 .referring-promo .subhead {
   color: #d9d9d9;
   font-weight: bold;
@@ -8555,30 +8558,30 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   font-size: 1.25em;
   margin: 12px 0;
 }
-/* line 6741, sass/_base.scss */
+/* line 6744, sass/_base.scss */
 .referring-promo .larger {
   font-size: 1.1em;
   font-family: "Roboto", sans-serif;
 }
-/* line 6746, sass/_base.scss */
+/* line 6749, sass/_base.scss */
 .referring-promo .divider {
   height: 1px;
   background: transparent;
   border-top: 1px dashed #333333;
   margin: 10px 0;
 }
-/* line 6753, sass/_base.scss */
+/* line 6756, sass/_base.scss */
 .referring-promo .ajcode {
   background: #4d4d4d;
   border: 5px dotted #E6E6E6;
   padding: 15px 0;
 }
-/* line 6758, sass/_base.scss */
+/* line 6761, sass/_base.scss */
 .referring-promo .ajcode > .row {
   margin: 0;
 }
 
-/* line 6763, sass/_base.scss */
+/* line 6766, sass/_base.scss */
 #PayUForm button {
   background: url(//www.cp.autoradiokeret.web-pro.hu/src/images/src/images/pay_btn.png);
   width: 196px;
@@ -8587,15 +8590,15 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   cursor: pointer;
 }
 
-/* line 6771, sass/_base.scss */
+/* line 6774, sass/_base.scss */
 .simple-msg {
   padding: 15px;
 }
-/* line 6774, sass/_base.scss */
+/* line 6777, sass/_base.scss */
 .simple-msg .simple-information {
   border: 2px solid #333333;
 }
-/* line 6777, sass/_base.scss */
+/* line 6780, sass/_base.scss */
 .simple-msg .simple-information .head {
   background: #333333;
   padding: 10px;
@@ -8604,12 +8607,12 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   font-weight: bold;
   font-size: 1.3em;
 }
-/* line 6785, sass/_base.scss */
+/* line 6788, sass/_base.scss */
 .simple-msg .simple-information .ft {
   padding: 8px 10px;
   font-weight: bold;
 }
-/* line 6789, sass/_base.scss */
+/* line 6792, sass/_base.scss */
 .simple-msg .simple-information .cth {
   background: #4d4d4d;
   padding: 10px;
@@ -8617,38 +8620,38 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   font-size: 0.85em;
   color: black;
 }
-/* line 6796, sass/_base.scss */
+/* line 6799, sass/_base.scss */
 .simple-msg .simple-information .in {
   padding: 10px;
   line-height: 1.6;
 }
-/* line 6800, sass/_base.scss */
+/* line 6803, sass/_base.scss */
 .simple-msg .simple-information .simple-info-footer {
   background: #4d4d4d;
   padding: 4px 10px;
   font-size: 0.85em;
   line-height: 30px;
 }
-/* line 6806, sass/_base.scss */
+/* line 6809, sass/_base.scss */
 .simple-msg .simple-information .simple-info-footer img {
   height: 25px;
 }
-/* line 6810, sass/_base.scss */
+/* line 6813, sass/_base.scss */
 .simple-msg .simple-information .simple-info-footer a {
   color: #d9d9d9;
   font-size: 0.85em;
 }
-/* line 6816, sass/_base.scss */
+/* line 6819, sass/_base.scss */
 .simple-msg .simple-information.simple-back-success {
   border: 2px solid #6FAB42;
 }
-/* line 6818, sass/_base.scss */
+/* line 6821, sass/_base.scss */
 .simple-msg .simple-information.simple-back-success .head {
   background: #6FAB42;
   color: white;
 }
 
-/* line 6825, sass/_base.scss */
+/* line 6828, sass/_base.scss */
 .floating-box {
   position: fixed;
   right: 0;
@@ -8656,7 +8659,7 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   z-index: 100;
 }
 
-/* line 6832, sass/_base.scss */
+/* line 6835, sass/_base.scss */
 .floating-box.contact-msg {
   top: 50%;
   padding: 8px;
@@ -8688,50 +8691,50 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ebecec',GradientType=0 );
   /* IE6-9 */
 }
-/* line 6863, sass/_base.scss */
+/* line 6866, sass/_base.scss */
 .floating-box.contact-msg .contact {
   float: left;
   width: 40%;
   text-align: center;
   font-size: 0.95em;
 }
-/* line 6869, sass/_base.scss */
+/* line 6872, sass/_base.scss */
 .floating-box.contact-msg .contact .profil {
   margin-top: -40px;
   line-height: 1.3;
 }
-/* line 6873, sass/_base.scss */
+/* line 6876, sass/_base.scss */
 .floating-box.contact-msg .contact .profil .name {
   font-size: 1.1em;
   color: #222;
 }
-/* line 6879, sass/_base.scss */
+/* line 6882, sass/_base.scss */
 .floating-box.contact-msg .contact .hely {
   font-size: 1.1em;
   color: #222;
 }
-/* line 6884, sass/_base.scss */
+/* line 6887, sass/_base.scss */
 .floating-box.contact-msg .contact .opens {
   margin-top: 4px;
 }
-/* line 6889, sass/_base.scss */
+/* line 6892, sass/_base.scss */
 .floating-box.contact-msg .form {
   float: right;
   width: 60%;
   padding-left: 5px;
   line-height: 1.4;
 }
-/* line 6895, sass/_base.scss */
+/* line 6898, sass/_base.scss */
 .floating-box.contact-msg .form .welcome {
   font-size: 1.2em;
 }
-/* line 6899, sass/_base.scss */
+/* line 6902, sass/_base.scss */
 .floating-box.contact-msg .form .clt {
   text-transform: uppercase;
   color: #d9d9d9;
   font-weight: bold;
 }
-/* line 6906, sass/_base.scss */
+/* line 6909, sass/_base.scss */
 .floating-box.contact-msg .form form button {
   background: #d9d9d9;
   color: white;
@@ -8747,7 +8750,7 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   -ms-border-radius: 8px;
   border-radius: 8px;
 }
-/* line 6920, sass/_base.scss */
+/* line 6923, sass/_base.scss */
 .floating-box.contact-msg .form form input[type=text], .floating-box.contact-msg .form form input[type=email], .floating-box.contact-msg .form form textarea {
   padding: 4px;
   font-size: 0.8em;
@@ -8762,17 +8765,17 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   -ms-border-radius: 5px;
   border-radius: 5px;
 }
-/* line 6931, sass/_base.scss */
+/* line 6934, sass/_base.scss */
 .floating-box.contact-msg .form form textarea {
   height: 50px;
 }
-/* line 6936, sass/_base.scss */
+/* line 6939, sass/_base.scss */
 .floating-box.contact-msg .form .phone {
   color: #d9d9d9;
   font-weight: bold;
   font-size: 1.45em;
 }
-/* line 6943, sass/_base.scss */
+/* line 6946, sass/_base.scss */
 .floating-box.contact-msg .exit {
   position: absolute;
   right: 5px;
@@ -8786,7 +8789,7 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   border-radius: 3px;
   padding: 3px;
 }
-/* line 6954, sass/_base.scss */
+/* line 6957, sass/_base.scss */
 .floating-box.contact-msg .labtext {
   background: #eeeeee;
   position: absolute;
@@ -8802,12 +8805,12 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   box-shadow: -5px -5px 15px -8px black;
   border-radius: 8px 8px 0 0;
 }
-/* line 6970, sass/_base.scss */
+/* line 6973, sass/_base.scss */
 .floating-box.contact-msg .labtext .text {
   font-weight: bold;
   color: #8a8a8a;
 }
-/* line 6974, sass/_base.scss */
+/* line 6977, sass/_base.scss */
 .floating-box.contact-msg .labtext .text .ico {
   padding: 5px 10px;
   background: #d9d9d9;
@@ -8816,32 +8819,32 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   border-radius: 8px 0 0 0;
 }
 
-/* line 6984, sass/_base.scss */
+/* line 6987, sass/_base.scss */
 .floating-box.contact-msg.opened {
   right: -1px;
 }
 
-/* line 6988, sass/_base.scss */
+/* line 6991, sass/_base.scss */
 .ep404 {
   text-align: center;
 }
-/* line 6991, sass/_base.scss */
+/* line 6994, sass/_base.scss */
 .ep404 table {
   margin: 0 auto;
 }
-/* line 6995, sass/_base.scss */
+/* line 6998, sass/_base.scss */
 .ep404 .code {
   font-family: "Roboto", sans-serif;
   color: #d9d9d9;
   font-size: 20em;
 }
-/* line 7001, sass/_base.scss */
+/* line 7004, sass/_base.scss */
 .ep404 .light {
   color: #bdbdbd;
   margin: 10px 0;
 }
 
-/* line 7007, sass/_base.scss */
+/* line 7010, sass/_base.scss */
 .payu-paidonly {
   background: orange;
   padding: 2px 4px;
@@ -8850,7 +8853,7 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   font-size: 0.9em;
 }
 
-/* line 7015, sass/_base.scss */
+/* line 7018, sass/_base.scss */
 .payu-paid-done {
   background: green;
   padding: 2px 4px;
@@ -8859,14 +8862,14 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   font-size: 0.9em;
 }
 
-/* line 7024, sass/_base.scss */
+/* line 7027, sass/_base.scss */
 .popupview .overlay {
   position: fixed;
   width: 100%;
   height: 100%;
   z-index: 99999999;
 }
-/* line 7029, sass/_base.scss */
+/* line 7032, sass/_base.scss */
 .popupview .overlay .screen {
   margin: 0 auto;
   position: absolute;
@@ -8877,12 +8880,12 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   transform: translate(-50%, -50%);
 }
 
-/* line 7041, sass/_base.scss */
+/* line 7044, sass/_base.scss */
 .cetelemcalc {
   display: block;
   border: 10px solid #008000;
 }
-/* line 7045, sass/_base.scss */
+/* line 7048, sass/_base.scss */
 .cetelemcalc .head {
   color: white;
   text-shadow: none;
@@ -8892,7 +8895,7 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   font-size: 1.45em;
   font-weight: bold;
 }
-/* line 7054, sass/_base.scss */
+/* line 7057, sass/_base.scss */
 .cetelemcalc .head em {
   font-weight: normal;
   font-size: 0.6em;
@@ -8902,11 +8905,11 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   line-height: 1;
   margin-top: 8px;
 }
-/* line 7065, sass/_base.scss */
+/* line 7068, sass/_base.scss */
 .cetelemcalc .con {
   padding: 25px 0;
 }
-/* line 7068, sass/_base.scss */
+/* line 7071, sass/_base.scss */
 .cetelemcalc .con h2 {
   font-weight: bold;
   text-transform: uppercase;
@@ -8914,23 +8917,23 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   color: #EA5C07;
   font-size: 2.2em;
 }
-/* line 7077, sass/_base.scss */
+/* line 7080, sass/_base.scss */
 .cetelemcalc .no-accept-items {
   padding-left: 20px;
 }
-/* line 7079, sass/_base.scss */
+/* line 7082, sass/_base.scss */
 .cetelemcalc .no-accept-items .head {
   background: #d02f2f;
   padding: 15px;
   font-size: 1.2em;
 }
-/* line 7085, sass/_base.scss */
+/* line 7088, sass/_base.scss */
 .cetelemcalc .no-accept-items .ci {
   font-weight: bold;
   color: black;
   padding: 10px 0;
 }
-/* line 7090, sass/_base.scss */
+/* line 7093, sass/_base.scss */
 .cetelemcalc .no-accept-items .ci .ceexc {
   background: #fd7c7c;
   color: white;
@@ -8939,13 +8942,13 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   padding: 15px;
   margin: 10px;
 }
-/* line 7099, sass/_base.scss */
+/* line 7102, sass/_base.scss */
 .cetelemcalc .no-accept-items .ci .wo {
   font-size: 0.9em;
   font-weight: normal;
   font-style: italic;
 }
-/* line 7105, sass/_base.scss */
+/* line 7108, sass/_base.scss */
 .cetelemcalc .no-accept-items .ci h3.minprice {
   color: #008000;
   text-transform: uppercase;
@@ -8954,7 +8957,7 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   margin: 4px 0;
 }
 
-/* line 7116, sass/_base.scss */
+/* line 7119, sass/_base.scss */
 a.cetelem-startrans {
   background: green;
   color: white;
@@ -8963,48 +8966,48 @@ a.cetelem-startrans {
   margin: 10px;
 }
 
-/* line 7124, sass/_base.scss */
+/* line 7127, sass/_base.scss */
 .cetelem-status {
   padding: 20px 10px;
   background: #B1D6B2;
   color: #1B751E;
 }
-/* line 7129, sass/_base.scss */
+/* line 7132, sass/_base.scss */
 .cetelem-status a {
   color: #1B751E;
   text-decoration: underline;
   font-style: italic;
 }
-/* line 7135, sass/_base.scss */
+/* line 7138, sass/_base.scss */
 .cetelem-status .status {
   padding: 5px;
   color: white;
 }
 
-/* line 7141, sass/_base.scss */
+/* line 7144, sass/_base.scss */
 .cetelem-transaction-view {
   background: #008000;
   color: #FFF;
 }
-/* line 7145, sass/_base.scss */
+/* line 7148, sass/_base.scss */
 .cetelem-transaction-view .head {
   background: #036303 !important;
   font-size: 1.8em !important;
   font-weight: bold;
   padding: 15px !important;
 }
-/* line 7151, sass/_base.scss */
+/* line 7154, sass/_base.scss */
 .cetelem-transaction-view .head .subline {
   font-size: 0.45em;
   margin-top: 8px;
   font-weight: normal;
 }
-/* line 7158, sass/_base.scss */
+/* line 7161, sass/_base.scss */
 .cetelem-transaction-view .con {
   padding: 15px;
   padding-top: 0;
 }
-/* line 7162, sass/_base.scss */
+/* line 7165, sass/_base.scss */
 .cetelem-transaction-view .con .whitebox {
   background: #fff;
   padding: 15px;
@@ -9015,7 +9018,7 @@ a.cetelem-startrans {
   -ms-border-radius: 5px;
   border-radius: 5px;
 }
-/* line 7171, sass/_base.scss */
+/* line 7174, sass/_base.scss */
 .cetelem-transaction-view .con a.trans {
   background: orange;
   padding: 5px 10px;
@@ -9027,7 +9030,7 @@ a.cetelem-startrans {
   -ms-border-radius: 5px;
   border-radius: 5px;
 }
-/* line 7182, sass/_base.scss */
+/* line 7185, sass/_base.scss */
 .cetelem-transaction-view .con .info {
   display: block;
   margin-top: 5px;
@@ -9036,7 +9039,7 @@ a.cetelem-startrans {
   color: #AABDAA;
   font-style: italic;
 }
-/* line 7192, sass/_base.scss */
+/* line 7195, sass/_base.scss */
 .cetelem-transaction-view .statusmsg {
   padding: 10px;
   margin-bottom: 15px;
@@ -9049,75 +9052,75 @@ a.cetelem-startrans {
   -ms-border-radius: 8px;
   border-radius: 8px;
 }
-/* line 7202, sass/_base.scss */
+/* line 7205, sass/_base.scss */
 .cetelem-transaction-view .statusmsg.stat-timeout {
   background: #545454;
   color: white;
 }
-/* line 7207, sass/_base.scss */
+/* line 7210, sass/_base.scss */
 .cetelem-transaction-view .statusmsg.stat-inprogress {
   background: orange;
   color: white;
 }
-/* line 7213, sass/_base.scss */
+/* line 7216, sass/_base.scss */
 .cetelem-transaction-view .statusmsg.stat-cancel {
   background: #E05A25;
   color: white;
 }
-/* line 7217, sass/_base.scss */
+/* line 7220, sass/_base.scss */
 .cetelem-transaction-view .statusmsg.stat-done {
   background: #31CE31;
   color: white;
 }
-/* line 7223, sass/_base.scss */
+/* line 7226, sass/_base.scss */
 .cetelem-transaction-view .statusdesc {
   color: black;
   line-height: 1.4;
 }
-/* line 7227, sass/_base.scss */
+/* line 7230, sass/_base.scss */
 .cetelem-transaction-view .statusdesc h3 {
   display: block;
   margin-bottom: 10px;
 }
-/* line 7233, sass/_base.scss */
+/* line 7236, sass/_base.scss */
 .cetelem-transaction-view .statusipns {
   margin-top: 10px;
 }
-/* line 7236, sass/_base.scss */
+/* line 7239, sass/_base.scss */
 .cetelem-transaction-view .statusipns .divider {
   background: #077307;
 }
-/* line 7240, sass/_base.scss */
+/* line 7243, sass/_base.scss */
 .cetelem-transaction-view .statusipns div.e {
   margin: 18px 0;
 }
-/* line 7243, sass/_base.scss */
+/* line 7246, sass/_base.scss */
 .cetelem-transaction-view .statusipns div.e .statlabel {
   padding: 4px;
 }
-/* line 7247, sass/_base.scss */
+/* line 7250, sass/_base.scss */
 .cetelem-transaction-view .statusipns div.e .time {
   color: #89AD8A;
   font-size: 0.7em;
 }
 
-/* line 7255, sass/_base.scss */
+/* line 7258, sass/_base.scss */
 .factory-preview {
   background: white;
   padding: 40px 0;
 }
-/* line 7259, sass/_base.scss */
+/* line 7262, sass/_base.scss */
 .factory-preview .factories {
   border: 0.4px solid #d9d9d9;
   position: relative;
   padding: 20px 1px;
 }
-/* line 7264, sass/_base.scss */
+/* line 7267, sass/_base.scss */
 .factory-preview .factories .slick-slide {
   height: 40px !important;
   position: relative;
 }
-/* line 7267, sass/_base.scss */
+/* line 7270, sass/_base.scss */
 .factory-preview .factories .slick-slide img {
   position: absolute;
   left: 50%;
@@ -9127,7 +9130,7 @@ a.cetelem-startrans {
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-/* line 7278, sass/_base.scss */
+/* line 7281, sass/_base.scss */
 .factory-preview .factories .slick-arrow {
   position: absolute;
   top: 50%;
@@ -9141,7 +9144,7 @@ a.cetelem-startrans {
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-/* line 7291, sass/_base.scss */
+/* line 7294, sass/_base.scss */
 .factory-preview .factories .slick-arrow:after {
   font-family: 'FontAwesome';
   font-size: 20px;
@@ -9156,70 +9159,70 @@ a.cetelem-startrans {
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-/* line 7306, sass/_base.scss */
+/* line 7309, sass/_base.scss */
 .factory-preview .factories .slick-arrow.slick-prev {
   left: -30px;
 }
-/* line 7308, sass/_base.scss */
+/* line 7311, sass/_base.scss */
 .factory-preview .factories .slick-arrow.slick-prev:after {
   content: "\f104";
 }
-/* line 7312, sass/_base.scss */
+/* line 7315, sass/_base.scss */
 .factory-preview .factories .slick-arrow.slick-next {
   right: -30px;
 }
-/* line 7314, sass/_base.scss */
+/* line 7317, sass/_base.scss */
 .factory-preview .factories .slick-arrow.slick-next:after {
   content: "\f105";
 }
-/* line 7319, sass/_base.scss */
+/* line 7322, sass/_base.scss */
 .factory-preview .factories .slick-arrow:hover {
   background: #acacac;
   color: white;
 }
-/* line 7323, sass/_base.scss */
+/* line 7326, sass/_base.scss */
 .factory-preview .factories .slick-arrow:hover:after {
   color: white;
 }
 
-/* line 7331, sass/_base.scss */
+/* line 7334, sass/_base.scss */
 .subscribe {
   text-align: center;
 }
-/* line 7334, sass/_base.scss */
+/* line 7337, sass/_base.scss */
 .subscribe h1 + .subtitle {
   margin-top: 10px;
 }
-/* line 7337, sass/_base.scss */
+/* line 7340, sass/_base.scss */
 .subscribe .subs-form {
   text-align: center;
   margin: 20px auto;
   width: 500px;
 }
-/* line 7342, sass/_base.scss */
+/* line 7345, sass/_base.scss */
 .subscribe .subs-form label {
   margin: 0 0 10px 0;
   font-size: 1.1em;
   color: #d9d9d9;
 }
-/* line 7348, sass/_base.scss */
+/* line 7351, sass/_base.scss */
 .subscribe .subs-form input[type=text] {
   padding: 10px;
   font-size: 1.2em;
   color: #cd2a30;
 }
-/* line 7354, sass/_base.scss */
+/* line 7357, sass/_base.scss */
 .subscribe .unsubscribe {
   margin: 15px 0 0 0;
   font-size: 1.2em;
 }
 
-/* line 7360, sass/_base.scss */
+/* line 7363, sass/_base.scss */
 .cetelem-credit {
   text-align: center;
 }
 
-/* line 7364, sass/_base.scss */
+/* line 7367, sass/_base.scss */
 .page {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -9227,18 +9230,18 @@ a.cetelem-startrans {
   flex-wrap: wrap;
   align-items: flex-start;
 }
-/* line 7371, sass/_base.scss */
+/* line 7374, sass/_base.scss */
 .page .side-menu {
   order: 2;
   flex-basis: 20%;
 }
-/* line 7375, sass/_base.scss */
+/* line 7378, sass/_base.scss */
 .page .responsive-view {
   order: 1;
   flex: 1;
   padding: 0 25px 0 0;
 }
-/* line 7381, sass/_base.scss */
+/* line 7384, sass/_base.scss */
 .page .image-set {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -9247,55 +9250,55 @@ a.cetelem-startrans {
   align-items: center;
   margin: 25px -5px 0 -5px;
 }
-/* line 7390, sass/_base.scss */
+/* line 7393, sass/_base.scss */
 .page .image-set > .img {
   flex-basis: calc(100%/4);
   padding: 5px;
 }
-/* line 7394, sass/_base.scss */
+/* line 7397, sass/_base.scss */
 .page .image-set > .img img {
   max-width: 100%;
   width: 100%;
 }
-/* line 7402, sass/_base.scss */
+/* line 7405, sass/_base.scss */
 .page .page-view h1 {
   margin: 0 0 20px 0;
   font-weight: bold;
   font-size: 2.7em;
 }
-/* line 7408, sass/_base.scss */
+/* line 7411, sass/_base.scss */
 .page .page-view .content {
   line-height: 1.4;
 }
-/* line 7411, sass/_base.scss */
+/* line 7414, sass/_base.scss */
 .page .page-view .content p {
   margin: 10px 0 5px 0;
 }
 
-/* line 7418, sass/_base.scss */
+/* line 7421, sass/_base.scss */
 .cetelem-calc {
   font-size: 0.8em;
   padding: 5px;
   background: #F1F1F3;
   position: relative;
 }
-/* line 7424, sass/_base.scss */
+/* line 7427, sass/_base.scss */
 .cetelem-calc #preload {
   text-align: center;
   padding: 8px;
   color: black;
 }
-/* line 7429, sass/_base.scss */
+/* line 7432, sass/_base.scss */
 .cetelem-calc #preload i {
   font-size: 28px;
 }
-/* line 7434, sass/_base.scss */
+/* line 7437, sass/_base.scss */
 .cetelem-calc .error {
   text-align: center;
   color: red;
   padding: 10px;
 }
-/* line 7440, sass/_base.scss */
+/* line 7443, sass/_base.scss */
 .cetelem-calc #next, .cetelem-calc #prev {
   cursor: pointer;
   background: #85A774;
@@ -9306,27 +9309,27 @@ a.cetelem-startrans {
   bottom: 2px;
   z-index: 1;
 }
-/* line 7450, sass/_base.scss */
+/* line 7453, sass/_base.scss */
 .cetelem-calc #next:hover, .cetelem-calc #prev:hover {
   background: #3E9219;
 }
-/* line 7455, sass/_base.scss */
+/* line 7458, sass/_base.scss */
 .cetelem-calc #prev {
   left: 2px;
 }
-/* line 7459, sass/_base.scss */
+/* line 7462, sass/_base.scss */
 .cetelem-calc #next {
   right: 2px;
 }
-/* line 7464, sass/_base.scss */
+/* line 7467, sass/_base.scss */
 .cetelem-calc #results .result {
   display: none;
 }
-/* line 7468, sass/_base.scss */
+/* line 7471, sass/_base.scss */
 .cetelem-calc #results .result.active {
   display: block;
 }
-/* line 7472, sass/_base.scss */
+/* line 7475, sass/_base.scss */
 .cetelem-calc #results .constuction {
   float: right;
   font-weight: bold;
@@ -9336,40 +9339,40 @@ a.cetelem-startrans {
   margin-bottom: 5px;
   color: #309033;
 }
-/* line 7482, sass/_base.scss */
+/* line 7485, sass/_base.scss */
 .cetelem-calc #results .havi {
   font-style: italic;
   color: #727273;
   font-size: 0.8em;
 }
-/* line 7488, sass/_base.scss */
+/* line 7491, sass/_base.scss */
 .cetelem-calc #results .ownSharePrice {
   border-top: 1px solid #d7d7d7;
   padding-top: 5px;
   margin-top: 5px;
   font-size: 0.8em;
 }
-/* line 7494, sass/_base.scss */
+/* line 7497, sass/_base.scss */
 .cetelem-calc #results .ownSharePrice input {
   border: none;
   padding: 4px;
   width: 60px;
 }
-/* line 7500, sass/_base.scss */
+/* line 7503, sass/_base.scss */
 .cetelem-calc #results .ownSharePrice input + button {
   height: 21px;
   background: #DADADA;
   color: #848484;
   border: none;
 }
-/* line 7508, sass/_base.scss */
+/* line 7511, sass/_base.scss */
 .cetelem-calc #results .futamidok {
   text-align: center;
   margin-top: 8px;
   display: block;
   position: relative;
 }
-/* line 7517, sass/_base.scss */
+/* line 7520, sass/_base.scss */
 .cetelem-calc #results:after {
   content: "";
   background: url("//www.cp.autoradiokeret.web-pro.hu/src/images/src/images/cetelem_babu.png") no-repeat center;
@@ -9380,30 +9383,30 @@ a.cetelem-startrans {
   top: 21px;
 }
 
-/* line 7531, sass/_base.scss */
+/* line 7534, sass/_base.scss */
 body.homepage footer,
 body.article footer {
   margin-top: 0;
 }
 
-/* line 7537, sass/_base.scss */
+/* line 7540, sass/_base.scss */
 body.article .website {
   width: 100%;
 }
 
-/* line 7543, sass/_base.scss */
+/* line 7546, sass/_base.scss */
 body.product-page .website {
   width: 100%;
 }
-/* line 7547, sass/_base.scss */
+/* line 7550, sass/_base.scss */
 body.product-page footer {
   margin-top: 0;
 }
-/* line 7550, sass/_base.scss */
+/* line 7553, sass/_base.scss */
 body.product-page header .bottom > .pw > .flex {
   padding-left: 0;
 }
-/* line 7554, sass/_base.scss */
+/* line 7557, sass/_base.scss */
 body.product-page .nav.nav-fix {
   flex: 1;
 }

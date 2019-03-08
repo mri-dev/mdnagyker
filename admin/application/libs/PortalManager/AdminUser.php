@@ -352,7 +352,15 @@ class AdminUser
 			$d['referer'] 	= false;
 
 			if ( $d['userID'] != '' ) {
-				$d['user'] = $this->db->query(sprintf("SELECT f.nev, f.user_group, f.email FROM felhasznalok as f WHERE ID = %d", (int)$d['userID']))->fetch(\PDO::FETCH_ASSOC);
+				$d['user'] = $this->db->query(sprintf("SELECT
+					f.nev,
+					f.user_group,
+					f.email,
+					pg.groupkey as price_group_key,
+					pg.title as ar_csoport
+				FROM felhasznalok as f
+				LEFT OUTER JOIN shop_price_groups as pg ON pg.ID = f.price_group
+				WHERE f.ID = %d", (int)$d['userID']))->fetch(\PDO::FETCH_ASSOC);
 			} else {
 				$d['user'] = false;
 			}
@@ -462,10 +470,13 @@ class AdminUser
 			t.raktar_articleid,
 			t.raktar_variantid,
 			t.profil_kep,
-			(ot.me * ot.egysegAr) as subAr
+			(ot.me * ot.egysegAr) as subAr,
+			t.xml_import_res_id,
+			xtp.prod_id as cmfx_id
 		FROM order_termekek as ot
 		LEFT OUTER JOIN shop_termekek as t ON t.ID = ot.termekID
 		LEFT OUTER JOIN shop_markak as m ON m.ID = t.marka
+		LEFT OUTER JOIN xml_temp_products as xtp ON xtp.ID = t.xml_import_res_id
 		WHERE ot.orderKey = $orderID";
 
 		extract($this->db->q($q,array('multi'=>'1')));

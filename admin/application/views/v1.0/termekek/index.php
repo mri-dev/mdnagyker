@@ -122,7 +122,7 @@
     	<? if( $this->products->hasItems() ): foreach($this->termekek as $d):  ?>
     	<tr class="data-tr">
 	    	<td align="center">
-        <i class="fa fa-arrows-v"></i>
+        <i class="sorter fa fa-arrows-v"></i>
 				<?=$d['product_id']?><br />
 				<input type="checkbox" name="selectedItem[]" value="<?=$d['product_id']?>" />
 			</td>

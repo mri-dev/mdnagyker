@@ -6,12 +6,18 @@
                 $o = $this->order;
                 $nevek = array(
                     'nev' => 'Név',
-                    'uhsz' => 'Utca, házszám',
-                    'city' => 'Város',
+                    'hazszam' => 'Házszám',
+                    'city' => 'Település',
+                    'kerulet' => 'Kerület',
+                    'kozterulet_nev' => 'Közterület neve',
+                    'kozterulet_jelleg' => 'Közterület jellege',
                     'adoszam' => 'Adószám',
                     'irsz' => 'Irányítószám',
+                    'epulet' => 'Épület',
+                    'lepcsohaz' => 'Lépcsőház',
+                    'szint' => 'Szint',
+                    'ajto' => 'Ajtó',
                     'phone' => 'Telefonszám',
-                    'state' => 'Megye'
                 );
                 $vegosszeg = 0;
                 $termek_ar_total = 0;
@@ -81,20 +87,32 @@
                                             <div class="img img-thb" onClick="document.location.href='<?=$d[url]?>'">
                                                 <span class="helper"></span>
                                                 <a href="<?=$d[url]?>" target="_blank">
-                                                    <img src="<?=\PortalManager\Formater::productImage($d[profil_kep], 75, \ProductManager\Products::TAG_IMG_NOPRODUCT)?>" alt="<?=$d[nev]?>">
+                                                    <img src="<?=\PortalManager\Formater::productImage($d[profil_kep], false, \ProductManager\Products::TAG_IMG_NOPRODUCT)?>" alt="<?=$d[nev]?>">
                                                 </a>
                                             </div>
                                             <div class="name">
                                                 <a href="<?=$d[url]?>" target="_blank"><?=$d[nev]?></a>
                                                 <div class="sel-types">
-                                                  <? if($d['szin']): ?><em>Variáció:</em> <strong><?=$d['szin']?></strong><? endif;?>
-                                                  <? if($d['meret']): ?><em>Kiszerelés:</em> <strong><?=$d['meret']?></strong><? endif;?>
+                                                  <?php if ($d['configs']): ?>
+                          													<i class="fa fa-gear" title="Kiválasztott konfiguráció"></i>
+                          													&nbsp;
+                          													<?php foreach ((array)$d['configs'] as $cid => $c): ?>
+                          														<em><?php echo $c['parameter']; ?>:</em> <strong><?php echo $c['value']; ?></strong>
+                          													<?php endforeach; ?>
+                          												<?php endif; ?>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="center"><span style="color:<?=$d[allapotSzin]?>;"><strong><?=$d[allapotNev]?></strong></span></td>
-                                    <td class="center"><span><?=$d[me]?></span></td>
+                                    <td class="center">
+                                      <span><?=$d[me]*$d['mertekegyseg_ertek']?> <?=$d[mertekegyseg]?></span>
+                  										<?php if ($d['mertekegyseg_ertek'] != 1): ?>
+                  											<div class="me-subt">
+                  												(<?=$d['me']?> x <?=$d['mertekegyseg_ertek']?> <?=$d['mertekegyseg']?>)
+                  											</div>
+                  										<?php endif; ?>
+                                    </td>
                                     <td class="center"><span><?=Helper::cashFormat($d[egysegAr])?> Ft</span></td>
                                     <td class="center"><span><?=Helper::cashFormat($d[subAr])?> Ft</span></td>
                                 </tr>
@@ -257,9 +275,9 @@
                             <div class="head"><strong>Számlázási adatok</strong></div>
                             <div class="inforows">
                                 <? $szam = json_decode($o[szamlazasi_keys],true); ?>
-                                <? foreach($szam as $h => $d): ?>
+                                <? foreach($szam as $h => $d): if($d == '') continue; ?>
                                     <div class="col-md-4"><?=$nevek[$h]?></div>
-                                    <div class="col-md-8"><?=$d?></div>
+                                    <div class="col-md-8"><?=($d  != '')?$d:'&nbsp;'?></div>
                                 <? endforeach; ?>
                             </div>
                          </div>
@@ -267,9 +285,9 @@
                             <div class="head"><strong>Szállítási adatok</strong></div>
                              <div class="inforows">
                                 <? $szall = json_decode($o[szallitasi_keys],true); ?>
-                                <? foreach($szall as $h => $d): ?>
+                                <? foreach($szall as $h => $d): if($d == '') continue; ?>
                                     <div class="col-md-4"><?=$nevek[$h]?></div>
-                                    <div class="col-md-8"><?=$d?></div>
+                                    <div class="col-md-8"><?=($d  != '')?$d:'&nbsp;'?></div>
                                 <? endforeach; ?>
                             </div>
                          </div>

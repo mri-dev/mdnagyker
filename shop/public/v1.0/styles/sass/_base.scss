@@ -5049,14 +5049,17 @@ md-toast{
 		height: 75px;
 		width: 75px;
 		margin: 0 10px 0 0;
+
+		img{
+			max-width: 100%;
+		}
 	}
 	.items .name a {
 		font-family: $font-cond;
-		text-transform: uppercase;
-		font-size:1.2em;
+		font-size: 1rem;
 		font-weight: bold;
-		color: $color-pr;
-		line-height: 28px;
+		color: $color-blue;
+		line-height: 1.3;
 	}
 	.orderpage .head {
 		position: relative;
@@ -5082,7 +5085,7 @@ md-toast{
 		font-weight: bold;
 		margin: 0 0 10px 0 ;
 		font-family: $font-cond;
-		color: $color-pr;
+		color: $color-blue;
 	}
 
 	.sub {
@@ -5100,7 +5103,7 @@ md-toast{
 	h4 {
 		font-size: 1.4em;
 		padding:12px;
-		background-color: #d6d9dc;
+		background-color: #5a5a5a;
 		text-transform: uppercase;
 		font-family: $font-cond;
 		text-align: center;
