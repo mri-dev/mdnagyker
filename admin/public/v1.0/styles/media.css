@@ -668,9 +668,9 @@ i.edit:hover{
 	height:100%
 }
 .termeklista .item-number {
-	font-size:12px;
+	font-size:0.9rem;
 	font-style:italic;
-	color: #d4d4d4;
+	color: #acacac;
 }
 .termeklista .cikkszam{
   font-size: 10px;
@@ -1052,6 +1052,14 @@ button.watch i{
 	border-bottom:1px solid #eee;
 	font-size:14px;
 	vertical-align:middle;
+}
+.orderInfo table.items > tbody > tr > td .config{
+  font-size: 1rem;
+  margin: 3px 0;
+  color: #7a7a7a;
+}
+.orderInfo table.items > tbody > tr > td .config strong{
+  color: green;
 }
 .orderInfo .selectCol{
 	line-height:32px;

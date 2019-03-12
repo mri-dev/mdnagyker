@@ -462,6 +462,7 @@ class AdminUser
 			ot.egysegAr,
 			ot.egysegArKedvezmeny,
 			ot.allapotID ,
+			ot.configs,
 			IF(t.cikkszam IS NULL,'n.a.',t.cikkszam) as cikkszam,
 			t.nev as termekNev,
 			t.meret,
@@ -487,6 +488,7 @@ class AdminUser
 		foreach($data as $d){
 			$totalPrice += $d[subAr];
 			$tetel 		+= $d[me];
+			$d['configs'] = $this->collectConfigData($d['configs']);
 			$bdata[] = $d;
 		}
 
@@ -495,6 +497,44 @@ class AdminUser
 		$back[data] 	= $bdata;
 
 		return $back;
+	}
+
+	public function collectConfigData( $rawconfig )
+	{
+		if ($rawconfig == '') {
+			return false;
+		}
+		parse_str($rawconfig, $configs);
+
+		if (count($configs) == 0) {
+			return false;
+		}
+
+		$list = array();
+		foreach ((array)$configs as $cp => $cv) {
+			$paramid = (int)str_replace("p","",$cp);
+			$value = $this->db->squery("SELECT
+				c.config_value as value,
+				c.parameter_id,
+				p.parameter as nev
+			FROM shop_termek_variation_configs as c
+			LEFT OUTER JOIN shop_termek_kategoria_parameter as p ON p.ID = c.parameter_id
+			WHERE 1=1 and c.ID = :id
+			ORDER BY CAST(p.priority as unsigned) ASC
+			", array('id' => $cv));
+			if ($value->rowCount() != 0) {
+				$value = $value->fetch(\PDO::FETCH_ASSOC);
+				$list[$paramid] = array(
+					'ID' => (int)$cv,
+					'param_id' => $paramid,
+					'parameter' => $value['nev'],
+					'value' => $value['value']
+				);
+			}
+
+		}
+
+		return $list;
 	}
 
 	public function getFizetesiModok(){

@@ -179,11 +179,20 @@ Megrendelések
                             	<?
                                 $c_total = 0;
                                 foreach($d[items][data] as $item): $c_total += $item[subAr]; ?>
-                    			<tr>
-                                	<td width="35"><div class="img"><img src="<?=\PortalManager\Formater::productImage($item[profil_kep], false, \ProductManager\Products::TAG_IMG_NOPRODUCT)?>" alt="" /></div></td>
-                    				<td>
-									   <a href="<?=HOMEDOMAIN.'termek/'.\PortalManager\Formater::makeSafeUrl($item[termekNev],'_-'.$item[termekID])?>" target="_blank"><?=($item[termekNev]) ?: '-törölt termék-'?></a>
-                                       <div class="item-number">
+                    					<tr>
+	                                	<td width="35"><div class="img"><img src="<?=\PortalManager\Formater::productImage($item[profil_kep], false, \ProductManager\Products::TAG_IMG_NOPRODUCT)?>" alt="" /></div>
+																		</td>
+                    								<td>
+									   									<a href="<?=HOMEDOMAIN.'termek/'.\PortalManager\Formater::makeSafeUrl($item[termekNev],'_-'.$item[termekID])?>" target="_blank"><?=($item[termekNev]) ?: '-törölt termék-'?></a>
+																			<?php if ($item['configs']): ?>
+																				<div class="config">
+																					<i class="fa fa-gear" title="Kiválasztott konfiguráció"></i>
+																					<?php foreach ((array)$item['configs'] as $conf ): ?>
+																						<span><?=$conf['parameter']?>: <strong><?=$conf['value']?></strong></span>
+																					<?php endforeach; ?>
+																				</div>
+																			<?php endif; ?>
+                                      <div class="item-number">
 																				 <span class="number tid" title="Termék ID">#<?=$item['termekID']?></span>
 																				 <span class="number tid" title="Cashman FX ID">CMFX #<?=$item['cmfx_id']?></span>
 																			</div>
