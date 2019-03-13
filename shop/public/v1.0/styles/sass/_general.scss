@@ -32,7 +32,7 @@ ol, ul {
 	list-style: none;
 }
 
-a, a:link, a:visited {
+a:not(.btn), a:link:not(.btn), a:visited:not(.btn) {
   color: $color-blue;
 }
 

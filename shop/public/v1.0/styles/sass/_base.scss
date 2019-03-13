@@ -4691,6 +4691,34 @@ md-toast{
 	color:#b82531;
 }
 
+.re-order{
+	.header{
+		text-align: center;
+		margin: 25px 0;
+
+		h1{
+			color: #404040;			
+			strong{
+				color:$color-blue;
+				font-size: 2.5rem;
+			}
+		}
+
+
+		.desc{
+			line-height: 1.4;
+			font-size:1.1rem;
+			color: #a3a3a3;
+		}
+
+		.order-status{
+			margin: 25px 0 0 0;
+			line-height: 1.4;
+			font-size: 1.3rem;
+		}
+	}
+}
+
 .orderFooter {
 	text-align: right;
 	margin-top: 5px;

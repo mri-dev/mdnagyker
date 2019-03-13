@@ -139,6 +139,12 @@
                         </div>
                      </div>
                 </div>
+                <div class="row">
+                  <div class="col-md-12 right">
+                    <a href="/reorder/<?=$this->gets[1]?>" class="btn btn-pr">Megrendelés újrarendelése <i class="fa fa-refresh"></i> </a>
+                  </div>
+                </div>
+                <br>
                 <a name="pay"></a>
                 <div class="datas">
                      <h4>Adatok</h4>
