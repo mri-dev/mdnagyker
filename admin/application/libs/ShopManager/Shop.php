@@ -2549,21 +2549,73 @@ class Shop
 		}
 
 		return $step+1;
-
 	}
 
-	public function getOrderData( $key, $by = 'accessKey'){
+	public function reorderSave( $key, $email, $data )
+	{
+		$mid = \Helper::getMachineID();
+		$uid = (int)$this->user[data][ID];
 
+		if ($email == '') {
+			throw new \Exception("Hiányzó e-mail cím a korábbi megrendelésnél (".$key.")!");
+
+		}
+
+		foreach ((array)$data['reorder']['me'] as $tid => $me) {
+			$ch = $this->db->squery("SELECT ID FROM reorder_config WHERE preorder = :order and termekID = :tid", array('order' => $key, 'tid' => $tid));
+
+			if ( $ch->rowCount() == 0 ) {
+				$this->db->insert(
+					'reorder_config',
+					array(
+						'preorder' => $key,
+						'gepID' => $mid,
+						'userID' => ($uid == '')?NULL:$uid,
+						'termekID' => $tid,
+						'me' => (int)$me
+					)
+				);
+			} else {
+				$chid = $ch->fetchColumn();
+				$this->db->update(
+					'reorder_config',
+					array(
+						'me' => $me
+					),
+					sprintf("ID = %d", $chid)
+				);
+			}
+		}
+	}
+
+	public function getOrderData( $key, $by = 'accessKey', $arg = array())
+	{
 		$q = "SELECT o.* FROM orders as o WHERE o.$by = '$key'";
 		extract($this->db->q($q));
 
-		$data[items] = $this->getOrderItems($data[ID]);
+		$arg['azonosito'] = $data['azonosito'];
+		$data[items] = $this->getOrderItems($data[ID], $arg);
 
 		return $data;
 	}
 
-	private function getOrderItems($orderID){
+	private function getOrderItems($orderID, $arg = array()){
 		if($orderID == '') return false;
+
+		$is_reorder = (isset($arg['reorder'])) ? true : false;
+		$uid = (int)$this->user[data][ID];
+
+		if ($is_reorder) {
+			$preorder_me = array();
+			$mesq = $this->db->squery("SELECT termekID, me FROM reorder_config WHERE preorder = :order", array('order' => $arg['azonosito']));
+			if ($mesq->rowCount() != 0) {
+				$mes = $mesq->fetchAll(\PDO::FETCH_ASSOC);
+				foreach ((array)$mes as $m) {
+					$preorder_me[$m['termekID']] = (int)$m['me'];
+				}
+			}
+		}
+
 		$q = "SELECT
 			ok.*,
 			t.nev,
@@ -2576,7 +2628,7 @@ class Shop
 			t.mertekegyseg_ertek,
 			t.raktar_variantid,
 			getTermekUrl(t.ID,'".$this->settings['domain']."') as url,
-			getTermekAr(t.marka,IF(t.egyedi_ar IS NOT NULL,t.egyedi_ar,IF(t.akcios,t.akcios_brutto_ar,t.brutto_ar))) as ar,
+			getTermekAr(t.ID ,".$uid.") as ar,
 			otp.nev as allapotNev,
 			otp.szin as allapotSzin,
 			(SELECT kedvezmeny_szazalek FROM orders WHERE ID = $orderID) as kedvezmeny_szazalek
@@ -2592,6 +2644,12 @@ class Shop
 
 		$bdata = array();
 		foreach ($data as $d) {
+			if ($is_reorder) {
+				$origin_ar = $d['ar'];
+				$d['egysegAr'] = $origin_ar;
+				$d['me'] = (int)$preorder_me[$d['termekID']];
+				$d['subAr'] = $d['egysegAr'] * (int)$preorder_me[$d['termekID']];
+			}
 			$kedvezmenyes = ($d[kedvezmeny_szazalek] > 0) ? true : false;
 			if( $kedvezmenyes ) {
 				\PortalManager\Formater::discountPrice( $d[ar], $d[kedvezmeny_szazalek] );

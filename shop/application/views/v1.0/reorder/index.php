@@ -102,7 +102,7 @@ $discount = $o[kedvezmeny_szazalek];
                <tr>
                   <td class="right"></td>
                    <td class="center" colspan="2">
-                     <button class="btn form-control btn-sm btn-sec" type="button"><i class="fa fa-refresh"></i> frissítés</button>
+                     <button class="btn form-control btn-sm btn-sec" type="submit" name="saveReorderData" value="1"><i class="fa fa-refresh"></i> frissítés</button>
                    </td>
                    <td class="right"><strong>Termékek ára</strong></td>
                    <td class="center"><span><?=Helper::cashFormat($termek_ar_total)?> Ft</span></td>

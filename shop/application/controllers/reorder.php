@@ -8,14 +8,24 @@ class reorder extends Controller{
 				Helper::reload('/');
 			}
 
-      $this->view->order = $this->shop->getOrderData($this->view->gets[1]);      
+		  $this->view->order = $this->shop->getOrderData( $this->view->gets[1], 'accessKey', array('reorder' => true ) );
 			$this->view->order_user = $this->User->get( array( 'user' => $this->view->order[email] ) );
       $title = $this->view->order['azonosito'].' megrendelés újrarendelése';
-
 
       $this->view->orderAllapot = $this->shop->getMegrendelesAllapotok();
 			$this->view->szallitas 	= $this->shop->getSzallitasiModok();
 			$this->view->fizetes 	= $this->shop->getFizetesiModok();
+
+			if ( Post::on('saveReorderData') )
+			{
+				try{
+					unset($_POST['saveReorderData']);
+					$this->shop->reorderSave( $this->view->order['azonosito'], $this->view->order['azonosito'], $_POST );
+					Helper::reload();
+				}catch(Exception $e){
+					$this->out( 'msg', \Helper::makeAlertMsg('pError', $e->getMessage()));
+				}
+			}
 
 			// SEO Információk
 			$SEO = null;
