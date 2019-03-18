@@ -2093,6 +2093,11 @@ class Shop
 		$gets 	= \Helper::GET();
 		$step 	= $gets[1];
 		$step 	= (!$step) ? 0 : $step;
+		$is_reorder = (isset($arg['reorder'])) ? $arg['reorder'] : false;
+
+		if ($is_reorder) {
+			$step = 4;
+		}
 
 		$post_str = json_encode($post, JSON_UNESCAPED_UNICODE);
 
@@ -2225,6 +2230,10 @@ class Shop
 				$err 		= false;
 				$inputErr 	= array();
 
+				if ($is_reorder) {
+					$reorder = $this->prepareReorder( $is_reorder, $post );
+				}
+
 				if ( !$post['aszf_ok'] ) {
 					$err 		= 'Megrendelés leadásához el kell fogadni az Általános Szerződési Feltételeket!';
 					$inputErr[] = 'aszf_on';
@@ -2252,6 +2261,21 @@ class Shop
 					if ( $used_cash )
 					{
 						$kedvezmeny_ft = $used_cash;
+					}
+
+					// Újra rendelés esetén adatfelülírások
+					if ( $is_reorder && $reorder )
+					{
+						$nev = $reorder['nev'];
+						$uid 					= $reorder['userID'];
+						$szallitasi_koltseg = $reorder['szallitasi_koltseg'];
+						$email = $reorder['email'];
+						$atvetel = $reorder['szallitasiModID'];
+						$fizetes = $reorder['fizetesiModID'];
+						$kedvezmeny_ft = $reorder['kedvezmeny'];
+						$comment = $post['reorder']['comment'];
+						$pppkod = ($reorder['pickpackpont_uzlet_kod'] == '') ? 'NULL' : $reorder['pickpackpont_uzlet_kod'];
+						$pp_pont = ($reorder['postapont'] == '') ? 'NULL' : $reorder['postapont'];
 					}
 
 					/**
@@ -2310,14 +2334,24 @@ class Shop
 
 					$referer_partner_id =($referer_partner_id) ? "'".$referer_partner_id."'" : 'NULL';
 					$coupon_code 		= ($coupon_code) ? "'".$coupon_code."'" : 'NULL';
+					$pre_order = ($is_reorder && $reorder) ? "'".$reorder['azonosito']."'" : 'NULL';
 
 					// Create new order
 					if($go){
-						$szamlazasi_keys = \Helper::getArrayValueByMatch($post,'szam_');
-						$szallitasi_keys = \Helper::getArrayValueByMatch($post,'szall_');
-						$iq = "INSERT INTO orders(nev,azonosito,email,userID,gepID,szallitasiModID,fizetesiModID,kedvezmeny,szallitasi_koltseg,szamlazasi_keys,szallitasi_keys,pickpackpont_uzlet_kod,comment,postapont,referer_code,coupon_code, used_cash) VALUES(
+						// Újra rendelés esetén adatfelülírások
+						if ($is_reorder && $reorder )
+						{
+							$szamlazasi_keys = json_decode($reorder['szamlazasi_keys'], true);
+							$szallitasi_keys = json_decode($reorder['szallitasi_keys'], true);
+						} else {
+							$szamlazasi_keys = \Helper::getArrayValueByMatch($post,'szam_');
+							$szallitasi_keys = \Helper::getArrayValueByMatch($post,'szall_');
+						}
+
+						$iq = "INSERT INTO orders(nev,azonosito,prev_order,email,userID,gepID,szallitasiModID,fizetesiModID,kedvezmeny,szallitasi_koltseg,szamlazasi_keys,szallitasi_keys,pickpackpont_uzlet_kod,comment,postapont,referer_code,coupon_code, used_cash) VALUES(
 						'$nev',
 						nextOrderID(),
+						$pre_order,
 						'$email',
 						$uid,
 						'$mid',
@@ -2544,11 +2578,45 @@ class Shop
 
 						setcookie('acceptedOrder',null,time()-3600,'/kosar');
 						setcookie('lastOrderedKey',$accessKey,time()+3600,'/kosar');
+
+						if($is_reorder && $reorder) {
+							// reorder config clear
+							$this->db->squery("DELETE FROM reorder_config WHERE preorder = :porder", array('porder' => $reorder['azonosito']));
+							return $accessKey;
+						}
 				}
 			break;
 		}
 
 		return $step+1;
+	}
+
+	public function prepareReorder( $key, $post )
+	{
+		$mid = \Helper::getMachineID();
+
+		// old order data
+		$order = $this->getOrderData( $key );
+
+		// kosár ürítése
+		$this->clearCart( $mid);
+
+		// kosár előkészítése
+		if ($order['items']) {
+			foreach ($order['items'] as $c) {
+				$this->db->insert(
+					'shop_kosar',
+					array(
+						'gepID' => $mid,
+						'termekID' => $c['termekID'],
+						'configs' => $c['configs'],
+						'me' => (isset($post['reorder']['me'][$c['termekID']])) ? (int)$post['reorder']['me'][$c['termekID']] : (int)$c['me'],
+					)
+				);
+			}
+		}
+
+		return $order;
 	}
 
 	public function reorderSave( $key, $email, $data )

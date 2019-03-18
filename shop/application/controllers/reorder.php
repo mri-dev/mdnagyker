@@ -1,4 +1,5 @@
 <?php
+use ShopManager\OrderException;
 
 class reorder extends Controller{
 		function __construct(){
@@ -24,6 +25,21 @@ class reorder extends Controller{
 					Helper::reload();
 				}catch(Exception $e){
 					$this->out( 'msg', \Helper::makeAlertMsg('pError', $e->getMessage()));
+				}
+			}
+
+			if ( Post::on('doReorder') )
+			{
+				try{
+					$step = $this->shop->doOrder($_POST, array(
+						'user' => $this->view->user,
+						'reorder' => $this->view->gets[1]
+					));
+					Helper::reload('/kosar/done/'.$step);
+					Helper::reload('/kosar/'.$step.'#step');
+				}catch(OrderException $e){
+					$this->view->orderExc = $e->getErrorData();
+					$this->out( 'msg', \Helper::makeAlertMsg('pError', $this->view->orderExc['msg']) );
 				}
 			}
 

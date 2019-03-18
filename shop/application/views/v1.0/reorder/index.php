@@ -43,6 +43,8 @@ $discount = $o[kedvezmeny_szazalek];
         <span style="color:<?=$this->orderAllapot[$o[allapot]][szin]?>;"><strong><?=$this->orderAllapot[$o[allapot]][nev]?></strong></span>
       </div>
     </div>
+    <br>
+    <?php echo $this->msg; ?>
   </div>
   <div class="datas">
     <h4>Újra rendelendő termékek</h4>
@@ -277,6 +279,23 @@ $discount = $o[kedvezmeny_szazalek];
               </div>
            </div>
        </div>
+  </div>
+  <div class="datas">
+    <h4>Véglegesítés</h4>
+    <br>
+    <div class="row np">
+      <div class="col-sm-12 center">
+        <textarea name="reorder[comment]" class="form-control" style="min-height: 120px;" placeholder="Megjegyzés..."></textarea>
+      </div>
+    </div>
+    <br>
+    <div class="row np">
+      <div class="col-sm-12 center">
+        <input type="checkbox" id="aszf_ok" name="aszf_ok"><label for="aszf_ok">Megrendelésemmel elfogadom a(z) <?=$this->settings['page_title']?> mindenkor hatályos <a href="<?=$this->settings['ASZF_URL']?>" target="_blank">Általános Szerződési Feltételek</a>et!</label>
+        <br><br>
+        <button type="submit" class="btn btn-success reorder-button" name="doReorder" value="1">Megrendelés újra rendelése <i class="fa fa-arrow-circle-right"></i></button>
+      </div>
+    </div>
   </div>
 
   <pre><?php //print_r($this->order); ?></pre>

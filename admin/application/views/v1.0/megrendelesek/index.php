@@ -102,7 +102,7 @@ Megrendelések
     	<tr id="o_<?=$d[ID]?>" class="o">
 	    	<td align="center" valign="middle" style="border-left:5px solid <?=$this->allapotok[order][$d[allapot]][szin]?>;"><?=$d[ID]?></td>
             <td align="center" valign="middle">
-            	<a href="javascript:void(0);"  mid="<?=$d[ID]?>" ><?=$d[azonosito]?></a>
+            	<?=($d['prev_order'])?'<i class="fa fa-refresh" title="Gyors újrarendelés: '.$d['prev_order'].'."></i>':''?><a href="javascript:void(0);"  mid="<?=$d[ID]?>" ><?=$d[azonosito]?></a>
             </td>
             <td>
                 <div class="ind feat">

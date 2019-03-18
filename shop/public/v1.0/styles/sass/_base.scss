@@ -4697,7 +4697,7 @@ md-toast{
 		margin: 25px 0;
 
 		h1{
-			color: #404040;			
+			color: #404040;
 			strong{
 				color:$color-blue;
 				font-size: 2.5rem;
@@ -4716,6 +4716,11 @@ md-toast{
 			line-height: 1.4;
 			font-size: 1.3rem;
 		}
+	}
+	.reorder-button{
+		text-transform: uppercase;
+		font-size: 1.2rem;
+		padding: 12px 25px;
 	}
 }
 
