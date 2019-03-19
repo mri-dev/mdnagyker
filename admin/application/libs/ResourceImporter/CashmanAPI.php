@@ -156,7 +156,7 @@ class CashmanAPI extends ResourceImportBase
     $param[0]['email_cim'] = $data['email']; // Számla ide megy
 
     $param[0]['deviza'] = "HUF";
-    $param[0]['tipus'] = "2"; // 1 = számla, 2 = díjbekérő 
+    $param[0]['tipus'] = "2"; // 1 = számla, 2 = díjbekérő
 
     // termékek
     $index = 0;
@@ -172,6 +172,8 @@ class CashmanAPI extends ResourceImportBase
       $param[$index]['tetel_megjegyzes'] = 'WebshopID: '.$item['termekID'] ."\n";
       $index++;
     }
+
+    // Szolgáltatás hozzáadás - szállítások
 
     $this->api->uj_szamla($param);
 
