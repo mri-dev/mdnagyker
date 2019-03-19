@@ -592,14 +592,14 @@
                             <? endforeach; ?>
                         </select>
                     </div>
-										<?php if (false): ?>
+										<?php if (true): ?>
                     <div class="col-md-3" style="padding-left:8px;">
-                        <label for="basics_flagkey_webshopSaleReport_orderstatus"><u>webshopSale</u> report megrendelés végpont</label>
-                        <select name="flagkey_webshopSaleReport_orderstatus" id="basics_flagkey_webshopSaleReport_orderstatus" class="form-control">
+                        <label for="basics_flagkey_invoice_orderstatus"><u>Cashman FX</u> számla generálás megrendelés állapot</label>
+                        <select name="flagkey_invoice_orderstatus" id="basics_flagkey_invoice_orderstatus" class="form-control">
                             <option value="">-- válasszon --</option>
                             <option value="" disabled="disabled"></option>
                             <? foreach( $this->orderstatus as $d ): ?>
-                            <option value="<?=$d['ID']?>" <?=($this->settings['flagkey_webshopSaleReport_orderstatus'] == $d['ID'])?'selected="selected"':''?>><?=$d['nev']?></option>
+                            <option value="<?=$d['ID']?>" <?=($this->settings['flagkey_invoice_orderstatus'] == $d['ID'])?'selected="selected"':''?>><?=$d['nev']?></option>
                             <? endforeach; ?>
                         </select>
                     </div>

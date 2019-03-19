@@ -2,6 +2,7 @@
 use PortalManager\Admin;
 use ProductManager\Products;
 use Applications\Cetelem;
+use ResourceImporter\CashmanAPI;
 
 class megrendelesek extends Controller
 {
@@ -9,7 +10,8 @@ class megrendelesek extends Controller
 			parent::__construct();
 			parent::$pageTitle = 'Megrendelések / Adminisztráció';
 
-			$this->Admin = new Admin( false, array( 'db' => $this->db, 'view' => $this->view ) );
+      $this->crm = new CashmanAPI(array('db' => $this->db));
+			$this->Admin = new Admin( false, array( 'db' => $this->db, 'view' => $this->view, 'crm' => $this->crm ) );
 
 			$this->view->adm = $this->AdminUser;
 			$this->view->adm->logged = $this->AdminUser->isLogged();

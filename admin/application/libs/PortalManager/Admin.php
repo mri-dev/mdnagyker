@@ -23,6 +23,7 @@ class Admin
 	private $admin_id = 0;
 	private $admin = false;
 	private $settings = false;
+	private $crm = false;
 
 	function __construct( $admin_id = false, $arg = array() )
 	{
@@ -32,6 +33,10 @@ class Admin
 		if ($admin_id) {
 			$this->admin_id = $admin_id;
 			$this->getAdmin();
+		}
+
+		if (isset($arg['crm'])) {
+			$this->crm = $arg['crm'];
 		}
 
 		$this->traffic = new Traffic( $arg );
@@ -450,19 +455,21 @@ class Admin
 			t.nev,
 			(ok.egysegAr * ok.me) as subAr,
 			t.profil_kep,
-			t.szin_kod,
-			t.szin,
 			t.meret,
 			t.raktar_articleid,
 			t.raktar_variantid,
 			getTermekUrl(t.ID,'".$this->settings['domain']."') as url,
 			ok.egysegAr as ar,
+			xml.cikkszam,
+			xml.prod_id as xml_prod_id,
+			xml.mennyisegegyseg,
 			otp.nev as allapotNev,
 			otp.szin as allapotSzin
 		FROM order_termekek as ok
 		LEFT OUTER JOIN shop_termekek as t ON t.ID = ok.termekID
 		LEFT OUTER JOIN shop_markak as m ON m.ID = t.marka
 		LEFT OUTER JOIN order_termek_allapot as otp ON ok.allapotID = otp.ID
+		LEFT OUTER JOIN xml_temp_products as xml ON xml.ID = t.xml_import_res_id
 		WHERE ok.orderKey = $orderID";
 
 		$arg[multi] = '1';
@@ -531,17 +538,33 @@ class Admin
 
 		$orderData 	= $this->getOrderData($accessKey);
 
-		/*echo '<pre>';
-		print_r($orderData);
-
-		return false;	*/
 
 		$users 		= new Users( array(
 			'db' => $this->db,
 			'admin' => true,
 			'settings' => $this->settings )
 		);
-		$user 		= $users->get(array( 'user' => $orderData['email'] ));
+		$user = $users->get(array( 'user' => $orderData['email'] ));
+
+		// Cashman FX - Partner adat rögzítés
+		if( $post[allapotID][$orderID] == $this->settings['flagkey_invoice_orderstatus'] )
+		{
+			// Partner rögzítés / frissítés
+			if ( $this->crm ) {
+				$crmpartner = $this->crm->partnerRegister( $user );
+				if ($crmpartner['error'] == 1) {
+					throw new \Exception("Cashman FX - Partner rögzítés [".__CLASS__." @ ".__LINE__."]: ".$crmpartner['hiba'], 1);
+				}
+			}
+		}
+
+		/* * /
+		echo '<pre>';
+		print_r($orderData);
+		print_r($user);
+
+		return false;
+		/* */
 
 		if( $user ) {
 			$totalOrderPrice = (float) $this->db->query("
@@ -659,7 +682,6 @@ class Admin
 		}
 
 		// Termékek állapota
-
 		$termek_allapotok 		= $post[termekAllapot][$orderID];
 		$termek_allapotok_pre 	= $post[prev_termekAllapot][$orderID];
 		$termekAllapotChange 	= array();
@@ -863,10 +885,28 @@ class Admin
 		}
 
 		/**
-		 * WebshopSale report
+		 * Cashman FX számla generálás
 		 * */
-		if( $updateData['allapot'] == $this->settings['flagkey_webshopSaleReport_orderstatus'] ) {
-		/* * /
+		if( $updateData['allapot'] == $this->settings['flagkey_invoice_orderstatus'] )
+		{
+			if ( $this->crm ) {
+				if ($orderData['invoice'] == '') {
+					$orderData['fizetes'] = $this->getFizetesiModeData($orderData['fizetesiModID'],'nev');
+					$crmszamla = $this->crm->newInvoice( $orderData );
+					if ($crmszamla['error'] == 1) {
+						throw new \Exception("Cashman FX - Számla rögzítés [".__CLASS__." @ ".__LINE__."]: ".$crmszamla['hiba']);
+					} else {
+						$this->db->update(
+							'order',
+							array(
+								'invoice' => $crmszamla['szamlaszam']
+							)
+						);
+					}
+
+				}
+			}
+			/* * /
 
 			// Számlázó program felé megrendelés adatok megküldése
 			$items = array();

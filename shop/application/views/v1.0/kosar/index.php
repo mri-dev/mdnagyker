@@ -429,7 +429,7 @@
 	                                       <? if($this->orderExc && in_array('szam_nev',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
 	                                  </div>
 																		<div class="col-sm-4">
-	                                       <input type="text" class="form-control" name="szam_adoszam" value="<?=($this->orderExc)?$_POST[szam_adoszam]:(($this->storedString[1])?$this->storedString[1][szam_adoszam]:$this->user[szamlazasi_adat][adoszam])?>" placeholder="Adószám" />
+	                                       <input type="text" class="form-control" name="szam_adoszam" value="<?=($this->orderExc)?$_POST[szam_adoszam]:(($this->storedString[1])?$this->storedString[1][szam_adoszam]:$this->user[data][company_adoszam])?>" placeholder="Adószám" />
 	                                       <? if($this->orderExc && in_array('szam_adoszam',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
 	                                  </div>
 		                            	</div>
@@ -505,7 +505,7 @@
 	                                       <? if($this->orderExc && in_array('szall_nev',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
 	                                  </div>
 																		<div class="col-sm-4">
-	                                       <input type="text" class="form-control" name="szall_adoszam" value="<?=($this->orderExc)?$_POST[szall_adoszam]:(($this->storedString[1])?$this->storedString[1][szall_adoszam]:$this->user[szallitasi_adat][adoszam])?>" placeholder="Adószám" />
+	                                       <input type="text" class="form-control" name="szall_adoszam" value="<?=($this->orderExc)?$_POST[szall_adoszam]:(($this->storedString[1])?$this->storedString[1][szall_adoszam]:$this->user[data][company_adoszam])?>" placeholder="Adószám" />
 	                                       <? if($this->orderExc && in_array('szall_adoszam',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
 	                                  </div>
 		                            	</div>

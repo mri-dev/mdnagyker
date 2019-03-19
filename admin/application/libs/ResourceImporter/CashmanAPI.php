@@ -44,6 +44,161 @@ class CashmanAPI extends ResourceImportBase
     return $row;
   }
 
+  function partnerRegister( $user )
+  {
+    $param = array();
+    $param[0] = array();
+    $this->incFixRowData($param[0]);
+
+    $param[0]['partner_id'] = $user['data']['crm_partner_id'];
+    $param[0]['partner_kod'] = $user['data']['ID'];
+    $param[0]['nev'] = ($user['data']['user_group'] == 'user') ? $user['data']['nev'] : $user['data']['company_name'];
+  	$param[0]['iranyitoszam'] = $user['szamlazasi_adat']['irsz'];
+  	$param[0]['varos'] = $user['szamlazasi_adat']['city'];
+    $param[0]['kerulet'] = $user['szamlazasi_adat']['kerulet'];
+    $param[0]['kozterulet_neve'] = $user['szamlazasi_adat']['kozterulet_nev'];
+    $param[0]['kozterulet_jellege'] = $user['szamlazasi_adat']['kozterulet_jelleg'];
+    $param[0]['hazszam'] = $user['szamlazasi_adat']['hazszam'];
+    $param[0]['epulet'] = $user['szamlazasi_adat']['epulet'];
+    $param[0]['lepcsohaz'] = $user['szamlazasi_adat']['lepcsohaz'];
+    $param[0]['szint'] = $user['szamlazasi_adat']['szint'];
+    $param[0]['ajto'] = $user['szamlazasi_adat']['ajto'];
+
+    if ($user['data']['company_adoszam'] != '') {
+      $param[0]['adoszam'] = $user['data']['company_adoszam'];
+    }
+    if ($user['data']['company_bankszamlaszam'] != '') {
+      $paramt[0]['bankszamlaszam'] = $user['data']['company_bankszamlaszam'];
+    }
+
+  	//$param[0]['kozossegi_adoszam'] = '';
+  	$param[0]['mobil'] = $user['szallitasi_adat']['phone'];
+  	$param[0]['email'] = $user['email'];
+  	$param[0]['fizetesmod'] = "Átutalás";					//Fizetesmod lehet: Átutalás, Készpénz, Utánvét, Bankkártya, Üdülési csekk, PayPal, Szép kártya, Utalvány,
+  															//Halasztott KP, Barter, Kompenzáció, Barion
+  	$param[0]['fizetesi_hatarido_nap'] = '7';				//Nem kötelező, ha nincs megadva, 0 lesz
+  	//$param[0]['allando_kedvezmeny'] = '';
+  	$param[0]['megjegyzes'] = $user['data']['price_group_title'];
+  	$param[0]['partner_ar'] = (int)str_replace('ar', '',$user['data']['price_group_key']);
+  	$param[0]['orszag_id'] = '1';
+
+    $this->api->partnerrogzites($param);
+
+    if( $this->api->hiba == '' ) {
+		    if ( $this->api->partner_id[0]) {
+          $this->db->update(
+            'felhasznalok',
+            array(
+              'crm_partner_id' => trim($this->api->partner_id[0])
+            ),
+            sprintf("ID = %d", (int)$user['data']['ID'])
+          );
+        }
+		} else {
+			//echo $this->api->hiba;
+		}
+
+    return array(
+      'partner_id' => $this->api->partner_id[0],
+      'uzenet' => $this->api->uzenet,
+      'hiba' => $this->api->hiba,
+      'error' => ($this->api->hiba == '') ? 0 : 1,
+    );
+  }
+
+  function newInvoice( $data )
+  {
+    $param = array();
+    $param[0] = array();
+    $this->incFixRowData($param[0]);
+
+    $szamlazasi = json_decode($data["szamlazasi_keys"], true);
+    $szallitasi = json_decode($data["szallitasi_keys"], true);
+
+    /* Számla adatok hozzáadása */
+    // Kötelező elemek
+    $param[0]['partner_kod'] = ($data['userID'] != '') ? $data['userID'] : '';
+    $param[0]['fizetesmod'] = $data['fizetes'];
+
+    $param[0]['nev'] = $data['nev'];
+    $param[0]['iranyitoszam'] = $szamlazasi['irsz'];
+  	$param[0]['varos'] = $szamlazasi['city'];
+    $param[0]['kerulet'] = $szamlazasi['kerulet'];
+    $param[0]['kozterulet_neve'] = $szamlazasi['kozterulet_nev'];
+    $param[0]['kozterulet_jellege'] = $szamlazasi['kozterulet_jelleg'];
+    $param[0]['hazszam'] = $szamlazasi['hazszam'];
+    $param[0]['epulet'] = $szamlazasi['epulet'];
+    $param[0]['lepcsohaz'] = $szamlazasi['lepcsohaz'];
+    $param[0]['szint'] = $szamlazasi['szint'];
+    $param[0]['ajto'] = $szamlazasi['ajto'];
+    $param[0]['orszag'] = "Magyarország";
+
+    if (isset($data['adoszam']) && !empty($data['adoszam'])) {
+  	  $param[0]['adoszam'] = $data['adoszam'];
+    }
+    $param[0]['szallitasicim_nev'] = $szallitasi['nev'];
+    $param[0]['szallitasicim_iranyitoszam'] = $szallitasi['irsz'];
+    $param[0]['szallitasicim_varos'] = $szallitasi['city'];
+    $param[0]['szallitasicim_utca'] = $szallitasi['kozterulet_nev'].' '.$szallitasi['kozterulet_jelleg'].' '.$szallitasi['hazszam'].'.';
+    $param[0]['szallitasicim_orszag'] = 'Magyarország';
+
+    // Egyéb
+    $param[0]['egyeb'] = "WEBSHOP megrendelés: ".$data['azonosito'];
+
+    $param[0]['kelt'] = date('Y-m-d');
+  	$param[0]['teljesites'] = date('Y-m-d');
+  	$param[0]['fizetesi_hatarido'] = date('Y-m-d');
+  	$param[0]['fizetesi_hatarido_nap'] = "7";
+
+    $param[0]['megjegyzes'] = $data['comment'];
+    $param[0]['noflash'] = "1";
+    $param[0]['nodisplay'] = "1";
+    $param[0]['email_cim'] = $data['email']; // Számla ide megy
+
+    $param[0]['deviza'] = "HUF";
+    $param[0]['tipus'] = "2"; // 1 = számla, 2 = díjbekérő 
+
+    // termékek
+    $index = 0;
+    foreach ((array)$data['items'] as $item)
+    {
+      $param[$index]['termek_id'] = $item['xml_prod_id'];
+      $param[$index]['cikkszam'] = $item['cikkszam'];
+      $param[$index]['megnevezes'] = $item['nev'];
+      $param[$index]['mennyiseg'] = $item['me'];
+      $param[$index]['netto_egysegar'] = ($item['egysegAr']/1.27);
+      $param[$index]['afa'] = 27;
+      $param[$index]['mennyisegiegyseg'] = $item['mennyisegegyseg'];
+      $param[$index]['tetel_megjegyzes'] = 'WebshopID: '.$item['termekID'] ."\n";
+      $index++;
+    }
+
+    $this->api->uj_szamla($param);
+
+    if( $this->api->hiba == '' ) {
+			//$cashManAPI->szamla változóban a számlaszám
+			//a $cashManAPI->link visszaadott linket futtatni kell, hogy a számla létrejöjjön,
+			// $cashManAPI->szamla_hely változóban az újranyomtatáshoz szükséges linket adja vissza
+			// a $cashManAPI->tmppdf változóban az ideiglenes PDF elérési útját adja vissza, ha valaki le akarja tölteni és a saját rendszerében tárolni.
+			// a pdf fájlok időközönként törlésre kerülnek
+			//$cashManAPI->szamlaid változóban a számla ID (pénztárba tevéshez szükséges)
+			//echo '<br><br>Link: ' . $cashManAPI->link;
+			//echo '<a href="' . $this->api->link . '" target="_blank">' . $this->api->szamla . "</a><br>";
+			//echo $this->api->tmppdf;
+		} else {
+			//echo $this->api->hiba;
+		}
+
+    return array(
+      'szamla_link' => $this->api->link,
+      'szamlaszam' => $this->api->szamla,
+      'uzenet' => $this->api->uzenet,
+      'hiba' => $this->api->hiba,
+      'error' => ($this->api->hiba == '') ? 0 : 1,
+      'tmppdf' => $this->api->tmppdf
+    );
+  }
+
   public function updateStock( $data = array() )
   {
 

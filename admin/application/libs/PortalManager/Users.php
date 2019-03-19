@@ -820,6 +820,7 @@ class Users
 		$q = "SELECT
 			u.*,
 			pg.title as price_group_title,
+			pg.groupkey as price_group_key,
 			refererID(u.ID) as refererID
 		FROM ".self::TABLE_NAME." as u
 		LEFT OUTER JOIN shop_price_groups as pg ON pg.ID = u.price_group
