@@ -147,7 +147,7 @@ class CashmanAPI extends ResourceImportBase
 
     $param[0]['kelt'] = date('Y-m-d');
   	$param[0]['teljesites'] = date('Y-m-d');
-  	$param[0]['fizetesi_hatarido'] = date('Y-m-d');
+  	$param[0]['fizetesi_hatarido'] = date('Y-m-d', strtotime(date('Y-m-d H:i:s').' + 7 days'));
   	$param[0]['fizetesi_hatarido_nap'] = "7";
 
     $param[0]['megjegyzes'] = $data['comment'];
@@ -156,7 +156,7 @@ class CashmanAPI extends ResourceImportBase
     $param[0]['email_cim'] = $data['email']; // Számla ide megy
 
     $param[0]['deviza'] = "HUF";
-    $param[0]['tipus'] = "2"; // 1 = számla, 2 = díjbekérő
+    $param[0]['tipus'] = ($this->db->settings['invoice_generate_mode'] != '') ? $this->db->settings['invoice_generate_mode']  : "2"; // 1 = számla, 2 = díjbekérő
 
     // termékek
     $index = 0;
@@ -174,6 +174,16 @@ class CashmanAPI extends ResourceImportBase
     }
 
     // Szolgáltatás hozzáadás - szállítások
+    $has_transport_product = $this->getTransportData($data['szallitasiModID']);
+    if ( $has_transport_product && $has_transport_product['crm_product_id'] != '' ) {
+      $param[$index]['termek_id'] = $has_transport_product['crm_product_id'];
+      $param[$index]['cikkszam'] = $has_transport_product['crm_product_id'];
+      $param[$index]['megnevezes'] = 'Szolgáltatás: '.$has_transport_product['nev'];
+      $param[$index]['mennyiseg'] = 1;
+      $param[$index]['netto_egysegar'] = ($has_transport_product['koltseg'] != 0) ? ($has_transport_product['koltseg']/1.27) : 0;
+      $param[$index]['afa'] = 27;
+      $param[$index]['mennyisegiegyseg'] = 'db';
+    }
 
     $this->api->uj_szamla($param);
 
@@ -197,8 +207,22 @@ class CashmanAPI extends ResourceImportBase
       'uzenet' => $this->api->uzenet,
       'hiba' => $this->api->hiba,
       'error' => ($this->api->hiba == '') ? 0 : 1,
-      'tmppdf' => $this->api->tmppdf
+      'tmppdf' => $this->api->tmppdf,
+      'params' => $param
     );
+  }
+
+  public function getTransportData( $id )
+  {
+    $q = "SELECT * FROM shop_szallitasi_mod WHERE ID = :id";
+
+    $qry = $this->db->squery( $q, array(
+      'id' => $id
+    ));
+
+    $dat = $qry->fetch(\PDO::FETCH_ASSOC);
+
+    return $dat;
   }
 
   public function updateStock( $data = array() )

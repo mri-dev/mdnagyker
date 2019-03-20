@@ -897,13 +897,13 @@ class Admin
 						throw new \Exception("Cashman FX - Számla rögzítés [".__CLASS__." @ ".__LINE__."]: ".$crmszamla['hiba']);
 					} else {
 						$this->db->update(
-							'order',
+							'orders',
 							array(
 								'invoice' => $crmszamla['szamlaszam']
-							)
+							),
+							sprintf("ID = %d", $orderData['ID'])
 						);
 					}
-
 				}
 			}
 			/* * /
