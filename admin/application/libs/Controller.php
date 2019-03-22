@@ -156,7 +156,7 @@ class Controller {
           ) );
 
 
-        $this->out( 'kozterulet_jellege', $this->kozterulet_jellege() );
+          $this->out( 'kozterulet_jellege', $this->kozterulet_jellege() );
         }
 
         if(!$arg[hidePatern]){ $this->hidePatern = false; }

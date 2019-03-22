@@ -667,90 +667,90 @@
 		                	<div class="row np" style="margin-top:5px;">
 		                    	<div class="col-sm-6 col1">
 		                        	<div class="head"><h4>Számlázási adatok</h4></div>
-		                            <? if($this->orderExc && in_array(1,$this->orderMustFillStep)): ?>
-		                            	<div align="center" class="p10"><span class="mustSelect"><i class="fa fa-warning"></i> Figyelem! Hiányoznak a számlázási adatok. Kérjük pótolja!</span></div>
-		                            <? else: ?>
-		                            <div class="order-contact-info">
-		                            	<div class="row np">
-		                                	<div class="col-sm-5">
-		                                    	<strong>Név</strong>
-		                                    </div>
-		                                    <div class="col-sm-7 right">
-		                                    	<?=$this->storedString[1][szam_nev]?>
-		                                    </div>
-		                                </div>
-																		<?php if ( $this->storedString[1][szam_adoszam] != '' ): ?>
-																		<div class="row np">
-			                                	<div class="col-sm-5">
-			                                    	<strong>Adószám</strong>
-			                                    </div>
-			                                    <div class="col-sm-7 right">
-			                                    	<?=$this->storedString[1][szam_adoszam]?>
-			                                    </div>
-			                                </div>
-																		<?php endif; ?>
-																		<?php if ( $this->storedString[1][szam_kerulet] != '' ): ?>
-																		<div class="row np">
-																			<div class="col-sm-5">
-																					<strong>Kerület</strong>
-																				</div>
-																				<div class="col-sm-7 right">
-																					<?=$this->storedString[1][szam_kerulet]?>
-																				</div>
-																		</div>
-																		<?php endif; ?>
-		                                <div class="row np">
-		                                	<div class="col-sm-5">
-		                                    	<strong>Település</strong>
-		                                    </div>
-		                                    <div class="col-sm-7 right">
-		                                    	<?=$this->storedString[1][szam_irsz]?> <?=$this->storedString[1][szam_city]?>
-		                                    </div>
-		                                </div>
-																		<div class="row np">
-		                                	<div class="col-sm-7">
-		                                    <strong>Cím</strong> <br>
-																				<em>(közterület neve, közterület jellege, házszám)</em>
+	                            <? if($this->orderExc && in_array(1,$this->orderMustFillStep)): ?>
+	                            	<div align="center" class="p10"><span class="mustSelect"><i class="fa fa-warning"></i> Figyelem! Hiányoznak a számlázási adatok. Kérjük pótolja!</span></div>
+	                            <? else: ?>
+	                            <div class="order-contact-info">
+	                            	<div class="row np">
+	                                	<div class="col-sm-5">
+	                                    	<strong>Név</strong>
 	                                    </div>
-	                                    <div class="col-sm-5 right">
-	                                    	<?=$this->storedString[1][szam_kozterulet_nev]?> <?=$this->storedString[1][szam_kozterulet_jelleg]?> <?=$this->storedString[1][szam_hazszam]?>
+	                                    <div class="col-sm-7 right">
+	                                    	<?=$this->storedString[1][szam_nev]?>
 	                                    </div>
-		                                </div>
-																		<?php if ( $this->storedString[1][szam_epulet] != '' ): ?>
-		                                <div class="row np">
+	                                </div>
+																	<?php if ( $this->storedString[1][szam_adoszam] != '' ): ?>
+																	<div class="row np">
 		                                	<div class="col-sm-5">
-		                                    	<strong>Épület</strong>
+		                                    	<strong>Adószám</strong>
 		                                    </div>
 		                                    <div class="col-sm-7 right">
-		                                    	<?=$this->storedString[1][szam_epulet]?>
+		                                    	<?=$this->storedString[1][szam_adoszam]?>
 		                                    </div>
 		                                </div>
-																		<?php endif; ?>
-																		<?php if ( $this->storedString[1][szam_emelet] != '' ): ?>
-																		<div class="row np">
-																			<div class="col-sm-5">
-																					<strong>Emelet</strong>
-																				</div>
-																				<div class="col-sm-7 right">
-																					<?=$this->storedString[1][szam_emelet]?>
-																				</div>
-																		</div>
-																		<?php endif; ?>
-																		<?php if ( $this->storedString[1][szam_ajto] != '' ): ?>
-																		<div class="row np">
-																			<div class="col-sm-5">
-																					<strong>Ajtó</strong>
-																				</div>
-																				<div class="col-sm-7 right">
-																					<?=$this->storedString[1][szam_ajto]?>
-																				</div>
-																		</div>
-																		<?php endif; ?>
+																	<?php endif; ?>
+																	<?php if ( $this->storedString[1][szam_kerulet] != '' ): ?>
+																	<div class="row np">
+																		<div class="col-sm-5">
+																				<strong>Kerület</strong>
+																			</div>
+																			<div class="col-sm-7 right">
+																				<?=$this->storedString[1][szam_kerulet]?>
+																			</div>
+																	</div>
+																	<?php endif; ?>
+	                                <div class="row np">
+	                                	<div class="col-sm-5">
+	                                    	<strong>Település</strong>
+	                                    </div>
+	                                    <div class="col-sm-7 right">
+	                                    	<?=$this->storedString[1][szam_irsz]?> <?=$this->storedString[1][szam_city]?>
+	                                    </div>
+	                                </div>
+																	<div class="row np">
+	                                	<div class="col-sm-7">
+	                                    <strong>Cím</strong> <br>
+																			<em>(közterület neve, közterület jellege, házszám)</em>
+                                    </div>
+                                    <div class="col-sm-5 right">
+                                    	<?=$this->storedString[1][szam_kozterulet_nev]?> <?=$this->storedString[1][szam_kozterulet_jelleg]?> <?=$this->storedString[1][szam_hazszam]?>
+                                    </div>
+	                                </div>
+																	<?php if ( $this->storedString[1][szam_epulet] != '' ): ?>
+	                                <div class="row np">
+	                                	<div class="col-sm-5">
+	                                    	<strong>Épület</strong>
+	                                    </div>
+	                                    <div class="col-sm-7 right">
+	                                    	<?=$this->storedString[1][szam_epulet]?>
+	                                    </div>
+	                                </div>
+																	<?php endif; ?>
+																	<?php if ( $this->storedString[1][szam_emelet] != '' ): ?>
+																	<div class="row np">
+																		<div class="col-sm-5">
+																				<strong>Emelet</strong>
+																			</div>
+																			<div class="col-sm-7 right">
+																				<?=$this->storedString[1][szam_emelet]?>
+																			</div>
+																	</div>
+																	<?php endif; ?>
+																	<?php if ( $this->storedString[1][szam_ajto] != '' ): ?>
+																	<div class="row np">
+																		<div class="col-sm-5">
+																				<strong>Ajtó</strong>
+																			</div>
+																			<div class="col-sm-7 right">
+																				<?=$this->storedString[1][szam_ajto]?>
+																			</div>
+																	</div>
+																	<?php endif; ?>
 		                            </div>
 		                            <? endif; ?>
 		                        </div>
 		                        <div class="col-sm-6 col2" style="border-left:1px solid #ddd;">
-		                        	<div class="head"><h4>Szállítási adatok</h4></div>
+		                        		<div class="head"><h4>Szállítási adatok</h4></div>
 		                             <? if($this->orderExc && in_array(1,$this->orderMustFillStep)): ?>
 		                            	<div align="center" class="p10"><span class="mustSelect"><i class="fa fa-warning"></i> Figyelem! Hiányoznak a szállítási adatok. Kérjük pótolja!</span></div>
 		                            <? else: ?>
@@ -1161,7 +1161,6 @@
 				var megye_id = $('#szam_kozterulet_jelleg').val();
 
 				$('#szall_kozterulet_jelleg option:contains("'+megye_id+'")').prop('selected', true);
-				console.log(megye_id);
 			}else{
 
 			}
