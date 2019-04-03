@@ -3263,6 +3263,13 @@ fieldset.block {
 .docsautocomplist.docs-inserted .item .del i{ cursor: pointer; }
 .docsautocomplist.docs-inserted .item .del:hover{ color:#f57777; }
 
+.transport-action-buttons button {
+  background: #2da12d;
+  font-size: 0.85em;
+  color: white;
+  border-radius: 4px 4px 0 0;
+}
+
 md-toast.mode-alert .md-toast-content{
   background-color: #d54646;
 }

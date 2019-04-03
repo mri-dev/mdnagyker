@@ -40,8 +40,9 @@ Megrendelések
 <?=$this->msg?>
 <pre><?php //print_r($this->megrendelesek['data']); ?></pre>
 <form action="" method="post">
-<div class="right" style="display:none;">
-    <button type="button" onclick="collectSprinterTrans();">Sprinter futár export (.csv)</button>
+<div class="right transport-action-buttons">
+	<button style="display:none;" type="button" class="mpl_pp" onclick="collectExportingTransports('pp');">MPL - Posta Pont címirat (.csv)</button>
+  <button type="button" class="mpl_futar" onclick="collectExportingTransports('mpl');">MPL - Házhoz címirat (.csv)</button>
 </div>
 <div class="tbl-container overflowed">
 <table class="table termeklista table-bordered">
@@ -100,7 +101,7 @@ Megrendelések
 			$itemNum 	+= $item[me];
 		}?>
     	<tr id="o_<?=$d[ID]?>" class="o">
-	    	<td align="center" valign="middle" style="border-left:5px solid <?=$this->allapotok[order][$d[allapot]][szin]?>;"><?=$d[ID]?></td>
+				<td align="center" valign="middle" style="border-left:5px solid <?=$this->allapotok[order][$d[allapot]][szin]?>;"><?=$d[ID]?> <input type="checkbox" class="selecting" name="export[]" value="<?=$d[accessKey]?>"></td>
             <td align="center" valign="middle">
             	<?=($d['prev_order'])?'<i class="fa fa-refresh" title="Gyors újrarendelés: '.$d['prev_order'].'."></i>':''?><a href="javascript:void(0);"  mid="<?=$d[ID]?>" ><?=$d[azonosito]?></a>
             </td>
@@ -386,6 +387,12 @@ Megrendelések
                             </div>
                             <? endif; ?>
                         </div>
+												<div class="row">
+													<div class="col-md-10 selectCol"><strong>Csomag súlya (gramm):</strong></div>
+														<div class="col-md-2">
+														<input type="number" class="form-control" name="csomag_suly[<?=$d[ID]?>]" min="0" value="<?=$d[csomag_suly]?>" />
+														</div>
+												</div>
 						<div class="row">
                         	<div class="col-md-7 selectCol"><strong>Vásárlói megjegyzés:</strong></div>
                             <div class="col-md-5">
@@ -470,8 +477,6 @@ Megrendelések
 
 		$('button.archive-order').click(function(){
 			var oid = $(this).data('orderid');
-			console.log(oid);
-
 			if( !$(this).hasClass('btn-success') )
 			{
 				$(this).html('Archiválás folyamatban...');
@@ -483,30 +488,30 @@ Megrendelések
 					ti.removeClass('btn-danger').addClass('btn-success').html('Archiválva <i class="fa fa-check"></i>');
 				}, "html");
 			}
-		});
+			});
     })
 
-    function collectSprinterTrans() {
-        var items = $('input[type=checkbox][class*=sprinter_exp]:checked');
-        var keys = '';
-
-        items.each( function(i,e){
-            keys += $(e).val()+",";
-        });
-
-        keys = keys.slice(0, -1);
-
-        document.location.href = '/csv/sprinter_transport/'+keys;
+		function collectExportingTransports( transporter ) {
+      var items = $('input[type=checkbox][class*=selecting]:checked');
+      var keys = '';
+      items.each( function(i,e){
+          keys += $(e).val()+",";
+      });
+			if (keys == '') {
+				alert('A címirat(ok) letöltéséhez jelölje ki a kívánt megrendeléseket.');
+			} else {
+				keys = keys.slice(0, -1);
+				document.location.href = '/csv/'+transporter+'/'+keys;
+			}    
     }
 
     function addNewItem (contid) {
-         var cont = $('#newitem_c'+contid);
+       var cont = $('#newitem_c'+contid);
 
-         $.post( "<?=AJAX_GET?>", {
-            type :'loadAddNewItemsOnOrder'
-         }, function(d){
-            cont.append(d);
-         },"html" );
-
+       $.post( "<?=AJAX_GET?>", {
+          type :'loadAddNewItemsOnOrder'
+       }, function(d){
+          cont.append(d);
+       },"html" );
     }
 </script>

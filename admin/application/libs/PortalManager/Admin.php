@@ -673,6 +673,7 @@ class Admin
 		}
 
 		// Megrendelés megváltoztatása
+		$updateData['csomag_suly'] = (float)$post['csomag_suly'][$orderID];
 		if ( !empty($updateData)) {
 			$this->db->update(
 				'orders',
@@ -876,7 +877,7 @@ class Admin
 				'changedData' => $changedData,
 				'allapot' => $allapot,
 				'strKey' => $strKey,
-				'ppp_uzlet_str' => $pickpackpont_uzlet_kod,
+				'ppp_uzlet_str' => $pickpackpont_uzlet_kod
 			);
 
 			$mail->setSubject( 'Megrendelése megváltozott: '.$orderData[azonosito] );
