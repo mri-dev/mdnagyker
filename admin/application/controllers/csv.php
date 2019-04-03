@@ -292,7 +292,7 @@ class csv extends Controller{
 					(string)$szall['nev'],
 					$szall['irsz'],
 					$szall['city'],
-					(!$order['csomag_suly'] || $order['csomag_suly'] == 0) ? '1000': $order['csomag_suly'],
+					(!$order['csomag_suly'] || $order['csomag_suly'] == 0) ? '2000': $order['csomag_suly'],
 					'',
 					($order['utanvatel_osszeg'] == 0) ? '': $order['utanvatel_osszeg'],
 					$szolg,
