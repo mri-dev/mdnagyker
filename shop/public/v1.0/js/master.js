@@ -2,7 +2,7 @@ $(function(){
 	searchFilters();
 	getLocation();
 
-	$.cookieAccepter('https://www.tuzvedelmicentrum.web-pro.hu/p/aszf/');
+	$.cookieAccepter('https://www.autoradiokeret.web-pro.hu/p/aszf/');
 
 	var transports_c 			= $('.transports');
 

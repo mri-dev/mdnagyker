@@ -117,19 +117,10 @@ class csv extends Controller{
 
 		public function pp()
 		{
-			$orderKey 	= $this->view->gets[2];
-			$order 		= $this->AdminUser->getOrderData($orderKey);
+			$orderKeyStr 	= $this->view->gets[2];
 
-			if(!$order[azonosito]){
-				return false;
-			}
-
-			$file_name = 'postapont'.'__'.Helper::makeSafeUrl($order[nev], '_-'.$order[azonosito].'-_-'.$order[email].'-__'.time());
-
-			$szall = json_decode($order[szallitasi_keys],true);
-
-			$pp = explode('(', $order['postapont']);
-			$postapont_nev = trim($pp[0]);
+			$multi_order = array();
+			$multi_order = explode( ',', $orderKeyStr );
 
 			//sorszam
 			//nev
@@ -153,6 +144,7 @@ class csv extends Controller{
 			//meretZ
 			//masolatok_szama
 			//inverz_masolat
+			//hulladek
 
 			$head 	= array(
 				'sorszam',
@@ -176,34 +168,54 @@ class csv extends Controller{
 				'meretY',
 				'meretZ',
 				'masolatok_szama',
-				'inverz_masolat'
+				'inverz_masolat',
+				'hulladek'
 			);
 
-			$fields 	= array();
-			$fields[] 	= array(
-				$order['ID'],
-				(string)$szall['nev'],
-				$szall['irsz'],
-				$szall['city'],
-				'1000',
-				'',
-				'',
-				'KH_PP',
-				'Rendelés azonosító: '.$order['azonosito'],
-				'',
-				$order['email'],
-				$szall['phone'],
-				'',
-				'',
-				'',
-				'',
-				$postapont_nev,
-				'0',
-				'0',
-				'0',
-				'',
-				''
-			);
+			$fields = array();
+
+			$file_name = 'MPL_PostaPont'.'__'.date('Ymd_Hi').'-__'.time();
+
+			foreach ( $multi_order as $orderKey ) {
+				$order = $this->AdminUser->getOrderData($orderKey);
+				if(!$order[azonosito]){
+					continue;
+				}
+
+				$szall = json_decode($order[szallitasi_keys],true);
+				$szolg = 'KH_PP,ORZ_5,IDO';
+
+				if ($order['utanvatel_osszeg'] != 0) {
+					$szolg .= ",UVT";
+				}
+
+				$fields[] 	= array(
+					$order['ID'],
+					(string)$szall['nev'],
+					$szall['irsz'],
+					$szall['city'],
+					(!$order['csomag_suly'] || $order['csomag_suly'] == 0) ? '2000': $order['csomag_suly'],
+					'',
+					($order['utanvatel_osszeg'] == 0) ? '': $order['utanvatel_osszeg'],
+					$szolg,
+					'Rendelés azonosító: '.$order['azonosito'],
+					'',
+					$order['email'],
+					$szall['phone'],
+					$szall['kozterulet_nev'],
+					$szall['kozterulet_jelleg'],
+					$szall['hazszam'],
+					($szall['comment'] == '') ? '': $szall['comment'],
+					$order['postapont'],
+					'0',
+					'0',
+					'0',
+					'',
+					'',
+					'',
+					''
+				);
+			}
 
 			CSVGenerator::prepare(
 				$head,

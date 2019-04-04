@@ -41,7 +41,7 @@ Megrendelések
 <pre><?php //print_r($this->megrendelesek['data']); ?></pre>
 <form action="" method="post">
 <div class="right transport-action-buttons">
-	<button style="display:none;" type="button" class="mpl_pp" onclick="collectExportingTransports('pp');">MPL - Posta Pont címirat (.csv)</button>
+	<button type="button" class="mpl_pp" onclick="collectExportingTransports('pp');">MPL - Posta Pont címirat (.csv)</button>
   <button type="button" class="mpl_futar" onclick="collectExportingTransports('mpl');">MPL - Házhoz címirat (.csv)</button>
 </div>
 <div class="tbl-container overflowed">
@@ -290,7 +290,6 @@ Megrendelések
                                 <option value="<?=$m[ID]?>" <?=($m[ID] == $d[szallitasiModID])?'selected':''?>><?=$m[nev]?></option>
                                 <? endforeach; ?>
                             </select>
-
                             <input type="hidden" value="<?=$d[szallitasiModID]?>" name="prev_szallitas[<?=$d[ID]?>]" />
                             </div>
                         </div>
@@ -310,13 +309,12 @@ Megrendelések
                         <? endif; ?>
                         <?
                         // PostaPont
-                        if($d[szallitasiModID] == -111): ?>
+                        if($d[szallitasiModID] == $this->settings['flagkey_postaponttransfer_id']): ?>
                          <div class="row">
                             <div class="col-md-12">
                             <div class="selPP" align="right">
                                 Kiválasztott PostPont:<br>
                                 <strong><?=$d[postapont]?></strong>
-                                <div><a href="/xml/postapont/<?=$d[accessKey]?>">címirat letöltés (.xml)</a></div>
                                 </div>
                             </div>
                         </div>
@@ -502,7 +500,7 @@ Megrendelések
 			} else {
 				keys = keys.slice(0, -1);
 				document.location.href = '/csv/'+transporter+'/'+keys;
-			}    
+			}
     }
 
     function addNewItem (contid) {

@@ -156,6 +156,7 @@
                             <?
                             // PickPackPont
                             if( $o[szallitasiModID] == $this->settings['flagkey_pickpacktransfer_id'] ): ?>
+                            <br>
                             <div class="showSelectedPickPackPont">
                                 <div class="head">Kiválasztott <strong>Pick Pack</strong> átvételi pont:</div>
                                 <div class="p5">
@@ -170,7 +171,7 @@
                                 <div class="head">Kiválasztott <strong>PostaPont</strong>:</div>
                                 <div class="p5">
                                     <div class="row np">
-                                        <div class="col-md-12 center">
+                                        <div class="col-md-12">
                                            <?=$o['postapont']?>
                                         </div>
 

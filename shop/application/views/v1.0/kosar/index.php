@@ -596,26 +596,26 @@
 		                                <? endif;?>
 		                                <?
 		                                // PostaPont átvétel FORM
-		                                if( $d['ID'] == '5' ):?>
+		                                if( $d['ID'] == $this->settings['flagkey_postaponttransfer_id'] ):?>
 		                                <div class="postapont" style="display:none;">
 		                                	<input type="hidden" id="ugyfelform_iranyitoszam" value="<?=($this->orderExc)?$_POST[szall_irsz]:(($this->storedString[1])?$this->storedString[1][szall_irsz]:$this->user[szallitasi_adat][irsz])?>">
 		                                	<input type="hidden" id="valasztott_postapont" name="pp_selected" value="">
 		                                	<!-- Postapont választó (Ügyfél oldalra beépítendő rész) -->
-											<div id="postapontvalasztoapi"></div>
-											<div class="clr"></div>
-											<script type="text/javascript">
-												ppapi.setMarkers('20_molkut', false);
-												ppapi.setMarkers('30_csomagautomata', false);
-												ppapi.linkZipField('ugyfelform_iranyitoszam'); //<-- A megrendelő form input elemének a megjelölése (beállítása a kiválasztó számára)
-												ppapi.insertMap('postapontvalasztoapi'); //<-- PostaPont választó API beillesztése ( ilyen azonosítóval rendelkező DOM objektumba)
-												ppapi.onSelect = function(data){ //<-- Postapont kiválasztásra bekövetkező esemény lekötése
-													// Minta! A kiválasztott PostaPont adatainak visszaírása a megrendelő form rejtett mezőjébe.
-													$('#valasztott_postapont').val( data['name']+" ("+data['zip'] + " " + data['county']+", "+data['address']+")" );
-													$('#selected_pp_data_info').html( data['name']+" ("+data['zip'] + " " + data['county']+", "+data['address']+")" )
-													console.log(jQuery.param(data));
-												};
-											</script>
-											<div id="pp-data-info">Kiválasztott PostaPont: <span id="selected_pp_data_info">nincs kiválasztva!</span></div>
+																			<div id="postapontvalasztoapi"></div>
+																			<div class="clr"></div>
+																			<script type="text/javascript">
+																				ppapi.setMarkers('20_molkut', false);
+																				ppapi.setMarkers('30_csomagautomata', false);
+																				ppapi.linkZipField('ugyfelform_iranyitoszam'); //<-- A megrendelő form input elemének a megjelölése (beállítása a kiválasztó számára)
+																				ppapi.insertMap('postapontvalasztoapi'); //<-- PostaPont választó API beillesztése ( ilyen azonosítóval rendelkező DOM objektumba)
+																				ppapi.onSelect = function(data){ //<-- Postapont kiválasztásra bekövetkező esemény lekötése
+																					// Minta! A kiválasztott PostaPont adatainak visszaírása a megrendelő form rejtett mezőjébe.
+																					$('#valasztott_postapont').val( data['name']+" ("+data['zip'] + " " + data['county']+", "+data['address']+")" );
+																					$('#selected_pp_data_info').html( data['name']+" ("+data['zip'] + " " + data['county']+", "+data['address']+")" )
+																					console.log(jQuery.param(data));
+																				};
+																			</script>
+																			<div id="pp-data-info">Kiválasztott PostaPont: <span id="selected_pp_data_info">nincs kiválasztva!</span></div>
 											<!-- E:Postapont választó -->
 		                                </div>
 		                            	<? endif; ?>
@@ -845,7 +845,7 @@
 
 		                                    <?=$this->szallitas[Helper::getFromArrByAssocVal($this->szallitas,'ID',$this->storedString[2][atvetel])][nev]; ?>  <em><?=Product::transTime($this->storedString[2][atvetel])?></em>
 		                                    <? // PostaPont info
-		                                    if($this->storedString[2][atvetel] == '5'): ?>
+		                                    if($this->storedString[2][atvetel] == $this->settings['flagkey_postaponttransfer_id']): ?>
 		                                    <a href="/p/postapont" title="Részletek" target="_blank"><i class="fa fa-info-circle "></i></a>
 		                                	<? endif; ?>
 		                                	 <? // PickPackPont info
@@ -875,9 +875,9 @@
 
 		                                    <?
 		                                    // PostaPont átvétel
-		                                    if($this->storedString[2][atvetel] == '5'): ?>
+		                                    if($this->storedString[2][atvetel] == $this->settings['flagkey_postaponttransfer_id']): ?>
 		                                    	<br>
-		                                    	<img src="<?=IMG?>/icons/postapont_logos_big.png" alt="PostaPont" width="150">
+		                                    	<img src="<?=IMG?>icons/pp_logo.svg" alt="PostaPont" width="80">
 		                                    	<br /><br />
 		                                        <? if($this->storedString[2][pp_selected] != ''): ?>
 		                                        <input type="hidden" name="pp_selected_point" value="<?=$this->storedString[2][pp_selected]?>" />
@@ -1128,7 +1128,7 @@
 				display : 'block'
 			});
 			$('select[name=ppp_megye]').focus();
-		}else if( selectedAtvetel == '5'){
+		}else if( selectedAtvetel == '<?=$this->settings['flagkey_postaponttransfer_id']?>'){
 			$('.postapont').css({
 				display : 'block'
 			});
@@ -1183,7 +1183,7 @@
 					});
 					$('select[name=ppp_megye]').focus();
 				break;
-				case '5':
+				case '<?=$this->settings['flagkey_postaponttransfer_id']?>':
 					$('.postapont').css({
 						display : 'block'
 					});

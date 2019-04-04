@@ -7591,3 +7591,83 @@ body.product-page {
 		flex: 1;
 	}
 }
+#postaPontApi-main{
+	background: green;
+}
+#postaPontApi-content{
+	background: none;
+}
+#postaPontApi-inner > p{
+	color: white;
+}
+#postaPontApi,
+#postaPontApi-content,
+#postaPontApi-inner #pp-map-canvas{
+	width: 100% !important;
+	max-width: 100% !important;
+}
+#postaPontApi-inner form div#pp-select-container{
+	clear: initial;
+}
+#postaPontApi-inner form,
+#postaPontApi-inner form div#pp-select-container{
+	height: auto;
+}
+#postaPontApi-inner form #pp-geoloc-button{
+	float: left !important;
+	margin: 0 10px 0 0;
+}
+#postaPontApi-inner form div#pp-select-container{
+	line-height: 1;
+	padding: 0;
+
+	select{
+		height: 28px;
+		line-height: 28px;
+		color: black;
+	}
+}
+#postaPontApi-inner #pp-map-canvas{
+	margin: 15px 0 0 0;
+}
+#pp-data-info{
+	background: #384238;
+	color: white;
+	padding: 15px;
+}
+#postaPontApi h2{
+	line-height: 1.2;
+	padding: 20px 15px;
+	text-transform: uppercase;
+	background: #1d961d;
+  height: auto;
+  font-weight: 300;
+}
+.showSelectedPostaPont{
+	margin: 5px 0 !important;
+	font-size: 0.85rem !important;
+  border: 0.6px solid #6bab76 !important;
+  background: #e4f5e7 !important;
+  border-radius: 5px !important;
+  overflow: hidden !important;
+}
+.showSelectedPostaPont > .head{
+	padding: 10px !important;
+  text-align: left !important;
+  background: #5ea66b !important;
+  color: #fff !important;
+  margin: 0 !important;
+}
+.showSelectedPostaPont h4{
+	margin:0 !important;
+	padding:0 !important;
+}
+.showSelectedPostaPont .desc{
+	margin:10px 0 !important;
+	font-weight:bold !important;
+	color:black !important;
+	text-align: left  !important;
+}
+.showSelectedPostaPont .p5{
+	padding: 10px !important;
+}

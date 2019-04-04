@@ -2,6 +2,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <!-- STYLES -->
 <link rel="icon" href="<?=IMG?>icons/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="//www.posta.hu/static/internet/app/postapont/css/postapont-api.css" />
 <?=$this->addStyle('master', 'media="all"')?>
 <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
 <?=$this->addStyle('bootstrap.min', 'media="all"')?>
@@ -14,6 +15,7 @@
 <link rel="stylesheet" type="text/css" href="<?=JS?>fancybox/helpers/jquery.fancybox-buttons.css?v=1.0.5" />
 <link rel="stylesheet" type="text/css" href="<?=JS?>slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.css" />
+
 
 <!-- JS's -->
 <!-- Angular Material requires Angular.js Libraries -->
@@ -44,6 +46,8 @@
 <? if( !defined('CETELEM_HAS_ERROR') && false ): ?>
 <script src="//<?=(CETELEM_SANDBOX_MODE === true)?'ecomdemo':'ecom'?>.cetelem.hu/ecommerce/j/cetelem-ecommerce.js"></script>
 <? endif; ?>
+<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=AIzaSyAzzEH0fOXPXEwOgpOcSTyejE4vD8qQ5Y4&sensor=false&language=hu&reg"></script>
+<script type="text/javascript" src="//www.posta.hu/static/internet/app/postapont/javascripts/postapont-api.js"></script>
 <script type="text/javascript">
 	$(function(){
 		$('*[jOpen]').openPage({
