@@ -120,49 +120,44 @@ ol, ul {
 }
 
 /* line 35, sass/_general.scss */
-a:not(.btn), a:link:not(.btn), a:visited:not(.btn) {
-  color: #007aff;
-}
-
-/* line 39, sass/_general.scss */
 .left {
   text-align: left;
 }
 
-/* line 42, sass/_general.scss */
+/* line 38, sass/_general.scss */
 .right {
   text-align: right;
 }
 
-/* line 45, sass/_general.scss */
+/* line 41, sass/_general.scss */
 blockquote, q {
   quotes: none;
 }
 
-/* line 49, sass/_general.scss */
+/* line 45, sass/_general.scss */
 blockquote:before, blockquote:after,
 q:before, q:after {
   content: '';
   content: none;
 }
 
-/* line 53, sass/_general.scss */
+/* line 49, sass/_general.scss */
 :focus {
   outline: 0;
 }
 
-/* line 56, sass/_general.scss */
+/* line 52, sass/_general.scss */
 input, select {
   vertical-align: middle;
 }
 
-/* line 59, sass/_general.scss */
+/* line 55, sass/_general.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 63, sass/_general.scss */
+/* line 59, sass/_general.scss */
 a {
   margin: 0;
   padding: 0;
@@ -171,22 +166,22 @@ a {
   text-decoration: none;
 }
 
-/* line 70, sass/_general.scss */
+/* line 66, sass/_general.scss */
 fieldset, img, abbr {
   border: 0;
 }
 
-/* line 73, sass/_general.scss */
+/* line 69, sass/_general.scss */
 del {
   text-decoration: line-through;
 }
 
-/* line 76, sass/_general.scss */
+/* line 72, sass/_general.scss */
 ins {
   text-decoration: none;
 }
 
-/* line 79, sass/_general.scss */
+/* line 75, sass/_general.scss */
 hr {
   display: block;
   height: 1px;
@@ -196,45 +191,45 @@ hr {
   padding: 0;
 }
 
-/* line 87, sass/_general.scss */
+/* line 83, sass/_general.scss */
 .clr {
   clear: both;
 }
 
-/* line 90, sass/_general.scss */
+/* line 86, sass/_general.scss */
 .center {
   text-align: center;
 }
 
-/* line 93, sass/_general.scss */
+/* line 89, sass/_general.scss */
 .left {
   text-align: left;
 }
 
-/* line 96, sass/_general.scss */
+/* line 92, sass/_general.scss */
 .right {
   text-align: right;
 }
 
-/* line 100, sass/_general.scss */
+/* line 96, sass/_general.scss */
 .btn.btn-pr {
   background: #007aff;
   color: white;
   text-transform: uppercase;
 }
-/* line 104, sass/_general.scss */
+/* line 100, sass/_general.scss */
 .btn.btn-pr:hover {
   background: #0062cc;
 }
 
-/* line 108, sass/_general.scss */
+/* line 104, sass/_general.scss */
 .btn.btn-sec {
   background: #989898;
   color: white;
   text-transform: uppercase;
 }
 
-/* line 114, sass/_general.scss */
+/* line 110, sass/_general.scss */
 .grid-layout {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -242,74 +237,74 @@ hr {
   align-items: flex-start;
   flex-wrap: wrap;
 }
-/* line 122, sass/_general.scss */
+/* line 118, sass/_general.scss */
 .grid-layout > .grid-row.grid-row-10 {
   flex-basis: 10%;
 }
-/* line 125, sass/_general.scss */
+/* line 121, sass/_general.scss */
 .grid-layout > .grid-row.grid-row-20 {
   flex-basis: 20%;
 }
-/* line 128, sass/_general.scss */
+/* line 124, sass/_general.scss */
 .grid-layout > .grid-row.grid-row-30 {
   flex-basis: 30%;
 }
-/* line 131, sass/_general.scss */
+/* line 127, sass/_general.scss */
 .grid-layout > .grid-row.grid-row-40 {
   flex-basis: 40%;
 }
-/* line 134, sass/_general.scss */
+/* line 130, sass/_general.scss */
 .grid-layout > .grid-row.grid-row-50 {
   flex-basis: 50%;
 }
-/* line 137, sass/_general.scss */
+/* line 133, sass/_general.scss */
 .grid-layout > .grid-row.grid-row-60 {
   flex-basis: 60%;
 }
-/* line 140, sass/_general.scss */
+/* line 136, sass/_general.scss */
 .grid-layout > .grid-row.grid-row-70 {
   flex-basis: 70%;
 }
-/* line 143, sass/_general.scss */
+/* line 139, sass/_general.scss */
 .grid-layout > .grid-row.grid-row-80 {
   flex-basis: 80%;
 }
-/* line 146, sass/_general.scss */
+/* line 142, sass/_general.scss */
 .grid-layout > .grid-row.grid-row-90 {
   flex-basis: 90%;
 }
-/* line 149, sass/_general.scss */
+/* line 145, sass/_general.scss */
 .grid-layout > .grid-row.grid-row-100 {
   flex-basis: 100%;
 }
 
-/* line 155, sass/_general.scss */
+/* line 151, sass/_general.scss */
 *::-webkit-input-placeholder {
   /* WebKit, Blink, Edge */
   color: #ccc;
 }
 
-/* line 158, sass/_general.scss */
+/* line 154, sass/_general.scss */
 *:-moz-placeholder {
   /* Mozilla Firefox 4 to 18 */
   color: #ccc;
   opacity: 1;
 }
 
-/* line 162, sass/_general.scss */
+/* line 158, sass/_general.scss */
 *::-moz-placeholder {
   /* Mozilla Firefox 19+ */
   color: #ccc;
   opacity: 1;
 }
 
-/* line 166, sass/_general.scss */
+/* line 162, sass/_general.scss */
 *:-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   color: #ccc;
 }
 
-/* line 170, sass/_general.scss */
+/* line 166, sass/_general.scss */
 body, html {
   font-family: "Roboto", sans-serif;
   font-weight: 400;
@@ -319,13 +314,13 @@ body, html {
   -webkit-font-smoothing: antialiased !important;
 }
 
-/* line 179, sass/_general.scss */
+/* line 175, sass/_general.scss */
 .pw {
   width: 1150px;
   margin: 0 auto;
 }
 
-/* line 184, sass/_general.scss */
+/* line 180, sass/_general.scss */
 .flex {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -335,127 +330,127 @@ body, html {
   align-items: flex-start;
   justify-content: flex-start;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-5 {
   flex-basis: 5%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-10 {
   flex-basis: 10%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-15 {
   flex-basis: 15%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-20 {
   flex-basis: 20%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-25 {
   flex-basis: 25%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-30 {
   flex-basis: 30%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-35 {
   flex-basis: 35%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-40 {
   flex-basis: 40%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-45 {
   flex-basis: 45%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-50 {
   flex-basis: 50%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-55 {
   flex-basis: 55%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-60 {
   flex-basis: 60%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-65 {
   flex-basis: 65%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-70 {
   flex-basis: 70%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-75 {
   flex-basis: 75%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-80 {
   flex-basis: 80%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-85 {
   flex-basis: 85%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-90 {
   flex-basis: 90%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-95 {
   flex-basis: 95%;
 }
-/* line 196, sass/_general.scss */
+/* line 192, sass/_general.scss */
 .flex > div.flex-col-100 {
   flex-basis: 100%;
 }
-/* line 202, sass/_general.scss */
+/* line 198, sass/_general.scss */
 .flex > div.flex-g-3p3 {
   flex-basis: calc(100%/3);
 }
 
-/* line 207, sass/_general.scss */
+/* line 203, sass/_general.scss */
 .vra-top {
   vertical-align: top !important;
 }
 
-/* line 208, sass/_general.scss */
+/* line 204, sass/_general.scss */
 .vra-middle {
   vertical-align: middle !important;
 }
 
-/* line 209, sass/_general.scss */
+/* line 205, sass/_general.scss */
 .vra-bottom {
   vertical-align: bottom !important;
 }
 
-/* line 211, sass/_general.scss */
+/* line 207, sass/_general.scss */
 .right {
   text-align: right;
 }
 
-/* line 214, sass/_general.scss */
+/* line 210, sass/_general.scss */
 .center {
   text-align: center;
 }
 
-/* line 217, sass/_general.scss */
+/* line 213, sass/_general.scss */
 .left {
   text-align: left;
 }
 
-/* line 221, sass/_general.scss */
+/* line 217, sass/_general.scss */
 .clr {
   clear: both;
 }
 
-/* line 225, sass/_general.scss */
+/* line 221, sass/_general.scss */
 .website {
   display: table;
   width: 1150px;
@@ -463,48 +458,48 @@ body, html {
   border-collapse: collapse;
 }
 
-/* line 232, sass/_general.scss */
+/* line 228, sass/_general.scss */
 h4 {
   font-size: 110%;
 }
 
-/* line 236, sass/_general.scss */
+/* line 232, sass/_general.scss */
 h3 {
   font-size: 130%;
 }
 
-/* line 240, sass/_general.scss */
+/* line 236, sass/_general.scss */
 h2 {
   font-size: 160%;
 }
 
-/* line 244, sass/_general.scss */
+/* line 240, sass/_general.scss */
 h1 {
   font-size: 200%;
 }
 
-/* line 248, sass/_general.scss */
+/* line 244, sass/_general.scss */
 img.aw {
   width: 100%;
   max-width: 100%;
 }
 
-/* line 253, sass/_general.scss */
+/* line 249, sass/_general.scss */
 .row.np {
   margin: 0;
 }
 
-/* line 257, sass/_general.scss */
+/* line 253, sass/_general.scss */
 .row.np > div[class*=col-] {
   padding: 0;
 }
 
-/* line 261, sass/_general.scss */
+/* line 257, sass/_general.scss */
 .form-text-md {
   line-height: 35px;
 }
 
-/* line 265, sass/_general.scss */
+/* line 261, sass/_general.scss */
 .form-control:focus {
   border-color: #d9d9d9;
   outline: 0;
@@ -512,7 +507,7 @@ img.aw {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0), 0 0 8px rgba(100, 191, 245, 0);
 }
 
-/* line 272, sass/_general.scss */
+/* line 268, sass/_general.scss */
 .alert-danger {
   background-color: #FFE7E7;
   background-image: none;
@@ -520,16 +515,16 @@ img.aw {
   color: #E24855;
 }
 
-/* line 279, sass/_general.scss */
+/* line 275, sass/_general.scss */
 .show-on-mobile {
   display: none !important;
 }
 
-/* line 283, sass/_general.scss */
+/* line 279, sass/_general.scss */
 .product-view .product-desc {
   width: 398px !important;
 }
-/* line 286, sass/_general.scss */
+/* line 282, sass/_general.scss */
 .product-view .product-desc img {
   max-width: 100%;
 }
@@ -1367,7 +1362,7 @@ body.singlepage .website .cover-img {
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  box-shadow: inset 0 -200px 200px -80px rgba(0, 0, 0, 0.71);
+  box-shadow: inset 0 -200px 200px -80px rgba(0, 0, 0, 0.7);
 }
 /* line 92, sass/_base.scss */
 body.singlepage .website .page {

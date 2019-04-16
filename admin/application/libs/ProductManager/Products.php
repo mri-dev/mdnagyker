@@ -655,7 +655,7 @@ class Products
 			p.fotermek,
 			p.sorrend,
 			getTermekAr(p.ID, ".$uid.") as ar,
-			(SELECT GROUP_CONCAT(kategoria_id) FROM shop_termek_in_kategoria WHERE termekID = p.ID ) as in_cat,
+			(SELECT GROUP_CONCAT(stik.kategoria_id) FROM shop_termek_in_kategoria as stik LEFT OUTER JOIN shop_termek_kategoriak as tk ON tk.ID = stik.kategoria_id WHERE stik.termekID = p.ID and tk.ID IS NOT NULL) as in_cat,
 			(SELECT neve FROM shop_termek_kategoriak WHERE ID = p.alapertelmezett_kategoria ) as alap_kategoria";
 
 			/*
@@ -852,7 +852,7 @@ class Products
 								$size_whr .= $add;
 							}
 						} else {
-							$add = " and p.".$key." LIKE '".$v."%' ";
+							$add = " and p.".$key." = '".$v."' ";
 							$whr .= $add;
 							$size_whr .= $add;
 
@@ -1557,16 +1557,15 @@ class Products
 		$cat_ids = array();
 
 		$qry = $this->db->query( sprintf( "
-			SELECT 				k.kategoria_id,
-								IF(kat.szulo_id IS NULL, kat.neve, CONCAT(p.neve, ' / ', kat.neve)) as neve,
-								kat.hashkey,
-								kat.oldal_hashkeys
-			FROM 				shop_termek_in_kategoria as k
-			LEFT OUTER JOIN 	shop_termek_kategoriak as kat ON kat.ID = k.kategoria_id
-			LEFT OUTER JOIN 	shop_termek_kategoriak as p ON p.ID = kat.szulo_id
-			WHERE 				k.termekID = %d
-			GROUP BY k.termekID
-			ORDER BY 			p.sorrend ASC, kat.sorrend ASC", $product_id ) );
+			SELECT	k.kategoria_id,
+				IF(kat.szulo_id IS NULL, kat.neve, CONCAT(p.neve, ' / ', kat.neve)) as neve,
+				kat.hashkey,
+				kat.oldal_hashkeys
+			FROM shop_termek_in_kategoria as k
+			LEFT OUTER JOIN shop_termek_kategoriak as kat ON kat.ID = k.kategoria_id
+			LEFT OUTER JOIN shop_termek_kategoriak as p ON p.ID = kat.szulo_id
+			WHERE k.termekID = %d and kat.ID IS NOT NULL
+			ORDER BY p.sorrend ASC, kat.sorrend ASC", $product_id ) );
 
 		if( $qry->rowCount() == 0 ) return $cat_ids;
 
@@ -1602,13 +1601,14 @@ class Products
 		$cat_ids = array();
 
 		$qry = $this->db->query( sprintf( "
-			SELECT  			c.kategoria_id as id,
-								IF(cat.szulo_id IS NOT NULL, CONCAT(pc.neve,' / ', cat.neve), cat.neve) as neve
-			FROM 				shop_termek_in_kategoria as c
-			LEFT OUTER JOIN 	shop_termek_kategoriak as cat ON cat.ID = c.kategoria_id
-			LEFT OUTER JOIN 	shop_termek_kategoriak as pc ON pc.ID = cat.szulo_id
-			WHERE 				c.termekID = %d
-			ORDER BY			cat.deep ASC, cat.sorrend ASC", $product_id ) );
+			SELECT
+				c.kategoria_id as id,
+				IF(cat.szulo_id IS NOT NULL, CONCAT(pc.neve,' / ', cat.neve), cat.neve) as neve
+			FROM shop_termek_in_kategoria as c
+			LEFT OUTER JOIN shop_termek_kategoriak as cat ON cat.ID = c.kategoria_id
+			LEFT OUTER JOIN shop_termek_kategoriak as pc ON pc.ID = cat.szulo_id
+			WHERE c.termekID = %d and cat.ID IS NOT NULL
+			ORDER BY cat.deep ASC, cat.sorrend ASC", $product_id ) );
 
 		if( $qry->rowCount() == 0 ) return $cat_ids;
 
@@ -1814,7 +1814,7 @@ class Products
 			LEFT OUTER JOIN shop_termek_kategoriak as k ON k.ID = t.alapertelmezett_kategoria
 			LEFT OUTER JOIN shop_termek_allapotok as ta ON ta.ID = t.keszletID
 			LEFT OUTER JOIN shop_szallitasi_ido as sza ON sza.ID = t.szallitasID
-			WHERE 			t.ID = $product_id";
+			WHERE t.ID = $product_id";
 
 		$q = $this->db->query( $qq );
 

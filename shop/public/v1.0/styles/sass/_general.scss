@@ -32,10 +32,6 @@ ol, ul {
 	list-style: none;
 }
 
-a:not(.btn), a:link:not(.btn), a:visited:not(.btn) {
-  color: $color-blue;
-}
-
 .left{
 	text-align: left;
 }
@@ -265,7 +261,7 @@ img.aw {
 .form-control:focus {
   border-color: $color-pr;
   outline: 0;
-	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(100, 191, 245, 0.6);
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(100, 191, 245, 0.61);
 	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(100, 191, 245, 0.6);
 }
 

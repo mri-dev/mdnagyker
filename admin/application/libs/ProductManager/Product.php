@@ -68,6 +68,7 @@ class Product
 	public static function modifyDescription ( $txt )
 	{
 		$txt = preg_replace('/<a/','<a class="zoom"',$txt);
+		$txt = preg_replace('/\{.*\}/','',$txt);
 
 		$txt = str_replace('../../../../src/uploads/',SOURCE.'uploads/',$txt);
 
