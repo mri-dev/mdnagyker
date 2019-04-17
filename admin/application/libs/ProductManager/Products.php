@@ -2468,6 +2468,7 @@ class Products
 					'cikkszam' => $torzs['cikkszam'],
 					'gyarto_kod' => $torzs['cikkszam'],
 					'prod_id' => $torzs['prod_id'],
+					'ean_code' => $torzs['prod_id'],
 					'termek_nev' => $torzs['termek_nev'],
 					'kisker_ar_netto' => $torzs['ar'][1],
 					'virtualis_keszlet' => (float)$torzs['keszlet_min'],
@@ -2489,7 +2490,7 @@ class Products
 				/* */
 			}
 		} else {
-
+			throw new \Exception("CMFX API: ".$ins['hiba']);
 		}
 		$ins['xmlid'] = $xmlid;
 		return $ins;

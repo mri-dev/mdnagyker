@@ -1033,6 +1033,35 @@ button.watch i{
 	border:2px solid #000;
 	border-top:none;
 }
+.orderInfo .hint-holder{
+  position: relative;
+}
+.orderInfo .hint-holder .hint-box{
+  font-size:1rem;
+}
+.orderInfo .hint-holder .hint-box .item{
+  border: 0.5px solid #acacac;
+  margin: 2px 0;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.orderInfo .hint-holder .hint-box .item .prod{
+  font-size: 1.24rem;
+  margin: 0 0 4px 0;
+}
+.orderInfo .hint-holder .hint-box .item .prodinfo span.price{
+  margin: 0 4px;
+}
+.orderInfo .hint-holder .hint-box .item .prod strong {
+  color: #1391ed;
+}
+.orderInfo .hint-holder .hint-box .item:hover{
+  background: #1391ed;
+}
+.orderInfo .hint-holder .hint-box .item:hover *{
+  color: white !important;
+}
 .orderInfo > div{
 	padding:0;
 }

@@ -503,6 +503,43 @@ Megrendelések
 			}
     }
 
+		var autohintlastsrc = '';
+		function autohintProduct(v, hash) {
+			var src = v.val();
+			if (autohintlastsrc != src) {
+				$('#'+hash+'_hints').html('Keresés...');
+				autohintlastsrc = src;
+				$.post( "<?=AJAX_POST?>", {
+           type :'hintProducts',
+					 search: autohintlastsrc
+        }, function(d){
+					if (d && d.length != 0) {
+						var content = '';
+						$.each(d, function(i,e){
+							console.log(e);
+							var pricegroups = '';
+							$.each(e.price_groups.set, function(pi,pe){
+								pricegroups += '<span class="price '+pi+'">'+pi.toUpperCase()+': <strong>'+pe.brutto+' Ft</strong></span> ';
+							});
+							content += '<div class="item hint" onclick="pickHintID('+e.product_id+', \''+hash+'\')">'+
+							'<div class="prod">['+e.cikkszam+'] <strong>'+e.product_nev+'</strong></div>'+
+							'<div class="prodinfo">ID: <strong>'+e.product_id+'</strong> '+pricegroups+'</div>'+
+							'</div>';
+						});
+						$('#'+hash+'_hints').html(content);
+					} else {
+						$('#'+hash+'_hints').html('Nincs találat: '+autohintlastsrc);
+					}
+        },"json" );
+			}
+		}
+
+		function pickHintID(id, hash) {
+			$('#'+hash+'_hints').html('<div style="color:green;">Termék referencia ID beszúrva: <strong>'+id+'</strong></div>');
+			autohintlastsrc = '';
+			$('#'+hash+'_value').val(id);
+		}
+
     function addNewItem (contid) {
        var cont = $('#newitem_c'+contid);
 

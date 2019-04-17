@@ -99,7 +99,6 @@ class termekek extends Controller {
 					$this->out( 'searched_by', $search );
 				}
 			}
-
 			$products = (new Products( array(
 				'db' => $this->db,
 				'user' => $this->User->get()

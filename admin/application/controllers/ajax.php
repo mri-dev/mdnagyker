@@ -19,6 +19,23 @@ class ajax extends Controller{
 
 			switch($type)
 			{
+				case 'hintProducts':
+					$src = explode(",", trim($search));
+					$arg 	= array(
+						'search' 	=> $src,
+						'limit' 	=> 999,
+						'page' 		=> 1
+					);
+					$items = array();
+					$products = (new Products( array( 'db' => $this->db ) ))->prepareList( $arg );
+					$list = $products->getList();
+
+					foreach ((array)$list as $i) {
+					 $items[] = $i;
+					}
+
+					echo json_encode( $items, \JSON_UNESCAPED_UNICODE );
+				break;
 				case 'checkProductCikkszam':
 					if (empty($id)) {
 						return false;
@@ -106,63 +123,6 @@ class ajax extends Controller{
 						}
 					}
 				break;
-				/**
-				 * CASADA ÜZLET LOGÓ FELTÖLTÉS
-				 *
-				 * FORM
-				 * @param string $type* Az ajax post feldolgozó type elágazása
-				 * @param string $path* A feltöltendő fájl elérési útja
-				 * @param string $name Meghatározott fájlnév legyen
-				 *
-				 * @uses jquery.form.js | http://jquery.malsup.com/form/#options-object
-				 *
-				 * */
-				case 'uploadPlaceLogo':
-					$ret 	= array(
-						'success' 	=> false,
-						'msg' 		=> 'Nem sikerült feltölteni a fájlt. Próbálja meg újra vagy értesítse a program fejlesztőjét a hibáról, ha folyamatosan fent áll.'
-					);
-
-					$path = rtrim($path,'/');
-
-					$source = $_FILES['file']['tmp_name'];
-					$ext 	= strtolower(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION));
-
-					if( isset($name) )
-					{
-						$newFileName = $name.'.'.$ext;
-					} else {
-						$newFileName = microtime(true).'.'.$ext;
-					}
-
-					$dest 	= $path.'/'.$newFileName;
-					$upload = move_uploaded_file($source,$dest);
-
-					if ($upload) {
-						$ret['success'] 	= true;
-						$ret['msg'] 		= 'A fájl sikeresen feltöltve!';
-						$ret['name'] 		= $newFileName;
-						$ret['file'] 		= $dest;
-					}
-
-					echo json_encode($ret);
-				break;
-
-				/**
-				 * CASADA PONT FELTÖLTÖTT LOGÓ MENTÉSE
-				 *
-				 * @param string $placeID Az üzlet ID-ja
-				 * @param string $src A feltöltött kép elérési útja
-				 * */
-				case 'savePlaceLogoURL':
-					$bind = array();
-
-					$bind['logo'] 	= $src;
-					$bind['id'] 	= (int)$placeID;
-
-					$this->db->squery("UPDATE casada_shops SET logo = :logo WHERE ID = :id;", $bind);
-				break;
-
 				case 'searchUsers':
 					$re = array(
 						'error' => 0,
