@@ -566,6 +566,10 @@
 																		</div>
 																	</div>
 																	<div class="row">
+																		<div class="col-md-3">
+																			<input type="text" class="form-control" name="szall_phone_korzet" value="<?=($this->orderExc)?$_POST[szall_phone_korzet]:(($this->storedString[1])?$this->storedString[1][szall_phone_korzet]:$this->user[szallitasi_adat][phone_korzet])?>" placeholder="* Körzetszám" />
+																			<? if($this->orderExc && in_array('szall_phone_korzet',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
+																		</div>
 																		<div class="col-md-6">
 																			<input type="text" class="form-control" name="szall_phone" value="<?=($this->orderExc)?$_POST[szall_phone]:(($this->storedString[1])?$this->storedString[1][szall_phone]:$this->user[szallitasi_adat][phone])?>" placeholder="* Telefonszám" />
 																			<? if($this->orderExc && in_array('szall_phone',$this->orderExc[input])): ?><span class="errMsg">Kérjük, töltse ki ezt a mezőt!</span><? endif; ?>
@@ -713,7 +717,7 @@
 																			<em>(közterület neve, közterület jellege, házszám)</em>
                                     </div>
                                     <div class="col-sm-5 right">
-                                    	<?=$this->storedString[1][szam_kozterulet_nev]?> <?=$this->storedString[1][szam_kozterulet_jelleg]?> <?=$this->storedString[1][szam_hazszam]?>
+                                    	<?=$this->storedString[1][szam_kozterulet_nev]?> <?=$this->storedString[1][szam_kozterulet_jelleg]?> <?=$this->storedString[1][szam_hazszam]?>.
                                     </div>
 	                                </div>
 																	<?php if ( $this->storedString[1][szam_epulet] != '' ): ?>
@@ -797,7 +801,7 @@
 																				<em>(közterület neve, közterület jellege, házszám)</em>
 	                                    </div>
 	                                    <div class="col-sm-5 right">
-	                                    	<?=$this->storedString[1][szall_kozterulet_nev]?> <?=$this->storedString[1][szall_kozterulet_jelleg]?> <?=$this->storedString[1][szall_hazszam]?>
+	                                    	<?=$this->storedString[1][szall_kozterulet_nev]?> <?=$this->storedString[1][szall_kozterulet_jelleg]?> <?=$this->storedString[1][szall_hazszam]?>.
 	                                    </div>
 		                                </div>
 																		<?php if ( $this->storedString[1][szall_epulet] != '' ): ?>
@@ -827,6 +831,16 @@
 																				</div>
 																				<div class="col-sm-7 right">
 																					<?=$this->storedString[1][szall_ajto]?>
+																				</div>
+																		</div>
+																		<?php endif; ?>
+																		<?php if ( $this->storedString[1][szall_phone] != '' ): ?>
+																		<div class="row np">
+																			<div class="col-sm-5">
+																					<strong>Telefonszám</strong>
+																				</div>
+																				<div class="col-sm-7 right">
+																					+36 (<?=$this->storedString[1][szall_phone_korzet]?>) <?=$this->storedString[1][szall_phone]?>
 																				</div>
 																		</div>
 																		<?php endif; ?>

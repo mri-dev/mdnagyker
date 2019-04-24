@@ -187,7 +187,7 @@
 	<?php endif; ?>
 	<tr>
 		<td align="left">Telefonszám</td>
-		<td align="left"><strong><?=$szallitasi_keys[phone]?></strong></td>
+		<td align="left"><strong>+36 (<?=$szallitasi_keys[phone_korzet]?>) <?=$szallitasi_keys[phone]?></strong></td>
 	</tr>
 </tbody>
 </table>

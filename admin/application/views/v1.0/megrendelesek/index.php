@@ -4,7 +4,6 @@ $nevek = array(
 	'adoszam' => 'Adószám',
 	'city' => 'Város',
 	'irsz' => 'Irányítószám',
-	'phone' => 'Telefonszám',
 	'kerulet' => 'Kerület',
 	'kozterulet_nev' => 'Közterület neve',
 	'kozterulet_jelleg' => 'Közterület jellege',
@@ -13,6 +12,8 @@ $nevek = array(
 	'lepcsohaz' => 'Lépcsőház',
 	'ajto' => 'Ajtó',
 	'szint' => 'Szint',
+	'phone_korzet' => 'Körzetszám',
+	'phone' => 'Telefonszám',
 );
 ?>
 <div style="float:right;">
@@ -402,12 +403,13 @@ Megrendelések
                         	<div class="col-md-6">
                             	<div><strong>Számlázási adatok</strong></div>
                                 <? $szam = json_decode($d[szamlazasi_keys]);?>
-                                <div>
-                                	<? foreach($szam as $szmk => $szmv): ?>
+																<div>
+																	<? foreach($nevek as $szllk => $szllv): ?>
+																	<?php 	$szam = (array)$szam; $v = $szam[$szllk]; if($szllk == 'phone' || $szllk == 'phone_korzet') continue; ?>
                                    		<div class="row">
-                                        	<div class="col-md-6 np selectCol em"><?=$nevek[$szmk]?></div>
-                                        	<div class="col-md-6 np right"><input name="szamlazasi_adat[<?=$d[ID]?>][<?=$szmk?>]" type="text" class="form-control" value="<?=$szmv?>" /></div>
-                                             <input type="hidden" value="<?=$szmv?>" name="prev_szamlazasi_adat[<?=$d[ID]?>][<?=$szmk?>]" />
+                                        	<div class="col-md-6 selectCol np em"><?=$nevek[$szllk]?></div>
+                                        	<div class="col-md-6 np right"><input name="szamlazasi_adat[<?=$d[ID]?>][<?=$szllk?>]" type="text" class="form-control" value="<?=$v?>" /></div>
+                                            <input type="hidden" value="<?=$v?>" name="prev_szamlazasi_adat[<?=$d[ID]?>][<?=$szllk?>]" />
                                         </div>
                                     <? endforeach; ?>
                                 </div>
@@ -416,11 +418,12 @@ Megrendelések
                             	<? $szall = json_decode($d[szallitasi_keys]);?>
                             	<div><strong>Szállítási adatok</strong></div>
                                 <div>
-                                	<? foreach($szall as $szllk => $szllv): ?>
+																	<? foreach($nevek as $szllk => $szllv): ?>
+																	<?php 	$szall = (array)$szall; $v = $szall[$szllk]; ?>
                                    		<div class="row">
                                         	<div class="col-md-6 selectCol np em"><?=$nevek[$szllk]?></div>
-                                        	<div class="col-md-6 np right"><input name="szallitasi_adat[<?=$d[ID]?>][<?=$szllk?>]" type="text" class="form-control" value="<?=$szllv?>" /></div>
-                                            <input type="hidden" value="<?=$szllv?>" name="prev_szallitasi_adat[<?=$d[ID]?>][<?=$szllk?>]" />
+                                        	<div class="col-md-6 np right"><input name="szallitasi_adat[<?=$d[ID]?>][<?=$szllk?>]" type="text" class="form-control" value="<?=$v?>" /></div>
+                                            <input type="hidden" value="<?=$v?>" name="prev_szallitasi_adat[<?=$d[ID]?>][<?=$szllk?>]" />
                                         </div>
                                     <? endforeach; ?>
                                 </div>

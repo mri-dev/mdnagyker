@@ -197,8 +197,10 @@
                                       </div>
                                       <div class="divider-sm"></div>
                                       <div class="row">
-                                          <div class="col-md-4 form-text"><strong>Telefonszám</strong></div>
-                                          <div class="col-md-8"><input required="required" type="text" id="szall_phone" name="szall_phone" class="form-control"/></div>
+                                        <div class="col-md-4 form-text"><strong>Körzetszám</strong></div>
+                                        <div class="col-md-2"><input required="required" type="text" id="szall_phone_korzet" autocomplete="off" name="szall_phone_korzet" class="form-control"/></div>
+                                        <div class="col-md-2 form-text"><strong>Telefonszám</strong></div>
+                                        <div class="col-md-4"><input required="required" type="text" id="szall_phone" autocomplete="off" name="szall_phone" class="form-control"/></div>
                                       </div>
                                   </div>
                               </div>

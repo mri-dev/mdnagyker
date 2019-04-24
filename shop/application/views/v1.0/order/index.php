@@ -292,9 +292,9 @@
                             <div class="head"><strong>Szállítási adatok</strong></div>
                              <div class="inforows">
                                 <? $szall = json_decode($o[szallitasi_keys],true); ?>
-                                <? foreach($szall as $h => $d): if($d == '') continue; ?>
+                                <? foreach($szall as $h => $d): if($d == '' || $h == 'phone_korzet') continue; ?>
                                     <div class="col-md-4"><?=$nevek[$h]?></div>
-                                    <div class="col-md-8"><?=($d  != '')?$d:'&nbsp;'?></div>
+                                    <div class="col-md-8"><? if($h=='phone'): echo '+36 ('.$szall['phone_korzet'].') ';  endif; ?><?=($d  != '')?$d:'&nbsp;'?></div>
                                 <? endforeach; ?>
                             </div>
                          </div>

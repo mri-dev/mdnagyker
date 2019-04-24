@@ -1,7 +1,8 @@
 <?
     $szallnev = array(
         'nev' => 'Név',
-        'phone' => 'Telefon',
+        'phone' => 'Telefonszám',
+        'phone_korzet' => 'Körzetszám',
         'irsz' => 'Irányítószám',
         'city' => 'Település',
         'kerulet' => 'Kerület',
@@ -112,7 +113,8 @@
         <div class="form-rows">
             <form action="#szallitasi" method="post">
             <? foreach($szallnev as $dk => $dv):
-                $val = ($this->user[szallitasi_adat]) ? $this->user[szallitasi_adat][$dk] : '';
+              if( $dk == 'phone_korzet' ) continue;
+              $val = ($this->user[szallitasi_adat]) ? $this->user[szallitasi_adat][$dk] : '';
             ?>
             <div class="row">
                 <div class="col-md-3 form-text-md"><strong><?=$szallnev[$dk]?></strong><?=(in_array($dk, $req_items))?' *':''?></div>
@@ -134,7 +136,20 @@
                     <? endforeach; ?>
                 </select>
                 <?php else: ?>
-                    <input name="<?=$dk?>" type="text" class="form-control" id="szall_<?=$dk?>" value="<?=$val?>" />
+                    <?php if ($dk == 'phone'): ?>
+                    <div style="margin: 0 -15px;">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <input name="<?=$dk?>_korzet" type="text" placeholder="körzetszám" class="form-control" id="szall_<?=$dk?>_korzet" value="<?=$this->user[szallitasi_adat]['phone_korzet']?>" />
+                        </div>
+                        <div class="col-md-9">
+                          <input name="<?=$dk?>" type="text" class="form-control" id="szall_<?=$dk?>" value="<?=$val?>" />
+                        </div>
+                      </div>
+                    </div>
+                    <?php else: ?>
+                      <input name="<?=$dk?>" type="text" class="form-control" id="szall_<?=$dk?>" value="<?=$val?>" />
+                    <?php endif; ?>
                 <?php endif; ?>
                 </div>
             </div>
@@ -154,8 +169,10 @@
         <?=$this->msg['szamlazasi']?>
         <div class="form-rows">
             <form action="#szamlazasi" method="post">
-            <? foreach($szmnev  as $dk => $dv):  if($dk == 'phone') continue;
-             $val = ($this->user[szamlazasi_adat]) ? $this->user[szamlazasi_adat][$dk] : '';
+            <? foreach($szmnev  as $dk => $dv):
+              if($dk == 'phone') continue;
+              if( $dk == 'phone_korzet' ) continue;
+              $val = ($this->user[szamlazasi_adat]) ? $this->user[szamlazasi_adat][$dk] : '';
             ?>
 
             <div class="row">

@@ -2184,7 +2184,10 @@ class Shop
 					$err 		= 'Kötelező adat: Telefonszám hiányzik!';
 					$inputErr[] = 'szall_phone';
 				}
-
+				if($szall_phone_korzet == ''){
+					$err 		= 'Kötelező adat: Telefonszám körzetszám hiányzik!';
+					$inputErr[] = 'szall_phone_korzet';
+				}
 				if($err){
 					$errArr[input] = $inputErr;
 					throw new OrderException($err, $errArr);

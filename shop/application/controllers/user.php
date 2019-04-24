@@ -77,18 +77,6 @@ class user extends Controller{
 				Helper::reload('/user/belepes');
 			}
 
-			// Watercard reg
-			if(Post::on('addWatercard')){
-				try{
-					$re = $this->User->registerWaterCard( $_POST[watercard][email], $_POST[watercard][userid], $_POST[watercard][id], $_POST[watercard][egyesulet] );
-					$this->view->msg['alapadat'] = Helper::makeAlertMsg('pSuccess',$re);
-					Helper::reload('/user/beallitasok');
-				}catch(Exception $e){
-					$this->view->err = true;
-					$this->view->msg['alapadat'] = Helper::makeAlertMsg('pError',$e->getMessage());
-				}
-			}
-
 			// Alapadatok cseréje
 			if(Post::on('saveDefault')){
 				try{

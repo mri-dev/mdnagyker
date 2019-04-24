@@ -723,7 +723,8 @@ class Users
 			$kozterulet_jelleg == '' ||
 			$kozterulet_nev == '' ||
 			$hazszam == '' ||
-			$phone == ''
+			$phone == '' ||
+			$phone_korzet == ''
 		) throw new \Exception('Minden kötelező (*) mezőt töltsön ki!');
 
 		foreach ($post as $key => $value) {
@@ -1089,7 +1090,7 @@ class Users
 
 		if ( !is_numeric($data['szall_phone']) )
 		{
-			throw new \Exception('A telefonszám megadásánál kérjük, hogy csak természetes számokat használjon. Pl.: 06102030400',1003);
+			throw new \Exception('A telefonszám megadásánál kérjük, hogy csak természetes számokat használjon. Pl.: 06102030400', 1003);
 		}
 
 		/* */
