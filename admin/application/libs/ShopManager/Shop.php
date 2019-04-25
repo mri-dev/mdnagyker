@@ -2249,8 +2249,8 @@ class Shop
 				}else
 				{
 					$go 					= true;
-					$orderID 				= 0;
-					$uid 					= ($orderUserID == '') ? 'NULL' : $orderUserID;
+					$orderID 				= 0;					
+					$uid 					= ($orderUserID == '') ? 0 : $orderUserID;
 					$total 					= 0;
 					$pppkod 				= ($ppp_uzlet_str) ? "'".$ppp_uzlet_str."'" : 'NULL';
 					$pp_pont 				= ($pp_selected_point) ? "'".$pp_selected_point."'": 'NULL';
@@ -2338,6 +2338,8 @@ class Shop
 					$referer_partner_id =($referer_partner_id) ? "'".$referer_partner_id."'" : 'NULL';
 					$coupon_code 		= ($coupon_code) ? "'".$coupon_code."'" : 'NULL';
 					$pre_order = ($is_reorder && $reorder) ? "'".$reorder['azonosito']."'" : 'NULL';
+
+					$uid = ($uid == 0) ? 'NULL' : $uid;
 
 					// Create new order
 					if($go){
