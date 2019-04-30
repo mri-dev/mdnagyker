@@ -101,7 +101,7 @@ class Controller {
           // Menük
           $tree = null;
           $menu_header  = new Menus( false, array( 'db' => $this->db ) );
-          
+
           // Header menü
           $menu_header->addFilter( 'menu_type', 'header' );
           $menu_header->isFinal(true);
@@ -154,6 +154,9 @@ class Controller {
               18=>"Veszprém",
               19=>"Zala",
           ) );
+
+
+          $this->out( 'kozterulet_jellege', $this->kozterulet_jellege() );
         }
 
         if(!$arg[hidePatern]){ $this->hidePatern = false; }
@@ -239,6 +242,211 @@ class Controller {
         return $this->theme_folder;
     }
 
+    public function kozterulet_jellege()
+    {
+       $arr = array(
+            'akna',
+            'akna-alsó',
+            'akna-felső',
+            'alagút',
+            'alsórakpart',
+            'arborétum',
+            'autóút',
+            'barakképület',
+            'barlang',
+            'bejáró',
+            'bekötőút',
+            'bánya',
+            'bányatelep',
+            'bástya',
+            'bástyája',
+            'csárda',
+            'csónakházak',
+            'domb',
+            'dűlő',
+            'dűlők',
+            'dűlősor',
+            'dűlőterület',
+            'dűlőút',
+            'egyetemváros',
+            'egyéb',
+            'elágazás',
+            'emlékút',
+            'erdészház',
+            'erdészlak',
+            'erdő',
+            'erdősor',
+            'fasor',
+            'fasora',
+            'felső',
+            'forduló',
+            'főmérnökség',
+            'főtér',
+            'főút',
+            'föld',
+            'gyár',
+            'gyártelep',
+            'gyárváros',
+            'gyümölcsös',
+            'gát',
+            'gátsor',
+            'gátőrház',
+            'határsor',
+            'határút',
+            'hegy',
+            'hegyhát',
+            'hegyhát dűlő',
+            'hegyhát',
+            'köz',
+            'hrsz',
+            'hrsz.',
+            'ház',
+            'hídfő',
+            'iskola',
+            'játszótér',
+            'kapu',
+            'kastély',
+            'kert',
+            'kertsor',
+            'kerület',
+            'kilátó',
+            'kioszk',
+            'kocsiszín',
+            'kolónia',
+            'korzó',
+            'kultúrpark',
+            'kunyhó',
+            'kör',
+            'körtér',
+            'körvasútsor',
+            'körzet',
+            'körönd',
+            'körút',
+            'köz',
+            'kút',
+            'kültelek',
+            'lakóház',
+            'lakókert',
+            'lakónegyed',
+            'lakópark',
+            'lakótelep',
+            'lejtő',
+            'lejáró',
+            'liget',
+            'lépcső',
+            'major',
+            'malom',
+            'menedékház',
+            'munkásszálló',
+            'mélyút',
+            'műút',
+            'oldal',
+            'orom',
+            'park',
+            'parkja',
+            'parkoló',
+            'part',
+            'pavilon',
+            'piac',
+            'pihenő',
+            'pince',
+            'pincesor',
+            'postafiók',
+            'puszta',
+            'pálya',
+            'pályaudvar',
+            'rakpart',
+            'repülőtér',
+            'rész',
+            'rét',
+            'sarok',
+            'sor',
+            'sora',
+            'sportpálya',
+            'sporttelep',
+            'stadion',
+            'strandfürdő',
+            'sugárút',
+            'szer',
+            'sziget',
+            'szivattyútelep',
+            'szállás',
+            'szállások',
+            'szél',
+            'szőlő',
+            'szőlőhegy',
+            'szőlők',
+            'sánc',
+            'sávház',
+            'sétány',
+            'tag',
+            'tanya',
+            'tanyák',
+            'telep',
+            'temető',
+            'tere',
+            'tető',
+            'turistaház',
+            'téli kikötő',
+            'tér',
+            'tömb',
+            'udvar',
+            'utak',
+            'utca',
+            'utcája',
+            'vadaskert',
+            'vadászház',
+            'vasúti megálló',
+            'vasúti őrház',
+            'vasútsor',
+            'vasútállomás',
+            'vezetőút',
+            'villasor',
+            'vágóhíd',
+            'vár',
+            'várköz',
+            'város',
+            'vízmű',
+            'völgy',
+            'zsilip',
+            'zug',
+            'állat és növ.kert',
+            'állomás',
+            'árnyék',
+            'árok',
+            'átjáró',
+            'őrház',
+            'őrházak',
+            'őrházlak',
+            'út',
+            'útja',
+            'útőrház',
+            'üdülő',
+            'üdülő-part',
+            'üdülő-sor',
+            'üdülő-telep',
+            );
+
+        asort($arr);
+        uasort($arr, array('Controller', 'Hcmp'));
+
+        return $arr;
+    }
+
+    /**
+    * Magyar ékezetes betűk korrigálás/rewrite rendezéshez
+    * */
+    static function Hcmp($a, $b)
+    {
+      static $Hchr = array('á'=>'az', 'é'=>'ez', 'í'=>'iz', 'ó'=>'oz', 'ö'=>'ozz', 'ő'=>'ozz', 'ú'=>'uz', 'ü'=>'uzz', 'ű'=>'uzz', 'cs'=>'cz', 'zs'=>'zz',
+       'ccs'=>'czcz', 'ggy'=>'gzgz', 'lly'=>'lzlz', 'nny'=>'nznz', 'ssz'=>'szsz', 'tty'=>'tztz', 'zzs'=>'zzzz', 'Á'=>'az', 'É'=>'ez', 'Í'=>'iz',
+       'Ó'=>'oz', 'Ö'=>'ozz', 'Ő'=>'ozz', 'Ú'=>'uz', 'Ü'=>'uzz', 'Ű'=>'uzz', 'CS'=>'cz', 'ZZ'=>'zz', 'CCS'=>'czcz', 'GGY'=>'gzgz', 'LLY'=>'lzlz',
+       'NNY'=>'nznz', 'SSZ'=>'szsz', 'TTY'=>'tztz', 'ZZS'=>'zzzz');
+       $a = strtr($a,$Hchr);   $b = strtr($b,$Hchr);
+       $a=strtolower($a); $b=strtolower($b);
+       return strcmp($a, $b);
+    }
+
     public function memory_usage()
     {
        echo '-Memory: ',round(memory_get_usage()/1048576,2),' MB used-';
@@ -262,10 +470,12 @@ class Controller {
             $this->view->render($subfolder.$this->theme_wire.'footer',$mode);
         }
         $this->db = null;
-       // $this->memory_usage();
 
         $this->finish_time = microtime(true);
         //$this->get_speed();
+        unset($this->view);
+        unset($this->model);
+        //$this->memory_usage();
     }
 }
 
