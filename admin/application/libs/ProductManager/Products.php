@@ -2429,6 +2429,10 @@ class Products
 			$in['afa'.$ai] = 27;
 			$in['netto_egysegar'.$ai] = (float) $ar;
 			$save_xml_query .= sprintf(", ar".$ai." = %d", (float)$ar);
+
+			// Akciós ár
+			$akcios_ar = (float)$torzs['ar_akcios'][$ai];
+			$save_xml_query .= sprintf(", ar".$ai."_akcios = %d", (float)$akcios_ar);
 		}
 		$items[] = $in;
 

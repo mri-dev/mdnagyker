@@ -23,7 +23,6 @@ class termekek extends Controller
 				$this->view->bmsg= Helper::makeAlertMsg('pSuccess', $_GET['msg']);
 			}
 
-
 			// Kategóriák
 			$cats = new Categories(  array( 'db' => $this->db )  );
 			$this->out( 'categories', $cats->getTree() );
@@ -243,9 +242,7 @@ class termekek extends Controller
 					}
 				break;
 				case 'edit': case 'newedit':
-
 					// Termék másolása
-
 					if(Post::on('copyTermek')){
 						try{
 							$re = $this->AdminUser->copyTermek($_POST[tid],$_POST[copyNum]);

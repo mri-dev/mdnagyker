@@ -538,15 +538,16 @@ class Admin
 
 		$orderData 	= $this->getOrderData($accessKey);
 
+
 		$users 		= new Users( array(
 			'db' => $this->db,
 			'admin' => true,
 			'settings' => $this->settings )
 		);
-		$user = $users->get(array( 'user' => 'ds'.$orderData['email'] ));
+		$user = $users->get(array( 'user' => $orderData['email'] ));
 
-		// Cashman FX - Partner adat rögzítés ha user adat található
-		if( $user && $post[allapotID][$orderID] == $this->settings['flagkey_invoice_orderstatus'] )
+		// Cashman FX - Partner adat rögzítés
+		if( $post[allapotID][$orderID] == $this->settings['flagkey_invoice_orderstatus'] )
 		{
 			// Partner rögzítés / frissítés
 			if ( $this->crm ) {
@@ -560,8 +561,9 @@ class Admin
 		/* * /
 		echo '<pre>';
 		print_r($orderData);
-		var_dump($user);
-		exit;
+		print_r($user);
+
+		return false;
 		/* */
 
 		if( $user ) {

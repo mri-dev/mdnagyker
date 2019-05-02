@@ -23,6 +23,7 @@ class termekek extends Controller
 				$this->view->bmsg= Helper::makeAlertMsg('pSuccess', $_GET['msg']);
 			}
 
+
 			// Kategóriák
 			$cats = new Categories(  array( 'db' => $this->db )  );
 			$this->out( 'categories', $cats->getTree() );
@@ -81,6 +82,13 @@ class termekek extends Controller
 					setcookie('filter_nev','',time()-100,'/'.$this->view->gets[0]);
 				}
 
+				if($_POST['kategoria'] != ''){
+					setcookie('filter_kategoria',$_POST['kategoria'],time()+60*24,'/'.$this->view->gets[0]);
+					$filtered = true;
+				}else{
+					setcookie('filter_kategoria','',time()-100,'/'.$this->view->gets[0]);
+				}
+
 				if($_POST['marka'] != ''){
 					setcookie('filter_marka',$_POST['marka'],time()+60*24,'/'.$this->view->gets[0]);
 						$filtered = true;
@@ -115,6 +123,13 @@ class termekek extends Controller
 					setcookie('filter_fotermek','',time()-100,'/'.$this->view->gets[0]);
 				}
 
+				if(isset($_POST['showunlimit'])){
+					setcookie('filter_showunlimit',1,time()+60*24,'/'.$this->view->gets[0]);
+					$filtered = true;
+				}else{
+					setcookie('filter_showunlimit','',time()-100,'/'.$this->view->gets[0]);
+				}
+
 				if($filtered){
 					setcookie('filtered','1',time()+60*24*7,'/'.$this->view->gets[0]);
 				}else{
@@ -137,15 +152,12 @@ class termekek extends Controller
 			if (isset($_GET['article'])) {
 				$filters['raktar_articleid'] = $_GET['article'];
 			}
+			$lim = (isset($_COOKIE['filter_showunlimit'])) ? -1 : 50;
 			$arg = array(
 				'admin' => true,
 				'filters' => $filters,
-				'limit' => 50,
-				'page' => Helper::currentPageNum(),
-				'order' => array(
-					'by' => 'p.ID',
-					'how' => 'DESC'
-				)
+				'limit' => $lim,
+				'page' => Helper::currentPageNum()
 			);
 			$products_list = $products->prepareList( $arg )->getList();
 			$this->out( 'products', $products );
@@ -158,10 +170,13 @@ class termekek extends Controller
 				'item_limit' => 28
 			)))->render() );
 
+			unset($products);
+			unset($products_list);
+
 			// Márkák
 			$this->view->markak 	= $this->AdminUser->getMarkak();
 			// Kategóriák
-			$this->view->kategoria  = $this->AdminUser->getTermekKategoriak();
+			//$this->view->kategoria  = $this->AdminUser->getTermekKategoriak();
 
 			// Készlet lista
 			$this->view->keszlet 	= $this->AdminUser->getKeszletLista();
@@ -201,6 +216,7 @@ class termekek extends Controller
 			setcookie('filter_ID','',time()-100,'/'.$this->view->gets[0]);
 			setcookie('filter_cikkszam','',time()-100,'/'.$this->view->gets[0]);
 			setcookie('filter_nev','',time()-100,'/'.$this->view->gets[0]);
+			setcookie('filter_kategoria','',time()-100,'/'.$this->view->gets[0]);
 			setcookie('filter_szin','',time()-100,'/'.$this->view->gets[0]);
 			setcookie('filter_meret','',time()-100,'/'.$this->view->gets[0]);
 			setcookie('filter_lathato','',time()-100,'/'.$this->view->gets[0]);
@@ -262,6 +278,7 @@ class termekek extends Controller
 								'arukereso' => ($_POST['argep'] ? 1 : 0 ),
 								'argep' => ($_POST['argep'] ? 1 : 0 ),
 								'pickpackpont' => ($_POST['pickpackszallitas'] ? 1 : 0 ),
+								'csomagautomata' => ($_POST['csomagautomata'] ? 1 : 0 ),
 								'no_cetelem' => ($_POST['no_cetelem'] ? 1 : 0 ),
 								'garancia' => ($_POST['garancia'] ?: 0),
 								'cat' => $_POST['cat'],
@@ -312,6 +329,7 @@ class termekek extends Controller
 					$this->out( 'products', $products );
 					$this->out( 'termek', $products->get( $this->view->gets[3] ) );
 
+					// Kapcsolódó termékek
 					if ( $this->view->termek['related_products_ids'] ) {
 						$termek_kapcsolatok = new Products( array( 'db' => $this->db ) );
 						$termek_kapcsolatok = $termek_kapcsolatok->prepareList( array(
@@ -326,6 +344,31 @@ class termekek extends Controller
 							'kapcsolatok',
 							$kapcsolat_template->get(
 								'products_relatives',
+								array(
+									'list' 	=> $termek_kapcsolatok,
+									'mode' 	=> 'remove',
+									'id' 	=> $this->view->termek['ID']
+								)
+							)
+						);
+					}
+
+					// Helyettesítő termékek
+
+					if ( $this->view->termek['replacement_products_ids'] ) {
+						$termek_kapcsolatok = new Products( array( 'db' => $this->db ) );
+						$termek_kapcsolatok = $termek_kapcsolatok->prepareList( array(
+							'limit' => -1,
+							'admin' => true,
+							'filters' => array(
+								'ID' => $this->view->termek['replacement_products_ids']
+							)
+						) )->getList();
+						$kapcsolat_template = new Template( VIEW  . 'templates/' );
+						$this->out(
+							'replacements',
+							$kapcsolat_template->get(
+								'products_replacementrelatives',
 								array(
 									'list' 	=> $termek_kapcsolatok,
 									'mode' 	=> 'remove',
@@ -360,7 +403,6 @@ class termekek extends Controller
 								'upDir' 	=> $folder,
 								'fileName' 	=> $imgName,
 								'makeThumbImg' => true,
-								'makeWaterMark' => true,
 								'maxFileSize' => 5150
 							));
 						}catch(Exception $e){
@@ -702,6 +744,7 @@ class termekek extends Controller
 						'arukereso' => ($_POST['argep'] ? 1 : 0 ),
 						'argep' => ($_POST['argep'] ? 1 : 0 ),
 						'pickpackpont' => ($_POST['pickpackszallitas'] ? 1 : 0 ),
+						'csomagautomata' => ($_POST['csomagautomata'] ? 1 : 0 ),
 						'no_cetelem' => ($_POST['no_cetelem'] ? 1 : 0 ),
 						'garancia' => ($_POST['garancia_honap'] ? $_POST['garancia_honap'] : 0),
 						'cat' => $_POST['cat'],

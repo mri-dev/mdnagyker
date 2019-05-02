@@ -170,35 +170,23 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-12">
-									<div class="row">
-										<div class="col-md-12">
-											<label for="crm_beszerzes_netto">Nettó beszerzés</label>
-											<input type="number" min="0" disabled="disabled" id="crm_beszerzes_netto" value="<?=$this->termek[crm][beszerzes_netto]?>" class="form-control">
-										</div>
-									</div>
-									<br>
+								<div class="col-md-4">
+									<label for="crm_beszerzes_netto">Nettó beszerzés</label>
+									<input type="number" min="0" disabled="disabled" id="crm_beszerzes_netto" value="<?=$this->termek[crm][beszerzes_netto]?>" class="form-control">
+								</div>
+								<div class="col-md-8">
 									<?php for ($ap = 1; $ap <= 8; $ap++): ?>
 									<div class="row">
-										<div class="col-md-6">
+										<div class="col-md-12">
 											<label for="crm_ar<?=$ap?>">Ár #<?=$ap?> nettó <? if(array_key_exists('ar'.$ap, $this->price_groups)): ?>- <strong style="color:green;"><?=$this->price_groups['ar'.$ap]['title']?></strong><? endif; ?></label>
 
 											<div class="input-group">
-												<input <?=(!array_key_exists('ar'.$ap, $this->price_groups)) ? 'disabled="disabled"' : ''?> type="number" step="0.01" min="0" name="crm[ar][<?=$ap?>]" id="crm_ar<?=$ap?>" value="<?=$this->termek[crm]['ar'.$ap]?>" class="form-control">
+												<input <?=(!array_key_exists('ar'.$ap, $this->price_groups)) ? 'disabled="disabled"' : ''?> type="number" min="0" name="crm[ar][<?=$ap?>]" id="crm_ar<?=$ap?>" value="<?=$this->termek[crm]['ar'.$ap]?>" class="form-control">
 												<div class="input-group-addon">
 													<?=(!array_key_exists('ar'.$ap, $this->price_groups)) ? '' : 'bruttó '.Helper::cashFormat((round($this->termek[crm]['ar'.$ap] * 1.27))).' Ft'?>
 												</div>
 											</div>
 											<small><?=(!array_key_exists('ar'.$ap, $this->price_groups)) ? 'Nincs árcsoporthoz kapcsolva. <a href="/arcsoportok">Beállítás</a>' : ''?></small>
-										</div>
-										<div class="col-md-6">
-											<label for="crm_ar<?=$ap?>">Ár #<?=$ap?> akciós nettó</label>
-											<div class="input-group">
-												<input <?=(!array_key_exists('ar'.$ap, $this->price_groups)) ? 'disabled="disabled"' : ''?> type="number" step="0.01" min="0" name="crm[ar_akcios][<?=$ap?>]" id="crm_ar<?=$ap?>_akcios" value="<?=$this->termek[crm]['ar'.$ap.'_akcios']?>" class="form-control">
-												<div class="input-group-addon">
-													<?=(!array_key_exists('ar'.$ap, $this->price_groups)) ? '' : 'bruttó '.Helper::cashFormat((round($this->termek[crm]['ar'.$ap.'_akcios'] * 1.27))).' Ft'?>
-												</div>
-											</div>
 										</div>
 									</div>
 									<br>

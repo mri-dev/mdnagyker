@@ -70,6 +70,7 @@ class Products
 			$marka 			= $product->getManufacturerId();
 			$lathato 		= $product->isVisible();
 			$pickpackszallitas 	= ( !$product->isAllowToPickPackPont() ) ? 0 : 1;
+			$csomagautomata 	= ( !$product->isAllowToCsomagautomata() ) ? 0 : 1;
 			$no_cetelem 	= ( $product->isAllowCetelem() ) ? 0 : 1;
 			$akcios 		= ( !$product->isDiscounted() ) ? 0 : 1;
 			$netto_ar 		= $product->getPrice( 'netto' );
@@ -135,6 +136,7 @@ class Products
 					'brutto_ar' => $brutto_ar,
 					'lathato' => $lathato,
 					'pickpackszallitas' => $pickpackszallitas,
+					'csomagautomata' => $csomagautomata,
 					'no_cetelem' => $no_cetelem,
 					'akcios' => $akcios,
 					'akcios_netto_ar' => $akcios_n_ar,
@@ -296,6 +298,7 @@ class Products
 			$marka 			= $product->getManufacturerId();
 			$lathato 		= $product->isVisible();
 			$pickpackszallitas 	= ( !$product->isAllowToPickPackPont() ) ? 0 : 1;
+			$csomagautomata 	= ( !$product->isAllowToCsomagautomata() ) ? 0 : 1;
 			$no_cetelem 	= ( $product->isAllowCetelem() ) ? 0 : 1;
 			$akcios 		= ( !$product->isDiscounted() ) ? 0 : 1;
 			$netto_ar 		= $product->getPrice( 'netto' );
@@ -369,6 +372,7 @@ class Products
 					'letoltesek' => $letoltesek,
 					'lathato' => $lathato,
 					'pickpackszallitas' => $pickpackszallitas,
+					'csomagautomata' => $csomagautomata,
 					'no_cetelem' => $no_cetelem,
 					'akcios' => $akcios,
 					'szallitasID' => $szallitasID,
@@ -492,9 +496,28 @@ class Products
 		}
 	}
 
+	public function connectReplacementProducts( $id1, $id2 )
+	{
+		$c1 = $this->db->query("SELECT 1 FROM shop_termek_helyettesito_xref WHERE base_id = $id1 and target_id = $id2;");
+		if ( $c1->rowCount() == 0 ) {
+			$this->db->insert(
+				"shop_termek_helyettesito_xref",
+				array(
+					'base_id' => $id1,
+					'target_id' => $id2
+				)
+			);
+		}
+	}
+
 	public function disconnectProducts( $id1, $id2 )
 	{
 		$this->db->query("DELETE FROM shop_termek_ajanlo_xref WHERE (base_id = $id1 and target_id = $id2)");
+	}
+
+	public function disconnectReplacementProducts( $id1, $id2 )
+	{
+		$this->db->query("DELETE FROM shop_termek_helyettesito_xref WHERE (base_id = $id1 and target_id = $id2)");
 	}
 
 	public function getLiveviewedList( $mID, $limit = 5, $arg = array() )
@@ -526,7 +549,7 @@ class Products
 			$d['profil_kep_small'] 	=  \PortalManager\Formater::productImage( $kep, 75, self::TAG_IMG_NOPRODUCT );
 			$d['link'] = DOMAIN.'termek/'.\PortalManager\Formater::makeSafeUrl( $d['product_nev'], '_-'.$d['product_id'] );
 
-			$bdata[]	 			= $d;
+			$bdata[]= $d;
 		}
 
 		return $bdata;
@@ -546,6 +569,7 @@ class Products
 		LEFT OUTER JOIN shop_termekek as t ON t.ID = v.termekID
 		LEFT OUTER JOIN shop_markak as m ON m.ID = t.marka
 		WHERE v.mID = '$mID' and t.ID IS NOT NULL and t.lathato = 1
+		GROUP BY t.ID
 		ORDER BY v.idopont DESC
 		LIMIT 0,$limit";
 
@@ -626,10 +650,12 @@ class Products
 			p.ajandek,
 			p.rovid_leiras,
 			p.xml_import_origin,
+			p.xml_import_res_id,
 			p.kulcsszavak,
 			p.fotermek,
+			p.sorrend,
 			getTermekAr(p.ID, ".$uid.") as ar,
-			(SELECT GROUP_CONCAT(kategoria_id) FROM shop_termek_in_kategoria WHERE termekID = p.ID ) as in_cat,
+			(SELECT GROUP_CONCAT(stik.kategoria_id) FROM shop_termek_in_kategoria as stik LEFT OUTER JOIN shop_termek_kategoriak as tk ON tk.ID = stik.kategoria_id WHERE stik.termekID = p.ID and tk.ID IS NOT NULL) as in_cat,
 			(SELECT neve FROM shop_termek_kategoriak WHERE ID = p.alapertelmezett_kategoria ) as alap_kategoria";
 
 			/*
@@ -808,6 +834,10 @@ class Products
 			foreach($arg['filters'] as $key => $v){
 				switch($key)
 				{
+					// disabled filter option
+					case 'showunlimit':
+					break;
+
 					case 'ID':
 						if( is_array($v) ) {
 							$value_set = false;
@@ -822,7 +852,7 @@ class Products
 								$size_whr .= $add;
 							}
 						} else {
-							$add = " and p.".$key." LIKE '".$v."%' ";
+							$add = " and p.".$key." = '".$v."' ";
 							$whr .= $add;
 							$size_whr .= $add;
 
@@ -835,7 +865,12 @@ class Products
 						$size_whr .= $add;
 					break;
 					case 'nev':
-						$add = " and p.".$key." LIKE '%".$v."%' ";
+						$add = " and (p.".$key." LIKE '%".$v."%' or p.cikkszam = '".trim($v)."') ";
+						$whr .= $add;
+						$size_whr .= $add;
+					break;
+					case 'kategoria':
+						$add = " and ( ".trim($v)." IN (SELECT ct.kategoria_id FROM shop_termek_in_kategoria as ct WHERE ct.termekID = p.ID) ) ";
 						$whr .= $add;
 						$size_whr .= $add;
 					break;
@@ -957,14 +992,15 @@ class Products
 					$add =  " ORDER BY ".$arg['order']['by']." ".$arg['order']['how'];
 					$qry .= $add;
 				} else {
-					$add =  " ORDER BY ar ASC, fotermek DESC, p.ID DESC ";
+					$add =  " ORDER BY sorrend ASC, ar ASC, fotermek DESC, p.ID DESC ";
 					$qry .= $add;
 				}
 			}
 		}
 
 		// Összes kategórián belüli termék ID összegyűjtése
-		$ids_query = $this->db->query( "SELECT p.ID FROM shop_termekek as p WHERE 1=1 ".$whr );
+		$idsqrystr = "SELECT p.ID FROM shop_termekek as p WHERE 1=1 ".$whr;
+		$ids_query = $this->db->query( $idsqrystr );
 
 		if ( $ids_query->rowCount() != 0 ) {
 			$ids_gets = $ids_query->fetchAll(\PDO::FETCH_ASSOC);
@@ -1052,7 +1088,7 @@ class Products
 			$d['hasonlo_termek_ids']= $this->getProductRelatives( $d['product_id'] );
 			$d['parameters'] 		= $this->getParameters( $d['product_id'], $d['alapertelmezett_kategoria'] );
 			$d['variation_config'] = $this->getVariationConfig( $d['product_id'], $d['alapertelmezett_kategoria'] );
-			$d['price_groups'] 	= $this->priceGroups( $d['xml_import_origin'], $d['nagyker_kod'] );
+			$d['price_groups'] 	= $this->priceGroups( $d['xml_import_origin'], $d['xml_import_res_id'] );
 			$d['inKatList'] 		= $in_cat;
 			$d['mertekegyseg_egysegar'] = $this->calcEgysegAr($d['mertekegyseg'], $d['mertekegyseg_ertek'], $d['ar']);
 			//$d['ar'] 				= $arInfo['ar'];
@@ -1070,7 +1106,7 @@ class Products
 		return $this;
 	}
 
-	public function calcEgysegAr( $me, $mevar, $price)
+	public static function calcEgysegAr( $me, $mevar, $price)
 	{
 		$ea = 0;
 		$mert = $me;
@@ -1122,7 +1158,7 @@ class Products
 		return $bdata;
 	}
 
-	public function priceGroups( $originid = 0, $prodid )
+	public function priceGroups( $originid = 0, $xml_res_id )
 	{
 		if ($originid == 0) {
 			return false;
@@ -1137,9 +1173,10 @@ class Products
 		}
 		$qkey = rtrim($qkey,", ");
 
-		$prodid = addslashes($prodid);
+		$xml_res_id = addslashes($xml_res_id);
 
-		$q = "SELECT ".$qkey." FROM xml_temp_products as t WHERE t.origin_id = {$originid} and t.prod_id = '$prodid'";
+		$q = "SELECT ".$qkey." FROM xml_temp_products as t WHERE t.origin_id = {$originid} and t.ID = '$xml_res_id'";
+
 		$prices = $this->db->query($q);
 
 		if ( $prices->rowCount() != 0 ) {
@@ -1248,7 +1285,7 @@ class Products
 					$back[$d['paramID']]['mertekegyseg'] = trim($fn[2][0]);
 				}
 
-				if (!in_array($v, $back[$d['paramID']]['hints'])) {
+				if (!in_array($v, (array)$back[$d['paramID']]['hints'])) {
 					if (is_numeric($v)) {
 						$back[$d['paramID']]['is_range'] = true;
 					}
@@ -1520,16 +1557,15 @@ class Products
 		$cat_ids = array();
 
 		$qry = $this->db->query( sprintf( "
-			SELECT 				k.kategoria_id,
-								IF(kat.szulo_id IS NULL, kat.neve, CONCAT(p.neve, ' / ', kat.neve)) as neve,
-								kat.hashkey,
-								kat.oldal_hashkeys
-			FROM 				shop_termek_in_kategoria as k
-			LEFT OUTER JOIN 	shop_termek_kategoriak as kat ON kat.ID = k.kategoria_id
-			LEFT OUTER JOIN 	shop_termek_kategoriak as p ON p.ID = kat.szulo_id
-			WHERE 				k.termekID = %d
-			GROUP BY k.termekID
-			ORDER BY 			p.sorrend ASC, kat.sorrend ASC", $product_id ) );
+			SELECT	k.kategoria_id,
+				IF(kat.szulo_id IS NULL, kat.neve, CONCAT(p.neve, ' / ', kat.neve)) as neve,
+				kat.hashkey,
+				kat.oldal_hashkeys
+			FROM shop_termek_in_kategoria as k
+			LEFT OUTER JOIN shop_termek_kategoriak as kat ON kat.ID = k.kategoria_id
+			LEFT OUTER JOIN shop_termek_kategoriak as p ON p.ID = kat.szulo_id
+			WHERE k.termekID = %d and kat.ID IS NOT NULL
+			ORDER BY p.sorrend ASC, kat.sorrend ASC", $product_id ) );
 
 		if( $qry->rowCount() == 0 ) return $cat_ids;
 
@@ -1565,13 +1601,14 @@ class Products
 		$cat_ids = array();
 
 		$qry = $this->db->query( sprintf( "
-			SELECT  			c.kategoria_id as id,
-								IF(cat.szulo_id IS NOT NULL, CONCAT(pc.neve,' / ', cat.neve), cat.neve) as neve
-			FROM 				shop_termek_in_kategoria as c
-			LEFT OUTER JOIN 	shop_termek_kategoriak as cat ON cat.ID = c.kategoria_id
-			LEFT OUTER JOIN 	shop_termek_kategoriak as pc ON pc.ID = cat.szulo_id
-			WHERE 				c.termekID = %d
-			ORDER BY			cat.deep ASC, cat.sorrend ASC", $product_id ) );
+			SELECT
+				c.kategoria_id as id,
+				IF(cat.szulo_id IS NOT NULL, CONCAT(pc.neve,' / ', cat.neve), cat.neve) as neve
+			FROM shop_termek_in_kategoria as c
+			LEFT OUTER JOIN shop_termek_kategoriak as cat ON cat.ID = c.kategoria_id
+			LEFT OUTER JOIN shop_termek_kategoriak as pc ON pc.ID = cat.szulo_id
+			WHERE c.termekID = %d and cat.ID IS NOT NULL
+			ORDER BY cat.deep ASC, cat.sorrend ASC", $product_id ) );
 
 		if( $qry->rowCount() == 0 ) return $cat_ids;
 
@@ -1751,6 +1788,11 @@ class Products
 	 */
 	public function get( $product_id, array $opt = array() ) {
 		if( $product_id === '' || !isset( $product_id ) ) return false;
+		$product_id = (int)$product_id;
+
+		if ($product_id == 0) {
+			return false;
+		}
 
 		$categories = new Categories( array( 'db' => $this->db ) );
 
@@ -1760,10 +1802,10 @@ class Products
 			$row = rtrim( $opt['rows'], ',' );
 		}
 
+
 		$uid = (int)$this->user[data][ID];
 
-		$q = $this->db->query("
-			SELECT 			$row,
+		$qq = "SELECT	$row,
 				getTermekAr(t.ID, ".$uid.") as ar,
 				k.neve as kategoriaNev,
 				ta.elnevezes as keszletNev,
@@ -1772,9 +1814,9 @@ class Products
 			LEFT OUTER JOIN shop_termek_kategoriak as k ON k.ID = t.alapertelmezett_kategoria
 			LEFT OUTER JOIN shop_termek_allapotok as ta ON ta.ID = t.keszletID
 			LEFT OUTER JOIN shop_szallitasi_ido as sza ON sza.ID = t.szallitasID
-			WHERE 			t.ID = $product_id
+			WHERE t.ID = $product_id";
 
-		");
+		$q = $this->db->query( $qq );
 
 		$data = $q->fetch(\PDO::FETCH_ASSOC);
 
@@ -1811,6 +1853,7 @@ class Products
 		$data['parameters']			= $this->getParameters( $product_id, $data['alapertelmezett_kategoria'] );
 		$data['variation_config'] = $this->getVariationConfig( $product_id, $data['alapertelmezett_kategoria'] );
 		$data['related_products_ids']	= $this->getRelatedIDS( $product_id );
+		$data['replacement_products_ids']	= $this->getReplacementIDS( $product_id );
 		$data['nav'] = array_reverse($categories->getCategoryParentRow((int)$data['alapertelmezett_kategoria'], false));
 
 		$this->makeKeywordsArray($data['kulcsszavak']);
@@ -1829,6 +1872,7 @@ class Products
 		$data['link_lista']	= $this->getProductLinksFromStr( $data['linkek'] );
 
 		$data['mertekegyseg_egysegar'] = $this->calcEgysegAr($data['mertekegyseg'], $data['mertekegyseg_ertek'], $data['ar']);
+		$data['kisker_ar'] = $this->getProductPriceByGroup( $product_id, 'ar1');
 
 		// Csatolt link hivatkozások
 		$this->getProductLinksFromCategoryHashkeys( $data['in_cat_page_hashkeys'], $data['link_lista'] );
@@ -1836,11 +1880,85 @@ class Products
 		// CRM - Cashman FX
 		if ( $this->crm && gettype($this->crm) == 'object' )
 		{
-			$data['crm'] = $this->crm->getFullItemData( 1, $data['nagyker_kod'] );
+			$data['crm'] = $this->crm->getFullItemData( 1, $data['xml_import_res_id'] );
 		}
 
 		return $data;
 	}
+
+	public function getProductPriceByGroup( $id, $group = 'ar1' )
+	{
+		$price = array();
+
+		$res_id = $this->db->squery("SELECT xml_import_res_id FROM shop_termekek WHERE ID = :id", array('id' => $id))->fetchColumn();
+
+		$price['xml_res_id'] = $res_id;
+
+		$netprice = $this->db->squery("SELECT {$group} FROM xml_temp_products WHERE ID = :id", array('id' => $res_id))->fetchColumn();
+
+		if ($netprice) {
+			$price['netto'] = (float)$netprice;
+			$price['brutto'] = round((float)$netprice * 1.27);
+		}
+
+		return $price;
+	}
+
+	public function getProductRowInCategory( $cat_id, $product_id )
+	{
+		$row = array();
+
+		$uid = (int)$this->user[data][ID];
+
+		$q = "SELECT
+			t.ID,
+			t.nev,
+			t.sorrend,
+			getTermekAr(t.ID, ".$uid.") as ar
+		FROM shop_termekek as t
+		WHERE 1=1
+		and t.lathato = 1
+		and ( ".$cat_id." IN (SELECT k.kategoria_id FROM shop_termek_in_kategoria as k WHERE k.termekID = t.ID) )
+		GROUP BY t.ID
+		ORDER BY t.sorrend ASC, ar ASC, t.fotermek DESC, t.ID DESC
+		";
+
+		$qry = $this->db->query( $q );
+
+		if ($qry->rowCount() != 0) {
+			$data = $qry->fetchAll(\PDO::FETCH_ASSOC);
+			$i = 0;
+			foreach ((array)$data as $d) {
+				$d['link'] = DOMAIN.'termek/'.\PortalManager\Formater::makeSafeUrl( $d['nev'], '_-'.$d['ID'] );
+				$row['row'][] = $d;
+
+				if ($d['ID'] == $product_id) {
+					$d['index'] = $i;
+					$row['current'] = $d;
+				}
+				$i++;
+			}
+
+			$next_index = $row['current']['index'] + 1;
+			$prev_index = $row['current']['index'] - 1;
+			if ($next_index >= count($row['row'])) {
+				$next_index = 0;
+			}
+			if ($prev_index < 0) {
+				$prev_index = count($row['row']) -1;
+			}
+
+			//$row['next']['index'] = $next_index;
+			//$row['prev']['index'] = $prev_index;
+
+			$row['next'] = $row['row'][$next_index];
+			$row['prev'] = $row['row'][$prev_index];
+
+		}
+
+		return $row;
+	}
+
 
 	public function getVariationConfig( $tid, $alapkat_id )
 	{
@@ -1965,6 +2083,26 @@ class Products
 		if( $product_id === '' || !isset( $product_id ) ) return false;
 
 		$q = $this->db->squery("SELECT target_id FROM shop_termek_ajanlo_xref WHERE base_id = :id GROUP BY target_id;", array( 'id' => $product_id ) );
+
+		if ( $q->rowCount() == 0 ) {
+			return false;
+		}
+
+		foreach ($q->fetchAll(\PDO::FETCH_ASSOC) as $d )
+		{
+			$ids[] = $d['target_id'];
+		}
+
+		return $ids;
+	}
+
+	public function getReplacementIDS( $product_id )
+	{
+		$ids = array();
+
+		if( $product_id === '' || !isset( $product_id ) ) return false;
+
+		$q = $this->db->squery("SELECT target_id FROM shop_termek_helyettesito_xref WHERE base_id = :id GROUP BY target_id;", array( 'id' => $product_id ) );
 
 		if ( $q->rowCount() == 0 ) {
 			return false;
@@ -2330,6 +2468,7 @@ class Products
 					'cikkszam' => $torzs['cikkszam'],
 					'gyarto_kod' => $torzs['cikkszam'],
 					'prod_id' => $torzs['prod_id'],
+					'ean_code' => $torzs['prod_id'],
 					'termek_nev' => $torzs['termek_nev'],
 					'kisker_ar_netto' => $torzs['ar'][1],
 					'virtualis_keszlet' => (float)$torzs['keszlet_min'],
@@ -2351,7 +2490,7 @@ class Products
 				/* */
 			}
 		} else {
-
+			throw new \Exception("CMFX API: ".$ins['hiba']);
 		}
 		$ins['xmlid'] = $xmlid;
 		return $ins;

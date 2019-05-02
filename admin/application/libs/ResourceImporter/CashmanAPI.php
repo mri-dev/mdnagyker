@@ -40,7 +40,6 @@ class CashmanAPI extends ResourceImportBase
     $row['Csoport'] = self::AUTH_CSOPORT;
   	$row['User'] = self::AUTH_USER;
   	$row['Password'] = self::AUTH_PW;
-
     return $row;
   }
 
