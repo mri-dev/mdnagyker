@@ -152,9 +152,9 @@ class kosar extends Controller{
 			}
 
 			// PostaPont szállítás esetén, ha nincs kiválasztva a PP, akkor nem lehet megrendelni
-			/*if($this->view->storedString[2][atvetel] == '5' && $this->view->storedString[2][pp_selected] == ''){
+			if($this->view->storedString[2][atvetel] == $this->view->settings['flagkey_postaponttransfer_id'] && $this->view->storedString[2][pp_selected] == ''){
 				$this->view->canOrder = false;
-			}*/
+			}
 
 			// Előfoglalás
 			if (Post::on('doPreorder'))
