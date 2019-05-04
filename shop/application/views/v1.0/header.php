@@ -182,8 +182,8 @@
               </div>
             </li>
             <?php endif; ?>
-            <li class="kiemelt"><a href="#">Kiemelt ajánlataink</a></li>
-            <li class="akciok"><a href="#">Akciók</a></li>
+            <li class="kiemelt"><a href="/termekek/kiemelt">Kiemelt ajánlataink</a></li>
+            <li class="akciok"><a href="/termekek/akciok">Akciók</a></li>
           </ul>
         </div>
         <div class="nav">

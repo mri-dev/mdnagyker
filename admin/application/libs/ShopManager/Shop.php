@@ -1064,6 +1064,7 @@ class Shop
 			getTermekUrl(t.ID,'".DOMAIN."') as url,
 			ta.elnevezes as allapot,
 			t.profil_kep,
+			getTermekOriginalAr(c.termekID, ".$uid.") as eredeti_ar,
 			getTermekAr(c.termekID, ".$uid.") as ar,
 			(getTermekAr(c.termekID, ".$uid.") * c.me) as sum_ar,
 			t.referer_price_discount,
@@ -1093,7 +1094,10 @@ class Shop
 				$d[ar] = round($d[ar] / 5) * 5;
 			}
 
-
+			if ($this->settings['round_price_5'] == '1')
+			{
+				$d[eredeti_ar] = round($d[eredeti_ar] / 5) * 5;
+			}
 
 			if ($d['no_cetelem'] == '1')
 			{
@@ -1102,11 +1106,15 @@ class Shop
 			}
 
 			$d['prices'] = array(
-				'old_each' 		=> 0,
-				'old_sum' 		=> 0,
+				'old_each' 		=> (($d[eredeti_ar]) ? $d[eredeti_ar] : 0),
+				'old_sum' 		=> (($d[eredeti_ar]) ? $d[eredeti_ar] * $d[me] : 0),
 				'current_each' 	=> $d[ar],
 				'current_sum' 	=> $d[ar] * $d[me]
 			);
+
+			if ($d['prices']['old_sum'] != 0) {
+				$totalPrice_before_discount += $d['prices']['old_sum'];
+			}
 
 			/*
 			if( $this->user['kedvezmeny'] > 0 ) {
@@ -1145,12 +1153,10 @@ class Shop
 						$d['prices']['current_sum'] 	= $coupon->discountPrice( $d['ar'] )  * $d['me'];
 					}
 				}
-
 			}
 
 			$itemNum 	+= $d[me];
 			$totalPrice += $d[ar] * $d[me];
-
 
 			$d['profil_kep'] = \PortalManager\Formater::productImage( $d['profil_kep'], false );
 
@@ -2249,7 +2255,7 @@ class Shop
 				}else
 				{
 					$go 					= true;
-					$orderID 				= 0;					
+					$orderID 				= 0;
 					$uid 					= ($orderUserID == '') ? 0 : $orderUserID;
 					$total 					= 0;
 					$pppkod 				= ($ppp_uzlet_str) ? "'".$ppp_uzlet_str."'" : 'NULL';

@@ -37,7 +37,8 @@ class Controller {
         $this->gets = Helper::GET();
 
         //$this->memory_usage();
-
+        //print_r($this->gets);
+        
         // CORE
         // $this->model 		= new Model();
         $this->view = new View();

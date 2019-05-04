@@ -37,9 +37,14 @@
                         </div>
                       <?php elseif($this->category->getName() != ''): ?>
                         <h1><?=$this->category->getName()?></h1>
-
                       <?php else: ?>
+                        <?php if ($this->gets[1] == 'akciok'): ?>
+                        <h1>Akciós termékek</h1>
+                      <?php elseif($this->gets[1] == 'kiemelt'): ?>
+                        <h1>Kiemelt termékek</h1>
+                        <?php else: ?>
                         <h1>Termékek</h1>
+                        <?php endif; ?>
                         <?php if (isset($this->searched_by)): ?>
                           <div class="search-for">
                            <i class="fa fa-search"></i> Keresés, mint: <?php foreach ($this->searched_by as $s): ?>

@@ -655,6 +655,7 @@ class Products
 			p.fotermek,
 			p.sorrend,
 			getTermekAr(p.ID, ".$uid.") as ar,
+			getTermekOriginalAr(p.ID, ".$uid.") as eredeti_ar,
 			(SELECT GROUP_CONCAT(stik.kategoria_id) FROM shop_termek_in_kategoria as stik LEFT OUTER JOIN shop_termek_kategoriak as tk ON tk.ID = stik.kategoria_id WHERE stik.termekID = p.ID and tk.ID IS NOT NULL) as in_cat,
 			(SELECT neve FROM shop_termek_kategoriak WHERE ID = p.alapertelmezett_kategoria ) as alap_kategoria";
 
@@ -1060,7 +1061,8 @@ class Products
 
 		foreach($data as $d)
 		{
-			//$brutto_ar = $d['brutto_ar'];
+			$brutto_ar = $d['ar'];
+			$eredeti_brutto_ar = $d['eredeti_ar'];
 			//$akcios_brutto_ar = $d['akcios_brutto_ar'];
 
 			$kep = $d['profil_kep'];
@@ -1080,6 +1082,15 @@ class Products
 			$arInfo['ar'] 			= ($this->settings['round_price_5'] == '1') ? round($arInfo['ar'] / 5) * 5 : $arInfo['ar'] ;
 			$akcios_arInfo['ar'] 	= ($this->settings['round_price_5'] == '1') ? round($akcios_arInfo['ar'] / 5) * 5 : $akcios_arInfo['ar'] ;
 			*/
+
+			// Dinamic akciózás
+			if ( $eredeti_brutto_ar != $brutto_ar ) {
+				$d['akcios'] = 1;
+				$d['akcio'] = array(
+					'szazalek' => (100-round($brutto_ar / ($eredeti_brutto_ar / 100))),
+					'mertek' => $eredeti_brutto_ar - $brutto_ar
+				);
+			}
 
 			// Kategória lista, ahol szerepel a termék
 			$in_cat = $this->getCategoriesWhereProductIn( $d['product_id'] );
@@ -1807,6 +1818,7 @@ class Products
 
 		$qq = "SELECT	$row,
 				getTermekAr(t.ID, ".$uid.") as ar,
+				getTermekOriginalAr(t.ID, ".$uid.") as eredeti_ar,
 				k.neve as kategoriaNev,
 				ta.elnevezes as keszletNev,
 				sza.elnevezes as szallitasNev
@@ -1820,8 +1832,8 @@ class Products
 
 		$data = $q->fetch(\PDO::FETCH_ASSOC);
 
-
 		$brutto_ar	= $data['ar'];
+		$eredeti_brutto_ar	= $data['eredeti_ar'];
 		$akcios_brutto_ar 	= $data['akcios_brutto_ar'];
 
 		$kep = $data['profil_kep'];
@@ -1831,10 +1843,19 @@ class Products
 		$arInfo = $this->getProductPriceCalculate( $data['marka'], $brutto_ar );
 		$akcios_arInfo = $this->getProductPriceCalculate( $data['marka'], $akcios_brutto_ar );
 
+		// Dinamic akciózás
+		if ( $eredeti_brutto_ar != $brutto_ar ) {
+			$data['akcios'] = 1;
+			$data['akcio'] = array(
+				'szazalek' => (100-round($brutto_ar / ($eredeti_brutto_ar / 100))),
+				'mertek' => $eredeti_brutto_ar - $brutto_ar
+			);
+		}
+		/*
 		if( $d['akcios'] == '1') {
 			$arInfo['ar'] = $arInfo['ar'];
 		}
-
+		*/
 		//$arInfo['ar'] 			= ($this->settings['round_price_5'] == '1') ? round($arInfo['ar'] / 5) * 5 : $arInfo['ar'] ;
 		//$akcios_arInfo['ar'] 	= ($this->settings['round_price_5'] == '1') ? round($akcios_arInfo['ar'] / 5) * 5 : $akcios_arInfo['ar'] ;
 
@@ -2429,6 +2450,10 @@ class Products
 			$in['afa'.$ai] = 27;
 			$in['netto_egysegar'.$ai] = (float) $ar;
 			$save_xml_query .= sprintf(", ar".$ai." = %d", (float)$ar);
+
+			// Akciós ár
+			$akcios_ar = (float)$torzs['ar_akcios'][$ai];
+			$save_xml_query .= sprintf(", ar".$ai."_akcios = %d", (float)$akcios_ar);
 		}
 		$items[] = $in;
 

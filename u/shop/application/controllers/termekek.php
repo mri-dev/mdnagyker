@@ -79,7 +79,7 @@ class termekek extends Controller {
 				$order['by'] 	= $xord[0];
 				$order['how'] 	= $xord[1];
 			}
-			
+
 			$arg = array(
 				'filters' 	=> $filters,
 				'paramfilters' 	=> $paramfilters,
@@ -99,7 +99,6 @@ class termekek extends Controller {
 					$this->out( 'searched_by', $search );
 				}
 			}
-
 			$products = (new Products( array(
 				'db' => $this->db,
 				'user' => $this->User->get()
@@ -150,6 +149,8 @@ class termekek extends Controller {
 
 
 			$get = $_GET;
+			$root = '/'.__CLASS__;
+			$root .= '/'.$this->gets[1];
 			unset($get['tag']);
 			$get = http_build_query($get);
 			$this->out( 'cget', $get );
@@ -157,7 +158,7 @@ class termekek extends Controller {
 				'class' => 'pagination pagination-sm center',
 				'current' => $products->getCurrentPage(),
 				'max' => $products->getMaxPage(),
-				'root' => '/'.__CLASS__.'/'.$this->view->gets[1].($this->view->gets[2] ? '/'.$this->view->gets[2] : '/-'),
+				'root' => $root,
 				'after' => ( $get ) ? '?'.$get : '',
 				'item_limit' => 12
 			)))->render() );

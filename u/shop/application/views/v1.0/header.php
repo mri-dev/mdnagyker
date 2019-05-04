@@ -94,16 +94,22 @@
               <a href="/viszontelado"><i class="fa fa-users"></i> Viszonteladók jelentkezése</a>
             </div>
             <div class="login">
+              <?php if ($this->user): ?>
+              <a href="/user/"><i class="fa fa-user"></i> Fiókom</a>
+              <?php else: ?>
               <a href="/user/login"><i class="fa fa-user"></i> Belépés</a>
+              <?php endif; ?>
             </div>
             <div class="div"></div>
             <div class="kedvencek">
               <a href="/kedvencek"><i class="fa fa-star"></i> Kedvencek <span class="badge">{{fav_num}}</span></a>
             </div>
+            <?php if (!$this->user || ($this->user && $this->user['data']['user_group'] == 'company')): ?>
             <div class="div"></div>
             <div class="elofoglalas">
-              <a href="/elofoglalasok"><i class="fa fa-pause-circle-o"></i> Előfoglalás <span class="badge">{{fav_num}}</span></a>
+              <a href="/elofoglalasok"><i class="fa fa-pause-circle-o"></i> Előfoglalás <span class="badge">{{prodres_num}}</span></a>
             </div>
+            <?php endif; ?>
           </div>
         </div>
       </div>

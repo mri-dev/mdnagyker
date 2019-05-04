@@ -9,25 +9,33 @@
 <div class="product-view">
   <div class="product-data">
     <div class="page-width">
+      <?php if ($this->product_nav_row): ?>
+      <div class="product-row-nav">
+        <div class="prev">
+          <a href="<?php echo $this->product_nav_row['prev']['link']; ?>"><i class="fa fa-angle-left"></i> <?php echo $this->product_nav_row['prev']['nev']; ?></a>
+        </div>
+        <div class="next">
+          <a href="<?php echo $this->product_nav_row['next']['link']; ?>"><?php echo $this->product_nav_row['next']['nev']; ?> <i class="fa fa-angle-right"></i></a>
+        </div>
+      </div>
+      <?php endif; ?>
       <div class="top-datas">
         <div class="images">
           <?php if (true): ?>
           <div class="main-img by-width autocorrett-height-by-width" data-image-ratio="4:3">
-            <? if( $ar >= $this->settings['cetelem_min_product_price'] && $ar <= $this->settings['cetelem_max_product_price'] && $this->product['no_cetelem'] != 1 ): ?>
-                <img class="cetelem" src="<?=IMG?>cetelem_badge.png" alt="Cetelem Online Hitel">
-            <? endif; ?>
-            <?  if( $this->product['akcios'] == '1' && $this->product['akcios_fogy_ar'] > 0): ?>
-            <div class="discount-percent"><div class="p">-<? echo 100-round($this->product['akcios_fogy_ar'] / ($this->product['brutto_ar'] / 100)); ?>%</div></div>
+
+            <?  if( $this->product['akcios'] == '1' && $this->product['akcio']['szazalek'] > 0): ?>
+            <div class="discount-percent"><div class="p">-<? echo $this->product['akcio']['szazalek']; ?>%</div></div>
             <? endif; ?>
             <div class="img-thb">
                 <a href="<?=$this->product['profil_kep']?>" class="zoom"><img di="<?=$this->product['profil_kep']?>" src="<?=$this->product['profil_kep']?>" alt="<?=$this->product['nev']?>"></a>
             </div>
           </div>
           <div class="all">
-            <?  foreach ( $this->product['images'] as $img ) { ?>
+            <?  foreach ( (array)$this->product['images'] as $img ) { ?>
             <div class="imgslide">
               <div class="wrp autocorrett-height-by-width" data-image-ratio="4:3">
-                <img class="aw" i="<?=\PortalManager\Formater::productImage($img)?>" src="<?=\PortalManager\Formater::productImage($img, 150)?>" alt="<?=$this->product['nev']?>">
+                <img class="aw" i="<?=\PortalManager\Formater::productImage($img)?>" src="<?=\PortalManager\Formater::productImage($img)?>" alt="<?=$this->product['nev']?>">
               </div>
             </div>
             <? } ?>
@@ -35,6 +43,11 @@
           <?php endif; ?>
         </div>
         <div class="main-data">
+          <?php if ( true ): ?>
+          <h1><?=$this->product['nev']?></h1>
+          <div class="csoport">
+            <?=$this->product['csoport_kategoria']?>
+          </div>
           <div class="nav">
             <div class="pagi">
               <?php
@@ -48,18 +61,13 @@
                 <li><a href="<?=$this->product['in_cats']['url'][0]?>"><?php echo $lastcat; ?></a></li>
                 <?php endif; ?>
                 <?php
-                foreach ( $this->product['nav'] as $nav ): $navh = \Helper::makeSafeUrl($nav['neve'],'_-'.$nav['ID']); ?>
+                foreach ( (array)$this->product['nav'] as $nav ): $navh = \Helper::makeSafeUrl($nav['neve'],'_-'.$nav['ID']); ?>
                 <li><a href="/termekek/<?=$navh?>"><?php echo $nav['neve']; ?></a></li>
                 <?php endforeach; ?>
               </ul>
             </div>
           </div>
-          <?php if ( true ): ?>
 
-          <h1><?=$this->product['nev']?></h1>
-          <div class="csoport">
-            <?=$this->product['csoport_kategoria']?>
-          </div>
           <div class="prices">
               <div class="base">
                 <?php if ($this->product['without_price']): ?>
@@ -67,19 +75,43 @@
                     ÉRDEKLŐDJÖN!
                   </div>
                 <?php else: ?>
+                  <?php
+                    $price_title_prefix = 'Kiskeredkedelmi';
+                    $show_kisker_prices = false;
+                    if ($this->user) {
+                      switch ($this->user['data']['price_group_title']) {
+                        case 'Viszonteladó':
+                          $price_title_prefix = 'Viszonteladói';
+                          $show_kisker_prices = true;
+                        break;
+                        case 'Nagyker vásárló':
+                          $price_title_prefix = 'Nagykereskedői';
+                          $show_kisker_prices = true;
+                        break;
+                      }
+                    }
+                  ?>
+                  <?php if ($this->user && $this->user[data][user_group] == 'company'): ?>
                   <div class="netto">
-                    <div class="pricehead">Kiskereskedelmi <strong>nettó ár</strong>:</div>
+                    <div class="pricehead"><?=$price_title_prefix?> <strong>nettó ár</strong>:</div>
                     <span class="price"><?=\PortalManager\Formater::cashFormat($ar/1.27)?> <?=$this->valuta?><? if($this->product['mertekegyseg'] != ''): ?><span class="unit-text">/<?=($this->product['mertekegyseg_ertek']!=1)?$this->product['mertekegyseg_ertek']:''?><?=$this->product['mertekegyseg']?></span><? endif; ?></span>
                   </div>
+                  <?php endif; ?>
                   <div class="brutto">
-                    <div class="pricehead">Kiskereskedelmi <strong>bruttó ár</strong>:</div>
-                    <span class="price current <?=( $this->product['akcios'] == '1' && $this->product['akcios_fogy_ar'] > 0)?'discounted':''?>"><?=\PortalManager\Formater::cashFormat($ar)?> <?=$this->valuta?><? if($this->product['mertekegyseg'] != ''): ?><span class="unit-text">/<?=($this->product['mertekegyseg_ertek']!=1)?$this->product['mertekegyseg_ertek']:''?><?=$this->product['mertekegyseg']?></span><? endif; ?></span>
-                    <?  if( $this->product['akcios'] == '1' && $this->product['akcios_fogy_ar'] > 0):
-                        $ar = $this->product['akcios_fogy_ar'];
+                    <div class="pricehead"><?=$price_title_prefix?> <strong>bruttó ár</strong>:</div>
+                    <span class="price current <?=( $this->product['akcios'] == '1' && $this->product['akcio']['mertek'] > 0)?'discounted':''?>"><?=\PortalManager\Formater::cashFormat($ar)?> <?=$this->valuta?><? if($this->product['mertekegyseg'] != ''): ?><span class="unit-text">/<?=($this->product['mertekegyseg_ertek']!=1)?$this->product['mertekegyseg_ertek']:''?><?=$this->product['mertekegyseg']?></span><? endif; ?></span>
+                    <?  if( $this->product['akcios'] == '1' && $this->product['akcio']['mertek'] > 0):
+                        $ar = $this->product['eredeti_ar'];
                     ?>
-                    <span class="price old"><strike><?=\PortalManager\Formater::cashFormat($this->product['ar'])?> <?=$this->valuta?><? if($this->product['mertekegyseg'] != ''): ?><span class="unit-text">/<?=$this->product['mertekegyseg']?></span><? endif; ?></strike></span>
+                    <div class="price old"><strike><?=\PortalManager\Formater::cashFormat($ar)?> <?=$this->valuta?><? if($this->product['mertekegyseg'] != ''): ?><span class="unit-text">/<?=$this->product['mertekegyseg']?></span><? endif; ?></strike></div>
                     <? endif; ?>
                   </div>
+                  <?php if ($show_kisker_prices && $this->product[kisker_ar] && $this->product[kisker_ar][brutto] != '0'): ?>
+                  <div class="kisker-addon-price">
+                    <div class="pricehead">Kiskereskedelmi ár:</div>
+                    <span class="price"><?php echo \PortalManager\Formater::cashFormat($this->product['kisker_ar']['brutto']); ?> <?=$this->valuta?> <span class="net">(<?php echo \PortalManager\Formater::cashFormat($this->product['kisker_ar']['netto']); ?> <?=$this->valuta?> + ÁFA)</span></span>
+                  </div>
+                  <?php endif; ?>
                 <?php endif; ?>
               </div>
               <div class="cimkek">
@@ -195,7 +227,7 @@
                 <?php if ( !$this->product['without_price'] ): ?>
                   <div class="finalprice">
                     Bruttó összeg:<br>
-                    <div class="price"><?=\PortalManager\Formater::cashFormat($ar)?> <?=$this->valuta?><? if($this->product['mertekegyseg'] != ''): ?><span class="unit-text">/<?=($this->product['mertekegyseg_ertek']!=1)?$this->product['mertekegyseg_ertek']:''?><?=$this->product['mertekegyseg']?></span><? endif; ?></div>
+                    <div class="price"><?=\PortalManager\Formater::cashFormat($this->product['ar'])?> <?=$this->valuta?><? if($this->product['mertekegyseg'] != ''): ?><span class="unit-text">/<?=($this->product['mertekegyseg_ertek']!=1)?$this->product['mertekegyseg_ertek']:''?><?=$this->product['mertekegyseg']?></span><? endif; ?></div>
                     <?php if ($this->product['mertekegyseg_egysegar']): ?>
                     <div class="egysegar">
                      Egységár: <strong><?php echo $this->product['mertekegyseg_egysegar']; ?></strong>
@@ -311,33 +343,35 @@
           <div class="wrapper">
             <div class="fav">
               <div aria-label="Hozzáadás a kedvencekhez." class="fav" ng-class="(fav_ids.indexOf(<?=$this->product['ID']?>) !== -1)?'selected':''" ng-click="productAddToFav(<?=$this->product['ID']?>)">
-                <div class="wrapper" title="Kedvencekhez adás">
+                <div class="wrapper">
                   <i class="fa fa-star" ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) !== -1"></i>
                   <i class="fa fa-star-o" ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) === -1"></i>
-                  Kedvencekhez
+                  <span ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) === -1">Kedvenc</span>
+                  <span ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) !== -1">Kedvenem</span>
                 </div>
                 <md-tooltip md-direction="bottom">
                   Hozzáadás a kedvencekhez.
                 </md-tooltip>
               </div>
             </div>
+            <?php if ($this->user && $this->user['data']['user_group'] == 'company'): ?>
             <div class="sep"></div>
             <div class="lefoglal">
-              <div aria-label="Hozzáadás a kedvencekhez." class="fav" ng-class="(fav_ids.indexOf(<?=$this->product['ID']?>) !== -1)?'selected':''" ng-click="productAddToFav(<?=$this->product['ID']?>)">
-                <div class="wrapper" title="Kedvencekhez adás">
-                  <i class="fa fa-pause-circle" ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) !== -1"></i>
-                  <i class="fa fa-pause-circle-o" ng-show="fav_ids.indexOf(<?=$this->product['ID']?>) === -1"></i>
-                  Lefoglal
+              <div aria-label="Termék lefoglalása." class="fav">
+                <div class="wrapper">
+                  <i class="fa fa-pause-circle-o"></i>
+                  <a href="?reserve=now">Lefoglal</a>
                 </div>
                 <md-tooltip md-direction="bottom">
                   Termék lefoglalása 24 órára.
                 </md-tooltip>
               </div>
             </div>
+            <?php endif; ?>
           </div>
         </div>
         <nav class="tab-header">
-          <ul>
+          <ul ng-controller="ActionButtons">
             <li class="description active"><a href="#description" onclick="switchTab('description')">Leírás</a></li>
             <?php if ($this->product['parameters'] && !empty($this->product['parameters'])): ?>
             <li class="parameters"><a href="#parameters" onclick="switchTab('parameters')">Műszaki adatok</a></li>
@@ -346,6 +380,7 @@
             <li class="documents"><a href="#documents" onclick="switchTab('documents')">Dokumentumok</a></li>
             <?php endif; ?>
             <li class="compatiblity"><a href="#compatiblity" onclick="switchTab('compatiblity')">Kompatibilitási lista</a></li>
+            <li class="ask"><a href="javascript:void(0);" ng-click="requestTermekKerdes(<?=$this->product['ID']?>)">Kérdés a termékről <i class="fa fa-ask"></i> </a></li>
           </ul>
         </nav>
         <div class="holder">
@@ -470,21 +505,44 @@
               </div>
             </div>
           </div>
-          <?php if ( $this->related_list ): ?>
           <div class="related-products">
-            <div class="c">
-              <div class="items">
-              <?php if ( $this->related_list ): ?>
-                <? foreach ( $this->related_list as $p ) {
-                    $p['itemhash'] = hash( 'crc32', microtime() );
-                    $p = array_merge( $p, (array)$this );
-                    echo $this->template->get( 'product_item', $p );
-                } ?>
-              <?php endif; ?>
+            <?php if ( $this->related_list ): ?>
+              <div class="head">
+                <h3>Ajánlott termékek</h3>
               </div>
-            </div>
+              <div class="c">
+                <div class="items">
+                <?php if ( $this->related_list ): ?>
+                  <? foreach ( $this->related_list as $p ) {
+                      $p['itemhash'] = hash( 'crc32', microtime() );
+                      $p['sideproducts'] = true;
+                      $p = array_merge( $p, (array)$this );
+                      echo $this->template->get( 'product_item', $p );
+                  } ?>
+                <?php endif; ?>
+                </div>
+              </div>
+            <?php endif; ?>
+
+            <?php if ( $this->replacements_list ): ?>
+              <div class="head">
+                <h3>Helyettesítő termékek</h3>
+              </div>
+              <div class="c">
+                <div class="items">
+                <?php if ( $this->replacements_list ): ?>
+                  <? foreach ( $this->replacements_list as $p ) {
+                      $p['itemhash'] = hash( 'crc32', microtime() );
+                      $p['sideproducts'] = true;
+                      $p = array_merge( $p, (array)$this );
+                      echo $this->template->get( 'product_item', $p );
+                  } ?>
+                <?php endif; ?>
+                </div>
+              </div>
+            <?php endif; ?>
           </div>
-          <?php endif; ?>
+
         </div>
       </div>
     </div>
@@ -496,6 +554,11 @@
         $('#add_cart_num').val(1);
         $('#addtocart').trigger('click');
         setTimeout( function(){ document.location.href='/kosar' }, 1000);
+        <? endif; ?>
+        <? if( $_GET['reserve'] == 'now'): ?>
+        $('#add_cart_num').val(1);
+        $('#addtocart').trigger('click');
+        setTimeout( function(){ document.location.href='/kosar/elofoglalas' }, 1000);
         <? endif; ?>
         $('.number-select > div[num]').click( function (){
             $('#add_cart_num').val($(this).attr('num'));

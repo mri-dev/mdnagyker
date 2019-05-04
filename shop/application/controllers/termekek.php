@@ -99,6 +99,15 @@ class termekek extends Controller {
 					$this->out( 'searched_by', $search );
 				}
 			}
+
+			if ( $this->gets[1] == 'akciok' ) {
+				$arg['akcios'] = true;
+			}
+
+			if ( $this->gets[1] == 'kiemelt' ) {
+				$arg['kiemelt'] = true;
+			}
+
 			$products = (new Products( array(
 				'db' => $this->db,
 				'user' => $this->User->get()

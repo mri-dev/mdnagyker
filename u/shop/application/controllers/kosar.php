@@ -230,8 +230,7 @@ class kosar extends Controller{
 			$SEO .= $this->view->addOG('site_name', $this->view->settings['page_title']);
 			$SEO .= '<link rel="canonical" href="'.$this->view->settings['domain'].'" />'."\n\r";
 			$this->view->SEOSERVICE = $SEO;
-
-
+			
 			parent::$pageTitle = $title;
 		}
 

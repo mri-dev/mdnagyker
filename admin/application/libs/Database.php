@@ -76,6 +76,59 @@ class Database{
 				$$
 				DELIMITER ;
 				";
+
+				// Termék eredeti ár számoló
+				$f .= "
+				DROP FUNCTION IF EXISTS getTermekOriginalAr;
+				DELIMITER $$
+				CREATE FUNCTION getTermekOriginalAr(tid INT, uid INT)
+				  RETURNS FLOAT
+				BEGIN
+				  DECLARE felh_ar FLOAT DEFAULT 0;
+					DECLARE resid INT DEFAULT 0;
+					DECLARE afa FLOAT DEFAULT 1.27;
+					DECLARE pricegroup VARCHAR(20) DEFAULT NULL;
+
+					SET @pg = 'ar1';
+
+					SELECT xml_import_res_id INTO resid FROM shop_termekek WHERE ID = tid;
+
+					IF uid = 0 THEN
+						SELECT ar1 INTO felh_ar FROM xml_temp_products WHERE ID = resid;
+					ELSE
+						SELECT sp.groupkey INTO pricegroup FROM felhasznalok as f LEFT OUTER JOIN shop_price_groups as sp ON sp.ID = f.price_group WHERE f.ID = uid;
+						IF pricegroup = 'ar1' THEN
+							SELECT ar1 INTO felh_ar FROM xml_temp_products WHERE ID = resid;
+						ELSEIF pricegroup = 'ar2' THEN
+							SELECT ar2 INTO felh_ar FROM xml_temp_products WHERE ID = resid;
+						ELSEIF pricegroup = 'ar3' THEN
+							SELECT ar3 INTO felh_ar FROM xml_temp_products WHERE ID = resid;
+						ELSEIF pricegroup = 'ar4' THEN
+							SELECT ar4 INTO felh_ar FROM xml_temp_products WHERE ID = resid;
+						ELSEIF pricegroup = 'ar5' THEN
+							SELECT ar5 INTO felh_ar FROM xml_temp_products WHERE ID = resid;
+						ELSEIF pricegroup = 'ar6' THEN
+							SELECT ar6 INTO felh_ar FROM xml_temp_products WHERE ID = resid;
+						ELSEIF pricegroup = 'ar7' THEN
+							SELECT ar7 INTO felh_ar FROM xml_temp_products WHERE ID = resid;
+						ELSEIF pricegroup = 'ar8' THEN
+							SELECT ar8 INTO felh_ar FROM xml_temp_products WHERE ID = resid;
+						ELSEIF pricegroup = 'ar9' THEN
+							SELECT ar9 INTO felh_ar FROM xml_temp_products WHERE ID = resid;
+						ELSEIF pricegroup = 'ar10' THEN
+							SELECT ar10 INTO felh_ar FROM xml_temp_products WHERE ID = resid;
+						END IF;
+
+					END IF;
+
+					SET felh_ar = round(felh_ar * afa);
+
+				  RETURN felh_ar;
+				END;
+				$$
+				DELIMITER ;
+				";
+
 				// EXPLODE ALternatív
 				$f .= "
 				DROP FUNCTION IF EXISTS GET_SPLITSTR;

@@ -967,11 +967,19 @@ class Shop
 			$this->db->query("UPDATE shop_kosar SET me = me - 1  WHERE termekID = $termekID and gepID = $mid");
 		}
 	}
+
 	public function addToCart($mid, $termekID, $me, $config){
 		if($mid == '')
 		throw new \Exception('Nem sikerült hozzáadni a terméket a kosárhoz. Frissítse le az oldalt és próbálja újra!');
 
-		$ci = $this->db->query("SELECT ID FROM shop_kosar WHERE termekID = $termekID and gepID = $mid and configs = '$config';");
+
+		$cq = "SELECT ID FROM shop_kosar WHERE termekID = $termekID and gepID = $mid";
+		if ($config == '' || empty($config) || !isset($config)) {
+			$cq .= " and configs IS NULL";
+		} else {
+			$cq .= " and configs = '{$config}'";
+		}
+		$ci = $this->db->query( $cq );
 
 		if($ci->rowCount() == 0){
 			//$c = $ci->fetch(\PDO::FETCH_ASSOC);
@@ -985,10 +993,17 @@ class Shop
 			);
 
 		}else{
-			$this->db->query("UPDATE shop_kosar SET me = me + $me  WHERE termekID = $termekID and gepID = $mid and configs = '$config'");
+			$uq = "UPDATE shop_kosar SET me = me + $me  WHERE termekID = $termekID and gepID = $mid";
+			if ($config == '' || empty($config) || !isset($config)) {
+
+			} else {
+				$cq .= " and configs = '{$config}'";
+			}
+			$this->db->query($uq);
 		}
 
 	}
+
 	public function removeFromCart($mid, $cartID){
 		if($mid == '')
 			throw new \Exception('Nem sikerült hozzáadni a terméket a kosárhoz. Frissítse le az oldalt és próbálja újra!');
@@ -1034,13 +1049,16 @@ class Shop
 			c.termekID,
 			c.me,
 			c.hozzaadva,
+			c.configs,
 			t.pickpackszallitas,
 			t.no_cetelem,
 			m.elorendelheto,
-			CONCAT(m.neve,' ',t.nev) as termekNev,
+			t.nev as termekNev,
 			t.szin,
 			t.meret,
 			t.raktar_keszlet,
+			t.mertekegyseg,
+			t.mertekegyseg_ertek,
 			IF(t.raktar_keszlet = 0, false, IF(t.raktar_keszlet = 1, 'utolsó darab', CONCAT(t.raktar_keszlet,' db'))) as keszlet_data,
 			t.raktar_articleid,
 			getTermekUrl(t.ID,'".DOMAIN."') as url,
@@ -1065,11 +1083,17 @@ class Shop
 			$kedvezmenyes = true;
 		}
 
-		foreach($data as $d){
+		foreach($data as $d)
+		{
+			$d['mertekegyseg'] = trim($d['mertekegyseg']);
+			$d['configs'] = $this->collectConfigData($d['configs']);
+
 			if ($this->settings['round_price_5'] == '1')
 			{
 				$d[ar] = round($d[ar] / 5) * 5;
 			}
+
+
 
 			if ($d['no_cetelem'] == '1')
 			{
@@ -1128,7 +1152,7 @@ class Shop
 			$totalPrice += $d[ar] * $d[me];
 
 
-			$d['profil_kep'] = \PortalManager\Formater::productImage( $d['profil_kep'] );
+			$d['profil_kep'] = \PortalManager\Formater::productImage( $d['profil_kep'], false );
 
 			if( $d['prices']['old_each'] != 0 && $d['prices']['old_each'] != $d['prices']['current_each']  )
 			{
@@ -1137,6 +1161,8 @@ class Shop
 			} else {
 				$d['discounted'] 		= false;
 			}
+
+			$d['mertekegyseg_egysegar'] = \ProductManager\Products::calcEgysegAr($d['mertekegyseg'], $d['mertekegyseg_ertek'], $d['ar']);
 
 			$dt[] = $d;
 		}
@@ -1165,6 +1191,44 @@ class Shop
 		$re[items] 				= $dt;
 
 		return $re;
+	}
+
+	public function collectConfigData( $rawconfig )
+	{
+		if ($rawconfig == '') {
+			return false;
+		}
+		parse_str($rawconfig, $configs);
+
+		if (count($configs) == 0) {
+			return false;
+		}
+
+		$list = array();
+		foreach ((array)$configs as $cp => $cv) {
+			$paramid = (int)str_replace("p","",$cp);
+			$value = $this->db->squery("SELECT
+				c.config_value as value,
+				c.parameter_id,
+				p.parameter as nev
+			FROM shop_termek_variation_configs as c
+			LEFT OUTER JOIN shop_termek_kategoria_parameter as p ON p.ID = c.parameter_id
+			WHERE 1=1 and c.ID = :id
+			ORDER BY CAST(p.priority as unsigned) ASC
+			", array('id' => $cv));
+			if ($value->rowCount() != 0) {
+				$value = $value->fetch(\PDO::FETCH_ASSOC);
+				$list[$paramid] = array(
+					'ID' => (int)$cv,
+					'param_id' => $paramid,
+					'parameter' => $value['nev'],
+					'value' => $value['value']
+				);
+			}
+
+		}
+
+		return $list;
 	}
 
 	public function getFilterString($filter_arry){
@@ -1898,6 +1962,129 @@ class Shop
 		return 'Köszönjük megkeresését. Hamarosan felvesszük Önnel a kapcsolatot a termékkel kapcsolatban!';
 	}
 
+	public function requestTermKerdes($post)
+	{
+		extract($post);
+
+		if($name == '') throw new \Exception('Kérjük, ne felejtse megadni saját nevét!');
+		if($phone == '') throw new \Exception('Kérjük, ne felejtse megadni saját telefonszámát!');
+		if($email == '') throw new \Exception('Kérjük, ne felejtse megadni saját e-mail címét!');
+
+		$termek = '<style>
+			.mail-termek-row{
+				position: relative;
+				background: #f7f7f7;
+				padding: 10px;
+				border: 2px solid #e9e9e9;
+				border-radius: 5px;
+				margin: 15px 0;
+			}
+			.mail-termek-row .img{
+				float: left;
+				width: 20%;
+				max-width: 20%;
+				box-sizing: border-box;
+			}
+			.mail-termek-row .img img{
+				width: 100%;
+				max-width: 100%;
+			}
+			.mail-termek-row .data{
+				float: left;
+				width: 80%;
+				box-sizing: border-box;
+				padding-left: 15px;
+			}
+			.mail-termek-row .data .name a{
+				display: block;
+				color: #f09f0f;
+				font-weight: bold;
+				margin-bottom: 15px;
+				font-size: 18px;
+			}
+			.mail-termek-row .data .cat{
+				color: #575757;
+				font-size: 15px;
+			}
+			.mail-termek-row .data .cat strong {
+				color: #3a3a3a;
+			}
+			.mail-termek-row .data .sdesc{
+				color: #919191;
+				font-size: 12px;
+				line-height: 1.5;
+				text-align:justify;
+				margin-top: 5px;
+			}
+			.mail-termek-row .data .meta{
+				color: #acacac;
+				font-size: 10px;
+				margin-top: 5px;
+			}
+		</style>';
+		$termek .= '<div class="mail-termek-row" style>
+			<div class="img"><img src="'.$product['profil_kep'].'" alt="'.$product['nev'].'"/></div>
+			<div class="data">
+				<div class="name"><a href="'.$this->settings['page_url'].'/termek/'.\Helper::makeSafeUrl($product['nev'],'_-'.$product['ID']).'">'.$product['nev'].'</a></div>
+				<div class="cat"><strong>'.$product['in_cat_names'][0].'</div>
+				<div class="sdesc">'.$product['rovid_leiras'].'</div>
+				<div class="meta">#'.$product['ID'].' &nbsp; Cikkszám:'.$product['cikkszam'].'</div>
+			</div>
+			<div style="clear:both;"></div>
+		</div>';
+
+		// Admin értesítése beérkezésről
+		$mail = new Mailer( $this->settings['page_title'], SMTP_USER, $this->settings['mail_sender_mode'] );
+		$mail->add( $this->settings['alert_email'] );
+
+		$arg = array(
+			'settings' => $this->settings,
+			'name' => $name,
+			'phone' => $phone,
+			'email' => $email,
+			'termek' => $termek,
+			'message' => $message,
+			'targy' => 'Termék kérés'
+		);
+
+		$mail->setSubject( 'Értesítő: Termék kérdés érkezet.' );
+		$mail->setMsg( (new Template( VIEW . 'templates/mail/' ))->get( 'admin_requestask', $arg ) );
+		$re = $mail->sendMail();
+
+		// Felhasználó értesítés kézbesítésről
+		$mail = new Mailer( $this->settings['page_title'], SMTP_USER, $this->settings['mail_sender_mode'] );
+		$mail->add( $email );
+
+		$arg = array(
+			'settings' => $this->settings,
+			'name' => $name,
+			'phone' => $phone,
+			'email' => $email,
+			'message' => $message,
+			'termek' => $termek,
+			'termek_nev' => $product['nev'],
+			'targy' => 'Termék kérését fogadtuk'
+		);
+		$arg['mailtemplate'] = (new MailTemplates(array('db'=>$this->db)))->get('request_product_ask', $arg);
+
+		$mail->setSubject( 'Visszaigazolás: Termék kérését fogadtuk.' );
+		$mail->setMsg( (new Template( VIEW . 'templates/mail/' ))->get( 'mailtemplateholder', $arg ) );
+		$re = $mail->sendMail();
+
+		// Üzenet mentése
+		$this->logMessage(array(
+			'item_id' => $product['ID'],
+			'felado_nev' => $name,
+			'felado_telefon'=> $phone,
+			'felado_email'=> $email,
+			'tipus' => 'requesttermask',
+			'uzenet_targy' => 'Termék kérdés',
+			'uzenet' => $message
+		));
+
+		return 'Köszönjük megkeresését. Hamarosan felvesszük Önnel a kapcsolatot a termékkel kapcsolatban!';
+	}
+
 	const ORDER_COOKIE_KEY_STEP = 'orderStep';
 
 	public function doOrder($post, $arg = array()) {
@@ -1906,6 +2093,11 @@ class Shop
 		$gets 	= \Helper::GET();
 		$step 	= $gets[1];
 		$step 	= (!$step) ? 0 : $step;
+		$is_reorder = (isset($arg['reorder'])) ? $arg['reorder'] : false;
+
+		if ($is_reorder) {
+			$step = 4;
+		}
 
 		$post_str = json_encode($post, JSON_UNESCAPED_UNICODE);
 
@@ -1937,51 +2129,65 @@ class Shop
 				$err 		= false;
 				$inputErr 	= array();
 
+				// Számlázási adatok check
 				if($szam_nev == ''){
-					$err 		= 'Alapvető adatok megadása kötelező vagy jelentkezzen be.';
+					$err 		= 'Kötelező adat: Számlázási név hiányzik!';
 					$inputErr[] = 'szam_nev';
 				}
-				if($szam_uhsz == ''){
-					$err 		= 'Alapvető adatok megadása kötelező vagy jelentkezzen be.';
-					$inputErr[] = 'szam_uhsz';
+				if($szam_hazszam == ''){
+					$err 		= 'Kötelező adat: Számlázási cím / Házszám hiányzik!';
+					$inputErr[] = 'szam_hazszam';
 				}
 				if($szam_city == ''){
-					$err 		= 'Alapvető adatok megadása kötelező vagy jelentkezzen be.';
+					$err 		= 'Kötelező adat: Számlázási cím / Település hiányzik!';
 					$inputErr[] = 'szam_city';
 				}
-				if($szam_state == ''){
-					$err 		= 'Alapvető adatok megadása kötelező vagy jelentkezzen be.';
-					$inputErr[] = 'szam_state';
-				}
 				if($szam_irsz == ''){
-					$err 		= 'Alapvető adatok megadása kötelező vagy jelentkezzen be.';
+					$err 		= 'Kötelező adat: Számlázási cím / Irányítószám hiányzik!';
 					$inputErr[] = 'szam_irsz';
 				}
-				if($szall_nev == ''){
-					$err 		= 'Alapvető adatok megadása kötelező vagy jelentkezzen be.';
-					$inputErr[] = 'szall_nev';
+				if($szam_kozterulet_nev == ''){
+					$err 		= 'Kötelező adat: Számlázási cím / Közterület neve hiányzik!';
+					$inputErr[] = 'szam_kozterulet_nev';
 				}
-				if($szall_uhsz == ''){
-					$err 		= 'Alapvető adatok megadása kötelező vagy jelentkezzen be.';
-					$inputErr[] = 'szall_uhsz';
-				}
-				if($szall_city == ''){
-					$err 		= 'Alapvető adatok megadása kötelező vagy jelentkezzen be.';
-					$inputErr[] = 'szall_city';
-				}
-				if($szall_state == ''){
-					$err 		= 'Alapvető adatok megadása kötelező vagy jelentkezzen be.';
-					$inputErr[] = 'szall_state';
-				}
-				if($szall_irsz == ''){
-					$err 		= 'Alapvető adatok megadása kötelező vagy jelentkezzen be.';
-					$inputErr[] = 'szall_irsz';
-				}
-				if($szall_phone == ''){
-					$err 		= 'Alapvető adatok megadása kötelező vagy jelentkezzen be.';
-					$inputErr[] = 'szall_phone';
+				if($szam_kozterulet_jelleg == ''){
+					$err 		= 'Kötelező adat: Számlázási cím / Közterület jellege hiányzik!';
+					$inputErr[] = 'szam_kozterulet_jelleg';
 				}
 
+				// Szállítási
+				if($szall_nev == ''){
+					$err 		= 'Kötelező adat: Szállítási név hiányzik!';
+					$inputErr[] = 'szall_nev';
+				}
+				if($szall_hazszam == ''){
+					$err 		= 'Kötelező adat: Számlázási cím / Házszám hiányzik!';
+					$inputErr[] = 'szall_hazszam';
+				}
+				if($szall_city == ''){
+					$err 		= 'Kötelező adat: Szállítási cím / Település hiányzik!';
+					$inputErr[] = 'szall_city';
+				}
+				if($szall_irsz == ''){
+					$err 		= 'Kötelező adat: Szállítási cím / Irányítószám hiányzik!';
+					$inputErr[] = 'szall_irsz';
+				}
+				if($szall_kozterulet_nev == ''){
+					$err 		= 'Kötelező adat: Szállítási cím / Közterület neve hiányzik!';
+					$inputErr[] = 'szall_kozterulet_nev';
+				}
+				if($szall_kozterulet_jelleg == ''){
+					$err 		= 'Kötelező adat: Szállítási cím / Közterület jellege hiányzik!';
+					$inputErr[] = 'szall_kozterulet_jelleg';
+				}
+				if($szall_phone == ''){
+					$err 		= 'Kötelező adat: Telefonszám hiányzik!';
+					$inputErr[] = 'szall_phone';
+				}
+				if($szall_phone_korzet == ''){
+					$err 		= 'Kötelező adat: Telefonszám körzetszám hiányzik!';
+					$inputErr[] = 'szall_phone_korzet';
+				}
 				if($err){
 					$errArr[input] = $inputErr;
 					throw new OrderException($err, $errArr);
@@ -2027,6 +2233,10 @@ class Shop
 				$err 		= false;
 				$inputErr 	= array();
 
+				if ($is_reorder) {
+					$reorder = $this->prepareReorder( $is_reorder, $post );
+				}
+
 				if ( !$post['aszf_ok'] ) {
 					$err 		= 'Megrendelés leadásához el kell fogadni az Általános Szerződési Feltételeket!';
 					$inputErr[] = 'aszf_on';
@@ -2039,8 +2249,8 @@ class Shop
 				}else
 				{
 					$go 					= true;
-					$orderID 				= 0;
-					$uid 					= ($orderUserID == '') ? 'NULL' : $orderUserID;
+					$orderID 				= 0;					
+					$uid 					= ($orderUserID == '') ? 0 : $orderUserID;
 					$total 					= 0;
 					$pppkod 				= ($ppp_uzlet_str) ? "'".$ppp_uzlet_str."'" : 'NULL';
 					$pp_pont 				= ($pp_selected_point) ? "'".$pp_selected_point."'": 'NULL';
@@ -2054,6 +2264,21 @@ class Shop
 					if ( $used_cash )
 					{
 						$kedvezmeny_ft = $used_cash;
+					}
+
+					// Újra rendelés esetén adatfelülírások
+					if ( $is_reorder && $reorder )
+					{
+						$nev = $reorder['nev'];
+						$uid 					= $reorder['userID'];
+						$szallitasi_koltseg = $reorder['szallitasi_koltseg'];
+						$email = $reorder['email'];
+						$atvetel = $reorder['szallitasiModID'];
+						$fizetes = $reorder['fizetesiModID'];
+						$kedvezmeny_ft = $reorder['kedvezmeny'];
+						$comment = $post['reorder']['comment'];
+						$pppkod = ($reorder['pickpackpont_uzlet_kod'] == '') ? 'NULL' : $reorder['pickpackpont_uzlet_kod'];
+						$pp_pont = ($reorder['postapont'] == '') ? 'NULL' : $reorder['postapont'];
 					}
 
 					/**
@@ -2093,11 +2318,11 @@ class Shop
 						SELECT
 							c.*,
 							t.nev,
-							t.meret,
-							t.szin,
 							t.raktar_articleid,
+							t.mertekegyseg,
+							t.mertekegyseg_ertek,
 							getTermekUrl(t.ID,'".$this->settings['domain']."') as url,
-							IF(t.egyedi_ar IS NOT NULL, t.egyedi_ar, getTermekAr(t.marka, IF(t.akcios,t.akcios_brutto_ar,t.brutto_ar))) as ar,
+							getTermekAr(c.termekID, ".$uid.") as ar,
 							t.referer_price_discount,
 							m.neve as markaNev
 						FROM shop_kosar as c
@@ -2112,14 +2337,26 @@ class Shop
 
 					$referer_partner_id =($referer_partner_id) ? "'".$referer_partner_id."'" : 'NULL';
 					$coupon_code 		= ($coupon_code) ? "'".$coupon_code."'" : 'NULL';
+					$pre_order = ($is_reorder && $reorder) ? "'".$reorder['azonosito']."'" : 'NULL';
+
+					$uid = ($uid == 0) ? 'NULL' : $uid;
 
 					// Create new order
 					if($go){
-						$szamlazasi_keys = \Helper::getArrayValueByMatch($post,'szam_');
-						$szallitasi_keys = \Helper::getArrayValueByMatch($post,'szall_');
-						$iq = "INSERT INTO orders(nev,azonosito,email,userID,gepID,szallitasiModID,fizetesiModID,kedvezmeny,szallitasi_koltseg,szamlazasi_keys,szallitasi_keys,pickpackpont_uzlet_kod,comment,postapont,referer_code,coupon_code, used_cash) VALUES(
+						// Újra rendelés esetén adatfelülírások
+						if ($is_reorder && $reorder )
+						{
+							$szamlazasi_keys = json_decode($reorder['szamlazasi_keys'], true);
+							$szallitasi_keys = json_decode($reorder['szallitasi_keys'], true);
+						} else {
+							$szamlazasi_keys = \Helper::getArrayValueByMatch($post,'szam_');
+							$szallitasi_keys = \Helper::getArrayValueByMatch($post,'szall_');
+						}
+
+						$iq = "INSERT INTO orders(nev,azonosito,prev_order,email,userID,gepID,szallitasiModID,fizetesiModID,kedvezmeny,szallitasi_koltseg,szamlazasi_keys,szallitasi_keys,pickpackpont_uzlet_kod,comment,postapont,referer_code,coupon_code, used_cash) VALUES(
 						'$nev',
 						nextOrderID(),
+						$pre_order,
 						'$email',
 						$uid,
 						'$mid',
@@ -2208,6 +2445,7 @@ class Shop
 									'userID' => $uid,
 									'email' => $email,
 									'termekID' => $d['termekID'],
+									'configs' => $d['configs'],
 									'me' => $d['me'],
 									'egysegAr' => $d['ar'],
 									'egysegArKedvezmeny'=> $kedv
@@ -2218,6 +2456,8 @@ class Shop
 								$levon = (int)$d['me'];
 								$this->db->query("UPDATE shop_termekek SET raktar_keszlet = raktar_keszlet - ".$levon." WHERE ID = ".$d['termekID']);
 							}
+
+							$d['configs'] = $this->collectConfigData($d['configs']);
 
 							$temp_cart[] = $d;
 						}
@@ -2343,26 +2583,112 @@ class Shop
 
 						setcookie('acceptedOrder',null,time()-3600,'/kosar');
 						setcookie('lastOrderedKey',$accessKey,time()+3600,'/kosar');
+
+						if($is_reorder && $reorder) {
+							// reorder config clear
+							$this->db->squery("DELETE FROM reorder_config WHERE preorder = :porder", array('porder' => $reorder['azonosito']));
+							return $accessKey;
+						}
 				}
 			break;
 		}
 
 		return $step+1;
-
 	}
 
-	public function getOrderData( $key, $by = 'accessKey'){
+	public function prepareReorder( $key, $post )
+	{
+		$mid = \Helper::getMachineID();
 
+		// old order data
+		$order = $this->getOrderData( $key );
+
+		// kosár ürítése
+		$this->clearCart( $mid);
+
+		// kosár előkészítése
+		if ($order['items']) {
+			foreach ($order['items'] as $c) {
+				$this->db->insert(
+					'shop_kosar',
+					array(
+						'gepID' => $mid,
+						'termekID' => $c['termekID'],
+						'configs' => $c['configs'],
+						'me' => (isset($post['reorder']['me'][$c['termekID']])) ? (int)$post['reorder']['me'][$c['termekID']] : (int)$c['me'],
+					)
+				);
+			}
+		}
+
+		return $order;
+	}
+
+	public function reorderSave( $key, $email, $data )
+	{
+		$mid = \Helper::getMachineID();
+		$uid = (int)$this->user[data][ID];
+
+		if ($email == '') {
+			throw new \Exception("Hiányzó e-mail cím a korábbi megrendelésnél (".$key.")!");
+
+		}
+
+		foreach ((array)$data['reorder']['me'] as $tid => $me) {
+			$ch = $this->db->squery("SELECT ID FROM reorder_config WHERE preorder = :order and termekID = :tid", array('order' => $key, 'tid' => $tid));
+
+			if ( $ch->rowCount() == 0 ) {
+				$this->db->insert(
+					'reorder_config',
+					array(
+						'preorder' => $key,
+						'gepID' => $mid,
+						'userID' => ($uid == '')?NULL:$uid,
+						'termekID' => $tid,
+						'me' => (int)$me
+					)
+				);
+			} else {
+				$chid = $ch->fetchColumn();
+				$this->db->update(
+					'reorder_config',
+					array(
+						'me' => $me
+					),
+					sprintf("ID = %d", $chid)
+				);
+			}
+		}
+	}
+
+	public function getOrderData( $key, $by = 'accessKey', $arg = array())
+	{
 		$q = "SELECT o.* FROM orders as o WHERE o.$by = '$key'";
 		extract($this->db->q($q));
 
-		$data[items] = $this->getOrderItems($data[ID]);
+		$arg['azonosito'] = $data['azonosito'];
+		$data[items] = $this->getOrderItems($data[ID], $arg);
 
 		return $data;
 	}
 
-	private function getOrderItems($orderID){
+	private function getOrderItems($orderID, $arg = array()){
 		if($orderID == '') return false;
+
+		$is_reorder = (isset($arg['reorder'])) ? true : false;
+		$uid = (int)$this->user[data][ID];
+
+		if ($is_reorder) {
+			$preorder_me = array();
+			$mesq = $this->db->squery("SELECT termekID, me FROM reorder_config WHERE preorder = :order", array('order' => $arg['azonosito']));
+			if ($mesq->rowCount() != 0) {
+				$mes = $mesq->fetchAll(\PDO::FETCH_ASSOC);
+				foreach ((array)$mes as $m) {
+					$preorder_me[$m['termekID']] = (int)$m['me'];
+				}
+			}
+		}
+
 		$q = "SELECT
 			ok.*,
 			t.nev,
@@ -2371,9 +2697,11 @@ class Shop
 			t.meret,
 			t.szin,
 			t.cikkszam,
+			t.mertekegyseg,
+			t.mertekegyseg_ertek,
 			t.raktar_variantid,
 			getTermekUrl(t.ID,'".$this->settings['domain']."') as url,
-			getTermekAr(t.marka,IF(t.egyedi_ar IS NOT NULL,t.egyedi_ar,IF(t.akcios,t.akcios_brutto_ar,t.brutto_ar))) as ar,
+			getTermekAr(t.ID ,".$uid.") as ar,
 			otp.nev as allapotNev,
 			otp.szin as allapotSzin,
 			(SELECT kedvezmeny_szazalek FROM orders WHERE ID = $orderID) as kedvezmeny_szazalek
@@ -2389,12 +2717,19 @@ class Shop
 
 		$bdata = array();
 		foreach ($data as $d) {
+			if ($is_reorder) {
+				$origin_ar = $d['ar'];
+				$d['egysegAr'] = $origin_ar;
+				$d['me'] = (int)$preorder_me[$d['termekID']];
+				$d['subAr'] = $d['egysegAr'] * (int)$preorder_me[$d['termekID']];
+			}
 			$kedvezmenyes = ($d[kedvezmeny_szazalek] > 0) ? true : false;
 			if( $kedvezmenyes ) {
 				\PortalManager\Formater::discountPrice( $d[ar], $d[kedvezmeny_szazalek] );
 				\PortalManager\Formater::discountPrice( $d[subAr], $d[kedvezmeny_szazalek] );
 				\PortalManager\Formater::discountPrice( $d[egysegAr], $d[kedvezmeny_szazalek] );
 			}
+			$d['configs'] = $this->collectConfigData($d['configs']);
 			$bdata[] = $d;
 		}
 
@@ -2546,6 +2881,9 @@ class Shop
 	}
 
 	function logTermekView($termekID){
+		if ($termekID == '' || !isset($termekID)) {
+			return false;
+		}
 		$date = date('Y-m-d');
 		$c = $this->db->query("SELECT 1 FROM stat_nezettseg_termek WHERE datum = '$date' and termekID = $termekID")->rowCount();
 
@@ -2750,7 +3088,7 @@ class Shop
 		));
 	}
 
-	public $messageType = array( 'ajanlat', 'recall', 'requesttermprice' );
+	public $messageType = array( 'ajanlat', 'recall', 'requesttermprice', 'requesttermask' );
 
 	function logMessage($opts = array()){
 		$item_id 		= 'NULL';

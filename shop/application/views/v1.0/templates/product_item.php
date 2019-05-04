@@ -1,14 +1,13 @@
 <div class="item">
   <?php
     $wo_price = ($without_price == '1' || (float)$ar == 0 ) ? true : false;
-    if( $akcios == '1' ) $ar = $akcios_fogy_ar;
   ?>
   <div class="wrapper">
     <div class="image autocorrett-height-by-width" data-image-ratio="4:3">
       <?php if ( $akcios == '1' ): ?>
       <div class="discount-percent">
         <div class="p">
-          -<? echo 100-round($akcios_fogy_ar / ($brutto_ar / 100)); ?>%
+          -<? echo $akcio['szazalek']; ?>%
         </div>
       </div>
       <?php endif; ?>
@@ -45,7 +44,7 @@
           <?php if ( $akcios == '1' ): ?>
             <div class="ar akcios">
               <div class="current"><?=Helper::cashFormat($ar)?> <?=$valuta?></div>
-              <div class="old"><?=Helper::cashFormat($brutto_ar)?> <?=$valuta?></div>
+              <div class="old"><?=Helper::cashFormat($eredeti_ar)?> <?=$valuta?></div>
             </div>
           <?php else: ?>
             <div class="ar">
