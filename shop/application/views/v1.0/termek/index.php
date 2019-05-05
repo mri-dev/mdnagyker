@@ -1,5 +1,5 @@
 <?php
-  $ar = $this->product['ar'];
+  $ar = $this->product['ar']; 
 ?>
 <div class="product-view">
   <div class="product-data">
