@@ -1848,6 +1848,7 @@ class Products
 				'mertek' => $eredeti_brutto_ar - $brutto_ar
 			);
 		}
+
 		/*
 		if( $d['akcios'] == '1') {
 			$arInfo['ar'] = $arInfo['ar'];
