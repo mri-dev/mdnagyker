@@ -43,6 +43,26 @@ class CashmanAPI extends ResourceImportBase
     return $row;
   }
 
+  public function getKeszlet( $arg = array() )
+  {
+    $param = array();
+    $param[0] = array();
+    $param[0]['ar'] = (isset($arg['ar'])) ? (int)$arg['ar'] : 1;
+    $this->incFixRowData($param[0]);
+
+    $this->api->keszlet_lista( $param );
+    
+    if($this->api->hiba=='') {
+			//rendben
+			//visszakapott értékek:
+			//megnevezes, cikkszam, vonalkod, keszlet, mennyisegiegyseg, netto, brutto
+			//echo $this->api->keszlet_listaTomb[0]['megnevezes'];
+			return $this->api->keszlet_listaTomb;
+		} else {
+			return $this->api->hiba;
+		}
+  }
+
   function partnerRegister( $user )
   {
     $param = array();

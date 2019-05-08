@@ -2409,6 +2409,17 @@ body.singlepage{
 				}
 
 				.cart-info{
+					.stock-info {
+						margin: 5px 0 0 5px;
+						font-size: 1rem;
+						color: #7ca720;
+						&.no-stock{
+							color: #3c3c3c;
+							strong {
+								color: #d58d16;
+							}
+						}
+					}
 					.out-of-stock{
 						background: #ffeeee;
 				    padding: 20px;

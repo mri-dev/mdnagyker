@@ -39,6 +39,30 @@ class cron extends Controller{
 
 			switch ( $this->gets[2] )
 			{
+				case 'raktar':
+					$crm = new CashmanAPI(array('db' => $this->db));
+					$keszlet = $crm->getKeszlet();
+
+					echo '<pre>';
+
+					if (is_array($keszlet)) {
+						foreach ((array)$keszlet as $termek ) {
+							$this->db->squery("UPDATE xml_temp_products SET termek_keszlet = :keszlet WHERE cikkszam = :cikk", array('keszlet' => (float)$termek['keszlet'], 'cikk' => $termek['cikkszam']));
+							$this->db->squery("UPDATE shop_termekek SET raktar_keszlet = :keszlet WHERE cikkszam = :cikk", array('keszlet' => (float)$termek['keszlet'], 'cikk' => $termek['cikkszam']));
+						}
+					}
+
+					// Raktár termék állapot, ha van készlet
+					// Állapot: 2 - raktáron, 3 - külső raktáron
+					$this->db->squery("UPDATE shop_termekek SET keszletID = 2 WHERE raktar_keszlet > 0 and keszletID != 2");
+					// reset
+					$this->db->squery("UPDATE shop_termekek SET keszletID = 3 WHERE raktar_keszlet <= 0 and keszletID != 3");
+					// Száll. idő: 8 - 1-3 munkanap.
+					$this->db->squery("UPDATE shop_termekek SET szallitasID = 8 WHERE raktar_keszlet > 0 and keszletID != 8");
+					// reset
+					$this->db->squery("UPDATE shop_termekek SET szallitasID = 9 WHERE raktar_keszlet <= 0 and keszletID != 9");
+
+				break;
 				case 'importProgramTechToCashman':
 
 					$res = new ResourceImport(array('db' => $this->db));

@@ -82,7 +82,6 @@ class app extends Controller{
 			unset($oldcats);
 			unset($newcats);
 			unset($prepared_products);
-
 		}
 
 		public function registerMissingProducts()

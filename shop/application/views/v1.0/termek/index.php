@@ -185,6 +185,16 @@
             </div>
             <? endif; ?>
 
+            <?php if ($this->product['show_stock'] == 1): ?>
+            <div class="stock-info <?=($this->product['raktar_keszlet'] <=0)?'no-stock':''?>">
+              <?php if ($this->product['raktar_keszlet'] > 0): ?>
+                Készleten: <strong><?php echo $this->product['raktar_keszlet']; ?> db.</strong>
+              <?php else: ?>
+                Készleten: <strong>Nincs készleten jelenleg.</strong>
+              <?php endif; ?>
+            </div>
+            <?php endif; ?>
+
             <?php if ( $this->product['raktar_keszlet'] > 0 || $this->settings['stock_outselling'] == '1'): ?>
             <div class="group" style="margin: 10px -10px 0 -10px;">
               <?
