@@ -10,7 +10,7 @@ class app extends Controller{
 
 			$this->authAccess();
 		}
-		
+
 		private function authAccess(){
 			if($_SERVER[PHP_AUTH_USER] !== $this->AUTH_USER && $_SERVER[PHP_AUTH_PW] !== $this->AUTH_PW){
 
@@ -23,7 +23,7 @@ class app extends Controller{
 		}
 
 		public function userimport()
-		{
+		{ 
 			$lista 		= array();
 			$prepared 	= array();
 
