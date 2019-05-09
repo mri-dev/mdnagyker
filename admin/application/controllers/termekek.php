@@ -253,6 +253,35 @@ class termekek extends Controller
 						}
 					}
 
+					// Variációs konfig hozzáadás
+					if ( Post::on('save_variation_config') ) {
+						//print_r($_POST); exit;
+						/* */
+						try{
+							$re = $products->addVariationConfigs($_POST[tid],$_POST[variation_config]);
+							Helper::reload();
+						}catch(Exception $e){
+							$this->view->err 	= true;
+							$this->view->copyMsg= Helper::makeAlertMsg('pError', $e->getMessage());
+						}
+						/* */
+					}
+
+					if ( Post::on('action_variation_config') ) {
+						//print_r($_POST); exit;
+						/* */
+						try{
+							$re = $products->changeVariationConfigs($_POST[action_variation_config], $_POST[variation_config_selected]);
+							Helper::reload();
+						}catch(Exception $e){
+							$this->view->err 	= true;
+							$this->view->copyMsg= Helper::makeAlertMsg('pError', $e->getMessage());
+						}
+						/* */
+					}
+
+
+
 					// Termék alapadatok szerkesztése
 					if(Post::on('saveTermek')){
 						try{
@@ -470,7 +499,7 @@ class termekek extends Controller
 
 					$this->view->parameterek = $this->AdminUser->getParameterOnTermekKategoria($this->view->termek['alapertelmezett_kategoria']);
 
-					$params = $this->AdminUser->getParameterOnTermekKategoria($this->view->termek['alapertelmezett_kategoria']);
+					$params = $this->view->parameterek;
 
 					$this->view->parameterek = array_filter(
 						$params,

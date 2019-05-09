@@ -523,41 +523,63 @@
         </div>
 			<? endif; ?>
 
-			<?php if (!empty($this->config_parameterek)): ?>
-			<div class="con con-extra">
-				<h3>
-					Variációs értékek
-					<div class="info">
-						Konfigurációs kulcs paraméter alapján meghatározva.
-					</div>
-				</h3>
-				<form class="" action="" method="post">
-					<input type="hidden" name="tid" value="<?=$this->termek[ID]?>">
-					<div class="">
-						<?php foreach ((array)$this->config_parameterek as $confp): ?>
-						<div class="row">
-	          	<div class="col-sm-12"><strong><i class="fa fa-key"></i> <?=$confp[parameter]?> (<?=count($this->termek[variation_config][$confp['ID']]['values'])?>)</strong></div>
-	         	</div>
-						<?php if (count($this->termek[variation_config][$confp['ID']]['values']) == 0): ?>
+			<?php if (true): ?>
+				<?php if (!empty($this->config_parameterek)): ?>
+				<div class="con con-extra">
+					<h3>
+						Variációs értékek
+						<div class="info">
+							Konfigurációs kulcs paraméter alapján meghatározva.
+						</div>
+					</h3>
+					<form class="" action="" method="post">
+						<input type="hidden" name="tid" value="<?=$this->termek[ID]?>">
+						<div class="">
+							<?php foreach ((array)$this->config_parameterek as $confp): ?>
 							<div class="row">
-								<div class="col-md-12">
-									x nincs meghatározott config érték.
+		          	<div class="col-sm-12"><strong><i class="fa fa-key"></i> <?=$confp[parameter]?> (<?=count($this->termek[variation_config][$confp['ID']]['values'])?>)</strong></div>
+		         	</div>
+							<?php if (count($this->termek[variation_config][$confp['ID']]['values']) == 0): ?>
+								<div class="row">
+									<div class="col-md-12">
+										x nincs meghatározott config érték.
+									</div>
 								</div>
-							</div>
-						<?php else: ?>
-							<?php foreach ((array)$this->termek[variation_config][$confp['ID']]['values'] as $c): ?>
+							<?php else: ?>
+								<?php foreach ((array)$this->termek[variation_config][$confp['ID']]['values'] as $c): ?>
+								<div class="row <?=($c['lathato'] == 1)?'active':'inactive'?>">
+									<div class="col-md-12">
+										<input type="checkbox" name="variation_config_selected[]" value="<?=$c['ID']?>"> <?=$c['value']?> <?=($c['lathato'] == 1)?'<i title="Aktív / Látható" class="fa fa-eye"></i>':'<i class="fa fa-eye-slash" title="Inaktív / Nem látható"></i>'?>
+									</div>
+								</div>
+								<?php endforeach; ?>
+							<?php endif; ?>
 							<div class="row">
-								<div class="col-md-12">
-									-> <?=$c['value']?>
-								</div>
-							</div>
+		          	<div class="col-sm-12">
+		          		<input type="text" id="vcf<?=$confp['ID']?>" class="form-control" placeholder="<?=$confp[parameter]?> érték hozzáadása..." name="variation_config[<?=$confp['ID']?>][]" value="">
+									<div id=morevcform<?=$confp['ID']?>></div>
+									<a href="javascript:void();" onclick="addMoreVCForm(<?=$confp['ID']?>)">+ érték</a>
+		          	</div>
+		         	</div>
+							<br>
 							<?php endforeach; ?>
-						<?php endif; ?>
-						<?php endforeach; ?>
-					</div>
-				</form>
-			</div>
+						</div>
+						<div class="">
+							<div class="">Kijelölt elemek:</div>
+							<button type="submit" name="action_variation_config" class="btn btn-sm btn-default" value="hide">legyenek rejtve</button>
+							<button type="submit" name="action_variation_config" class="btn btn-sm btn-primary" value="show">legyenek láthatóak</button>
+							<button type="submit" name="action_variation_config" class="btn btn-sm btn-danger" value="delete">végleges törlése</button>
+						</div>
+						<br>
+						<div class="">
+							<button type="submit" name="save_variation_config" class="btn btn-success" value="1">Új elemek hozzáadása <i class="fa fa-plus"></i></button>
+						</div>
+						<div class="clr"></div>
+					</form>
+				</div>
+				<?php endif; ?>
 			<?php endif; ?>
+
 	</form>
 
             <div class="con con-extra">
@@ -779,6 +801,11 @@
 		loadProductReplacementRealtives(function(d){
 
 		});
+	}
+
+	function addMoreVCForm( id ) {
+		var cont = $('#morevcform'+id);
+		cont.append($('<input style="margin: 4px 0 0 0;" type="text" class="form-control" placeholder="további érték hozzáadása..." name="variation_config['+id+'][]" value="">'));
 	}
 
 	$(function(){

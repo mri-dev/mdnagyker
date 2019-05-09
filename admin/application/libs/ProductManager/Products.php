@@ -1987,7 +1987,6 @@ class Products
 			return $list;
 		}
 
-
 		$confparams = $this->db->squery("SELECT ID, parameter, mertekegyseg FROM shop_termek_kategoria_parameter WHERE kategoriaID = :id and kulcs = 1 ORDER BY CAST(priority as unsigned) ASC ", array('id' => $alapkat_id))->fetchAll(\PDO::FETCH_ASSOC);
 
 		if (empty($confparams)) {
@@ -1996,7 +1995,7 @@ class Products
 
 		foreach ((array)$confparams as $cp)
 		{
-			$values = $this->db->squery("SELECT ID, defvalue as selected, config_value as value FROM shop_termek_variation_configs WHERE product_id = :tid and parameter_id = :pid ORDER BY config_value ASC ", array('tid' => $tid, 'pid' => $cp['ID']))->fetchAll(\PDO::FETCH_ASSOC);
+			$values = $this->db->squery("SELECT ID, defvalue as selected, config_value as value, lathato FROM shop_termek_variation_configs WHERE product_id = :tid and parameter_id = :pid ORDER BY config_value ASC ", array('tid' => $tid, 'pid' => $cp['ID']))->fetchAll(\PDO::FETCH_ASSOC);
 			$cp['values'] = $values;
 			$list[$cp['ID']] = $cp;
 		}
@@ -2004,6 +2003,53 @@ class Products
 		//shop_termek_variation_configs
 
 		return $list;
+	}
+
+	public function changeVariationConfigs( $mode, $set )
+	{
+		if (!in_array($mode, array('hide', 'show', 'delete'))) {
+			return false;
+		}
+
+		if (!isset($set) || count($set) == 0) {
+			return false;
+		}
+
+		switch ($mode) {
+			case 'delete':
+				$this->db->squery("DELETE FROM shop_termek_variation_configs WHERE ID IN (".implode(',', $set).")");
+			break;
+			case 'hide':
+				$this->db->squery("UPDATE shop_termek_variation_configs SET lathato = 0 WHERE ID IN (".implode(',', $set).")");
+			break;
+			case 'show':
+				$this->db->squery("UPDATE shop_termek_variation_configs SET lathato = 1 WHERE ID IN (".implode(',', $set).")");
+			break;
+		}
+
+
+	}
+
+	public function addVariationConfigs( $tid, $set )
+	{
+		if ($tid == '') {
+			return false;
+		}
+
+		foreach ((array)$set as $cid => $valueset ) {
+			foreach ((array)$valueset as $v) {
+				if (trim($v) != '') {
+					$this->db->insert(
+						'shop_termek_variation_configs',
+						array(
+							'product_id' => $tid,
+							'parameter_id' => $cid,
+							'config_value' => addslashes(trim($v))
+						)
+					);
+				}
+			}
+		}
 	}
 
 	public function checkProductTransportName( $szallitasID, $keszlet = 1 )
