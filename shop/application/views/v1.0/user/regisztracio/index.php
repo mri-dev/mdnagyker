@@ -25,12 +25,13 @@
                           <h3>Alapadatok</h3>
                           <div>
                               <div class="row">
-                                  <div class="col-md-6 col-pright"><label for="nev">Teljes név:</label><input required="required" type="text" id="nev" name="nev" value="<?=($this->msg)?$_POST['nev']:''?>" class="form-control"/></div>
-                                  <div class="col-md-6 col-pleft"><label for="email">E-mail cím:</label><input required="required" type="text" id="email" name="email" value="<?=($this->msg)?$_POST['email']:''?>" class="form-control <?=($this->err == 1002)?'input-text-error':''?>" excCode="1002" /></div>
+                                  <div class="col-md-6 col-pright"><label for="nev">Teljes név *</label><input required="required" type="text" id="nev" name="nev" value="<?=($this->msg)?$_POST['nev']:''?>" class="form-control"/></div>
+                                  <div class="col-md-6 col-pleft"><label for="email">E-mail cím *</label><input required="required" type="text" id="email" name="email" value="<?=($this->msg)?$_POST['email']:''?>" class="form-control <?=($this->err == 1002)?'input-text-error':''?>" excCode="1002" /></div>
                               </div>
                               <div class="row">
-                                  <div class="col-md-6 col-pright"><label for="pw1">Jelszó</label><input required="required" type="password" id="pw1" name="pw1" class="form-control"/></div>
-                                  <div class="col-md-6 col-pleft"><label for="pw2">Jelszó újra</label><input required type="password" id="pw2" name="pw2" class="form-control"/></div>
+                                  <div class="col-md-6 col-pright"><label for="username">Felhasználó név *</label><input required="required" type="text" id="username" name="username" class="form-control"/></div>
+                                  <div class="col-md-3 col-pright"><label for="pw1">Jelszó *</label><input required="required" type="password" id="pw1" name="pw1" class="form-control"/></div>
+                                  <div class="col-md-3 col-pleft"><label for="pw2">Jelszó újra *</label><input required type="password" id="pw2" name="pw2" class="form-control"/></div>
                               </div>
                           </div>
                       </div>

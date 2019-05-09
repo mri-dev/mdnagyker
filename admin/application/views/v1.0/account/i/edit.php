@@ -34,69 +34,122 @@
 					<h3 style="margin: 0 0 5px 0;">Számlázási adatok</h3>
 					<div class="divider" style="margin-bottom: 10px;"></div>
 					<div class="row">
-						<div class="col-sm-6">
+						<div class="col-sm-5">
 							<label for="data_felhasznalo_adatok_szamlazas_nev">Számlázási név*</label>
 							<input type="text" id="data_felhasznalok_nev" class="form-control" name="data[felhasznalo_adatok][szamlazas_nev]" value="<?=$data[szamlazas_nev]?>" required>
 						</div>
-						<div class="col-sm-6">
-							<label for="data_felhasznalo_adatok_szamlazas_state">Megye*</label>
-							<select name="data[felhasznalo_adatok][szamlazas_state]" class="form-control" id="data_felhasznalo_adatok_szamlazas_state" required>
-                  <option value="" selected="selected">-- válasszon --</option>
-                  <option value="" disabled="disabled"></option>
-                  <? foreach( $this->states as $s ): ?>
-                      <option value="<?=$s?>" <?=($s==$data[szamlazas_state])?'selected="selected"':''?>><?=$s?></option>
-                  <? endforeach; ?>
-              </select>
+						<div class="col-sm-2">
+							<label for="data_felhasznalo_adatok_szamlazas_irsz">Irányítószám*</label>
+							<input type="text" id="data_felhasznalo_adatok_szamlazas_irsz" class="form-control" name="data[felhasznalo_adatok][szamlazas_irsz]" value="<?=$data[szamlazas_irsz]?>" required>
+						</div>
+						<div class="col-sm-2">
+							<label for="data_felhasznalo_adatok_szamlazas_kerulet">Kerület</label>
+							<input type="text" id="data_felhasznalo_adatok_szamlazas_kerulet" class="form-control" name="data[felhasznalo_adatok][szamlazas_kerulet]" value="<?=$data[szamlazas_kerulet]?>">
+						</div>
+						<div class="col-sm-3">
+							<label for="data_felhasznalo_adatok_szamlazas_city">Város*</label>
+							<input type="text" id="data_felhasznalo_adatok_szamlazas_city" class="form-control" name="data[felhasznalo_adatok][szamlazas_city]" value="<?=$data[szamlazas_city]?>" required>
 						</div>
 					</div>
 					<br>
 					<div class="row">
-						<div class="col-sm-2">
-							<label for="data_felhasznalo_adatok_szamlazas_irsz">Irányítószám*</label>
-							<input type="text" id="data_felhasznalok_irsz" class="form-control" name="data[felhasznalo_adatok][szamlazas_irsz]" value="<?=$data[szamlazas_irsz]?>" required>
+						<div class="col-sm-5">
+							<label for="data_felhasznalo_adatok_szamlazas_kozterulet_nev">Közterület neve*</label>
+							<input type="text" id="data_felhasznalo_adatok_szamlazas_kozterulet_nev" class="form-control" name="data[felhasznalo_adatok][szamlazas_kozterulet_nev]" value="<?=$data[szamlazas_kozterulet_nev]?>" required>
+						</div>
+						<div class="col-sm-4">
+							<label for="data_felhasznalo_adatok_szamlazas_kozterulet_jelleg">Közterület jelleg*</label>
+							<select name="data[felhasznalo_adatok][szamlazas_kozterulet_jelleg]" class="form-control" id="data_felhasznalo_adatok_szamlazas_kozterulet_jelleg">
+									<option value="">* Közterület jellege</option>
+									<option value="" disabled="disabled"></option>
+									<? foreach( $this->kozterulet_jellege as $s ): ?>
+									<option value="<?=$s?>" <?=( $data[szamlazas_kozterulet_jelleg] == $s ) ? 'selected="selected"' : ''?>><?=$s?></option>
+									<? endforeach; ?>
+								</select>
 						</div>
 						<div class="col-sm-3">
-							<label for="data_felhasznalo_adatok_szamlazas_city">Város*</label>
-							<input type="text" id="data_felhasznalok_city" class="form-control" name="data[felhasznalo_adatok][szamlazas_city]" value="<?=$data[szamlazas_city]?>" required>
-						</div>
-						<div class="col-sm-7">
-							<label for="data_felhasznalo_adatok_szamlazas_uhsz">Utca, házszám, emelet, ajtó*</label>
-							<input type="text" id="data_felhasznalok_uhsz" class="form-control" name="data[felhasznalo_adatok][szamlazas_uhsz]" value="<?=$data[szamlazas_uhsz]?>" required>
+							<label for="data_felhasznalo_adatok_szamlazas_hazszam">Házszám*</label>
+							<input type="text" id="data_felhasznalo_adatok_szamlazas_hazszam" class="form-control" name="data[felhasznalo_adatok][szamlazas_hazszam]" value="<?=$data[szamlazas_hazszam]?>" required>
 						</div>
 					</div>
-
+					<br>
+					<div class="row">
+						<div class="col-sm-3">
+							<label for="data_felhasznalo_adatok_szamlazas_epulet">Épület</label>
+							<input type="text" id="data_felhasznalo_adatok_szamlazas_epulet" class="form-control" name="data[felhasznalo_adatok][szamlazas_epulet]" value="<?=$data[szamlazas_epulet]?>" requied>
+						</div>
+						<div class="col-sm-3">
+							<label for="data_felhasznalo_adatok_szamlazas_lepcsohaz">Lépcsőház</label>
+							<input type="text" id="data_felhasznalo_adatok_szamlazas_lepcsohaz" class="form-control" name="data[felhasznalo_adatok][szamlazas_lepcsohaz]" value="<?=$data[szamlazas_lepcsohaz]?>" >
+						</div>
+						<div class="col-sm-3">
+							<label for="data_felhasznalo_adatok_szamlazas_szint">Szint</label>
+							<input type="text" id="data_felhasznalo_adatok_szamlazas_szint" class="form-control" name="data[felhasznalo_adatok][szamlazas_szint]" value="<?=$data[szamlazas_szint]?>" >
+						</div>
+						<div class="col-sm-3">
+							<label for="data_felhasznalo_adatok_szamlazas_ajto">Ajtó</label>
+							<input type="text" id="data_felhasznalo_adatok_szamlazas_ajto" class="form-control" name="data[felhasznalo_adatok][szamlazas_ajto]" value="<?=$data[szamlazas_ajto]?>" >
+						</div>
+					</div>
 					<br>
 					<h3 style="margin: 0 0 5px 0;">Szállítási adatok</h3>
 					<div class="divider" style="margin-bottom: 10px;"></div>
 					<div class="row">
-						<div class="col-sm-6">
+						<div class="col-sm-5">
 							<label for="data_felhasznalo_adatok_szallitas_nev">Szállítási név*</label>
 							<input type="text" id="data_felhasznalok_nev" class="form-control" name="data[felhasznalo_adatok][szallitas_nev]" value="<?=$data[szallitas_nev]?>" required>
 						</div>
-						<div class="col-sm-6">
-							<label for="data_felhasznalo_adatok_szallitas_state">Megye*</label>
-							<select name="data[felhasznalo_adatok][szallitas_state]" class="form-control" id="data_felhasznalo_adatok_szallitas_state" required>
-                    <option value="" selected="selected">-- válasszon --</option>
-                    <option value="" disabled="disabled"></option>
-                    <? foreach( $this->states as $s ): ?>
-                        <option value="<?=$s?>" <?=($s==$data[szallitas_state])?'selected="selected"':''?>><?=$s?></option>
-                    <? endforeach; ?>
-                </select>
+						<div class="col-sm-2">
+							<label for="data_felhasznalo_adatok_szallitas_irsz">Irányítószám*</label>
+							<input type="text" id="data_felhasznalo_adatok_szallitas_irsz" class="form-control" name="data[felhasznalo_adatok][szallitas_irsz]" value="<?=$data[szallitas_irsz]?>" required>
+						</div>
+						<div class="col-sm-2">
+							<label for="data_felhasznalo_adatok_szallitas_kerulet">Kerület</label>
+							<input type="text" id="data_felhasznalo_adatok_szallitas_kerulet" class="form-control" name="data[felhasznalo_adatok][szallitas_kerulet]" value="<?=$data[szallitas_kerulet]?>">
+						</div>
+						<div class="col-sm-3">
+							<label for="data_felhasznalo_adatok_szallitas_city">Város*</label>
+							<input type="text" id="data_felhasznalo_adatok_szallitas_city" class="form-control" name="data[felhasznalo_adatok][szallitas_city]" value="<?=$data[szallitas_city]?>" required>
 						</div>
 					</div>
 					<br>
 					<div class="row">
-						<div class="col-sm-2">
-							<label for="data_felhasznalo_adatok_szallitas_irsz">Irányítószám*</label>
-							<input type="text" id="data_felhasznalok_irsz" class="form-control" name="data[felhasznalo_adatok][szallitas_irsz]" value="<?=$data[szallitas_irsz]?>" required>
+						<div class="col-sm-5">
+							<label for="data_felhasznalo_adatok_szallitas_kozterulet_nev">Közterület neve*</label>
+							<input type="text" id="data_felhasznalo_adatok_szallitas_kozterulet_nev" class="form-control" name="data[felhasznalo_adatok][szallitas_kozterulet_nev]" value="<?=$data[szallitas_kozterulet_nev]?>" required>
+						</div>
+						<div class="col-sm-4">
+							<label for="data_felhasznalo_adatok_szallitas_kozterulet_jelleg">Közterület jelleg*</label>
+							<select name="data[felhasznalo_adatok][szallitas_kozterulet_jelleg]" class="form-control" id="data_felhasznalo_adatok_szallitas_kozterulet_jelleg">
+									<option value="">* Közterület jellege</option>
+									<option value="" disabled="disabled"></option>
+									<? foreach( $this->kozterulet_jellege as $s ): ?>
+									<option value="<?=$s?>" <?=( $data[szallitas_kozterulet_jelleg] == $s ) ? 'selected="selected"' : ''?>><?=$s?></option>
+									<? endforeach; ?>
+								</select>
 						</div>
 						<div class="col-sm-3">
-							<label for="data_felhasznalo_adatok_szallitas_city">Város*</label>
-							<input type="text" id="data_felhasznalok_city" class="form-control" name="data[felhasznalo_adatok][szallitas_city]" value="<?=$data[szallitas_city]?>" required>
+							<label for="data_felhasznalo_adatok_szallitas_hazszam">Házszám*</label>
+							<input type="text" id="data_felhasznalo_adatok_szallitas_hazszam" class="form-control" name="data[felhasznalo_adatok][szallitas_hazszam]" value="<?=$data[szallitas_hazszam]?>" required>
 						</div>
-						<div class="col-sm-7">
-							<label for="data_felhasznalo_adatok_szallitas_uhsz">Utca, házszám, emelet, ajtó*</label>
-							<input type="text" id="data_felhasznalok_uhsz" class="form-control" name="data[felhasznalo_adatok][szallitas_uhsz]" value="<?=$data[szallitas_uhsz]?>" required>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-3">
+							<label for="data_felhasznalo_adatok_szallitas_epulet">Épület</label>
+							<input type="text" id="data_felhasznalo_adatok_szallitas_epulet" class="form-control" name="data[felhasznalo_adatok][szallitas_epulet]" value="<?=$data[szallitas_epulet]?>" requied>
+						</div>
+						<div class="col-sm-3">
+							<label for="data_felhasznalo_adatok_szallitas_lepcsohaz">Lépcsőház</label>
+							<input type="text" id="data_felhasznalo_adatok_szallitas_lepcsohaz" class="form-control" name="data[felhasznalo_adatok][szallitas_lepcsohaz]" value="<?=$data[szallitas_lepcsohaz]?>" >
+						</div>
+						<div class="col-sm-3">
+							<label for="data_felhasznalo_adatok_szallitas_szint">Szint</label>
+							<input type="text" id="data_felhasznalo_adatok_szallitas_szint" class="form-control" name="data[felhasznalo_adatok][szallitas_szint]" value="<?=$data[szallitas_szint]?>" >
+						</div>
+						<div class="col-sm-3">
+							<label for="data_felhasznalo_adatok_szallitas_ajto">Ajtó</label>
+							<input type="text" id="data_felhasznalo_adatok_szallitas_ajto" class="form-control" name="data[felhasznalo_adatok][szallitas_ajto]" value="<?=$data[szallitas_ajto]?>" >
 						</div>
 					</div>
 					<br>
@@ -105,7 +158,7 @@
 							<label for="data_felhasznalo_adatok_szallitas_phone">Telefonszám</label>
 							<input type="text" id="data_felhasznalok_phone" class="form-control" name="data[felhasznalo_adatok][szallitas_phone]" value="<?=$data[szallitas_phone]?>">
 						</div>
-					</div>					
+					</div>
 					<br>
 					<div class="row">
 						<div class="col-sm-12">

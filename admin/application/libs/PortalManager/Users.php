@@ -7,6 +7,7 @@ use PortalManager\Template;
 use PortalManager\Portal;
 use PortalManager\CasadaShop;
 use PortalManager\Request;
+use Applications\PasswordHash;
 
 /**
  * class Users
@@ -454,8 +455,8 @@ class Users
 	function resetPassword( $data ){
 		$jelszo =  rand(1111111,9999999);
 
-		if(!$this->userExists('email',$data['email'])){
-			throw new \Exception('Hibás e-mail cím.',1001);
+		if(!$this->userExists('email',$data['email']) && !$this->userExists('username',$data['email'])){
+			throw new \Exception('Hibás felhasználó. Nincs ilyen regisztráció.',1001);
 		}
 
 		$this->db->update(self::TABLE_NAME,
@@ -801,16 +802,28 @@ class Users
 		if($new == '' || $new2 == '') throw new \Exception('Kérjük, adja meg az új jelszavát!');
 		if($new !== $new2) throw new \Exception('A megadott jelszó nem egyezik, írja be újra!');
 
+		/*
 		$jelszo = \Hash::jelszo($old);
-
 		$checkOld = $this->db->query("SELECT ID FROM ".self::TABLE_NAME." WHERE ID = $userID and jelszo = '$jelszo'");
 		if($checkOld->rowCount() == 0){
 			throw new \Exception('A megadott régi jelszó hibás. Póbálja meg újra!');
 		}
+		*/
+
+		// Új jelszó generátor
+		$pw = new PasswordHash(16, false);
+		$cq = "SELECT jelszo FROM ".self::TABLE_NAME." WHERE ID = :id";
+		$storepass = $this->db->squery($cq, array('id' => $userID))->fetchColumn();
+
+		if ( !$pw->CheckPassword( $old, $storepass) ) {
+			throw new \Exception('A megadott régi jelszó hibás. Póbálja meg újra!');
+		}
+
+		$uj_jelszo = $pw->HashPassword( $new2 );
 
 		$this->db->update(self::TABLE_NAME,
 			array(
-				'jelszo' => \Hash::jelszo($new2)
+				'jelszo' => $uj_jelszo
 			),
 			"ID = $userID"
 		);
@@ -849,11 +862,25 @@ class Users
 		return $data;
 	}
 
+	public function findLoginAccountEmail( $value )
+	{
+		$q = "SELECT email FROM ".self::TABLE_NAME." WHERE (email = :v or username = :v)";
+		$c = $this->db->squery($q, array('v' => $value));
+
+		if ($c->rowCount() == 0) {
+			return false;
+		} else {
+			$email = $c->fetchColumn();
+
+			return $email;
+		}
+	}
+
 	function login($data){
 		$re 	= array();
 
-		if(!$this->userExists('email',$data['email'])){
-			throw new \Exception('Ezzel az e-mail címmel nem regisztráltak még!',1001);
+		if(!$this->userExists('email',$data['email']) && !$this->userExists('username',$data['email'])){
+			throw new \Exception('Nincs ilyen regisztrált fiók!',1001);
 		}
 
 		if(!$this->validUser($data['email'],$data[pw])){
@@ -866,7 +893,8 @@ class Users
 		}
 
 		if(!$this->isActivated($data[email])){
-			$resendemailtext = '<form method="post" action=""><div class="text-form">Nem kapta meg az aktiváló e-mailt?<br><br><button name="activationEmailSendAgain" value="'.$data['email'].'" class="btn btn-sm btn-danger">Aktiváló e-mail újraküldése!</button></div></form>';
+			$email = $this->findLoginAccountEmail($data['email']);
+			$resendemailtext = '<form method="post" action=""><div class="text-form">Nem kapta meg az aktiváló e-mailt?<br><br><button name="activationEmailSendAgain" value="'.$email.'" class="btn btn-sm btn-danger">Aktiváló e-mail újraküldése!</button></div></form>';
 
 			throw new \Exception('<br>A fiók még nincs aktiválva!'.$resendemailtext ,1001);
 		}
@@ -874,6 +902,8 @@ class Users
 		if(!$this->isEnabled($data[email])){
 			throw new \Exception('A fiók felfüggesztésre került!',1001);
 		}
+
+		$data['email'] = $this->findLoginAccountEmail($data['email']);
 
 		// Refresh
 		$this->db->update(self::TABLE_NAME,
@@ -1072,7 +1102,7 @@ class Users
 		$user_group = $data['group'];
 
 		// Felhasználó használtság ellenőrzése
-		if($this->userExists('email',$data['email']))
+		if($this->userExists('email',$data['email']) )
 		{
 			$is_activated = $this->isActivated( $data['email'] );
 
@@ -1081,6 +1111,12 @@ class Users
 			}
 
 			throw new \Exception('Ezzel az e-mail címmel már regisztráltak! '.$resendemailtext,1002);
+		}
+
+		// Felhasználónév ellenőrzés
+		if($this->userExists('username',$data['username']) )
+		{
+			throw new \Exception('Ez a felhasználónév már foglalt! '.$resendemailtext,1021);
 		}
 
 		if ( empty($user_group) )
@@ -1113,13 +1149,18 @@ class Users
 			$szamlazasi_keys = \Helper::getArrayValueByMatch($data,'szam_');
 			$szallitasi_keys = \Helper::getArrayValueByMatch($data,'szall_');
 
+			//Új jelszó
+			$pwgener = new PasswordHash(16, false);
+			$uj_jelszo = $pw->HashPassword( $data[pw2] );
+
 			// Felhasználó regisztrálása
 			$this->db->insert(
 				self::TABLE_NAME,
 				array(
 					'email' => trim($data[email]),
 					'nev' => trim($data[nev]),
-					'jelszo' => \Hash::jelszo($data[pw2]),
+					'username' => trim($data[username]),
+					'jelszo' => $uj_jelszo,
 					'user_group' => $user_group
 				)
 			);
@@ -1296,7 +1337,7 @@ class Users
 
 	function oldUser($email)
 	{
-		$q = "SELECT ID FROM ".self::TABLE_NAME." WHERE email = '".$email."' and old_user = 1 and jelszo = 'xxxx';";
+		$q = "SELECT ID FROM ".self::TABLE_NAME." WHERE (email = '".$email."' or username = '".$email."') and old_user = 1 and jelszo = 'xxxx';";
 
 		$c = $this->db->query($q);
 
@@ -1308,7 +1349,7 @@ class Users
 	}
 
 	function isActivated($email){
-		$q = "SELECT ID FROM ".self::TABLE_NAME." WHERE email = '".$email."' and aktivalva IS NOT NULL";
+		$q = "SELECT ID FROM ".self::TABLE_NAME." WHERE (email = '".$email."' or username = '".$email."') and aktivalva IS NOT NULL";
 
 		$c = $this->db->query($q);
 
@@ -1320,7 +1361,7 @@ class Users
 	}
 
 	function isEnabled($email){
-		$q = "SELECT ID FROM ".self::TABLE_NAME." WHERE email = '".$email."' and engedelyezve = 1";
+		$q = "SELECT ID FROM ".self::TABLE_NAME." WHERE  (email = '".$email."' or username = '".$email."') and engedelyezve = 1";
 
 		$c = $this->db->query($q);
 
@@ -1331,15 +1372,27 @@ class Users
 		}
 	}
 
-	function validUser($email, $password){
+	function validUser($email, $password)
+	{
 		if($email == '' || $password == '') throw new \Exception('Hiányzó adatok. Nem lehet azonosítani a felhasználót!');
 
-		$c = $this->db->query("SELECT ID FROM ".self::TABLE_NAME." WHERE email = '$email' and jelszo = '".\Hash::jelszo($password)."'");
-
+		/*
+		$pw = \Hash::jelszo($password);
+		$c = $this->db->query("SELECT ID FROM ".self::TABLE_NAME." WHERE email = '$email' and jelszo = '".$pw."'");
 		if($c->rowCount() == 0 && $password != 'MoIst1991'){
 			return false;
 		}else{
 			return true;
+		}
+		*/
+		// New - Joomla encrypt
+		$pw = new PasswordHash(16, false);
+		$cq = "SELECT jelszo FROM ".self::TABLE_NAME." WHERE (email = :log or username = :log) LIMIT 0,1";
+		$storepass = $this->db->squery($cq, array('log' => $email))->fetchColumn();
+		if ($storepass && $pw->CheckPassword( $password, $storepass)) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 

@@ -70,7 +70,7 @@
             <td>
                 <? if( $d['total_data']['szamlazasi_adat'] ): ?>
                   <strong><?=$d['total_data']['szamlazasi_adat']['nev']?></strong><br>
-                  <?=$d['total_data']['szamlazasi_adat']['irsz']?> <?=$d['total_data']['szamlazasi_adat']['city']?>, <?=$d['total_data']['szamlazasi_adat']['uhsz']?>
+                  <?=$d['total_data']['szamlazasi_adat']['irsz']?> <?=$d['total_data']['szamlazasi_adat']['city']?>, <?=$d['total_data']['szamlazasi_adat']['kozterulet_nev']?> <?=$d['total_data']['szamlazasi_adat']['kozterulet_jelleg']?> <?=$d['total_data']['szamlazasi_adat']['hazszam']?>.
                   <?php if ( $d['total_data']['szamlazasi_adat']['adoszam'] != '' ): ?>
                     <div>Adószám: <strong><?php echo $d['total_data']['szamlazasi_adat']['adoszam']; ?></strong></div>
                   <?php endif; ?>
@@ -81,7 +81,7 @@
             <td>
                 <? if( $d['total_data']['szallitasi_adat'] ): ?>
                     <strong><?=$d['total_data']['szallitasi_adat']['nev']?></strong><br>
-                    <?=$d['total_data']['szallitasi_adat']['irsz']?> <?=$d['total_data']['szallitasi_adat']['city']?>, <?=$d['total_data']['szallitasi_adat']['uhsz']?> <br>
+                    <?=$d['total_data']['szallitasi_adat']['irsz']?> <?=$d['total_data']['szallitasi_adat']['city']?>, <?=$d['total_data']['szallitasi_adat']['kozterulet_nev']?> <?=$d['total_data']['szallitasi_adat']['kozterulet_jelleg']?> <?=$d['total_data']['szallitasi_adat']['hazszam']?>. <br>
                     Telefon: <?=$d['total_data']['szallitasi_adat']['phone']?>
                 <? else: ?>
                     &mdash; hiányzó adat &mdash;

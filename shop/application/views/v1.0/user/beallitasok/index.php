@@ -41,6 +41,10 @@
                     <div class="col-md-9"><?=$this->user[email]?></div>
                 </div>
                 <div class="row">
+                    <div class="col-md-3"><strong>Felhasználónév:</strong></div>
+                    <div class="col-md-9"><?=$this->user[data][username]?></div>
+                </div>
+                <div class="row">
                     <div class="col-md-3 form-text-md"><strong>Név</strong></div>
                     <div class="col-md-5"><input name="nev" type="text" class="form-control" value="<?=$this->user[data][nev]?>" /></div>
                 </div>

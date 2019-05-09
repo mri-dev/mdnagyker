@@ -23,70 +23,104 @@ class app extends Controller{
 		}
 
 		public function userimport()
-		{ 
+		{
 			$lista 		= array();
 			$prepared 	= array();
 
-			$csv 	= new CSVParser('src/json/users1.csv');
-			$list 	= $csv->getResult();
+			// Products json betöltése a régi weboldalról
+			$wsjson = '/home/webprohu/autoradiokeret.web-pro.hu/admin/src/json/users.json';
+			$jsonopen = file_get_contents($wsjson);
+			$lista = json_decode($jsonopen, true);
 
-			$csv2 	= new CSVParser('src/json/users2.csv');
-			$list2 	= $csv2->getResult();
+			/* * /
+			echo '<pre>';
+			print_r($lista);
+			exit;
+			/* */
 
-			$lista = array_merge($list, $list2);
-			unset($list);
-			unset($list2);
+			$price_group_obj = array(
+				'COM_VIRTUEMART_SHOPPERGROUP_GUEST' => 1,
+				'COM_VIRTUEMART_SHOPPERGROUP_DEFAULT' => 1,
+				'Kiskereskedelmi ár:' => 1,
+				'Viszonteladó' => 2,
+				'Nagykereskedő' => 3
+			);
 
 			foreach ($lista as $data)
 			{
-
-				if ($data['Státusz'] != 'Aktív') {
-					continue;
-				}
-
-				$email = trim($data['E-mail cím']);
+				$email = trim($data['email']);
 
 				if (!array_key_exists($email, $prepared))
 				{
-					$phone = trim($data['Telefon (pl. 72/123456)']);
+					$phone = trim($data['details']['phone_1']);
 
 					if ($phone == '') {
-						$phone = trim($data['Mobil (pl. 30/1234567)']);
+						$phone = trim($data['details']['phone_2']);
 					}
+
+					$user_group = 'user';
+					if (trim($data['details']['company']) != '') {
+						$user_group = 'company';
+						$is_company = true;
+					} else {
+						$is_company = false;
+					}
+
+					$price_group = 1;
+					if ($data['shopper_group_name'] != '') {
+						$price_group = $price_group_obj[$data['shopper_group_name']];
+					}
+
 
 					$inserted = $this->db->query("SELECT 1 FROM felhasznalok WHERE email = '".$email."';")->rowCount();
 
 					if ( $inserted != 0 ) {
-						//continue;
+						continue;
+					}
+
+					$userdata = array(
+						'szallitas_nev' 	=> $data['details']['first_name'].' '.$data['details']['last_name'],
+						'szallitas_irsz' 	=> $data['details']['zip'],
+						'szallitas_state' 	=> NULL,
+						'szallitas_city' 	=> $data['details']['city'],
+						'szallitas_kozterulet_nev' 	=> addslashes($data['details']['address_1']),
+						'szallitas_phone' 	=> $phone,
+						'szamlazas_nev' 	=> $data['Vezetéknév'].' '.$data['Keresztnév'],
+						'szamlazas_irsz' 	=> $data['Irányítószám'],
+						'szamlazas_state' 	=> NULL,
+						'szamlazas_city' 	=> $data['Település'],
+						'szamlazas_kozterulet_nev' 	=> addslashes($data['Utca, házszám'])
+					);
+
+					if ($is_company) {
+						$userdata['company_name'] = addslashes($data['details']['company']);
+						$userdata['company_address'] = $data['details']['zip'].' '.$data['details']['city'].', '.addslashes($data['details']['address_1']);
+						$userdata['company_hq'] = $data['details']['zip'].' '.$data['details']['city'].', '.addslashes($data['details']['address_1']);
+
+						if ($data['details']['bank_account_nr'] != '') {
+							$userdata['company_bankszamlaszam'] = $data['details']['bank_account_nr'];
+						}
 					}
 
 					$prepared[$email] = array(
 						'felhasznalok' 		=> array(
-							'ID' 			=> $data['ID'],
+							'ID' 			=> $data['id'],
 							'email' 		=> $email,
-							'nev' 			=> $data['Vezetéknév'].' '.$data['Keresztnév'],
-							'jelszo' 		=> md5(uniqid()),
-							'aktivalva' 	=> $data['Feliratkozás ideje'],
-							'regisztralt' 	=> $data['Feliratkozás ideje'],
+							'nev' 			=> addslashes($data['name']),
+							'username' 			=> addslashes($data['username']),
+							'jelszo' 		=> $data['password'],
+							'aktivalva' 	=> $data['registerDate'],
+							'regisztralt' 	=> $data['registerDate'],
 							'old_user' 		=> 1,
-							'user_group' 	=> 'user'
+							'user_group' 	=> $user_group,
+							'price_group' => $price_group,
+							'newslater' => (int)$data['details']['vm_ccnewsletter']
 						),
-						'felhasznalo_adatok' => array(
-							'szallitas_nev' 	=> $data['Vezetéknév'].' '.$data['Keresztnév'],
-							'szallitas_irsz' 	=> $data['Irányítószám'],
-							'szallitas_state' 	=> NULL,
-							'szallitas_city' 	=> $data['Település'],
-							'szallitas_uhsz' 	=> $data['Utca, házszám'],
-							'szallitas_phone' 	=> $phone,
-							'szamlazas_nev' 	=> $data['Vezetéknév'].' '.$data['Keresztnév'],
-							'szamlazas_irsz' 	=> $data['Irányítószám'],
-							'szamlazas_state' 	=> NULL,
-							'szamlazas_city' 	=> $data['Település'],
-							'szamlazas_uhsz' 	=> $data['Utca, házszám']
-						)
+						'felhasznalo_adatok' => $userdata
 					);
 				}
 			}
+
 
 			unset($data);
 			unset($lista);
@@ -126,6 +160,9 @@ class app extends Controller{
 
 			/* * /
 			echo '<pre>';
+			print_r($inserts_felh);
+
+			echo '<pre>';
 			print_r($inserts_felh_d);
 			/* */
 
@@ -143,15 +180,13 @@ class app extends Controller{
 			}
 			/* */
 
-			/* * /
+			/* */
 			$this->db->multi_insert(
 				'felhasznalok',
 				$inserts_felh_head,
 				$inserts_felh
 			);
-			/* */
 
-			/* * /
 			$this->db->multi_insert(
 				'felhasznalo_adatok',
 				$inserts_felh_d_head,
