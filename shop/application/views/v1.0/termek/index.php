@@ -168,7 +168,7 @@
                     <label for="conf_c<?=$vconf['ID']?>"><?=$vconf['parameter']?>:</label>
                     <div class="sel-inp-wrapper">
                       <select data-paramid="<?=$vconf['ID']?>" name="config[<?=$vconf['ID']?>]">
-                        <?php foreach ((array)$vconf['values'] as $cv): ?>
+                        <?php foreach ((array)$vconf['values'] as $cv): if($cv['lathato']==0) continue; ?>
                         <option value="<?=$cv['ID']?>" <?=($cv['selected']==1)?'selected="selected"':''?>><?=$cv['value']?></option>
                         <?php endforeach; ?>
                       </select>

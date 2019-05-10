@@ -49,14 +49,13 @@
             <select name="termkatID" id="paramlist" class="form-control">
             	<option value="">-- termék kategória kiválasztása --</option>
                 <option value="" disabled></option>
-            	<? foreach($this->termekkategoriak as $d): ?>
-                <option value="<?=$d[ID]?>"><?=Product::clear($d[neve])?></option>
-                <? endforeach; ?>
+								<? while( $this->categories->walk() ): $item = $this->categories->the_cat(); ?>
+								<option value="<?=$item['ID']?>"><?=str_repeat('&mdash;',$item['deep'])?> <?=$item['neve']?></option>
+								<? endwhile; ?>
             </select>
         </div>
     </div>
 </div>
-
 
 <div class="row" id="paramedit" style="display:none;">
 	<div class="col-md-12">

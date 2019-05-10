@@ -31,25 +31,44 @@
 	</thead>
     <tbody>
     	<tr class="search <? if($_COOKIE[filtered] == '1'): ?>filtered<? endif;?>">
-    		<td><input type="text" name="ID" class="form-control" value="<?=$_COOKIE[filter_ID]?>" /></td>
-    		<td><input type="text" name="nev" class="form-control" placeholder="felhasználó neve..." value="<?=$_COOKIE[filter_nev]?>" /></td>
-            <td><input type="text" name="email" class="form-control" placeholder="e-mail cím..." value="<?=$_COOKIE[filter_email]?>" /></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><select class="form-control"  name="engedelyezve" style="max-width:100px;">
-            	<option value="" <?=(!$_COOKIE[filter_engedelyezve])?'selected':''?>># Mind</option>
-                	<option value="0" <?=($_COOKIE[filter_engedelyezve] == '0')?'selected':''?>>Nem</option>
-                    <option value="1" <?=($_COOKIE[filter_engedelyezve] == '1')?'selected':''?>>Igen</option>
-                </select></td>
-    		<td><select class="form-control"  name="aktivalva" style="max-width:100px;">
-            	<option value="" selected># Mind</option>
-                	<option value="0" <?=($_COOKIE[filter_aktivalva] == '0')?'selected':''?>>Nem</option>
-                    <option value="1" <?=($_COOKIE[filter_aktivalva] == '1')?'selected':''?>>Igen</option>
-                </select></td>
-            <td></td>
-            <td></td>
+		    <td><input type="text" name="ID" class="form-control" value="<?=$_COOKIE[filter_ID]?>" /></td>
+		    <td>
+          <div class="row">
+            <div class="col-md-8">
+              <input type="text" name="nev" class="form-control" placeholder="felhasználó neve..." value="<?=$_COOKIE[filter_nev]?>" style="float:left;" />
+            </div>
+            <div class="col-md-4">
+              <select class="form-control"  name="arcsoport">
+                 <option value="" selected># Összes árcsoport</option>
+                 <?
+         					while( $this->PriceGroups->walk() ):
+         					$item = $this->PriceGroups->the_item();
+         				?>
+                <option value="<?=$item['ID']?>" <?=($_COOKIE[filter_arcsoport] == $item['ID'])?'selected':''?>><?=$item['title']?></option>
+        				<? endwhile; ?>
+              </select>
+            </div>
+          </div>
+        </td>
+        <td><input type="text" name="email" class="form-control" placeholder="e-mail cím..." value="<?=$_COOKIE[filter_email]?>" /></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><select class="form-control"  name="engedelyezve" style="max-width:100px;">
+        	<option value="" <?=(!$_COOKIE[filter_engedelyezve])?'selected':''?>># Mind</option>
+            	<option value="0" <?=($_COOKIE[filter_engedelyezve] == '0')?'selected':''?>>Nem</option>
+                <option value="1" <?=($_COOKIE[filter_engedelyezve] == '1')?'selected':''?>>Igen</option>
+            </select></td>
+        <td>
+          <select class="form-control"  name="aktivalva" style="max-width:100px;">
+      	     <option value="" selected># Mind</option>
+          	  <option value="0" <?=($_COOKIE[filter_aktivalva] == '0')?'selected':''?>>Nem</option>
+              <option value="1" <?=($_COOKIE[filter_aktivalva] == '1')?'selected':''?>>Igen</option>
+          </select>
+        </td>
+        <td></td>
+        <td></td>
     		<td align="center">
             	<button name="filterList" class="btn btn-default"><i class="fa fa-search"></i></button>
             </td>
