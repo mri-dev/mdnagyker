@@ -288,6 +288,14 @@ class gateway extends Controller
 				}
 			}
 
+
+			// Log transaction
+			$this->borgun->logIPNTransaction($valid_orderhash);
+
+			$message = '<div class="simple-information simple-back simple-back-'.$this->view->gets[2].'">';
+
+			$external_info = '';
+
 			switch ( $this->view->gets[2]  ) {
 				case 'success':
 
@@ -315,23 +323,30 @@ class gateway extends Controller
 					}
 				break;
 				case 'cancel':
-					$message = '<div class="simple-information simple-back simple-back-cancel">';
-					$message .= '</div>';
+					$message .= '<div class="head">A kártyás fizetés meg lett szakítva</div>';
 				break;
 				case 'error':
-					$message = '<div class="simple-information simple-back simple-back-error">';
-					$message .= '</div>';
+					$message .= '<div class="head">Hiba a kártyás fizetés során</div>';
+					$lastrans = $this->db->squery("SELECT * FROM gateway_borgun_ipn WHERE statusz = 'ERROR' and megrendeles = :order ORDER BY idopont DESC", array('order' => $orderdata['azonosito']))->fetch(\PDO::FETCH_ASSOC);
+					$lastrans_data = json_decode($lastrans['datastr'], true);
+					$external_info .= '<div class="ft">'.__('Hiba ID').': <b class="d">'.$lastrans_data['errorcode'].'</b></div>';
+					$external_info .= '<div class="ft">'.__('Hiba leírása').': <b class="d">'.$lastrans_data['errordescription'].'</b></div>';
 				break;
 			}
 
-			// Log transaction
-			$this->borgun->logIPNTransaction($valid_orderhash);
 			/**
 			 * Notification
 			 */
 			$message .= '<div class="cth">Tranzakció információk</div>';
 			$message .= '<div class="in">';
-			$message .= '<div class="ft">'.__('BORGUN tranzakció azonosító').': <b class="d">'.$_POST['authorizationcode'].'</b></div>';
+			$message .= $external_info;
+			if ($_POST['authorizationcode'] != '') {
+				$message .= '<div class="ft">'.__('BORGUN tranzakció azonosító').': <b class="d">'.$_POST['authorizationcode'].'</b></div>';
+			}
+			if ($_POST['creditcardnumber'] != '') {
+				$message .= '<div class="ft">'.__('Kártya száma').': <b class="d">'.$_POST['creditcardnumber'].'</b></div>';
+			}
+
 			$message .= '<div class="ft">'.__('Megrendelés azonosító').': <b class="d">'.$_GET['order_id'].'</b></div>';
 			if( false ):
 			$message .= '<b><font color="red">Fejlesztési segítség, éles oldalon ne jelenjen meg!</font></b><br/>';
@@ -340,7 +355,9 @@ class gateway extends Controller
 			$message .= '<a href="/order/'.$orderdata['accessKey'].'" class="btn btn-sm btn-default" style="color:black;"><i class="fa fa-angle-left"></i> '.__('vissza a megrendelés összesítőhöz').'</a>';
 			$message .= '</div>';
 
-			$message .= '<div class="simple-info-footer"><a href="https://www.simple.hu/" target="_blank">Biztonságos fizetés Simple-lel.</a> <div style="float:right;"><img src="'.IMG.'simple_vedd_online_140.png"></div><div class="clr"></div></div></div>';
+			$message .= '<div class="simple-info-footer"><a href="https://www.borgun.com/hu/" target="_blank">Biztonságos fizetés a BORGUN-nal.</a> <div style="float:right;"><img src="'.IMG.'Borgun_logo.png"></div><div class="clr"></div></div></div>';
+
+			$message .= '</div>';
 
 			$this->out( 'pay_msg', $message );
 		}

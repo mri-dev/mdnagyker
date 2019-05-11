@@ -6855,7 +6855,7 @@ input[type=email][required].ng-touched.ng-valid + span:before
 		border: 2px solid $color-sec;
 
 		.head {
-			background: $color-sec;
+			background: $color-blue;
 			padding: 10px;
 			font-family: $font-cond;
 			text-transform: uppercase;
@@ -6863,11 +6863,10 @@ input[type=email][required].ng-touched.ng-valid + span:before
 			font-size: 1.3em;
 		}
 		.ft {
-			padding: 8px 10px;
-			font-weight: bold;
+			padding: 4px 0;
 		}
 		.cth {
-			background: lighten($color-sec, 10%);
+			background: #f3f3f3;
 			padding: 10px;
 			font-weight: bold;
 			font-size: 0.85em;
@@ -6878,7 +6877,7 @@ input[type=email][required].ng-touched.ng-valid + span:before
 			line-height: 1.6;
 		}
 		.simple-info-footer {
-			background: lighten($color-sec, 10%);
+			background: #f3f3f3;
 			padding: 4px 10px;
 			font-size: 0.85em;
 			line-height: 30px;
@@ -6888,7 +6887,7 @@ input[type=email][required].ng-touched.ng-valid + span:before
 			}
 
 			a {
-				color: $color-pr;
+				color: #7d7777;
 				font-size: 0.85em;
 			}
 		}
@@ -6897,6 +6896,20 @@ input[type=email][required].ng-touched.ng-valid + span:before
 		 border: 2px solid #6FAB42;
 		.head {
 			background: #6FAB42;
+			color: white;
+		}
+	}
+	.simple-information.simple-back-cancel {
+		 border: 2px solid #ff852e;
+		.head {
+			background: #ff852e;
+			color: white;
+		}
+	}
+	.simple-information.simple-back-error {
+		 border: 2px solid #ef4147;
+		.head {
+			background: #ef4147;
 			color: white;
 		}
 	}

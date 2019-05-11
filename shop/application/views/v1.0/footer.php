@@ -42,6 +42,10 @@
 										</li>
 									<? endforeach; ?>
 								</ul>
+								<br>
+								<div class="borgun-pay">
+									<a href="https://www.borgun.com/hu/" target="_blank"><img src="<?=IMG?>borgun-payment.jpg" alt="BORGUN"></a>
+								</div>
 							</div>
 						</div>
 						<div class="subs">

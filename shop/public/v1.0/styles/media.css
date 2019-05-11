@@ -1362,7 +1362,7 @@ body.singlepage .website .cover-img {
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  box-shadow: inset 0 -200px 200px -80px rgba(0, 0, 0, 0.7);
+  box-shadow: inset 0 -200px 200px -80px rgba(0, 0, 0, 0);
 }
 /* line 92, sass/_base.scss */
 body.singlepage .website .page {
@@ -2147,7 +2147,7 @@ body.singlepage .website .page.covered-page .side-menu {
 .webshop-product-top .items .item .image .short-desc,
 .related-products .items .item .image .short-desc {
   z-index: 2;
-  background: rgba(240, 240, 240, 0.8);
+  background: rgba(240, 240, 240, 0);
   padding: 5px;
   font-size: 0.8em;
   text-align: left;
@@ -2943,7 +2943,7 @@ body.singlepage .website .page.covered-page .side-menu {
   z-index: 50;
   padding: 0.2px;
   border: 0.5px solid #d9d9d9;
-  box-shadow: 8px 8px 12px -5px rgba(0, 0, 0, 0.11);
+  box-shadow: 8px 8px 12px -5px rgba(0, 0, 0, 0);
 }
 /* line 1534, sass/_base.scss */
 .cat-menu > .title {
@@ -5749,7 +5749,7 @@ md-toast {
 /* line 400, scss/_base.scss */
 /* line 4212, sass/_base.scss */
 .dialogBox.overlayed {
-  background: rgba(74, 74, 74, 0.9);
+  background: rgba(74, 74, 74, 0);
   pointer-events: auto;
 }
 
@@ -8681,7 +8681,7 @@ input[type=email][required].ng-touched.ng-valid + span:before {
 }
 /* line 6857, sass/_base.scss */
 .simple-msg .simple-information .head {
-  background: #333333;
+  background: #007aff;
   padding: 10px;
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
@@ -8690,49 +8690,66 @@ input[type=email][required].ng-touched.ng-valid + span:before {
 }
 /* line 6865, sass/_base.scss */
 .simple-msg .simple-information .ft {
-  padding: 8px 10px;
-  font-weight: bold;
+  padding: 4px 0;
 }
-/* line 6869, sass/_base.scss */
+/* line 6868, sass/_base.scss */
 .simple-msg .simple-information .cth {
-  background: #4d4d4d;
+  background: #f3f3f3;
   padding: 10px;
   font-weight: bold;
   font-size: 0.85em;
   color: black;
 }
-/* line 6876, sass/_base.scss */
+/* line 6875, sass/_base.scss */
 .simple-msg .simple-information .in {
   padding: 10px;
   line-height: 1.6;
 }
-/* line 6880, sass/_base.scss */
+/* line 6879, sass/_base.scss */
 .simple-msg .simple-information .simple-info-footer {
-  background: #4d4d4d;
+  background: #f3f3f3;
   padding: 4px 10px;
   font-size: 0.85em;
   line-height: 30px;
 }
-/* line 6886, sass/_base.scss */
+/* line 6885, sass/_base.scss */
 .simple-msg .simple-information .simple-info-footer img {
   height: 25px;
 }
-/* line 6890, sass/_base.scss */
+/* line 6889, sass/_base.scss */
 .simple-msg .simple-information .simple-info-footer a {
-  color: #d9d9d9;
+  color: #7d7777;
   font-size: 0.85em;
 }
-/* line 6896, sass/_base.scss */
+/* line 6895, sass/_base.scss */
 .simple-msg .simple-information.simple-back-success {
   border: 2px solid #6FAB42;
 }
-/* line 6898, sass/_base.scss */
+/* line 6897, sass/_base.scss */
 .simple-msg .simple-information.simple-back-success .head {
   background: #6FAB42;
   color: white;
 }
+/* line 6902, sass/_base.scss */
+.simple-msg .simple-information.simple-back-cancel {
+  border: 2px solid #ff852e;
+}
+/* line 6904, sass/_base.scss */
+.simple-msg .simple-information.simple-back-cancel .head {
+  background: #ff852e;
+  color: white;
+}
+/* line 6909, sass/_base.scss */
+.simple-msg .simple-information.simple-back-error {
+  border: 2px solid #ef4147;
+}
+/* line 6911, sass/_base.scss */
+.simple-msg .simple-information.simple-back-error .head {
+  background: #ef4147;
+  color: white;
+}
 
-/* line 6905, sass/_base.scss */
+/* line 6918, sass/_base.scss */
 .floating-box {
   position: fixed;
   right: 0;
@@ -8740,7 +8757,7 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   z-index: 100;
 }
 
-/* line 6912, sass/_base.scss */
+/* line 6925, sass/_base.scss */
 .floating-box.contact-msg {
   top: 50%;
   padding: 8px;
@@ -8772,50 +8789,50 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ebecec',GradientType=0 );
   /* IE6-9 */
 }
-/* line 6943, sass/_base.scss */
+/* line 6956, sass/_base.scss */
 .floating-box.contact-msg .contact {
   float: left;
   width: 40%;
   text-align: center;
   font-size: 0.95em;
 }
-/* line 6949, sass/_base.scss */
+/* line 6962, sass/_base.scss */
 .floating-box.contact-msg .contact .profil {
   margin-top: -40px;
   line-height: 1.3;
 }
-/* line 6953, sass/_base.scss */
+/* line 6966, sass/_base.scss */
 .floating-box.contact-msg .contact .profil .name {
   font-size: 1.1em;
   color: #222;
 }
-/* line 6959, sass/_base.scss */
+/* line 6972, sass/_base.scss */
 .floating-box.contact-msg .contact .hely {
   font-size: 1.1em;
   color: #222;
 }
-/* line 6964, sass/_base.scss */
+/* line 6977, sass/_base.scss */
 .floating-box.contact-msg .contact .opens {
   margin-top: 4px;
 }
-/* line 6969, sass/_base.scss */
+/* line 6982, sass/_base.scss */
 .floating-box.contact-msg .form {
   float: right;
   width: 60%;
   padding-left: 5px;
   line-height: 1.4;
 }
-/* line 6975, sass/_base.scss */
+/* line 6988, sass/_base.scss */
 .floating-box.contact-msg .form .welcome {
   font-size: 1.2em;
 }
-/* line 6979, sass/_base.scss */
+/* line 6992, sass/_base.scss */
 .floating-box.contact-msg .form .clt {
   text-transform: uppercase;
   color: #d9d9d9;
   font-weight: bold;
 }
-/* line 6986, sass/_base.scss */
+/* line 6999, sass/_base.scss */
 .floating-box.contact-msg .form form button {
   background: #d9d9d9;
   color: white;
@@ -8831,7 +8848,7 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   -ms-border-radius: 8px;
   border-radius: 8px;
 }
-/* line 7000, sass/_base.scss */
+/* line 7013, sass/_base.scss */
 .floating-box.contact-msg .form form input[type=text], .floating-box.contact-msg .form form input[type=email], .floating-box.contact-msg .form form textarea {
   padding: 4px;
   font-size: 0.8em;
@@ -8846,17 +8863,17 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   -ms-border-radius: 5px;
   border-radius: 5px;
 }
-/* line 7011, sass/_base.scss */
+/* line 7024, sass/_base.scss */
 .floating-box.contact-msg .form form textarea {
   height: 50px;
 }
-/* line 7016, sass/_base.scss */
+/* line 7029, sass/_base.scss */
 .floating-box.contact-msg .form .phone {
   color: #d9d9d9;
   font-weight: bold;
   font-size: 1.45em;
 }
-/* line 7023, sass/_base.scss */
+/* line 7036, sass/_base.scss */
 .floating-box.contact-msg .exit {
   position: absolute;
   right: 5px;
@@ -8870,7 +8887,7 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   border-radius: 3px;
   padding: 3px;
 }
-/* line 7034, sass/_base.scss */
+/* line 7047, sass/_base.scss */
 .floating-box.contact-msg .labtext {
   background: #eeeeee;
   position: absolute;
@@ -8886,12 +8903,12 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   box-shadow: -5px -5px 15px -8px black;
   border-radius: 8px 8px 0 0;
 }
-/* line 7050, sass/_base.scss */
+/* line 7063, sass/_base.scss */
 .floating-box.contact-msg .labtext .text {
   font-weight: bold;
   color: #8a8a8a;
 }
-/* line 7054, sass/_base.scss */
+/* line 7067, sass/_base.scss */
 .floating-box.contact-msg .labtext .text .ico {
   padding: 5px 10px;
   background: #d9d9d9;
@@ -8900,32 +8917,32 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   border-radius: 8px 0 0 0;
 }
 
-/* line 7064, sass/_base.scss */
+/* line 7077, sass/_base.scss */
 .floating-box.contact-msg.opened {
   right: -1px;
 }
 
-/* line 7068, sass/_base.scss */
+/* line 7081, sass/_base.scss */
 .ep404 {
   text-align: center;
 }
-/* line 7071, sass/_base.scss */
+/* line 7084, sass/_base.scss */
 .ep404 table {
   margin: 0 auto;
 }
-/* line 7075, sass/_base.scss */
+/* line 7088, sass/_base.scss */
 .ep404 .code {
   font-family: "Roboto", sans-serif;
   color: #d9d9d9;
   font-size: 20em;
 }
-/* line 7081, sass/_base.scss */
+/* line 7094, sass/_base.scss */
 .ep404 .light {
   color: #bdbdbd;
   margin: 10px 0;
 }
 
-/* line 7087, sass/_base.scss */
+/* line 7100, sass/_base.scss */
 .payu-paidonly {
   background: orange;
   padding: 2px 4px;
@@ -8934,7 +8951,7 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   font-size: 0.9em;
 }
 
-/* line 7095, sass/_base.scss */
+/* line 7108, sass/_base.scss */
 .payu-paid-done {
   background: green;
   padding: 2px 4px;
@@ -8943,14 +8960,14 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   font-size: 0.9em;
 }
 
-/* line 7104, sass/_base.scss */
+/* line 7117, sass/_base.scss */
 .popupview .overlay {
   position: fixed;
   width: 100%;
   height: 100%;
   z-index: 99999999;
 }
-/* line 7109, sass/_base.scss */
+/* line 7122, sass/_base.scss */
 .popupview .overlay .screen {
   margin: 0 auto;
   position: absolute;
@@ -8961,12 +8978,12 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   transform: translate(-50%, -50%);
 }
 
-/* line 7121, sass/_base.scss */
+/* line 7134, sass/_base.scss */
 .cetelemcalc {
   display: block;
   border: 10px solid #008000;
 }
-/* line 7125, sass/_base.scss */
+/* line 7138, sass/_base.scss */
 .cetelemcalc .head {
   color: white;
   text-shadow: none;
@@ -8976,7 +8993,7 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   font-size: 1.45em;
   font-weight: bold;
 }
-/* line 7134, sass/_base.scss */
+/* line 7147, sass/_base.scss */
 .cetelemcalc .head em {
   font-weight: normal;
   font-size: 0.6em;
@@ -8986,11 +9003,11 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   line-height: 1;
   margin-top: 8px;
 }
-/* line 7145, sass/_base.scss */
+/* line 7158, sass/_base.scss */
 .cetelemcalc .con {
   padding: 25px 0;
 }
-/* line 7148, sass/_base.scss */
+/* line 7161, sass/_base.scss */
 .cetelemcalc .con h2 {
   font-weight: bold;
   text-transform: uppercase;
@@ -8998,23 +9015,23 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   color: #EA5C07;
   font-size: 2.2em;
 }
-/* line 7157, sass/_base.scss */
+/* line 7170, sass/_base.scss */
 .cetelemcalc .no-accept-items {
   padding-left: 20px;
 }
-/* line 7159, sass/_base.scss */
+/* line 7172, sass/_base.scss */
 .cetelemcalc .no-accept-items .head {
   background: #d02f2f;
   padding: 15px;
   font-size: 1.2em;
 }
-/* line 7165, sass/_base.scss */
+/* line 7178, sass/_base.scss */
 .cetelemcalc .no-accept-items .ci {
   font-weight: bold;
   color: black;
   padding: 10px 0;
 }
-/* line 7170, sass/_base.scss */
+/* line 7183, sass/_base.scss */
 .cetelemcalc .no-accept-items .ci .ceexc {
   background: #fd7c7c;
   color: white;
@@ -9023,13 +9040,13 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   padding: 15px;
   margin: 10px;
 }
-/* line 7179, sass/_base.scss */
+/* line 7192, sass/_base.scss */
 .cetelemcalc .no-accept-items .ci .wo {
   font-size: 0.9em;
   font-weight: normal;
   font-style: italic;
 }
-/* line 7185, sass/_base.scss */
+/* line 7198, sass/_base.scss */
 .cetelemcalc .no-accept-items .ci h3.minprice {
   color: #008000;
   text-transform: uppercase;
@@ -9038,7 +9055,7 @@ input[type=email][required].ng-touched.ng-valid + span:before {
   margin: 4px 0;
 }
 
-/* line 7196, sass/_base.scss */
+/* line 7209, sass/_base.scss */
 a.cetelem-startrans {
   background: green;
   color: white;
@@ -9047,48 +9064,48 @@ a.cetelem-startrans {
   margin: 10px;
 }
 
-/* line 7204, sass/_base.scss */
+/* line 7217, sass/_base.scss */
 .cetelem-status {
   padding: 20px 10px;
   background: #B1D6B2;
   color: #1B751E;
 }
-/* line 7209, sass/_base.scss */
+/* line 7222, sass/_base.scss */
 .cetelem-status a {
   color: #1B751E;
   text-decoration: underline;
   font-style: italic;
 }
-/* line 7215, sass/_base.scss */
+/* line 7228, sass/_base.scss */
 .cetelem-status .status {
   padding: 5px;
   color: white;
 }
 
-/* line 7221, sass/_base.scss */
+/* line 7234, sass/_base.scss */
 .cetelem-transaction-view {
   background: #008000;
   color: #FFF;
 }
-/* line 7225, sass/_base.scss */
+/* line 7238, sass/_base.scss */
 .cetelem-transaction-view .head {
   background: #036303 !important;
   font-size: 1.8em !important;
   font-weight: bold;
   padding: 15px !important;
 }
-/* line 7231, sass/_base.scss */
+/* line 7244, sass/_base.scss */
 .cetelem-transaction-view .head .subline {
   font-size: 0.45em;
   margin-top: 8px;
   font-weight: normal;
 }
-/* line 7238, sass/_base.scss */
+/* line 7251, sass/_base.scss */
 .cetelem-transaction-view .con {
   padding: 15px;
   padding-top: 0;
 }
-/* line 7242, sass/_base.scss */
+/* line 7255, sass/_base.scss */
 .cetelem-transaction-view .con .whitebox {
   background: #fff;
   padding: 15px;
@@ -9099,7 +9116,7 @@ a.cetelem-startrans {
   -ms-border-radius: 5px;
   border-radius: 5px;
 }
-/* line 7251, sass/_base.scss */
+/* line 7264, sass/_base.scss */
 .cetelem-transaction-view .con a.trans {
   background: orange;
   padding: 5px 10px;
@@ -9111,7 +9128,7 @@ a.cetelem-startrans {
   -ms-border-radius: 5px;
   border-radius: 5px;
 }
-/* line 7262, sass/_base.scss */
+/* line 7275, sass/_base.scss */
 .cetelem-transaction-view .con .info {
   display: block;
   margin-top: 5px;
@@ -9120,7 +9137,7 @@ a.cetelem-startrans {
   color: #AABDAA;
   font-style: italic;
 }
-/* line 7272, sass/_base.scss */
+/* line 7285, sass/_base.scss */
 .cetelem-transaction-view .statusmsg {
   padding: 10px;
   margin-bottom: 15px;
@@ -9133,75 +9150,75 @@ a.cetelem-startrans {
   -ms-border-radius: 8px;
   border-radius: 8px;
 }
-/* line 7282, sass/_base.scss */
+/* line 7295, sass/_base.scss */
 .cetelem-transaction-view .statusmsg.stat-timeout {
   background: #545454;
   color: white;
 }
-/* line 7287, sass/_base.scss */
+/* line 7300, sass/_base.scss */
 .cetelem-transaction-view .statusmsg.stat-inprogress {
   background: orange;
   color: white;
 }
-/* line 7293, sass/_base.scss */
+/* line 7306, sass/_base.scss */
 .cetelem-transaction-view .statusmsg.stat-cancel {
   background: #E05A25;
   color: white;
 }
-/* line 7297, sass/_base.scss */
+/* line 7310, sass/_base.scss */
 .cetelem-transaction-view .statusmsg.stat-done {
   background: #31CE31;
   color: white;
 }
-/* line 7303, sass/_base.scss */
+/* line 7316, sass/_base.scss */
 .cetelem-transaction-view .statusdesc {
   color: black;
   line-height: 1.4;
 }
-/* line 7307, sass/_base.scss */
+/* line 7320, sass/_base.scss */
 .cetelem-transaction-view .statusdesc h3 {
   display: block;
   margin-bottom: 10px;
 }
-/* line 7313, sass/_base.scss */
+/* line 7326, sass/_base.scss */
 .cetelem-transaction-view .statusipns {
   margin-top: 10px;
 }
-/* line 7316, sass/_base.scss */
+/* line 7329, sass/_base.scss */
 .cetelem-transaction-view .statusipns .divider {
   background: #077307;
 }
-/* line 7320, sass/_base.scss */
+/* line 7333, sass/_base.scss */
 .cetelem-transaction-view .statusipns div.e {
   margin: 18px 0;
 }
-/* line 7323, sass/_base.scss */
+/* line 7336, sass/_base.scss */
 .cetelem-transaction-view .statusipns div.e .statlabel {
   padding: 4px;
 }
-/* line 7327, sass/_base.scss */
+/* line 7340, sass/_base.scss */
 .cetelem-transaction-view .statusipns div.e .time {
   color: #89AD8A;
   font-size: 0.7em;
 }
 
-/* line 7335, sass/_base.scss */
+/* line 7348, sass/_base.scss */
 .factory-preview {
   background: white;
   padding: 40px 0;
 }
-/* line 7339, sass/_base.scss */
+/* line 7352, sass/_base.scss */
 .factory-preview .factories {
   border: 0.4px solid #d9d9d9;
   position: relative;
   padding: 20px 1px;
 }
-/* line 7344, sass/_base.scss */
+/* line 7357, sass/_base.scss */
 .factory-preview .factories .slick-slide {
   height: 40px !important;
   position: relative;
 }
-/* line 7347, sass/_base.scss */
+/* line 7360, sass/_base.scss */
 .factory-preview .factories .slick-slide img {
   position: absolute;
   left: 50%;
@@ -9211,7 +9228,7 @@ a.cetelem-startrans {
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-/* line 7358, sass/_base.scss */
+/* line 7371, sass/_base.scss */
 .factory-preview .factories .slick-arrow {
   position: absolute;
   top: 50%;
@@ -9225,7 +9242,7 @@ a.cetelem-startrans {
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-/* line 7371, sass/_base.scss */
+/* line 7384, sass/_base.scss */
 .factory-preview .factories .slick-arrow:after {
   font-family: 'FontAwesome';
   font-size: 20px;
@@ -9240,70 +9257,70 @@ a.cetelem-startrans {
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-/* line 7386, sass/_base.scss */
+/* line 7399, sass/_base.scss */
 .factory-preview .factories .slick-arrow.slick-prev {
   left: -30px;
 }
-/* line 7388, sass/_base.scss */
+/* line 7401, sass/_base.scss */
 .factory-preview .factories .slick-arrow.slick-prev:after {
   content: "\f104";
 }
-/* line 7392, sass/_base.scss */
+/* line 7405, sass/_base.scss */
 .factory-preview .factories .slick-arrow.slick-next {
   right: -30px;
 }
-/* line 7394, sass/_base.scss */
+/* line 7407, sass/_base.scss */
 .factory-preview .factories .slick-arrow.slick-next:after {
   content: "\f105";
 }
-/* line 7399, sass/_base.scss */
+/* line 7412, sass/_base.scss */
 .factory-preview .factories .slick-arrow:hover {
   background: #acacac;
   color: white;
 }
-/* line 7403, sass/_base.scss */
+/* line 7416, sass/_base.scss */
 .factory-preview .factories .slick-arrow:hover:after {
   color: white;
 }
 
-/* line 7411, sass/_base.scss */
+/* line 7424, sass/_base.scss */
 .subscribe {
   text-align: center;
 }
-/* line 7414, sass/_base.scss */
+/* line 7427, sass/_base.scss */
 .subscribe h1 + .subtitle {
   margin-top: 10px;
 }
-/* line 7417, sass/_base.scss */
+/* line 7430, sass/_base.scss */
 .subscribe .subs-form {
   text-align: center;
   margin: 20px auto;
   width: 500px;
 }
-/* line 7422, sass/_base.scss */
+/* line 7435, sass/_base.scss */
 .subscribe .subs-form label {
   margin: 0 0 10px 0;
   font-size: 1.1em;
   color: #d9d9d9;
 }
-/* line 7428, sass/_base.scss */
+/* line 7441, sass/_base.scss */
 .subscribe .subs-form input[type=text] {
   padding: 10px;
   font-size: 1.2em;
   color: #cd2a30;
 }
-/* line 7434, sass/_base.scss */
+/* line 7447, sass/_base.scss */
 .subscribe .unsubscribe {
   margin: 15px 0 0 0;
   font-size: 1.2em;
 }
 
-/* line 7440, sass/_base.scss */
+/* line 7453, sass/_base.scss */
 .cetelem-credit {
   text-align: center;
 }
 
-/* line 7444, sass/_base.scss */
+/* line 7457, sass/_base.scss */
 .page {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -9311,18 +9328,18 @@ a.cetelem-startrans {
   flex-wrap: wrap;
   align-items: flex-start;
 }
-/* line 7451, sass/_base.scss */
+/* line 7464, sass/_base.scss */
 .page .side-menu {
   order: 2;
   flex-basis: 20%;
 }
-/* line 7455, sass/_base.scss */
+/* line 7468, sass/_base.scss */
 .page .responsive-view {
   order: 1;
   flex: 1;
   padding: 0 25px 0 0;
 }
-/* line 7461, sass/_base.scss */
+/* line 7474, sass/_base.scss */
 .page .image-set {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -9331,55 +9348,55 @@ a.cetelem-startrans {
   align-items: center;
   margin: 25px -5px 0 -5px;
 }
-/* line 7470, sass/_base.scss */
+/* line 7483, sass/_base.scss */
 .page .image-set > .img {
   flex-basis: calc(100%/4);
   padding: 5px;
 }
-/* line 7474, sass/_base.scss */
+/* line 7487, sass/_base.scss */
 .page .image-set > .img img {
   max-width: 100%;
   width: 100%;
 }
-/* line 7482, sass/_base.scss */
+/* line 7495, sass/_base.scss */
 .page .page-view h1 {
   margin: 0 0 20px 0;
   font-weight: bold;
   font-size: 2.7em;
 }
-/* line 7488, sass/_base.scss */
+/* line 7501, sass/_base.scss */
 .page .page-view .content {
   line-height: 1.4;
 }
-/* line 7491, sass/_base.scss */
+/* line 7504, sass/_base.scss */
 .page .page-view .content p {
   margin: 10px 0 5px 0;
 }
 
-/* line 7498, sass/_base.scss */
+/* line 7511, sass/_base.scss */
 .cetelem-calc {
   font-size: 0.8em;
   padding: 5px;
   background: #F1F1F3;
   position: relative;
 }
-/* line 7504, sass/_base.scss */
+/* line 7517, sass/_base.scss */
 .cetelem-calc #preload {
   text-align: center;
   padding: 8px;
   color: black;
 }
-/* line 7509, sass/_base.scss */
+/* line 7522, sass/_base.scss */
 .cetelem-calc #preload i {
   font-size: 28px;
 }
-/* line 7514, sass/_base.scss */
+/* line 7527, sass/_base.scss */
 .cetelem-calc .error {
   text-align: center;
   color: red;
   padding: 10px;
 }
-/* line 7520, sass/_base.scss */
+/* line 7533, sass/_base.scss */
 .cetelem-calc #next, .cetelem-calc #prev {
   cursor: pointer;
   background: #85A774;
@@ -9390,27 +9407,27 @@ a.cetelem-startrans {
   bottom: 2px;
   z-index: 1;
 }
-/* line 7530, sass/_base.scss */
+/* line 7543, sass/_base.scss */
 .cetelem-calc #next:hover, .cetelem-calc #prev:hover {
   background: #3E9219;
 }
-/* line 7535, sass/_base.scss */
+/* line 7548, sass/_base.scss */
 .cetelem-calc #prev {
   left: 2px;
 }
-/* line 7539, sass/_base.scss */
+/* line 7552, sass/_base.scss */
 .cetelem-calc #next {
   right: 2px;
 }
-/* line 7544, sass/_base.scss */
+/* line 7557, sass/_base.scss */
 .cetelem-calc #results .result {
   display: none;
 }
-/* line 7548, sass/_base.scss */
+/* line 7561, sass/_base.scss */
 .cetelem-calc #results .result.active {
   display: block;
 }
-/* line 7552, sass/_base.scss */
+/* line 7565, sass/_base.scss */
 .cetelem-calc #results .constuction {
   float: right;
   font-weight: bold;
@@ -9420,40 +9437,40 @@ a.cetelem-startrans {
   margin-bottom: 5px;
   color: #309033;
 }
-/* line 7562, sass/_base.scss */
+/* line 7575, sass/_base.scss */
 .cetelem-calc #results .havi {
   font-style: italic;
   color: #727273;
   font-size: 0.8em;
 }
-/* line 7568, sass/_base.scss */
+/* line 7581, sass/_base.scss */
 .cetelem-calc #results .ownSharePrice {
   border-top: 1px solid #d7d7d7;
   padding-top: 5px;
   margin-top: 5px;
   font-size: 0.8em;
 }
-/* line 7574, sass/_base.scss */
+/* line 7587, sass/_base.scss */
 .cetelem-calc #results .ownSharePrice input {
   border: none;
   padding: 4px;
   width: 60px;
 }
-/* line 7580, sass/_base.scss */
+/* line 7593, sass/_base.scss */
 .cetelem-calc #results .ownSharePrice input + button {
   height: 21px;
   background: #DADADA;
   color: #848484;
   border: none;
 }
-/* line 7588, sass/_base.scss */
+/* line 7601, sass/_base.scss */
 .cetelem-calc #results .futamidok {
   text-align: center;
   margin-top: 8px;
   display: block;
   position: relative;
 }
-/* line 7597, sass/_base.scss */
+/* line 7610, sass/_base.scss */
 .cetelem-calc #results:after {
   content: "";
   background: url("//www.cp.autoradiokeret.web-pro.hu/src/images/src/images/cetelem_babu.png") no-repeat center;
@@ -9464,50 +9481,50 @@ a.cetelem-startrans {
   top: 21px;
 }
 
-/* line 7611, sass/_base.scss */
+/* line 7624, sass/_base.scss */
 body.homepage footer,
 body.article footer {
   margin-top: 0;
 }
 
-/* line 7617, sass/_base.scss */
+/* line 7630, sass/_base.scss */
 body.article .website {
   width: 100%;
 }
 
-/* line 7623, sass/_base.scss */
+/* line 7636, sass/_base.scss */
 body.product-page .website {
   width: 100%;
 }
-/* line 7627, sass/_base.scss */
+/* line 7640, sass/_base.scss */
 body.product-page footer {
   margin-top: 0;
 }
-/* line 7630, sass/_base.scss */
+/* line 7643, sass/_base.scss */
 body.product-page header .bottom > .pw > .flex {
   padding-left: 0;
 }
-/* line 7634, sass/_base.scss */
+/* line 7647, sass/_base.scss */
 body.product-page .nav.nav-fix {
   flex: 1;
 }
 
-/* line 7638, sass/_base.scss */
+/* line 7651, sass/_base.scss */
 #postaPontApi-main {
   background: green;
 }
 
-/* line 7641, sass/_base.scss */
+/* line 7654, sass/_base.scss */
 #postaPontApi-content {
   background: none;
 }
 
-/* line 7644, sass/_base.scss */
+/* line 7657, sass/_base.scss */
 #postaPontApi-inner > p {
   color: white;
 }
 
-/* line 7649, sass/_base.scss */
+/* line 7662, sass/_base.scss */
 #postaPontApi,
 #postaPontApi-content,
 #postaPontApi-inner #pp-map-canvas {
@@ -9515,48 +9532,48 @@ body.product-page .nav.nav-fix {
   max-width: 100% !important;
 }
 
-/* line 7653, sass/_base.scss */
+/* line 7666, sass/_base.scss */
 #postaPontApi-inner form div#pp-select-container {
   clear: initial;
 }
 
-/* line 7657, sass/_base.scss */
+/* line 7670, sass/_base.scss */
 #postaPontApi-inner form,
 #postaPontApi-inner form div#pp-select-container {
   height: auto;
 }
 
-/* line 7660, sass/_base.scss */
+/* line 7673, sass/_base.scss */
 #postaPontApi-inner form #pp-geoloc-button {
   float: left !important;
   margin: 0 10px 0 0;
 }
 
-/* line 7664, sass/_base.scss */
+/* line 7677, sass/_base.scss */
 #postaPontApi-inner form div#pp-select-container {
   line-height: 1;
   padding: 0;
 }
-/* line 7668, sass/_base.scss */
+/* line 7681, sass/_base.scss */
 #postaPontApi-inner form div#pp-select-container select {
   height: 28px;
   line-height: 28px;
   color: black;
 }
 
-/* line 7674, sass/_base.scss */
+/* line 7687, sass/_base.scss */
 #postaPontApi-inner #pp-map-canvas {
   margin: 15px 0 0 0;
 }
 
-/* line 7677, sass/_base.scss */
+/* line 7690, sass/_base.scss */
 #pp-data-info {
   background: #384238;
   color: white;
   padding: 15px;
 }
 
-/* line 7682, sass/_base.scss */
+/* line 7695, sass/_base.scss */
 #postaPontApi h2 {
   line-height: 1.2;
   padding: 20px 15px;
@@ -9566,7 +9583,7 @@ body.product-page .nav.nav-fix {
   font-weight: 300;
 }
 
-/* line 7690, sass/_base.scss */
+/* line 7703, sass/_base.scss */
 .showSelectedPostaPont {
   margin: 5px 0 !important;
   font-size: 0.85rem !important;
@@ -9576,7 +9593,7 @@ body.product-page .nav.nav-fix {
   overflow: hidden !important;
 }
 
-/* line 7698, sass/_base.scss */
+/* line 7711, sass/_base.scss */
 .showSelectedPostaPont > .head {
   padding: 10px !important;
   text-align: left !important;
@@ -9585,13 +9602,13 @@ body.product-page .nav.nav-fix {
   margin: 0 !important;
 }
 
-/* line 7705, sass/_base.scss */
+/* line 7718, sass/_base.scss */
 .showSelectedPostaPont h4 {
   margin: 0 !important;
   padding: 0 !important;
 }
 
-/* line 7709, sass/_base.scss */
+/* line 7722, sass/_base.scss */
 .showSelectedPostaPont .desc {
   margin: 10px 0 !important;
   font-weight: bold !important;
@@ -9599,7 +9616,7 @@ body.product-page .nav.nav-fix {
   text-align: left  !important;
 }
 
-/* line 7715, sass/_base.scss */
+/* line 7728, sass/_base.scss */
 .showSelectedPostaPont .p5 {
   padding: 10px !important;
 }
@@ -9613,7 +9630,19 @@ footer {
 footer .grid-layout > div {
   padding: 15px !important;
 }
-/* line 9, sass/_footer.scss */
+/* line 8, sass/_footer.scss */
+footer .borgun-pay {
+  margin: 5px 0;
+}
+/* line 10, sass/_footer.scss */
+footer .borgun-pay a {
+  display: block;
+}
+/* line 13, sass/_footer.scss */
+footer .borgun-pay img {
+  max-height: 50px;
+}
+/* line 19, sass/_footer.scss */
 footer .main h3 {
   font-weight: bold;
   text-transform: uppercase;
@@ -9621,24 +9650,24 @@ footer .main h3 {
   padding: 0 0 10px 0;
   color: #404040;
 }
-/* line 16, sass/_footer.scss */
+/* line 26, sass/_footer.scss */
 footer .main > .pw > .wrapper {
   padding: 15px 0;
 }
-/* line 18, sass/_footer.scss */
+/* line 28, sass/_footer.scss */
 footer .main > .pw > .wrapper > .flex {
   margin: 0 -25px;
 }
-/* line 21, sass/_footer.scss */
+/* line 31, sass/_footer.scss */
 footer .main > .pw > .wrapper > .flex > div {
   flex-basis: calc(100% / 3);
   padding: 10px;
 }
-/* line 28, sass/_footer.scss */
+/* line 38, sass/_footer.scss */
 footer .main > .pw > .wrapper .links ul li {
   border-bottom: 0.5px solid #d9d9d9;
 }
-/* line 30, sass/_footer.scss */
+/* line 40, sass/_footer.scss */
 footer .main > .pw > .wrapper .links ul li a {
   color: #333333;
   display: block;
@@ -9647,25 +9676,25 @@ footer .main > .pw > .wrapper .links ul li a {
   text-transform: uppercase;
   text-decoration: none;
 }
-/* line 38, sass/_footer.scss */
+/* line 48, sass/_footer.scss */
 footer .main > .pw > .wrapper .links ul li a:hover {
   color: #007aff;
 }
-/* line 43, sass/_footer.scss */
+/* line 53, sass/_footer.scss */
 footer .main > .pw > .wrapper .links ul li:last-child {
   border-bottom: none;
 }
-/* line 51, sass/_footer.scss */
+/* line 61, sass/_footer.scss */
 footer .main > .pw > .wrapper .subs .subbox {
   background: white;
   border: 0.5px solid #a6a6a6;
   padding: 15px;
 }
-/* line 56, sass/_footer.scss */
+/* line 66, sass/_footer.scss */
 footer .main > .pw > .wrapper .subs .subbox .title {
   text-align: center;
 }
-/* line 60, sass/_footer.scss */
+/* line 70, sass/_footer.scss */
 footer .main > .pw > .wrapper .subs .subbox .form > form > div {
   border: 0.5px solid #a6a6a6;
   margin: 8px 0;
@@ -9673,14 +9702,14 @@ footer .main > .pw > .wrapper .subs .subbox .form > form > div {
   overflow: hidden;
   padding: 2px;
 }
-/* line 67, sass/_footer.scss */
+/* line 77, sass/_footer.scss */
 footer .main > .pw > .wrapper .subs .subbox .form > form > div.button {
   border: none;
   text-align: right;
   height: auto;
   margin: 0;
 }
-/* line 73, sass/_footer.scss */
+/* line 83, sass/_footer.scss */
 footer .main > .pw > .wrapper .subs .subbox .form > form > div.button button {
   margin: 10px 0 0 0;
   background-color: #999999;
@@ -9695,24 +9724,24 @@ footer .main > .pw > .wrapper .subs .subbox .form > form > div.button button {
   -ms-border-radius: 5px;
   border-radius: 5px;
 }
-/* line 85, sass/_footer.scss */
+/* line 95, sass/_footer.scss */
 footer .main > .pw > .wrapper .subs .subbox .form > form > div.aszf {
   border: none;
   height: auto;
   overflow: initial;
 }
-/* line 89, sass/_footer.scss */
+/* line 99, sass/_footer.scss */
 footer .main > .pw > .wrapper .subs .subbox .form > form > div.aszf label {
   font-weight: normal;
   font-size: 0.9em;
   line-height: 1 !important;
 }
-/* line 98, sass/_footer.scss */
+/* line 108, sass/_footer.scss */
 footer .main > .pw > .wrapper .subs .subbox .flex .ico {
   flex-basis: 40px;
   height: 40px;
 }
-/* line 101, sass/_footer.scss */
+/* line 111, sass/_footer.scss */
 footer .main > .pw > .wrapper .subs .subbox .flex .ico i {
   line-height: 40px;
   width: 40px;
@@ -9720,12 +9749,12 @@ footer .main > .pw > .wrapper .subs .subbox .flex .ico i {
   color: #a6a6a6;
   font-size: 18px;
 }
-/* line 110, sass/_footer.scss */
+/* line 120, sass/_footer.scss */
 footer .main > .pw > .wrapper .subs .subbox .flex .input {
   border-left: 0.5px solid #a6a6a6;
   flex: 1;
 }
-/* line 113, sass/_footer.scss */
+/* line 123, sass/_footer.scss */
 footer .main > .pw > .wrapper .subs .subbox .flex .input input {
   color: #007aff;
   border: none !important;
@@ -9735,18 +9764,18 @@ footer .main > .pw > .wrapper .subs .subbox .flex .input input {
   padding: 0 10px;
   display: block;
 }
-/* line 129, sass/_footer.scss */
+/* line 139, sass/_footer.scss */
 footer .main > .pw > .wrapper .contacts .searcher .searchform {
   padding: 0px;
   width: 100%;
   background: white;
   border: 0.4px solid #cacaca;
 }
-/* line 136, sass/_footer.scss */
+/* line 146, sass/_footer.scss */
 footer .main > .pw > .wrapper .contacts .searcher .searchform .flex .input {
   flex: 1;
 }
-/* line 140, sass/_footer.scss */
+/* line 150, sass/_footer.scss */
 footer .main > .pw > .wrapper .contacts .searcher .searchform .flex .button button {
   width: 100%;
   text-align: center;
@@ -9754,13 +9783,13 @@ footer .main > .pw > .wrapper .contacts .searcher .searchform .flex .button butt
   font-size: 0.7em;
   color: #333333;
 }
-/* line 147, sass/_footer.scss */
+/* line 157, sass/_footer.scss */
 footer .main > .pw > .wrapper .contacts .searcher .searchform .flex .button button i {
   font-size: 18px;
   vertical-align: middle;
   margin: -1px 0 0 0;
 }
-/* line 156, sass/_footer.scss */
+/* line 166, sass/_footer.scss */
 footer .main > .pw > .wrapper .contacts .searcher .searchform input[type=text] {
   background: transparent;
   border: none;
@@ -9772,13 +9801,13 @@ footer .main > .pw > .wrapper .contacts .searcher .searchform input[type=text] {
   -ms-border-radius: 5px 0 0 5px;
   border-radius: 5px 0 0 5px;
 }
-/* line 167, sass/_footer.scss */
+/* line 177, sass/_footer.scss */
 footer .main > .pw > .wrapper .contacts .searcher .searchform input[type=text],
 footer .main > .pw > .wrapper .contacts .searcher .searchform button {
   line-height: 40px;
   padding: 0 15px;
 }
-/* line 172, sass/_footer.scss */
+/* line 182, sass/_footer.scss */
 footer .main > .pw > .wrapper .contacts .searcher .searchform button {
   background: transparent;
   color: #333333;
@@ -9787,22 +9816,22 @@ footer .main > .pw > .wrapper .contacts .searcher .searchform button {
   vertical-align: middle;
   cursor: pointer;
 }
-/* line 182, sass/_footer.scss */
+/* line 192, sass/_footer.scss */
 footer .main > .pw > .wrapper .contacts .contact {
   margin-top: 20px;
 }
-/* line 185, sass/_footer.scss */
+/* line 195, sass/_footer.scss */
 footer .main > .pw > .wrapper .contacts .contact > div {
   border-bottom: 0.5px solid #d9d9d9;
   padding: 5px 0;
   text-transform: uppercase;
   font-size: 0.9em;
 }
-/* line 191, sass/_footer.scss */
+/* line 201, sass/_footer.scss */
 footer .main > .pw > .wrapper .contacts .contact > div a {
   color: #333333;
 }
-/* line 195, sass/_footer.scss */
+/* line 205, sass/_footer.scss */
 footer .main > .pw > .wrapper .contacts .contact > div i {
   width: 18px;
   text-align: center;
@@ -9811,20 +9840,20 @@ footer .main > .pw > .wrapper .contacts .contact > div i {
   vertical-align: middle;
   color: #333333;
 }
-/* line 205, sass/_footer.scss */
+/* line 215, sass/_footer.scss */
 footer .main > .pw > .wrapper .contacts .social {
   margin: 20px 0 0 0;
 }
-/* line 207, sass/_footer.scss */
+/* line 217, sass/_footer.scss */
 footer .main > .pw > .wrapper .contacts .social .flex {
   align-items: center;
   justify-content: flex-start;
 }
-/* line 211, sass/_footer.scss */
+/* line 221, sass/_footer.scss */
 footer .main > .pw > .wrapper .contacts .social .flex > div {
   padding: 0 2px;
 }
-/* line 215, sass/_footer.scss */
+/* line 225, sass/_footer.scss */
 footer .main > .pw > .wrapper .contacts .social .flex a {
   padding: 0;
   width: 20px;
@@ -9839,35 +9868,35 @@ footer .main > .pw > .wrapper .contacts .social .flex a {
   -ms-border-radius: 10px;
   border-radius: 10px;
 }
-/* line 232, sass/_footer.scss */
+/* line 242, sass/_footer.scss */
 footer .info {
   font-size: 0.8em;
   background-color: #333333;
   padding: 10px 0 0 0;
   color: white;
 }
-/* line 238, sass/_footer.scss */
+/* line 248, sass/_footer.scss */
 footer .info > .pw > .flex {
   align-items: center;
   justify-content: space-between;
 }
-/* line 243, sass/_footer.scss */
+/* line 253, sass/_footer.scss */
 footer .info .contact {
   font-size: 1.25em;
   text-transform: uppercase;
   line-height: 1.5;
 }
-/* line 248, sass/_footer.scss */
+/* line 258, sass/_footer.scss */
 footer .info .contact a {
   text-decoration: none;
   color: white;
 }
-/* line 253, sass/_footer.scss */
+/* line 263, sass/_footer.scss */
 footer .info .contact .phone {
   font-size: 1.8em;
   font-weight: bold;
 }
-/* line 259, sass/_footer.scss */
+/* line 269, sass/_footer.scss */
 footer .info .resellers a {
   color: white;
   text-transform: uppercase;
@@ -9876,7 +9905,7 @@ footer .info .resellers a {
   font-size: 1.8em;
   line-height: 34px;
 }
-/* line 267, sass/_footer.scss */
+/* line 277, sass/_footer.scss */
 footer .info .resellers a .ico {
   float: right;
   margin: 0 0 0 15px;
@@ -9884,7 +9913,7 @@ footer .info .resellers a .ico {
   padding: 0 10px;
   font-size: 1.6em;
 }
-/* line 277, sass/_footer.scss */
+/* line 287, sass/_footer.scss */
 footer .info .bottom {
   margin: 10px 0 0 0;
   background: white;
@@ -9894,11 +9923,11 @@ footer .info .bottom {
   font-size: 0.9em;
   font-weight: bold;
 }
-/* line 289, sass/_footer.scss */
+/* line 299, sass/_footer.scss */
 footer .menu li {
   line-height: 120%;
 }
-/* line 293, sass/_footer.scss */
+/* line 303, sass/_footer.scss */
 footer .menu li a {
   color: white;
   font-family: "Roboto", sans-serif;
