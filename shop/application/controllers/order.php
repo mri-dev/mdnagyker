@@ -1,5 +1,6 @@
 <?
 use Applications\Simple;
+use Applications\Borgun;
 use Applications\Cetelem;
 
 class order extends Controller{
@@ -32,35 +33,57 @@ class order extends Controller{
 				Helper::reload('/');
 			}
 
-			/** PAYU FIZETÉS */
 			$order_id = $this->view->order['azonosito'];
 
 			if( $order_id == '' ){
 				Helper::reload( '/user' );
 			}
 
-			$this->view->order['szallitas_adat'] 		= json_decode($this->view->order['szallitasi_keys'], true);
-			$this->view->order['szamlazas_adat'] 		= json_decode($this->view->order['szamlazasi_keys'], true);
+			/**
+			*  OTP Simple fizetés
+			**/
+			if ( $this->view->order['fizetesiModID'] == $this->view->settings['flagkey_pay_card_simple'] )
+			{
+				$this->view->order['szallitas_adat'] 		= json_decode($this->view->order['szallitasi_keys'], true);
+				$this->view->order['szamlazas_adat'] 		= json_decode($this->view->order['szamlazasi_keys'], true);
 
-			$this->pay = (new Simple())
-				->setMerchant( 	'HUF', $this->view->settings['payu_merchant'])
-				->setSecretKey( 'HUF', $this->view->settings['payu_secret'] )
-				->setCurrency( 	'HUF' )
-				->setOrderId( $order_id )
-				->setData( $this->view->order );
+				$this->pay = (new Simple())
+					->setMerchant( 	'HUF', $this->view->settings['payu_merchant'])
+					->setSecretKey( 'HUF', $this->view->settings['payu_secret'] )
+					->setCurrency( 	'HUF' )
+					->setOrderId( $order_id )
+					->setData( $this->view->order );
 
-			if ( $this->view->order['szallitasi_koltseg'] > 0 ) {
-				$this->pay->setTransportPrice( $this->view->order['szallitasi_koltseg'] );
+				if ( $this->view->order['szallitasi_koltseg'] > 0 ) {
+					$this->pay->setTransportPrice( $this->view->order['szallitasi_koltseg'] );
+				}
+
+				// Kedvezmény (%) kiszámítása
+				$discount = 0;
+				if ( $this->view->order['kedvezmeny'] != 0 ) {
+					$discount = (int)$this->view->order['kedvezmeny'];
+				}
+				$this->pay->setDiscount($discount);
+				$this->pay->prepare();
+				$this->out( 'pay_btn', $this->pay->getPayButton() );
 			}
 
-			// Kedvezmény (%) kiszámítása
-			$discount = 0;
-			if ( $this->view->order['kedvezmeny'] != 0 ) {
-				$discount = (int)$this->view->order['kedvezmeny'];
+			/**
+			* BORGUN fizetés
+			**/
+			if ( $this->view->order['fizetesiModID'] == $this->view->settings['flagkey_pay_card_borgun'] )
+			{
+				$this->borgun = ( new Borgun() )
+					->setMerchant( $this->view->settings['borgun_setting_merchant'])
+					->setSecretKey(	$this->view->settings['borgun_setting_secret'] )
+					->setGatewayID(	$this->view->settings['borgun_setting_gatewayid'] )
+					->setCurrency('ISK')
+					->setOrderId( $order_id )
+					->setData( $this->view->order );
+
+					$this->out( 'pay_btn',  $this->borgun->payingFORM() );
 			}
-			$this->pay->setDiscount($discount);
-			$this->pay->prepare();
-			$this->out( 'pay_btn', $this->pay->getPayButton() );
+
 
 			/**
 			 * CETELEM HITEL

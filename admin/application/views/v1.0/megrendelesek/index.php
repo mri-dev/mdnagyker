@@ -141,6 +141,17 @@ Megrendelések
                     <? endif; ?>
                 </div>
                 <? endif;?>
+								<?
+                // Borgun pay info
+                if($d[fizetesiModID] == $this->settings['flagkey_pay_card_borgun']): ?>
+                <div>
+                   <? if( $d['borgun_fizetve'] == 1 && $d['borgun_teljesitve'] == 0 ): ?>
+                    <span class="payu-paidonly">Sikeresen fizetve.</span>
+                    <? elseif($d['payu_fizetve'] == 1 && $d['payu_teljesitve'] == 1): ?>
+                    <span class="payu-paid-done">Fizetve. Sikeresen visszalépett.</span>
+                    <? endif; ?>
+                </div>
+                <? endif;?>
                  <?
                 // Cetelem info
                 if($d[fizetesiModID] == $this->settings['flagkey_pay_cetelem']): ?>
@@ -358,6 +369,38 @@ Megrendelések
                                             <? endif; ?>
                                         </div>
                                     </div>
+                            </div>
+                            <? endif; ?>
+
+														<? if( $d['fizetesiModID'] == $this->settings['flagkey_pay_card_borgun'] ): ?>
+                            <div class="col-md-12">
+                                <?
+                                /**
+                                 * BORGUN IDN
+                                 */
+                                if( $d['payu_fizetve'] == 1 && $d['payu_teljesitve'] == 0 && false ): ?>
+                                <div class="right" style="margin-bottom:5px;">
+                                    <a target="_blank" href="<?=HOMEDOMAIN?>gateway/payu/idn/<?=$d['accessKey']?>" class="btn btn-sm btn-success">Fizetés elfogadása manuálisan (PayU IDN)</a>
+                                </div>
+                                <? endif; ?>
+                                <div class="payu-ipn-msgs">
+                                    <a title="Kattintson a szerver üzenetek megjelenítéséhez!" href="javascript:void(0);" onclick="$('#borgunipn_<?=$d['ID']?>').slideToggle(400);">
+                                        BORGUN szerver üzenetek (<?=count($d['borgun_ipn'])?> db)
+                                    </a>
+                                    <div class="ipn-list" id="borgunipn_<?=$d['ID']?>" style="display:none;">
+                                        <? if( count($d['borgun_ipn']) > 0): foreach( $d['borgun_ipn'] as $ipn ): $datastr = json_decode($ipn['datastr'], true); ?>
+                                        <div>
+                                            <span class="status"><?if($ipn['stepstatus'] != ''): ?><strong><?=$ipn['stepstatus']?></strong> (<em><?=$ipn['statusz']?></em>)<? else: ?><?=$ipn['statusz']?><? endif;?> <?php if ($ipn['statusz'] == 'ERROR'): ?>
+                                            	- [#<?=$datastr['errorcode']?>] <?=$datastr['errordescription']?>
+                                            <?php endif; ?></span>
+                                            <span class="time"><em><?=$ipn['idopont']?></em></span>
+                                            <div class="clr"></div>
+                                        </div>
+                                        <? endforeach; else: ?>
+                                            <div class="no-ipn">Nincs BORGUN szerver üzenet!</div>
+                                        <? endif; ?>
+                                    </div>
+                                </div>
                             </div>
                             <? endif; ?>
 

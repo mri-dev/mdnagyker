@@ -4309,6 +4309,38 @@ md-toast{
 		}
 	}
 }
+.cart .pay-with-card{
+	border: 1px solid #acacac;
+	border-radius: 10px;
+	padding: 15px;
+	width: 350px;
+	margin: 25px auto;
+
+	.h{
+		font-size: 1.2rem;
+		text-transform: uppercase;
+		color: black;
+		margin: 0 0 10px 0;
+	}
+}
+.order-card-pay-holder{
+	border: 1px solid #acacac;
+	border-radius: 10px;
+	padding: 15px;
+	width: 350px;
+	margin: 25px 0;
+}
+.cart .pay-with-card button.pay-button-borgun,
+.order-card-pay-holder button.pay-button-borgun{
+	background: #63b363;
+	font-weight: bold;
+	color: white;
+	padding: 10px 15px;
+	margin: 10px 0;
+	border-radius: 5px;
+	border: none;
+	cursor: pointer;
+}
 .cartItems .item {
 	padding: 0;
 	border-top: 1px solid #eee;

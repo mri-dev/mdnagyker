@@ -1,8 +1,8 @@
 <?
 use ShopManager\OrderException;
 use ShopManager\PreOrders;
-use Applications\PayU;
 use Applications\Simple;
+use Applications\Borgun;
 use PortalManager\PartnerReferrer;
 use PortalManager\Coupon;
 use ResourceImporter\CashmanAPI;
@@ -230,7 +230,7 @@ class kosar extends Controller{
 			$SEO .= $this->view->addOG('site_name', $this->view->settings['page_title']);
 			$SEO .= '<link rel="canonical" href="'.$this->view->settings['domain'].'" />'."\n\r";
 			$this->view->SEOSERVICE = $SEO;
-			
+
 			parent::$pageTitle = $title;
 		}
 
@@ -243,43 +243,64 @@ class kosar extends Controller{
 			$this->view->orderInfo 		= $this->shop->getOrderData($this->view->accessKey);
 			$this->view->order_user 	= $this->User->get( array( 'user' => $this->view->orderInfo[email] ) );
 
-
-			/** PAYU FIZETÉS */
 			$order_id = $this->view->orderInfo['azonosito'];
 
 			if( $order_id == '' ){
 				Helper::reload( '/user' );
 			}
 
-			$this->view->orderInfo['szallitas_adat'] 		= json_decode($this->view->orderInfo['szallitasi_keys'], true);
-			$this->view->orderInfo['szamlazas_adat'] 		= json_decode($this->view->orderInfo['szamlazasi_keys'], true);
+			/**
+			* OTP Simple fizetés
+			**/
+			if ($this->view->orderInfo['fizetesiModID'] == $this->view->settings['flagkey_pay_card_simple'] )
+			{
+				$this->view->orderInfo['szallitas_adat'] 		= json_decode($this->view->orderInfo['szallitasi_keys'], true);
+				$this->view->orderInfo['szamlazas_adat'] 		= json_decode($this->view->orderInfo['szamlazasi_keys'], true);
 
-			$this->payu = (new Simple())
-				->setMerchant( 	'HUF', 	$this->view->settings['payu_merchant'])
-				->setSecretKey( 'HUF',	$this->view->settings['payu_secret'] )
-				->setCurrency( 	'HUF' )
-				->setOrderId( $order_id )
-				->setData( $this->view->orderInfo );
+				$this->payu = (new Simple())
+					->setMerchant( 	'HUF', 	$this->view->settings['payu_merchant'])
+					->setSecretKey( 'HUF',	$this->view->settings['payu_secret'] )
+					->setCurrency( 	'HUF' )
+					->setOrderId( $order_id )
+					->setData( $this->view->orderInfo );
 
-			if ( $this->view->orderInfo['szallitasi_koltseg'] > 0 ) {
-				$this->payu->setTransportPrice( $this->view->orderInfo['szallitasi_koltseg'] );
-			}
-
-			$discount = $this->view->orderInfo['kedvezmeny'];
-			if ( !empty($this->view->orderInfo['items']) ) {
-				$total_ar = 0;
-				foreach ($this->view->orderInfo['items'] as $ai ) {
-					$total_Ar += $ai['subAr'];
+				if ( $this->view->orderInfo['szallitasi_koltseg'] > 0 ) {
+					$this->payu->setTransportPrice( $this->view->orderInfo['szallitasi_koltseg'] );
 				}
+
+				$discount = $this->view->orderInfo['kedvezmeny'];
+				if ( !empty($this->view->orderInfo['items']) ) {
+					$total_ar = 0;
+					foreach ($this->view->orderInfo['items'] as $ai ) {
+						$total_Ar += $ai['subAr'];
+					}
+				}
+
+				if($discount > 0) {
+					$this->payu->setDiscount($discount);
+				}
+
+				$this->payu->prepare();
+
+				$this->out( 'pay_btn', $this->payu->getPayButton() );
 			}
 
-			if($discount > 0) {
-				$this->payu->setDiscount($discount);
+			/**
+			* BORGUN fizetés
+			**/
+			if ($this->view->orderInfo['fizetesiModID'] == $this->view->settings['flagkey_pay_card_borgun'] )
+			{
+
+				$this->borgun = ( new Borgun() )
+					->setMerchant( $this->view->settings['borgun_setting_merchant'])
+					->setSecretKey(	$this->view->settings['borgun_setting_secret'] )
+					->setGatewayID(	$this->view->settings['borgun_setting_gatewayid'] )
+					//->setCurrency('HUF')
+					->setOrderId( $order_id )
+					->setData( $this->view->orderInfo );
+
+					$this->out( 'pay_btn',  $this->borgun->payingFORM() );
 			}
-
-			$this->payu->prepare();
-
-			$this->out( 'payu_btn', $this->payu->getPayButton() );
 		}
 
 		public function elofoglalas()

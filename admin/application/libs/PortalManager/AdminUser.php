@@ -348,6 +348,7 @@ class AdminUser
 		foreach($data as $d){
 			$d['items'] 	= $this->getOrderItems($d[ID], $arg);
 			$d['payu_ipn'] 	= $this->getPayUIPN( $d['azonosito'] );
+			$d['borgun_ipn'] 	= $this->getBORGUNIPN( $d['azonosito'] );
 			$d['coupon'] 	= false;
 			$d['referer'] 	= false;
 
@@ -408,6 +409,19 @@ class AdminUser
 		$ret[info][stat] = $stat;
 
 		return $ret;
+	}
+
+	public function getBORGUNIPN( $azonosito )
+	{
+		if ( !$azonosito ) {
+			return array();
+		}
+
+		$q = "SELECT statusz, stepstatus, datastr, idopont FROM gateway_borgun_ipn WHERE megrendeles = '$azonosito' ORDER BY idopont DESC";
+
+		$data = $this->db->query($q)->fetchAll(\PDO::FETCH_ASSOC);
+
+		return $data;
 	}
 
 	public function getPayUIPN( $azonosito )

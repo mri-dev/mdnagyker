@@ -1,4 +1,5 @@
-<? 
+<?
+use Applications\Borgun;
 use Applications\Simple;
 use Applications\Cetelem;
 use MailManager\Mailer;
@@ -9,27 +10,27 @@ use PortalManager\Traffic;
 
 class gateway extends Controller
 {
-		function __construct(){	
+		function __construct(){
 			parent::__construct();
 			parent::$pageTitle = '';
-	
-			
+
+
 			// SEO Információk
 			$SEO = null;
 			// Site info
 			$SEO .= $this->view->addMeta('description','');
 			$SEO .= $this->view->addMeta('keywords','');
 			$SEO .= $this->view->addMeta('revisit-after','3 days');
-			
+
 			// FB info
 			$SEO .= $this->view->addOG('type','website');
 			$SEO .= $this->view->addOG('url',DOMAIN);
 			$SEO .= $this->view->addOG('image',DOMAIN.substr(IMG,1).'noimg.jpg');
 			$SEO .= $this->view->addOG('site_name',TITLE);
-			
+
 			$this->view->SEOSERVICE = $SEO;
 		}
-		
+
 		function test()
 		{
 			$this->hidePatern = true;
@@ -38,7 +39,7 @@ class gateway extends Controller
 			switch ( $this->view->gets[2] ) {
 				case 'img':
 					//echo realpath(__FILE__);
-					$this->Admin->autoProductImageConnecter( array( 'image_path' => '../../admin/src/products/all' ));	
+					$this->Admin->autoProductImageConnecter( array( 'image_path' => '../../admin/src/products/all' ));
 				break;
 			}
 		}
@@ -53,12 +54,12 @@ class gateway extends Controller
 				"error" => 0,
 				"msg" => ""
 			);
-						
+
 			$valid_commands = array( 'articleUpdate', 'saleReport', 'webshopSale', 'inventory' );
-			
-			$postjson 	= file_get_contents('php://input');						
+
+			$postjson 	= file_get_contents('php://input');
 			$api 		= json_decode( urldecode($postjson) );
-						
+
 			if( !$error )
 				if ( !$api ) {
 					$error = "Hibás JSON kérés. Kérjük, hogy ellenőrízze a struktúrát!";
@@ -80,16 +81,16 @@ class gateway extends Controller
 					$error = false;
 				}
 
-			if ( !$error ) {	
+			if ( !$error ) {
 				switch ( $api->command ) {
 					// Megrendelés értesítő visszaigazolás
 					case 'saleReport':
-					
+
 					break;
 					// Termék raktárkészlet frissítés
 					case 'inventory':
-						
-						
+
+
 
 					break;
 					// Termék frissítés
@@ -152,10 +153,10 @@ class gateway extends Controller
 									try {
 
 										if ( $check_usage !== 0 ) {
-											$this->db->update( 
-												'shop_termekek', 
-												$update_data, 
-												sprintf("raktar_articleid = %d and raktar_variantid = %d", $prod_data->articleid, $va->variantid ) 
+											$this->db->update(
+												'shop_termekek',
+												$update_data,
+												sprintf("raktar_articleid = %d and raktar_variantid = %d", $prod_data->articleid, $va->variantid )
 											);
 										} else {
 											$inserted++;
@@ -183,23 +184,23 @@ class gateway extends Controller
 													array_keys($update_data),
 													$ins_data
 												)
-											);											
+											);
 										}
-										
+
 									} catch (Exception $e) {
 										$error = $e->getMessage();
 									}
-									
+
 								}
 							}
 
 							if( $inserted > 0 ){
 								// Értesítő e-mail új termékek létrehozásáról
-								$mail = new Mailer( 
-									$this->view->settings['page_title'], 
-									$this->view->settings['email_noreply_address'], 
-									$this->view->settings['mail_sender_mode'] 
-								);	
+								$mail = new Mailer(
+									$this->view->settings['page_title'],
+									$this->view->settings['email_noreply_address'],
+									$this->view->settings['mail_sender_mode']
+								);
 								$mail->add( $this->view->settings['alert_email'] );
 								$arg = array(
 									'settings' 		=> $this->view->settings,
@@ -208,7 +209,7 @@ class gateway extends Controller
 									'source_str_json' => $postjson
 								);
 								$mail->setSubject( 'API értesítő: új termékek kerültek a webáruházba' );
-								$mail->setMsg( (new Template( VIEW . 'templates/mail/' ))->get( 'admin_api_newproducts', $arg ) );			
+								$mail->setMsg( (new Template( VIEW . 'templates/mail/' ))->get( 'admin_api_newproducts', $arg ) );
 								$re = $mail->sendMail();
 							}
 						}
@@ -231,7 +232,7 @@ class gateway extends Controller
 			$result_json = json_encode( $result, JSON_UNESCAPED_UNICODE );
 
 			try {
-				$this->db->insert( 
+				$this->db->insert(
 					"api_request",
 					array_combine(
 						array( "command","referencia","datum","parancs_json","valasz_json", "post_json", "get_json" ),
@@ -241,8 +242,8 @@ class gateway extends Controller
 			}catch(\Exception $e){
 				echo $e->getMessage();
 			}
-		
-			
+
+
 			header('Contant-Type: application/json');
 
 			echo $result_json;
@@ -250,23 +251,118 @@ class gateway extends Controller
 		}
 
 		/**
-		 * OTP SIMPLE FIZETÉSI RENDSZER 
+		 * BORGUN FIZETÉSI RENDSZER
+		 * Feldolgozó egységek
+		 * */
+		function borgun()
+		{
+			$this->borgun = ( new Borgun( $this->db ) )
+				->setMerchant( $this->view->settings['borgun_setting_merchant'])
+				->setSecretKey(	$this->view->settings['borgun_setting_secret'] )
+				->setGatewayID(	$this->view->settings['borgun_setting_gatewayid'] )
+				->setCurrency('ISK');
+
+
+			$orderdata = $this->shop->getOrderData( $_GET['order_id'], 'azonosito' );
+
+			if (!empty($_POST['orderhash']))
+			{
+				$orderhash = $_POST['orderhash'];
+				$total_price = 0;
+
+				foreach ((array)$orderdata['items'] as $item) {
+					$total_price += ($item['egysegAr'] * $item['me']);
+				}
+
+				if ( $orderdata['szallitasi_koltseg'] > 0 ) {
+						$total_price += $orderdata['szallitasi_koltseg'];
+				}
+
+				// CHECK ORDERHASH
+				$valid_orderhash = false;
+				$check_orderhash = $this->borgun->orderHMAC($orderdata['azonosito'], $total_price);
+				if ( !empty($orderhash) && $check_orderhash === $orderhash ) {
+					$valid_orderhash = 1;
+				} else if( !empty($orderhash) && $check_orderhash !== $orderhash ){
+					$valid_orderhash = 1;
+				}
+			}
+
+			switch ( $this->view->gets[2]  ) {
+				case 'success':
+
+					if ($_POST['step'] == 'Payment') {
+						$this->hidePatern = true;
+						$this->db->update(
+							"order",
+							array(
+								'borgun_fizetve' => 1
+							),
+							sprintf("azonosito = '%s'", $_POST['orderid'])
+						);
+						header('Content-Type: text/xml');
+						echo '<PaymentNotification>Accepted</PaymentNotification>';
+					}
+
+					if ($_POST['step'] == 'Confirmation') {
+						$this->db->update(
+							"order",
+							array(
+								'borgun_teljesitve' => 1
+							),
+							sprintf("azonosito = '%s'", $_POST['orderid'])
+						);
+					}
+				break;
+				case 'cancel':
+					$message = '<div class="simple-information simple-back simple-back-cancel">';
+					$message .= '</div>';
+				break;
+				case 'error':
+					$message = '<div class="simple-information simple-back simple-back-error">';
+					$message .= '</div>';
+				break;
+			}
+
+			// Log transaction
+			$this->borgun->logIPNTransaction($valid_orderhash);
+			/**
+			 * Notification
+			 */
+			$message .= '<div class="cth">Tranzakció információk</div>';
+			$message .= '<div class="in">';
+			$message .= '<div class="ft">'.__('BORGUN tranzakció azonosító').': <b class="d">'.$_POST['authorizationcode'].'</b></div>';
+			$message .= '<div class="ft">'.__('Megrendelés azonosító').': <b class="d">'.$_GET['order_id'].'</b></div>';
+			if( false ):
+			$message .= '<b><font color="red">Fejlesztési segítség, éles oldalon ne jelenjen meg!</font></b><br/>';
+			$message .= 'STATUS: <b class="d">'.$backStatus['ORDER_STATUS'].'</b><br/>';
+			endif;
+			$message .= '<a href="/order/'.$orderdata['accessKey'].'" class="btn btn-sm btn-default" style="color:black;"><i class="fa fa-angle-left"></i> '.__('vissza a megrendelés összesítőhöz').'</a>';
+			$message .= '</div>';
+
+			$message .= '<div class="simple-info-footer"><a href="https://www.simple.hu/" target="_blank">Biztonságos fizetés Simple-lel.</a> <div style="float:right;"><img src="'.IMG.'simple_vedd_online_140.png"></div><div class="clr"></div></div></div>';
+
+			$this->out( 'pay_msg', $message );
+		}
+
+		/**
+		 * OTP SIMPLE FIZETÉSI RENDSZER
 		 * Feldolgozó egységek
 		 * */
 		function simple()
-		{					
+		{
 			$this->simple = (new Simple())
 				->setMerchant( 	'HUF', $this->view->settings['payu_merchant'])
 				->setSecretKey( 'HUF', $this->view->settings['payu_secret'] )
 				->setCurrency( 	'HUF' );
-				
+
 			switch ( $this->view->gets[2] ) {
 				case 'ipn':
 					$this->hidePatern = true;
 					$ipn = $this->simple->getIPN();
-										
+
 					if ( $ipn->validateReceived() ) {
-						$this->db->insert( 
+						$this->db->insert(
 							"gateway_payu_ipn",
 							array_combine(
 								array( "megrendeles","statusz","datastr" ),
@@ -278,7 +374,7 @@ class gateway extends Controller
 							case 'PAYMENT_AUTHORIZED':
 								$this->db->update(
 									"orders",
-									array( 
+									array(
 										'payu_fizetve' => 1,
 										'payu_teljesitve' => 1
 									),
@@ -288,7 +384,7 @@ class gateway extends Controller
 							case 'COMPLETE':
 								$this->db->update(
 									"orders",
-									array( 
+									array(
 										'payu_teljesitve' => 1
 									),
 									sprintf("azonosito = '%s'", $_POST['REFNOEXT'])
@@ -298,9 +394,9 @@ class gateway extends Controller
 								# code...
 								break;
 						}
-						
+
 						$this->out( 'ipn_data', $ipn->confirmReceived() );
-					}					
+					}
 					break;
 				case 'idn':
 
@@ -313,61 +409,61 @@ class gateway extends Controller
 					$idn = $this->simple->getIDN();
 					/**
 					 * Set needed fields
-					 */	
+					 */
 					$data = array();
 					$data['MERCHANT'] 		= $this->config['MERCHANT'];
 					$data['ORDER_REF'] 		= $order['azonostio'];
-					$data['ORDER_AMOUNT'] 	= (isset($_REQUEST['ORDER_AMOUNT'])) ? $_REQUEST['ORDER_AMOUNT'] : 'N/A';	
+					$data['ORDER_AMOUNT'] 	= (isset($_REQUEST['ORDER_AMOUNT'])) ? $_REQUEST['ORDER_AMOUNT'] : 'N/A';
 					$data['ORDER_CURRENCY'] = $this->simple->getCurrency();
 					$data['IDN_DATE'] 		= date("Y-m-d H:i:s");
-					
+
 					$response = $idn->requestIdn( $data );
 					/**
 					 * Check response
-					 */	
-					if (isset($response['RESPONSE_CODE'])) {	
+					 */
+					if (isset($response['RESPONSE_CODE'])) {
 						if($idn->checkResponseHash($response)){
 							/*
 							* your code here
 							*/
-																
-							print "<pre>";	
+
+							print "<pre>";
 							print_r($response);
 							print "</pre>";
-								
+
 						}
 						//print list of missing fields
-						//print_r($idn->getMissing()); 
+						//print_r($idn->getMissing());
 					}
 
 					break;
 				case 'backref':
 					/**
 					 * Start backref
-					 */		
-					$backref = $this->simple->getBackref();						
+					 */
+					$backref = $this->simple->getBackref();
 					/**
 					 * Add order reference number from merchant system (ORDER_REF)
-					 */			
+					 */
 					$backref->order_ref = (isset($_REQUEST['order_ref'])) ? $_REQUEST['order_ref'] : 'N/A';
 					/**
 					 * Check backref
-					 */		
+					 */
 					$message = '<div class="simple-information simple-back simple-back-'.( ($backref->checkResponse()) ? 'success' : 'error' ).'">';
 					$order = $this->shop->getOrderData( $_REQUEST['order_ref'], 'azonosito' );
 
-					if($backref->checkResponse()){						
+					if($backref->checkResponse()){
 						/**
 						 * SUCCESSFUL card authorizing
 						 * Notify user and wait for IPN
 						 * Need to notify user
-						 * 
+						 *
 						 */
-						$backStatus = $backref->backStatusArray;									
+						$backStatus = $backref->backStatusArray;
 
 						// Üzenet a fizetésről
 						if( $order['payu_fizetve'] == 0 ){
-							
+
 							$this->db->update(
 								'orders',
 								array(
@@ -379,23 +475,23 @@ class gateway extends Controller
 
 
 						$message .= '<div class="head success">';
-						
-						// Notification by payment method						
+
+						// Notification by payment method
 						//CCVISAMC
 						if ($backStatus['PAYMETHOD']=='Visa/MasterCard/Eurocard') {
 							$message .= __('Sikeres kártya ellenőrzés. ');
 							if ($backStatus['ORDER_STATUS']=='IN_PROGRESS') {
 								$message .= __('Tranzakció megerősítésre vár.');
-							} elseif ($backStatus['ORDER_STATUS']=='PAYMENT_AUTHORIZED' || $backStatus['ORDER_STATUS']=='COMPLETED') {								
+							} elseif ($backStatus['ORDER_STATUS']=='PAYMENT_AUTHORIZED' || $backStatus['ORDER_STATUS']=='COMPLETED') {
 								$message .= __('Sikeres tranzakció!');
-							} 
+							}
 						}
 						//WIRE
 						elseif ($backStatus['PAYMETHOD']=='Bank/Wire transfer') {
 							$message .= __('Átutalás elfogadva. ');
 							if ($backStatus['ORDER_STATUS']=='PAYMENT_AUTHORIZED' || $backStatus['ORDER_STATUS']=='COMPLETED') {
 								$message .= __('Sikeres átutalás.');
-							} 			
+							}
 						}
 						//CASH
 						elseif ($backStatus['PAYMETHOD']=='Cash on delivery') {
@@ -403,43 +499,43 @@ class gateway extends Controller
 						}
 
 						$message .= '</div>';
-							
-					} else {	
+
+					} else {
 
 						/**
 						 * UNSUCCESSFUL card authorizing
 						 * END of transaction
 						 * Need to notify user
-						 * 
+						 *
 						 */
 						$message .= '<div class="head error">'.__('Tranzakció sikertelen').'</div>';
-						$backStatus = $backref->backStatusArray;	
-						
+						$backStatus = $backref->backStatusArray;
+
 						/**
 						 * Your code here
-						 */	
+						 */
 						$message .= '<div class="ft" style="color:red;">'.__('Kérjük, ellenőrizze a tranzakció során megadott adatok helyességét. Amennyiben minden adatot helyesen adott meg, a visszautasítás okának kivizsgálása kapcsán kérjük, szíveskedjen kapcsolatba lépni kártyakibocsátó bankjával.').'</div>';
 					}
 
 					/**
 					 * Notification
-					 */	
-					$message .= '<div class="cth">Tranzakció információk</div>';  
-					$message .= '<div class="in">';  
-					$message .= '<div class="ft">'.__('Simple tranzakció azonosító').': <b class="d">'.$backStatus['PAYREFNO'].'</b></div>'; 
+					 */
+					$message .= '<div class="cth">Tranzakció információk</div>';
+					$message .= '<div class="in">';
+					$message .= '<div class="ft">'.__('Simple tranzakció azonosító').': <b class="d">'.$backStatus['PAYREFNO'].'</b></div>';
 					$message .= '<div class="ft">'.__('Időpont').': <b class="d">'.$backStatus['BACKREF_DATE'].'</b></div>';
 					$message .= '<div class="ft">'.__('Megrendelés azonosító').': <b class="d">'.$backStatus['REFNOEXT'].'</b></div>';
 					if( false ):
-					$message .= '<b><font color="red">Fejlesztési segítség, éles oldalon ne jelenjen meg!</font></b><br/>'; 
-					$message .= 'STATUS: <b class="d">'.$backStatus['ORDER_STATUS'].'</b><br/>';	
+					$message .= '<b><font color="red">Fejlesztési segítség, éles oldalon ne jelenjen meg!</font></b><br/>';
+					$message .= 'STATUS: <b class="d">'.$backStatus['ORDER_STATUS'].'</b><br/>';
 					endif;
 					$message .= '<a href="/order/'.$order['accessKey'].'" class="btn btn-sm btn-default" style="color:black;"><i class="fa fa-angle-left"></i> '.__('vissza a megrendelés összesítőhöz').'</a>';
-					$message .= '</div>'; 
-					
+					$message .= '</div>';
+
 					$message .= '<div class="simple-info-footer"><a href="https://www.simple.hu/" target="_blank">Biztonságos fizetés Simple-lel.</a> <div style="float:right;"><img src="'.IMG.'simple_vedd_online_140.png"></div><div class="clr"></div></div></div>';
 					/**
 					 * Print generated message
-					 */			
+					 */
 					$this->view->pay_msg = $message;
 				break;
 				case 'timeout':
@@ -458,7 +554,7 @@ class gateway extends Controller
 					$message .= '<div>'.__('Időpont').': '.date('Y-m-d H:i:s', time()).'</div>';
 					$message .= '<div>'.__('Megrendelés azonosító').': '.$_REQUEST['order_ref'].'</div>';
 					$message .= '<div><br><a style="color:black;" href="/order/'.$order['accessKey'].'" class="btn btn-sm btn-default"><i class="fa fa-angle-left"></i> vissza a megrendelés adatlapjára</a></div>';
-					
+
 					$message .= '</div>';
 
 					$message .= '<div class="simple-info-footer"><a href="https://www.simple.hu/" target="_blank">Biztonságos fizetés Simple-lel.</a> <div style="float:right;"><img src="'.IMG.'simple_vedd_online_140.png"></div><div class="clr"></div></div></div>';
@@ -476,7 +572,7 @@ class gateway extends Controller
 		 * */
 		public function cetelem()
 		{
-			// Cetelem API 
+			// Cetelem API
 			$cetelem = (new Cetelem( $this->view->settings['cetelem_shopcode'], $this->view->settings['cetelem_society'], $this->view->settings['cetelem_barem'], array( 'db' => $this->db ) ))->sandboxMode( CETELEM_SANDBOX_MODE );
 
 			// Log
@@ -492,7 +588,7 @@ class gateway extends Controller
 			// Megrendelés adatok
 			$this->view->order 		= $this->shop->getOrderData($this->view->gets[3]);
 
-			switch ($this->view->gets[2]) 
+			switch ($this->view->gets[2])
 			{
 				// Tranzakció elkezdése
 				case 'start':
@@ -516,11 +612,11 @@ class gateway extends Controller
 					$total = 0;
 
 					if(is_array($this->view->order[items]))
-					foreach ( $this->view->order[items] as $i ) 
+					foreach ( $this->view->order[items] as $i )
 					{
 						$total += $i[subAr];
 					}
-					
+
 					if($this->view->order['kedvezmeny'] > 0) {
 						$total -= $this->view->order['kedvezmeny'];
 					}
@@ -529,9 +625,9 @@ class gateway extends Controller
 
 				break;
 			}
-		
+
 		}
-		
+
 		function __destruct(){
 			// RENDER OUTPUT
 				parent::bodyHead();					# HEADER

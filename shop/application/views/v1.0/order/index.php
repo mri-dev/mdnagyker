@@ -190,15 +190,32 @@
                             <? if($o['fizetesiModID'] == $this->settings['flagkey_pay_cetelem']): ?> <img src="<?=IMG?>/cetelem_badge.png" alt="Cetelem" style="height: 32px; float: left; margin: -5px 10px 0 0;"> <? endif; ?>
                             <?=$this->fizetes[Helper::getFromArrByAssocVal($this->fizetes,'ID',$o[fizetesiModID])][nev]; ?>
                             <?
-                            // PayU kártyás fizetés
+                            // OTP SImple kártyás fizetés
                             if( $o['fizetesiModID'] == $this->settings['flagkey_pay_payu'] && $o['payu_fizetve'] == 0 ): ?>
                                 <br>
-                                <?=$this->pay_btn?>
+                                <div class="order-card-pay-holder">
+                                  <?=$this->pay_btn?>
+                                </div>
                             <? elseif( $o['fizetesiModID'] == $this->settings['flagkey_pay_payu'] && $o['payu_fizetve'] == 1 ): ?>
                                 <? if( $o['payu_teljesitve'] == 0 ): ?>
                                 <span class="payu-paidonly">Fizetve. Visszaigazolásra vár.</span>
                                 <? else: ?>
                                 <span class="payu-paid-done">Fizetve. Elfogadva.</span>
+                                <? endif; ?>
+                            <? endif; ?>
+
+                            <?
+                            // Borgun kártyás fizetés
+                            if( $o['fizetesiModID'] == $this->settings['flagkey_pay_card_borgun'] && $o['borgun_fizetve'] == 0 ): ?>
+                                <br>
+                                <div class="order-card-pay-holder">
+                                  <?=$this->pay_btn?>
+                                </div>
+                            <? elseif( $o['fizetesiModID'] == $this->settings['flagkey_pay_card_borgun'] && $o['borgun_fizetve'] == 1 ): ?>
+                                <? if( $o['borgun_teljesitve'] == 0 ): ?>
+                                <span class="payu-paidonly">Sikeresen fizetve.</span>
+                                <? else: ?>
+                                <span class="payu-paid-done">Fizetve. Sikeresen visszalépve.</span>
                                 <? endif; ?>
                             <? endif; ?>
 

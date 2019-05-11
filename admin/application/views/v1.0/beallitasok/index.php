@@ -490,8 +490,9 @@
 									</div>
 								</div>
 
-								<?php if (false): ?>
-                <h3>OTP Kártyás fizetés</h3>
+								<?php if (true): ?>
+								<br>
+                <h3>OTP Simple Kártyás fizetés</h3>
                 <div class="row np">
                     <div class="col-md-12">
                         <label for="basics_payu_merchant">OTP Simple MERCHANT</label>
@@ -503,6 +504,31 @@
                     <div class="col-md-12">
                         <label for="basics_payu_secret">OTP Simple SECRET</label>
                         <input type="text" id="basics_payu_secret" name="payu_secret" class="form-control" value="<?=$this->settings['payu_secret']?>">
+                    </div>
+                </div>
+								<?php endif; ?>
+
+								<?php if (true): ?>
+								<br>
+                <h3>BORGUN Kártyás fizetés</h3>
+                <div class="row np">
+                    <div class="col-md-12">
+                        <label for="basics_borgun_setting_merchant">MERCHANT ID</label>
+                        <input type="text" id="basics_borgun_setting_merchant" name="borgun_setting_merchant" class="form-control" value="<?=$this->settings['borgun_setting_merchant']?>">
+                    </div>
+                </div>
+                <br>
+                <div class="row np">
+                    <div class="col-md-12">
+                        <label for="basics_borgun_setting_secret">SECRET KEY</label>
+                        <input type="text" id="basics_borgun_setting_secret" name="borgun_setting_secret" class="form-control" value="<?=$this->settings['borgun_setting_secret']?>">
+                    </div>
+                </div>
+                <br>
+                <div class="row np">
+                    <div class="col-md-12">
+                        <label for="basics_borgun_setting_gatewayid">PAYMENT GATEWAY ID</label>
+                        <input type="text" id="basics_borgun_setting_gatewayid" name="borgun_setting_gatewayid" class="form-control" value="<?=$this->settings['borgun_setting_gatewayid']?>">
                     </div>
                 </div>
 								<?php endif; ?>
@@ -661,6 +687,28 @@
                             <option value="" disabled="disabled"></option>
                             <? foreach( $this->fizetes as $d ): ?>
                             <option value="<?=$d['ID']?>" <?=($this->settings['flagkey_pay_banktransfer'] == $d['ID'])?'selected="selected"':''?>><?=$d['nev']?></option>
+                            <? endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3" style="padding-left:8px;">
+                        <label for="basics_flagkey_pay_card_borgun"><u>BORGUN bannkártyás</u> fizetési kulcs ID</label>
+                        <select name="flagkey_pay_card_borgun" id="basics_flagkey_pay_card_borgun" class="form-control">
+                            <option value="">-- válasszon --</option>
+                            <option value="" disabled="disabled"></option>
+                            <? foreach( $this->fizetes as $d ): ?>
+                            <option value="<?=$d['ID']?>" <?=($this->settings['flagkey_pay_card_borgun'] == $d['ID'])?'selected="selected"':''?>><?=$d['nev']?></option>
+                            <? endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3" style="padding-left:8px;">
+                        <label for="basics_flagkey_pay_card_simple"><u>OTP Simple</u> fizetési kulcs ID</label>
+                        <select name="flagkey_pay_card_simple" id="basics_flagkey_pay_card_simple" class="form-control">
+                            <option value="">-- válasszon --</option>
+                            <option value="" disabled="disabled"></option>
+                            <? foreach( $this->fizetes as $d ): ?>
+                            <option value="<?=$d['ID']?>" <?=($this->settings['flagkey_pay_card_simple'] == $d['ID'])?'selected="selected"':''?>><?=$d['nev']?></option>
                             <? endforeach; ?>
                         </select>
                     </div>

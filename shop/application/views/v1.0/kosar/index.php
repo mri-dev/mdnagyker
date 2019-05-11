@@ -149,14 +149,22 @@
 						if($this->orderInfo[kedvezmeny] > 0) $vegosszeg -= $this->orderInfo[kedvezmeny];
 
 					?>
-	            	<h1><i class="fa fa-check-circle"></i><br />Megrendelés elküldve</h1>
-	                <h2>Köszönjük megrendelését!</h2>
-	                <p>E-mail címére folyamatos tájékoztatást küldünk megrendelésének állapotáról.</p>
+          	<h1><i class="fa fa-check-circle"></i><br />Megrendelés elküldve</h1>
+              <h2>Köszönjük megrendelését!</h2>
+              <p>E-mail címére folyamatos tájékoztatást küldünk megrendelésének állapotáról.</p>
 
-					<? if( $this->orderInfo['fizetesiModID'] == $this->settings['flagkey_pay_payu'] && $this->orderInfo['payu_fizetve'] == 0 ): ?>
-						<br>
-						<strong>Online bankkártyás fizetésindítása: </strong><br><br>
-						<?=$this->payu_btn?>
+					<? if( $this->orderInfo['fizetesiModID'] == $this->settings['flagkey_pay_card_simple'] && $this->orderInfo['payu_fizetve'] == 0 ): ?>
+					<div class="pay-with-card">
+						<div class="h">Online bankkártyás fizetés:</div>
+						<?=$this->pay_btn?>
+					</div>
+					<? endif; ?>
+
+					<? if( $this->orderInfo['fizetesiModID'] == $this->settings['flagkey_pay_card_borgun'] && $this->orderInfo['borgun_fizetve'] == 0 ): ?>
+						<div class="pay-with-card">
+							<div class="h">Online bankkártyás fizetés:</div>							
+							<?=$this->pay_btn?>
+						</div>
 					<? endif; ?>
 
 					<? if( $this->orderInfo['fizetesiModID'] == $this->settings['flagkey_pay_cetelem'] ): ?>
