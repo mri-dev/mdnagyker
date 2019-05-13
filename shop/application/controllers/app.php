@@ -96,6 +96,20 @@ class app extends Controller{
 			$rs->registerUnregisteredProductToCashman();
 		}
 
+		public function updateWebshopTOCashman()
+		{
+			$crm = new CashmanAPI(array('db' => $this->db));
+
+			$rs = new ResourceImport(array(
+				'db' => $this->db,
+				'crm' => $crm
+			));
+
+			$rs->resyncVonalkod();
+
+
+		}
+
 		/**
 		 * Documents click log
 		 * */

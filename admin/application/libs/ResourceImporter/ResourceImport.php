@@ -24,6 +24,47 @@ class ResourceImport extends ResourceImportBase implements ResourceImportInterfa
     return $raktar;
   }
 
+  public function resyncVonalkod()
+  {
+    $qry = $this->db->squery("SELECT termek_nev, cikkszam, prod_id, ean_code, mennyisegegyseg, ar1 FROM xml_temp_products WHERE origin_id = 1");
+    $data = $qry->fetchAll(\PDO::FETCH_ASSOC);
+
+    foreach ( (array)$data as $d ) {
+      $items = array();
+      $item = array(
+        // Kötelezőek
+        'termek_id' => $d['prod_id'],
+        // Vonalkód a prod_id (cm ID) ha nincs vonalkód definiálva, ha van, akkor az ean_code frissül
+        'vonalkod' => trim($d['ean_code']),
+        'megnevezes' => trim($d['termek_nev']),
+        'termekcsoport_id' => 1,
+        'afa' => 27,
+        'mennyisegiegyseg' => trim($d['mennyisegegyseg']),
+        'netto_egysegar' =>  (float)$d['ar1'],
+        'termek' => 1,
+        'cikkszam' => trim($d['cikkszam']),
+        // Kiegészítés:
+        //'minimum' => (int)$d['virtualis_keszlet']
+      );
+      /*
+      for ($i=0; $i <= 10 ; $i++) {
+        $priceid = $i;
+        $price = (float)$d['ar'.$i];
+
+        if ($price != 0) {
+          $item['afa'.$priceid] = 27;
+          $item['netto_egysegar'.$priceid] = $price;
+        }
+      }
+      */
+      $items[] = $item;
+
+      $ins = $this->crm->addProduct( $items );
+
+      //echo 'UPDATE: ';
+    }
+  }
+
   public function syncTempProducts()
   {
     $this->pushToTermekek( 1 );
