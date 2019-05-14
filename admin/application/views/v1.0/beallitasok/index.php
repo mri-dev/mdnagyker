@@ -413,6 +413,13 @@
                 <br>
                 <div class="row np">
                     <div class="col-md-12">
+                        <label for="basics_FREE_TRANSPORT_ABOVEPRICE">Ingyenes szállítás (min) érték</label>
+                        <input type="text" id="basics_FREE_TRANSPORT_ABOVEPRICE" name="FREE_TRANSPORT_ABOVEPRICE" class="form-control" value="<?=$this->settings['FREE_TRANSPORT_ABOVEPRICE']?>">
+                    </div>
+                </div>
+                <br>
+                <div class="row np">
+                    <div class="col-md-12">
                         <label for="basics_banktransfer_author">Banki adat - Tulajdonos</label>
                         <input type="text" id="basics_banktransfer_author" name="banktransfer_author" class="form-control" value="<?=$this->settings['banktransfer_author']?>">
                     </div>
