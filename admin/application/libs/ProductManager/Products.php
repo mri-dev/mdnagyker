@@ -1573,6 +1573,7 @@ class Products
 			LEFT OUTER JOIN shop_termek_kategoriak as kat ON kat.ID = k.kategoria_id
 			LEFT OUTER JOIN shop_termek_kategoriak as p ON p.ID = kat.szulo_id
 			WHERE k.termekID = %d and kat.ID IS NOT NULL
+			GROUP BY k.kategoria_id
 			ORDER BY p.sorrend ASC, kat.sorrend ASC", $product_id ) );
 
 		if( $qry->rowCount() == 0 ) return $cat_ids;

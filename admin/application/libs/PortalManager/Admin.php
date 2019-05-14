@@ -421,8 +421,10 @@ class Admin
 		$referer = false;
 
 		$q = "SELECT
-			o.*
+			o.*,
+			f.crm_partner_id
 		FROM orders as o
+		LEFT OUTER JOIN felhasznalok as f ON f.ID = o.userID
 		WHERE o.accessKey = '$key'";
 		extract($this->db->q($q));
 
@@ -546,7 +548,7 @@ class Admin
 		$user = $users->get(array( 'user' => 'ds'.$orderData['email'] ));
 
 		// Cashman FX - Partner adat rögzítés ha user adat található
-		if( $user && $post[allapotID][$orderID] == $this->settings['flagkey_invoice_orderstatus'] )
+		if( $user && $user['crm_partner_id'] == '' && $post[allapotID][$orderID] == $this->settings['flagkey_invoice_orderstatus'] )
 		{
 			// Partner rögzítés / frissítés
 			if ( $this->crm ) {

@@ -105,6 +105,9 @@ Megrendelések
 				<td align="center" valign="middle" style="border-left:5px solid <?=$this->allapotok[order][$d[allapot]][szin]?>;"><?=$d[ID]?> <input type="checkbox" class="selecting" name="export[]" value="<?=$d[accessKey]?>"></td>
             <td align="center" valign="middle">
             	<?=($d['prev_order'])?'<i class="fa fa-refresh" title="Gyors újrarendelés: '.$d['prev_order'].'."></i>':''?><a href="javascript:void(0);"  mid="<?=$d[ID]?>" ><?=$d[azonosito]?></a>
+							<?php if ($d[invoice]): ?>
+								<div class="invoice" title="Cashman: számla vagy díjbekérő azonító."><i class="fa fa-money"></i> <?=$d['invoice']?></div>
+							<?php endif; ?>
             </td>
             <td>
                 <div class="ind feat">
@@ -113,8 +116,8 @@ Megrendelések
                 <? if( $d['used_cash'] != 0 ): ?><i class="fa fa-money" title="Felhasznált virtuális egyenleg"></i><? endif; ?>
                 </div>
 
-				<input type="hidden" name="accessKey[<?=$d[ID]?>]" value="<?=$d[accessKey]?>" />
-            	<div class="nev"><?=$d[nev]?> (<em style="font-weight:normal;"><?=$d[email]?></em>)</div>
+								<input type="hidden" name="accessKey[<?=$d[ID]?>]" value="<?=$d[accessKey]?>" />
+            		<div class="nev"><?=$d[nev]?> (<em style="font-weight:normal;"><?=$d[email]?></em>)</div>
                 <div>
                 <? if($d['userID']): ?>
                 <span class="hasRegistered">Regisztrált tag <i class="fa fa-check"></i></span>

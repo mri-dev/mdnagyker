@@ -188,7 +188,7 @@
             <?php if ($this->product['show_stock'] == 1): ?>
             <div class="stock-info <?=($this->product['raktar_keszlet'] <=0)?'no-stock':''?>">
               <?php if ($this->product['raktar_keszlet'] > 0): ?>
-                Készleten: <strong><?php echo $this->product['raktar_keszlet']; ?> db.</strong>
+                Készleten: <strong><?php echo $this->product['raktar_keszlet']; ?> <?php echo strtolower($this->product['mertekegyseg']); ?>.</strong>
               <?php else: ?>
                 Készleten: <strong>Nincs készleten jelenleg.</strong>
               <?php endif; ?>
@@ -317,14 +317,13 @@
                   <div class="wrapper">
                     <div class="social">
                       <div class="flex flexmob-exc-resp">
-                        <div class="facebook">
-                          <a  href="#"><i class="fa fa-facebook"></i></a>
-                        </div>
-                        <div class="googleplus">
-                          <a href="#"><i class="fa fa-google-plus"></i></a>
+                        <div class="facebook" title="Megosztás Facebook-on!">
+                          <?php $current_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+ ?>
+                          <a href="javascript:void(0);" onclick='window.open( "https://www.facebook.com/sharer/sharer.php?u=<?=$current_link?>", "Facebook", "status = 1, height = 760, width = 560, resizable = 0" )'><i class="fa fa-facebook"></i></a>
                         </div>
                         <div class="email">
-                          <a href="#"><i class="fa fa-envelope"></i></a>
+                          <a href="mailto:?subject=<? echo $this->settings['page_title'].' termék ajánlás: '.$this->product['nev'].' - '.Helper::cashFormat($this->product['ar']).' Ft'?>&body=Kedves ...!%0D%0A%0D%0AAjánlom Neked a következő terméket:%0D%0A<?=$this->product['nev']?>%0D%0A<?=$current_link?>"><i class="fa fa-envelope"></i></a>
                         </div>
                       </div>
                     </div>

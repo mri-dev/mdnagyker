@@ -131,9 +131,11 @@
               <div class="button">
                 <button type="submit"><i class="fa fa-search"></i></button>
               </div>
-              <div class="more">
-                <a href="#">Összetett keresés [+]</a>
-              </div>
+              <?php if (false): ?>                
+                <div class="more">
+                  <a href="#">Összetett keresés [+]</a>
+                </div>
+              <?php endif; ?>
             </div>
             </form>
           </div>

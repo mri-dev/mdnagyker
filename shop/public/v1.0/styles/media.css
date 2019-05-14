@@ -1362,7 +1362,7 @@ body.singlepage .website .cover-img {
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  box-shadow: inset 0 -200px 200px -80px rgba(0, 0, 0, 0);
+  box-shadow: inset 0 -200px 200px -80px rgba(0, 0, 0, 0.72);
 }
 /* line 92, sass/_base.scss */
 body.singlepage .website .page {
@@ -2147,7 +2147,7 @@ body.singlepage .website .page.covered-page .side-menu {
 .webshop-product-top .items .item .image .short-desc,
 .related-products .items .item .image .short-desc {
   z-index: 2;
-  background: rgba(240, 240, 240, 0);
+  background: rgba(240, 240, 240, 0.8);
   padding: 5px;
   font-size: 0.8em;
   text-align: left;
@@ -2943,7 +2943,7 @@ body.singlepage .website .page.covered-page .side-menu {
   z-index: 50;
   padding: 0.2px;
   border: 0.5px solid #d9d9d9;
-  box-shadow: 8px 8px 12px -5px rgba(0, 0, 0, 0);
+  box-shadow: 8px 8px 12px -5px rgba(0, 0, 0, 0.11);
 }
 /* line 1534, sass/_base.scss */
 .cat-menu > .title {
@@ -5749,7 +5749,7 @@ md-toast {
 /* line 400, scss/_base.scss */
 /* line 4212, sass/_base.scss */
 .dialogBox.overlayed {
-  background: rgba(74, 74, 74, 0);
+  background: rgba(74, 74, 74, 0.9);
   pointer-events: auto;
 }
 

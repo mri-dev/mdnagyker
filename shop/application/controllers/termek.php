@@ -121,7 +121,7 @@ class termek extends Controller{
 				$this->out( 'replacements_list', $replacement->getList() );
 			}
 
-			$title = $product['nev'].' | '.$product['csoport_kategoria'];
+			$title = $product['nev'].' - '.Helper::cashFormat($product['ar']).' Ft';
 
 			$this->shop->logTermekView(Product::getTermekIDFromUrl());
 			$this->shop->logLastViewedTermek(Product::getTermekIDFromUrl());
@@ -144,28 +144,35 @@ class termek extends Controller{
 			$SEO = null;
 			// Site info
 			$SEO .= $this->view->addMeta('description',addslashes($desc));
-			$keyw = $this->view->product['kulcsszavak'];
-			$keyw .= " ".$this->view->product['csoport_kategoria'];
+			$keyw = implode(', ',$this->view->product['kulcsszavak']);
+			$keyw .= ", ".$this->view->product['csoport_kategoria'];
 			$SEO .= $this->view->addMeta('keywords',addslashes($keyw));
 			$SEO .= $this->view->addMeta('revisit-after','3 days');
 
 			// FB info
 			$SEO .= $this->view->addOG('title',addslashes($title));
-			$SEO .= $this->view->addOG('description',addslashes($desc));
+			$SEO .= $this->view->addOG('description', addslashes(trim(preg_replace('/\s\s+/', ' ', strip_tags($desc)))));
 			$SEO .= $this->view->addOG('type','product');
 			$SEO .= $this->view->addOG('url',$this->view->settings['page_url'].'/'.substr($_SERVER[REQUEST_URI],1));
 			$SEO .= $this->view->addOG('image',$product[profil_kep]);
-			$SEO .= $this->view->addOG('site_name', $title);
+			$SEO .= $this->view->addOG('site_name', $this->view->settings['page_title']);
 
 			// FB - OG - PRODUCT
-			$ar = $product['brutto_ar'];
-			$SEO .= '<meta property="product:original_price:amount" content="'.$ar.'" />'."\n\r";
-			$SEO .= '<meta property="product:original_price:currency" content="HUF" />'."\n\r";
+
+
+
+			if( $product['akcios'] == '1' && $product['akcios']['mertek'] > 0){
+				$ar = $product['eredeti_ar'];
+			} else {
+				$ar = $product['ar'];
+			}
 			$SEO .= '<meta property="product:price:amount" content="'.$ar.'" />'."\n\r";
 			$SEO .= '<meta property="product:price:currency" content="HUF" />'."\n\r";
 
-			if( $product['akcios'] == '1' && $product['akcios_fogy_ar'] > 0){
-				$SEO .= '<meta property="product:price:sale_amount" content="'.$product['akcios_fogy_ar'].'" />'."\n\r";
+			if( $product['akcios'] == '1' && $product['akcios']['mertek'] > 0){
+				$SEO .= '<meta property="product:original_price:amount" content="'.$product['eredeti_ar'].'" />'."\n\r";
+				$SEO .= '<meta property="product:original_price:currency" content="HUF" />'."\n\r";
+				$SEO .= '<meta property="product:price:sale_amount" content="'.$product['ar'].'" />'."\n\r";
 				$SEO .= '<meta property="product:price:sale_currency" content="HUF" />'."\n\r";
 			}
 

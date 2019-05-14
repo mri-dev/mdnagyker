@@ -51,7 +51,7 @@ class CashmanAPI extends ResourceImportBase
     $this->incFixRowData($param[0]);
 
     $this->api->keszlet_lista( $param );
-    
+
     if($this->api->hiba=='') {
 			//rendben
 			//visszakapott értékek:
@@ -135,8 +135,14 @@ class CashmanAPI extends ResourceImportBase
     $szallitasi = json_decode($data["szallitasi_keys"], true);
 
     /* Számla adatok hozzáadása */
+    if (
+      $data['fizetes'] == 'Bankkártyás fizetés (BORGUN)' ||
+      $data['fizetes'] == 'Bankkártyás fizetés (OTP SIMPLE)'
+    ) {
+      $data['fizetes'] = 'Bankkártya';
+    }
     // Kötelező elemek
-    $param[0]['partner_kod'] = ($data['userID'] != '') ? $data['userID'] : '';
+    $param[0]['partner_kod'] = ($data['crm_partner_id'] != '') ? $data['crm_partner_id'] : '';
     $param[0]['fizetesmod'] = $data['fizetes'];
 
     $param[0]['nev'] = $data['nev'];
