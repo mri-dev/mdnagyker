@@ -1211,13 +1211,14 @@ body.singlepage{
 			.selectors{
 				position: relative;
 				.selector{
-					color: #f09f0f;
+					color: $color-blue;
 					cursor: pointer;
 					padding: 8px 25px 8px 10px;
 					border: 1px solid #f1f1f1;
 					&.filtered{
-						color: $color-red;
-						border: 1px solid #fbc3c6;
+						color: #259d3a;
+				    border: 1px solid #95dda1;
+				    background: #e5f3e5;
 					}
 				}
 				.selectorHint {
@@ -1278,27 +1279,26 @@ body.singlepage{
 		}
 
 		.action-group {
-			padding: 10px;
-			background: #eceff2;
+			padding: 0;
 			text-align: center;
-			border-top: 0.4px solid #e0e0e0;
 
 			button {
-				background: $color-yellow;
+				background: $color-blue;
 				padding: 8px 10px;
 				border: none;
-				border-radius: 5px;
-				color: #4d4d4d;
+				color: white;
 				text-transform: uppercase;
 				font-size: 0.9em;
 				font-weight: bold;
+				width: 100%;
 			}
 		}
 
 		&.filters{
 			margin-bottom: 20px;
 			.head{
-				background: $color-yellow;
+				background: $color-blue;
+				color: white;
 			}
 		}
 

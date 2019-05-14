@@ -2615,42 +2615,43 @@ body.singlepage .website .page.covered-page .side-menu {
 }
 /* line 1213, sass/_base.scss */
 .filter-sidebar .side-group .section-wrapper .selectors .selector {
-  color: #f09f0f;
+  color: #007aff;
   cursor: pointer;
   padding: 8px 25px 8px 10px;
   border: 1px solid #f1f1f1;
 }
 /* line 1218, sass/_base.scss */
 .filter-sidebar .side-group .section-wrapper .selectors .selector.filtered {
-  color: #cd2a30;
-  border: 1px solid #fbc3c6;
+  color: #259d3a;
+  border: 1px solid #95dda1;
+  background: #e5f3e5;
 }
-/* line 1223, sass/_base.scss */
+/* line 1224, sass/_base.scss */
 .filter-sidebar .side-group .section-wrapper .selectors .selectorHint {
   background: #f5f5f5;
 }
-/* line 1226, sass/_base.scss */
+/* line 1227, sass/_base.scss */
 .filter-sidebar .side-group .section-wrapper .selectors .selectorHint ul li label {
   cursor: pointer;
   display: block;
   padding: 5px;
   border-bottom: 1px solid #e0e0e0;
 }
-/* line 1232, sass/_base.scss */
+/* line 1233, sass/_base.scss */
 .filter-sidebar .side-group .section-wrapper .selectors .selectorHint ul li label input[type=checkbox] {
   display: inline-block;
   vertical-align: middle;
   margin: 0;
 }
-/* line 1238, sass/_base.scss */
+/* line 1239, sass/_base.scss */
 .filter-sidebar .side-group .section-wrapper .selectors .selectorHint ul li label:hover {
   background: #e3e3e3;
 }
-/* line 1243, sass/_base.scss */
+/* line 1244, sass/_base.scss */
 .filter-sidebar .side-group .section-wrapper .selectors .selectorHint ul li:last-child label {
   border-bottom: none;
 }
-/* line 1247, sass/_base.scss */
+/* line 1248, sass/_base.scss */
 .filter-sidebar .side-group .section-wrapper .selectors .sel-item-n {
   position: absolute;
   background: #e8e8e8;
@@ -2664,50 +2665,49 @@ body.singlepage .website .page.covered-page .side-menu {
   top: 6px;
   pointer-events: none;
 }
-/* line 1262, sass/_base.scss */
+/* line 1263, sass/_base.scss */
 .filter-sidebar .side-group .section-wrapper.type-szam {
   padding: 10px 10px 25px 10px;
 }
-/* line 1265, sass/_base.scss */
+/* line 1266, sass/_base.scss */
 .filter-sidebar .side-group .section-wrapper.type-szam .rangeInfo {
   margin: 5px -15px 0 -15px;
   font-size: 0.9em;
 }
-/* line 1268, sass/_base.scss */
+/* line 1269, sass/_base.scss */
 .filter-sidebar .side-group .section-wrapper.type-szam .rangeInfo .def {
   color: #7c7c7c;
 }
-/* line 1271, sass/_base.scss */
+/* line 1272, sass/_base.scss */
 .filter-sidebar .side-group .section-wrapper.type-szam .rangeInfo .sel {
   color: #e0131c;
   font-size: 1.1em;
   font-weight: bold;
 }
-/* line 1280, sass/_base.scss */
+/* line 1281, sass/_base.scss */
 .filter-sidebar .side-group .action-group {
-  padding: 10px;
-  background: #eceff2;
+  padding: 0;
   text-align: center;
-  border-top: 0.4px solid #e0e0e0;
 }
-/* line 1286, sass/_base.scss */
+/* line 1285, sass/_base.scss */
 .filter-sidebar .side-group .action-group button {
-  background: #ffcc00;
+  background: #007aff;
   padding: 8px 10px;
   border: none;
-  border-radius: 5px;
-  color: #4d4d4d;
+  color: white;
   text-transform: uppercase;
   font-size: 0.9em;
   font-weight: bold;
+  width: 100%;
 }
-/* line 1298, sass/_base.scss */
+/* line 1297, sass/_base.scss */
 .filter-sidebar .side-group.filters {
   margin-bottom: 20px;
 }
-/* line 1300, sass/_base.scss */
+/* line 1299, sass/_base.scss */
 .filter-sidebar .side-group.filters .head {
-  background: #ffcc00;
+  background: #007aff;
+  color: white;
 }
 /* line 1306, sass/_base.scss */
 .filter-sidebar .side-group.lastviewed .head {

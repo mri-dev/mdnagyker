@@ -3,11 +3,11 @@
       <? $this->render('templates/sidebar_menu'); ?>
     <?php endif; ?>
 
-    <?php if ( $this->product_listing ): ?>
+    <?php if ( $this->product_list ): ?>
     <form class="" action="" method="get">
       <div class="filters side-group">
         <div class="head">
-          Keresés tulajdonságok szerint
+          Termékek szűrése
         </div>
         <?php if ( !empty($this->productFilters) ): ?>
           <?php foreach ( $this->productFilters as $pf ):
@@ -68,10 +68,11 @@
         </div>
         <div class="section-wrapper">
           <select name="order" class="form-control">
-            <option value="ar_asc" selected="selected">Ár: növekvő</option>
-            <option value="ar_desc">Ár: csökkenő</option>
-            <option value="nev_asc">Név: A-Z</option>
-            <option value="nev_desc">Név: Z-A</option>
+            <option value="" selected="selected">Releváns termékek elől</option>
+            <option value="ar_asc" <?=($_GET['order'] == 'ar_desc')?'selected="selected"':''?>>Ár: növekvő</option>
+            <option value="ar_desc" <?=($_GET['order'] == 'ar_desc')?'selected="selected"':''?>>Ár: csökkenő</option>
+            <option value="nev_asc" <?=($_GET['order'] == 'nev_asc')?'selected="selected"':''?>>Név: A-Z</option>
+            <option value="nev_desc" <?=($_GET['order'] == 'nev_desc')?'selected="selected"':''?>>Név: Z-A</option>
           </select>
         </div>
         <div class="action-group">
