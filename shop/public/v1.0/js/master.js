@@ -139,7 +139,7 @@ $(function(){
 			var val 		= $(this).val();
 
 			if(selected){
-				selText += text+", ";
+				selText += '<span>'+text+'</span>'+"<span class='sep'>, </span>";
 				selVal 	+= val+",";
 			}
 
@@ -155,7 +155,7 @@ $(function(){
 		}else{
 			selVal = selVal.slice(0,-1);
 		}
-		$('#'+fr).text(selText);
+		$('#'+fr).html(selText);
 		$('#'+fr+'_v').val(selVal);
 
 	});
@@ -283,13 +283,14 @@ $(function(){
 
 		return false;
 	});
+
 	// Mobile Device events
 	$('*[mb-event]').each( function(i){
 		var _ =  $(this).data('mb');
+		console.log(_.event);
 
 		switch (_.event) {
 			case 'toggleOnClick':
-
 				if ( _.target ) {
 					$(_.target).unbind('mouseenter mouseleave click');
 					$(this).click( function(){
@@ -589,10 +590,9 @@ function searchFilters(){
 
 			if(selected){
 				$('#'+fr).addClass('filtered');
-				selText += text+", ";
+				selText += '<span>'+text+'</span>'+"<span class='sep'>, </span>";
 				selVal 	+= val+",";
 			}
-
 		});
 
 		if(selText == ''){
@@ -605,7 +605,7 @@ function searchFilters(){
 		}else{
 			selVal = selVal.slice(0,-1);
 		}
-		$('#'+fr).text(selText);
+		$('#'+fr).html(selText);
 		$('#'+fr+'_v').val(selVal);
 
 	});

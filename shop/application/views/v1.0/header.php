@@ -131,12 +131,78 @@
               <div class="button">
                 <button type="submit"><i class="fa fa-search"></i></button>
               </div>
-              <?php if (false): ?>                
+              <?php if (true): ?>
                 <div class="more">
-                  <a href="#">Összetett keresés [+]</a>
+                  <a href="javascript:void(0);" mb-event="true" data-mb='{ "event": "toggleOnClick", "target" : "#moresearch" }'>Összetett keresés [+]</a>
                 </div>
               <?php endif; ?>
             </div>
+
+            <?php if (true): ?>
+            <div class="more-search" id="moresearch">
+              <div class="wrapper">
+
+                <div class="row">
+                  <div class="col-md-4 left">
+                    Logikai kapcsolat
+                  </div>
+                  <div class="col-md-8 left">
+                    <div class="">
+                      <input type="radio" <?=(isset($_GET['srel']) && !empty($_GET['srel']) && $_GET['srel'] == 'and')?'checked="checked"':''?> name="srel" value="and"> <strong>ÉS</strong> (mindegyik szó szerepel)
+                    </div>
+                    <div class="">
+                      <input type="radio" <?=((isset($_GET['srel']) && !empty($_GET['srel']) && $_GET['srel'] == 'or') || $_GET['srel'] == '')?'checked="checked"':''?> name="srel" value="or"> <strong>VAGY</strong>(bármely szó szerepel)
+                    </div>
+                  </div>
+                </div>
+                <?php if ($this->categories): $srcfilters = array(); $srcfilters = explode(",",$_GET['cat']); ?>
+                <div class="row">
+                  <div class="col-md-4 left">
+                    Kategória
+                  </div>
+                  <div class="col-md-8 left">
+                    <?php $srccatid  = 'srccat'; ?>
+                    <div class="selector-wrapper">
+                      <input type="hidden" name="cat" id="p_<?=$srccatid?>_v" />
+                      <div id="pmf_<?=$srccatid?>">
+                        <div class="selectors">
+                           <div class="selector" key="p_<?=$srccatid?>" id="p_<?=$srccatid?>">összes</div>
+                           <div class="selectorHint p_<?=$srccatid?>" style="display:none;">
+                              <ul>
+                                 <?php foreach ( $this->categories->tree  as $cat ) { ?>
+                                 <li><input type="checkbox" <?=(in_array($cat['ID'],$srcfilters))?'checked':''?> id="p_<?=$srccatid?>_v<?=$cat['ID']?>" for="p_<?=$srccatid?>" text="<?=$cat['neve']?>" value="<?=$cat['ID']?>" /><label for="p_<?=$srccatid?>_v<?=$cat['ID']?>"><?=$cat['neve']?></label></li>
+                                 <?php } ?>
+                              </ul>
+                           </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <?php endif; ?>
+
+                <div class="row">
+                  <div class="col-md-12 left">
+                    <div class="info-text">
+                      <div class="info">
+                        A keresési kulcsszavak elválasztásához használjon vesszőt! Pl.: gladen, koaxiális, 10 cm, 3 ohm
+                      </div>
+                      <? $srctags = explode(",",$_GET['src']); ?>
+                      <?php if ($srctags[0] != ''): ?>
+                        <div class="searched-info">
+                          <div class=""><strong>Keresett kulcsszavak:</strong></div>
+                          <div class="keys">
+                            <?php $srctagstr = ''; foreach ($srctags as $key): $srctagstr .= '<span>'.trim($key).'</span>'; endforeach; ?>
+                            <?php echo $srctagstr; ?>
+                          </div>
+                        </div>
+                      <?php endif; ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <?php endif; ?>
             </form>
           </div>
         </div>

@@ -1016,7 +1016,7 @@ class Products
 		}
 
 		// Összes kategórián belüli termék ID összegyűjtése
-		$idsqrystr = "SELECT p.ID FROM shop_termekek as p WHERE 1=1 ".$whr; echo $idsqrystr;
+		$idsqrystr = "SELECT p.ID FROM shop_termekek as p WHERE 1=1 ".$whr;
 		$ids_query = $this->db->query( $idsqrystr );
 
 		if ( $ids_query->rowCount() != 0 ) {
@@ -1033,9 +1033,8 @@ class Products
 		$qry .= " LIMIT ".$start_item.",".$this->product_limit_per_page.";";
 
 		if ($_GET['devs'] == '1') {
-			echo $qry . '<br><br>';
+			//echo $qry . '<br><br>';
 		}
-
 
 		$this->qry_str = $qry;
 
@@ -2612,7 +2611,7 @@ class Products
 				foreach ( (array)$qd as $c ) {
 					if (!in_array((int)$c['ID'], $set)) {
 						$set[] = (int)$c['ID'];
-					}					
+					}
 				}
 			}
 		} else {

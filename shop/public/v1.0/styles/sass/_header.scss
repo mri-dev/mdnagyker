@@ -141,6 +141,7 @@ header {
 				width: 85%;
 				background: white;
     		border: 0.4px solid #cacaca;
+				position: relative;
 
 				.flex {
 					.input {
@@ -198,6 +199,104 @@ header {
 					padding: 0 12px;
 					vertical-align: middle;
 					cursor: pointer;
+				}
+
+				.more-search{
+					display: none;
+					position: absolute;
+					flex-basis: 100%;
+					width: 100%;
+					z-index: 100;
+					.info-text{
+						margin: 10px 0 0 0;
+						font-size: 0.75rem;
+					}
+					.searched-info{
+						margin: 10px 0 0 0;
+						.keys{
+							padding: 10px 0 0 0;
+							span {
+								background: #acacac;
+								border-radius: 10px;
+								padding: 3px 5px;
+								color: white;
+								margin: 0 3px 3px 0;
+							}
+						}
+					}
+					& > .wrapper{
+						background: #f3f3f3;
+						border: 0.4px solid #cacaca;
+						border-top: 0.4px dashed #bebebe;
+						box-shadow: 0 10px 20px -5px #7c7979;
+						padding: 15px;
+						border-radius: 0 0 5px 5px;
+						overflow: hidden;
+
+						.row + .row{
+							margin-top: 10px;
+						}
+
+						.selectors{
+							.selector{
+								border: 0.5px solid #bababa;
+								background: white;
+								border-radius: 3px;
+								padding: 3px;
+								cursor: pointer;
+    						padding-right: 25px;
+								position: relative;
+
+								&:before{
+									font-family: 'FontAwesome';
+							    pointer-events: none;
+							    content: "\f0c9";
+							    right: 10px;
+							    top: 50%;
+							    -moz-transform: translateY(-50%);
+							    transform: translateY(-50%);
+							    position: absolute;
+								}
+
+								&:after{
+									content:"";
+									clear: both;
+									display: block;
+								}
+
+								span {
+									display: block;
+									float: left;
+									background: $color-blue;
+									color: white;
+									margin: 3px;
+									border-radius: 5px;
+									padding: 3px 5px;
+								}
+								span.sep{
+									display: none;
+								}
+							}
+							.selectorHint{
+								li {
+									position: relative;
+  								padding: 2px 0;
+								}
+								li label {
+									&:before{
+    								border-radius: 3px;
+										left: 0;
+										font-family: 'FontAwesome';
+										margin: 0 4px 0 0;
+									}
+								}
+							}
+						}
+					}
+
+					&.opened{
+						display: block;
+					}
 				}
 			}
 		}
