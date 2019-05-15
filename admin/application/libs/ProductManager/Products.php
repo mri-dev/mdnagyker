@@ -743,8 +743,14 @@ class Products
 
 		if ( isset($arg['in_cat']) ) {
 			$in_cats = array();
-			$catid = (int)$arg['in_cat'];
-			$in_cats[] = $catid;
+
+			if (is_array($arg['in_cat'])) {
+				$catid = $arg['in_cat'];
+				$in_cats = array_merge($in_cats, $arg['in_cat']);
+			} else {
+				$catid = (int)$arg['in_cat'];
+				$in_cats[] = $catid;
+			}
 
 			$cat_children = $this->getCategoryChildren($catid);
 			if ($cat_children)
@@ -779,12 +785,23 @@ class Products
 		}
 
 		// Keresés
+		if (isset($arg['search_relative'])) {
+			$search_realtive = " ".$arg['search_relative']." ";
+		} else {
+			$search_realtive = ' and ';
+		}
+
+		if (!in_array($arg['search_relative'], array('or', 'and'))) {
+			$search_realtive = ' and ';
+		}
+
 		if ( $arg['search'] && is_array($arg['search']) && !empty($arg['search']) ) {
 			$add = " and (";
 				foreach ($arg['search'] as $src ) {
-					$add .= "(p.nev LIKE '%".$src."%' or p.kulcsszavak LIKE '%".$src."%' or p.rovid_leiras LIKE '%".$src."%' or p.cikkszam = '".$src."') and ";
+					$src = trim($src);
+					$add .= "(p.nev LIKE '%".$src."%' or p.kulcsszavak LIKE '%".$src."%' or p.rovid_leiras LIKE '%".$src."%' or p.cikkszam = '".$src."') ".$search_realtive;
 				}
-				$add = rtrim($add," and ");
+				$add = rtrim($add, $search_realtive);
 			$add .= ") ";
 
 			$whr .= $add;
@@ -910,11 +927,11 @@ class Products
             if ($fv) {
                 $paramFilter[$fk] = $fv;
             }
-
         }
     }
 
 		$having = '';
+
     if (count($paramFilter) > 0) {
         $fkq = '';
         foreach ($paramFilter as $pmfk => $pmfv) {
@@ -925,7 +942,9 @@ class Products
                     $fkq .= "FIND_IN_SET('p_" . $key . ":" . $pv . "',GROUP_CONCAT(CONCAT('p_',pa.parameterID,':',pa.ertek))) or ";
                 }
                 $fkq = rtrim($fkq, ' or ');
-                $fkq .= ") and ";
+                $fkq .= ") ";
+
+								$fkq .= ' and ';
             } else {
                 $v = $pmfv[0];
                 $fkq .= "isInMinMax(p.ID,'" . $key . "'," . $v . ") and ";
@@ -997,7 +1016,7 @@ class Products
 		}
 
 		// Összes kategórián belüli termék ID összegyűjtése
-		$idsqrystr = "SELECT p.ID FROM shop_termekek as p WHERE 1=1 ".$whr;
+		$idsqrystr = "SELECT p.ID FROM shop_termekek as p WHERE 1=1 ".$whr; echo $idsqrystr;
 		$ids_query = $this->db->query( $idsqrystr );
 
 		if ( $ids_query->rowCount() != 0 ) {
@@ -1013,7 +1032,10 @@ class Products
 		$start_item = $current_page * $this->product_limit_per_page - $this->product_limit_per_page;
 		$qry .= " LIMIT ".$start_item.",".$this->product_limit_per_page.";";
 
-		//echo $qry . '<br><br>';
+		if ($_GET['devs'] == '1') {
+			echo $qry . '<br><br>';
+		}
+
 
 		$this->qry_str = $qry;
 
@@ -1113,6 +1135,7 @@ class Products
 
 		return $this;
 	}
+
 
 	public static function calcEgysegAr( $me, $mevar, $price)
 	{
@@ -2574,17 +2597,40 @@ class Products
 		$set = array();
 		$walk = true;
 
-		$q = $this->db->squery("SELECT ID FROM shop_termek_kategoriak WHERE szulo_id = :cid;", array('cid' => $cat_id));
+		if (is_array($cat_id)) {
+			foreach ((array)$cat_id as $cid) {
+				if ((int)$cid == 0) {
+					continue;
+				}
+				$q = $this->db->squery("SELECT ID FROM shop_termek_kategoriak WHERE szulo_id = :cid;", array('cid' => $cid));
+				if ($q->rowCount() == 0) {
+					return false;
+				}
 
-		if ($q->rowCount() == 0) {
-			return false;
+				$qd = $q->fetchAll(\PDO::FETCH_ASSOC);
+
+				foreach ( (array)$qd as $c ) {
+					if (!in_array((int)$c['ID'], $set)) {
+						$set[] = (int)$c['ID'];
+					}					
+				}
+			}
+		} else {
+			$q = $this->db->squery("SELECT ID FROM shop_termek_kategoriak WHERE szulo_id = :cid;", array('cid' => $cat_id));
+			if ($q->rowCount() == 0) {
+				return false;
+			}
+
+			$qd = $q->fetchAll(\PDO::FETCH_ASSOC);
+
+			foreach ( (array)$qd as $cid ) {
+				$set[] = (int)$cid['ID'];
+			}
 		}
 
-		$qd = $q->fetchAll(\PDO::FETCH_ASSOC);
 
-		foreach ( (array)$qd as $cid ) {
-			$set[] = (int)$cid['ID'];
-		}
+
+
 
 		return $set;
 	}

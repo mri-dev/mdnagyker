@@ -80,11 +80,20 @@ class termekek extends Controller {
 				$order['how'] 	= $xord[1];
 			}
 
+			if ($_GET['devs'] == 1) {
+				//print_r(explode(",",$_GET['cat']));
+			}
+
+			$in_cat = $cat->getId();
+
+			if ( !$in_cat && isset($_GET['cat']) && !empty($_GET['cat']) ) {
+				$in_cat = explode(",",$_GET['cat']);
+			}
+
 			$arg = array(
 				'filters' 	=> $filters,
 				'paramfilters' 	=> $paramfilters,
-				'in_cat' 	=> $cat->getId(),
-				'meret' 	=> $_GET['meret'],
+				'in_cat' 	=> $in_cat,
 				'order' 	=> $order,
 				'limit' 	=> 30,
 				'page' 		=> Helper::currentPageNum(),
@@ -106,6 +115,10 @@ class termekek extends Controller {
 
 			if ( $this->gets[1] == 'kiemelt' ) {
 				$arg['kiemelt'] = true;
+			}
+
+			if ( isset($_GET['srel']) ) {
+				$arg['search_relative'] = trim($_GET['srel']);
 			}
 
 			$products = (new Products( array(
