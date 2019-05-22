@@ -140,6 +140,9 @@ s0.parentNode.insertBefore(s1,s0);
             <div class="flex flexmob-exc-resp">
               <div class="input">
                 <input type="text" name="src" value="<?=$_GET['src']?>" placeholder="Keresési kifejezés megadása">
+                <div class="autocomplete-holder" id="searcher_autocomplete">
+
+                </div>
               </div>
               <div class="button">
                 <button type="submit"><i class="fa fa-search"></i></button>

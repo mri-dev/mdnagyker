@@ -70,6 +70,77 @@ h1{
 		height: 550px;
 	}
 }
+.autocomplete-holder{
+	.items{
+		max-height: 500px;
+    overflow-x: auto;
+		/* width */
+		&::-webkit-scrollbar {
+		  width: 10px;
+		}
+
+		/* Track */
+		&::-webkit-scrollbar-track {
+		  background: #f1f1f1;
+		}
+
+		/* Handle */
+		&::-webkit-scrollbar-thumb {
+		  background: #888;
+		}
+
+		/* Handle on hover */
+		&::-webkit-scrollbar-thumb:hover {
+		  background: #555;
+		}
+
+		.item{
+			border-bottom: 0.4px solid #d9d9d9;
+			& > .wrapper{
+				& > a {
+					display: -webkit-box;
+				  display: -ms-flexbox;
+				  display: flex;
+					flex-wrap: nowrap;
+					align-items: center;
+					padding: 10px;
+					text-align: left;
+
+					.img{
+						flex-basis: 50px;
+						img {
+							max-width: 100%;
+						}
+					}
+					.title{
+						flex: 1;
+						padding: 0 0 0 15px;
+
+						.prodtitle{
+							font-weight: bold;
+							color: black;
+							margin: 0 0 5px 0;
+						}
+
+						.price {
+							color: $color-green;
+						}
+					}
+
+					&:hover{
+						text-decoration: none;
+						.title{
+							.prodtitle{
+								color: $color-blue;
+							}
+						}
+
+					}
+				}
+			}
+		}
+	}
+}
 
 .page-width{
 	width: $page-width;

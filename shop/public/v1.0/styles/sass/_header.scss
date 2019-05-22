@@ -146,6 +146,17 @@ header {
 				.flex {
 					.input {
 						flex: 1;
+						position: relative;
+						.autocomplete-holder{
+							position: absolute;
+					    background: #ffffff;
+							overflow: hidden;
+							border-radius: 0 0 5px 5px;
+							box-shadow: 0 10px 20px -10px black;
+					    z-index: 100;
+					    width: 100%;
+					    border: 0.4px solid #cacaca;
+						}
 					}
 					.button {
 						button {

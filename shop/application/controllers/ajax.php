@@ -14,6 +14,44 @@ class ajax extends Controller{
 			parent::__construct();
 		}
 
+		public function autocomplete()
+		{
+			$ret = array();
+			header('Content-Type: application/json');
+
+			switch (  $this->gets[2] )
+			{
+				case 'products':
+
+					$arg = array();
+					$arg['limit'] = -1;
+
+					if (isset($_GET['src']) && $_GET['src'] != '') {
+						$search = explode(",", trim($_GET['src']));
+						if (!empty($search)) {
+							$arg['search'] = $search;
+						}
+					}
+					$products = (new Products( array(
+						'db' => $this->db,
+						'user' => $this->User->get()
+					) ))->prepareList( $arg );
+					$prodlist = $products->getList();
+					foreach ((array)$prodlist as $p) {
+						$ret[]  = array(
+							'ID' => $p['product_id'],
+							'label' => $p['product_nev'],
+							'img' => $p['profil_kep'],
+							'value' => $p['link'],
+							'ar' => $p['ar'],
+						);
+					}
+				break;
+			}
+
+			echo json_encode($ret);
+		}
+
 		function post(){
 			extract($_POST);
 			$ret = array(
