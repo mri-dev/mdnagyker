@@ -77,7 +77,7 @@ class order extends Controller{
 					->setMerchant( $this->view->settings['borgun_setting_merchant'])
 					->setSecretKey(	$this->view->settings['borgun_setting_secret'] )
 					->setGatewayID(	$this->view->settings['borgun_setting_gatewayid'] )
-					->setCurrency('ISK')
+					->setCurrency('HUF')
 					->setOrderId( $order_id )
 					->setData( $this->view->order );
 

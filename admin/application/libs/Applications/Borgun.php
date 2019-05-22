@@ -69,7 +69,7 @@ class Borgun
   // MerchantId|ReturnUrlSuccess|ReturnUrlSuccessServer|OrderId|Amount|Currency
   private function checkhashHMAC( $orderID, $amount = 0, $currency)
   {
-    $message = trim(utf8_encode(trim($this->merchantID).'|'.trim($this->website).'/gateway/borgun/success|'.trim($this->website).'|'.trim($orderID).'|'.trim($amount).'|'.trim($currency)));
+    $message = trim(utf8_encode(trim($this->merchantID).'|'.trim($this->website).'/gateway/borgun/success/?order_id='.$orderID.'|'.trim($this->website).'/gateway/borgun/success/?order_id='.$orderID.'|'.trim($orderID).'|'.trim($amount).'|'.trim($currency)));
     $hash = hash_hmac('sha256', $message, $this->secretKey);
     return $hash;
   }
@@ -85,8 +85,8 @@ class Borgun
 
     foreach ((array)$order['items'] as $item ) {
       $each = $item['egysegAr'];
-      $each = 100;
-      $itemform .= '<input type="'. (($showfiled) ? 'text' : 'hidden' ) .'"  name="itemdescription_'.$ii.'" value="Termek '.$ii.'" />';
+      //$each = 100;
+      $itemform .= '<input type="'. (($showfiled) ? 'text' : 'hidden' ) .'"  name="itemdescription_'.$ii.'" value="'.$item['nev'].'" />';
       $itemform .= '<input type="'. (($showfiled) ? 'text' : 'hidden' ) .'"  name="itemcount_'.$ii.'" value="'.$item['me'].'" />';
       $itemform .= '<input type="'. (($showfiled) ? 'text' : 'hidden' ) .'"  name="itemunitamount_'.$ii.'" value="'.$each.'" />';
       $itemform .= '<input type="'. (($showfiled) ? 'text' : 'hidden' ) .'"  name="itemamount_'.$ii.'" value="'.($each * $item['me']).'" />';
@@ -129,7 +129,7 @@ class Borgun
     $form .= '<input type="'. (($showfiled) ? 'text' : 'hidden' ) .'" name="amount" value="'.$total_price.'"/>';
     //$form .= '<input type="'. (($showfiled) ? 'text' : 'hidden' ) .'" name="pagetype" value="0" />';
     //$form .= '<input type="'. (($showfiled) ? 'text' : 'hidden' ) .'" name="skipreceiptpage" value="0" />';
-    //$form .= '<input type="'. (($showfiled) ? 'text' : 'hidden' ) .'" name="merchantlogo" value="https://www.b-payment.hu/docs/images/logo.jpg" />';
+    $form .= '<input type="'. (($showfiled) ? 'text' : 'hidden' ) .'" name="merchantlogo" value="'.UPLOADS.'no-image-meta.jpg" />';
     //$form .= '<input type="'. (($showfiled) ? 'text' : 'hidden' ) .'" name="merchantemail" value="'.$order['email'].'" />';
     $form .= '<button type="submit" name="PostButton" class="pay-button-borgun">Bankkártyás fizetés indítása</button>';
     $form .= '<br><img src="'.IMG.'borgun-payment.jpg" style="height: 50px;" alt="Borgun B-Payment"/>';

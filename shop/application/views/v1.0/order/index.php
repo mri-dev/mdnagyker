@@ -206,17 +206,13 @@
 
                             <?
                             // Borgun kártyás fizetés
-                            if( $o['fizetesiModID'] == $this->settings['flagkey_pay_card_borgun'] && $o['borgun_fizetve'] == 0 ): ?>
+                            if( $o['fizetesiModID'] == $this->settings['flagkey_pay_card_borgun'] && ($o['borgun_fizetve'] == 1 && $o['borgun_teljesitve'] == 0) ): ?>
                                 <br>
                                 <div class="order-card-pay-holder">
                                   <?=$this->pay_btn?>
                                 </div>
-                            <? elseif( $o['fizetesiModID'] == $this->settings['flagkey_pay_card_borgun'] && $o['borgun_fizetve'] == 1 ): ?>
-                                <? if( $o['borgun_teljesitve'] == 0 ): ?>
-                                <span class="payu-paidonly">Sikeresen fizetve.</span>
-                                <? else: ?>
-                                <span class="payu-paid-done">Fizetve. Sikeresen visszalépve.</span>
-                                <? endif; ?>
+                            <? elseif( $o['fizetesiModID'] == $this->settings['flagkey_pay_card_borgun'] && ($o['borgun_fizetve'] == 1 || $o['borgun_teljesitve'] == 1) ): ?>
+                                <span class="payu-paid-done">Sikeresen fizetve.</span>
                             <? endif; ?>
 
                             <? // PayPal fizetés

@@ -260,7 +260,7 @@ class gateway extends Controller
 				->setMerchant( $this->view->settings['borgun_setting_merchant'])
 				->setSecretKey(	$this->view->settings['borgun_setting_secret'] )
 				->setGatewayID(	$this->view->settings['borgun_setting_gatewayid'] )
-				->setCurrency('ISK');
+				->setCurrency('HUF');
 
 
 			$orderdata = $this->shop->getOrderData( $_GET['order_id'], 'azonosito' );
@@ -302,7 +302,7 @@ class gateway extends Controller
 					if ($_POST['step'] == 'Payment') {
 						$this->hidePatern = true;
 						$this->db->update(
-							"order",
+							"orders",
 							array(
 								'borgun_fizetve' => 1
 							),
@@ -314,13 +314,19 @@ class gateway extends Controller
 
 					if ($_POST['step'] == 'Confirmation') {
 						$this->db->update(
-							"order",
+							"orders",
 							array(
 								'borgun_teljesitve' => 1
 							),
 							sprintf("azonosito = '%s'", $_POST['orderid'])
 						);
 					}
+
+					$message .= '<div class="head">Sikeres bankkártyás fizetés</div>';
+					$lastrans = $this->db->squery("SELECT * FROM gateway_borgun_ipn WHERE statusz = 'OK' and megrendeles = :order ORDER BY idopont DESC", array('order' => $orderdata['azonosito']))->fetch(\PDO::FETCH_ASSOC);
+					$lastrans_data = json_decode($lastrans['datastr'], true);
+					$external_info .= '<div class="ft">'.__('Státusz').': <b class="d">'.$_POST['step'].'</b></div>';
+					$external_info .= '<div class="ft">'.__('Fizetett összeg').': <b class="d">'.\Helper::cashFormat($_POST['amount']).' '.$_POST['currency'].'</b></div>';
 				break;
 				case 'cancel':
 					$message .= '<div class="head">A kártyás fizetés meg lett szakítva</div>';

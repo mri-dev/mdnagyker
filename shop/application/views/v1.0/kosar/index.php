@@ -160,9 +160,9 @@
 					</div>
 					<? endif; ?>
 
-					<? if( $this->orderInfo['fizetesiModID'] == $this->settings['flagkey_pay_card_borgun'] && $this->orderInfo['borgun_fizetve'] == 0 ): ?>
+					<? if( $this->orderInfo['fizetesiModID'] == $this->settings['flagkey_pay_card_borgun'] && ($this->orderInfo['borgun_fizetve'] == 0 && $this->orderInfo['borgun_teljesitve'] == 0) ): ?>
 						<div class="pay-with-card">
-							<div class="h">Online bankkártyás fizetés:</div>							
+							<div class="h">Online bankkártyás fizetés:</div>
 							<?=$this->pay_btn?>
 						</div>
 					<? endif; ?>

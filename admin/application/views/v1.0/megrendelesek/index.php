@@ -148,11 +148,9 @@ Megrendelések
                 // Borgun pay info
                 if($d[fizetesiModID] == $this->settings['flagkey_pay_card_borgun']): ?>
                 <div>
-                   <? if( $d['borgun_fizetve'] == 1 && $d['borgun_teljesitve'] == 0 ): ?>
-                    <span class="payu-paidonly">Sikeresen fizetve.</span>
-                    <? elseif($d['payu_fizetve'] == 1 && $d['payu_teljesitve'] == 1): ?>
-                    <span class="payu-paid-done">Fizetve. Sikeresen visszalépett.</span>
-                    <? endif; ?>
+                   <? if( $d['borgun_fizetve'] == 1 || $d['borgun_teljesitve'] == 1 ): ?>
+                    <span class="payu-paid-done">Sikeresen fizetve.</span>
+                  <? endif; ?>
                 </div>
                 <? endif;?>
                  <?
