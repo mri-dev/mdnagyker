@@ -24,9 +24,7 @@ class termek extends Controller{
 			$this->out( 'product_nav_row', $product_row );
 
 			//print_r($product_row);
-
 			$this->out( 'product', $product );
-			$this->out( 'slideshow', $this->Portal->getSlideshow( $product['nev'] ) );
 
 
 			// Nincs kép a termékről - átirányítás
@@ -44,39 +42,42 @@ class termek extends Controller{
 				}
 			}
 
-			/****
-			* TOP TERMÉKEK
-			*****/
-			$arg = array(
-				'limit' 	=> 5,
-				'collectby' => 'top'
-			);
-			$top_products = (new Products( array(
-				'db' => $this->db,
-				'user' => $this->User->get()
-			) ))->prepareList( $arg );
-			$this->out( 'top_products', $top_products );
-			$this->out( 'top_products_list', $top_products->getList() );
+			if (false) {
+				/****
+					* TOP TERMÉKEK
+					*****/
+					$arg = array(
+						'limit' 	=> 5,
+						'collectby' => 'top'
+					);
+					$top_products = (new Products( array(
+						'db' => $this->db,
+						'user' => $this->User->get()
+					) ))->prepareList( $arg );
+					$this->out( 'top_products', $top_products );
+					$this->out( 'top_products_list', $top_products->getList() );
 
-			/****
-			* MEGNÉZETT TERMÉKEK
-			*****/
-			$arg = array();
-			$viewed_products = (new Products( array(
-				'db' => $this->db,
-				'user' => $this->User->get()
-			) ))->getLastviewedList( \Helper::getMachineID(), 5, $arg );
-			$this->out( 'viewed_products_list', $viewed_products );
+					/****
+					* MEGNÉZETT TERMÉKEK
+					*****/
+					$arg = array();
+					$viewed_products = (new Products( array(
+						'db' => $this->db,
+						'user' => $this->User->get()
+					) ))->getLastviewedList( \Helper::getMachineID(), 5, $arg );
+					$this->out( 'viewed_products_list', $viewed_products );
 
-			/****
-			* Live TERMÉKEK
-			*****/
-			$arg = array();
-			$live_products = (new Products( array(
-				'db' => $this->db,
-				'user' => $this->User->get()
-			) ))->getLiveviewedList( \Helper::getMachineID(), 5, $arg );
-			$this->out( 'live_products_list', $live_products );
+					/****
+					* Live TERMÉKEK
+					*****/
+					$arg = array();
+					$live_products = (new Products( array(
+						'db' => $this->db,
+						'user' => $this->User->get()
+					) ))->getLiveviewedList( \Helper::getMachineID(), 5, $arg );
+					$this->out( 'live_products_list', $live_products );
+
+			}
 
 
 			// Kapcsolódó termékek
@@ -144,7 +145,7 @@ class termek extends Controller{
 			$SEO = null;
 			// Site info
 			$SEO .= $this->view->addMeta('description',addslashes($desc));
-			$keyw = implode(', ',$this->view->product['kulcsszavak']);
+			$keyw = $this->view->product['kulcsszavak'];
 			$keyw .= ", ".$this->view->product['csoport_kategoria'];
 			$SEO .= $this->view->addMeta('keywords',addslashes($keyw));
 			$SEO .= $this->view->addMeta('revisit-after','3 days');

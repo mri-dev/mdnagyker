@@ -1074,7 +1074,7 @@ class Shop
 		LEFT OUTER JOIN shop_markak as m ON m.ID = t.marka
 		LEFT OUTER JOIN shop_termek_allapotok as ta ON ta.ID = t.keszletID
 		LEFT OUTER JOIN shop_szallitasi_ido as szid ON szid.ID = t.szallitasID
-		WHERE c.gepID = $mid";
+		WHERE t.lathato = 1 and c.gepID = $mid";
 		$arg[multi] = '1';
 		extract($this->db->q($q, $arg));
 		$dt = array();

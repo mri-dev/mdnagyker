@@ -685,7 +685,7 @@ class ResourceImportBase
       //print_r($insert_row);
 
       if (!empty($insert_row)) {
-        /* */
+        /* * /
         $debug = $this->db->multi_insert_v2(
           'shop_termekek',
           $insert_header,
@@ -839,7 +839,8 @@ class ResourceImportBase
           if (is_null($up['will_update']['field'][$upkey]['new'])) {
             $upset .= $upkey." = NULL, ";
           } else {
-            $upset .= $upkey." = '".$up['will_update']['field'][$upkey]['new']."', ";
+            $v = $this->db->db->quote($up['will_update']['field'][$upkey]['new']);
+            $upset .= $upkey." = ".$v.", ";
           }
         }
 

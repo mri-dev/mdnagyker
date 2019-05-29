@@ -32,9 +32,6 @@
                   <div class="category-title head">
                       <?php if ($this->myfavorite): ?>
                         <h1>Kedvencnek jelölt termékek</h1>
-                        <div class="push-cart-favorite">
-                          <a href="/kedvencek/?order=1&after=/kosar">Kedvenceket a kosárba teszem <i class="fa fa-cart-plus"></i></a>
-                        </div>
                       <?php elseif($this->category->getName() != ''): ?>
                         <h1><?=$this->category->getName()?></h1>
                       <?php else: ?>
@@ -71,6 +68,12 @@
                         <li><a href="/termekek/<?=$navh?>"><?php echo $nav['neve']; ?></a></li>
                         <?php endforeach; ?>
                       </ul>
+                      <?php if ($this->myfavorite): ?>
+                        <div class="push-cart-favorite">
+                          <a href="/kedvencek/?order=1&after=/kosar">Kedvenceket a kosárba teszem <i class="fa fa-cart-plus"></i></a>
+                        </div>
+                        <div class="clr"></div>
+                      <?php endif; ?>
                       <div id="cart-msg"></div>
                   </div>
 

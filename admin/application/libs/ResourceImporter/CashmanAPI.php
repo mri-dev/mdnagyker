@@ -296,7 +296,7 @@ class CashmanAPI extends ResourceImportBase
     foreach ( (array)$list as $row )
     {
       $s++;
-      //if($s >= 1000) break;
+      //if($s >= 100) break;
       $each = array();
 
       if ($row['cikkszam'] == '' || $row['vonalkod'] == '') {
@@ -304,7 +304,7 @@ class CashmanAPI extends ResourceImportBase
       }
 
       $fulldata = $this->getProduct($row['cikkszam']);
-      $hashkey = md5($originid.'_'.$fulldata['id']);
+      $hashkey = md5($originid.'_'.(int)trim($fulldata['id']));
 
       $each['hashkey'] = $hashkey;
       $each['cikkszam'] = $row['cikkszam'];

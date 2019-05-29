@@ -366,6 +366,7 @@ class Formater
 		$t 		= array('-','','a','a','e','e','i','i','u','u','u','u','u','u','o','o','o','o','o','o','','','','','','','','','','');
 		$str 	= str_replace($f,$t,$str);
 		$str 	= strtolower($str);
+		$str 	= preg_replace('/[^A-Za-z0-9\-]/', '', $str);
 
 		$ret = $str . $after;
 		return $ret;

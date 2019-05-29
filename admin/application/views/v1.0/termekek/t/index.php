@@ -160,7 +160,7 @@
 								</div>
 								<div class="col-md-4">
 									<label for="crm_cikkszam">Cikkszám</label>
-									<input type="text" name="crm[cikkszam]" id="crm_cikkszam" value="<?=$this->termek[crm][cikkszam]?>" class="form-control">
+									<input type="text" name="crm[cikkszam]" id="crm_cikkszam" onkeyup="$('#cikkszam').val($(this).val())" value="<?=$this->termek[crm][cikkszam]?>" class="form-control">
 								</div>
 							</div>
 							<br>
@@ -270,7 +270,7 @@
 					<div class="row">
 						<div class="form-group col-md-3">
 							<label for="cikkszam">Nagyker kód / Cikkszám</label>
-							<input class="form-control" id="cikkszam" readonly="readonly" type="text" value="<?=$this->termek['cikkszam']?>"  name="cikkszam">
+							<input class="form-control" id="cikkszam" type="text" value="<?=$this->termek['cikkszam']?>" name="cikkszam">
 						</div>
 						<div class="form-group col-md-9">
 							<label for="nev">Termék neve*</label>

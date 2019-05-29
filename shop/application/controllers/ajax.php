@@ -451,7 +451,7 @@ class ajax extends Controller{
 							$own = ($_POST['own'] == '1') ? true : false;
 
 							if ($own) {
-								$getn = (int)$this->db->query("SELECT count(ID) FROM shop_termek_favorite WHERE mid = '{$mid}'")->fetchColumn();
+								$getn = (int)$this->db->query("SELECT count(f.ID) FROM shop_termek_favorite as f LEFT OUTER JOIN shop_termekek as t ON t.ID = f.termekID WHERE f.mid = '{$mid}' and t.lathato = 1")->fetchColumn();
 
 								$num = $getn;
 								$ret['num'] = $num;

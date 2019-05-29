@@ -340,6 +340,7 @@ class Products
 
 			$mertekegyseg = (!$product->getVariable('mertekegyseg')) ? NULL : $product->getVariable('mertekegyseg');
 			$mertekegyseg_ertek = (!$product->getVariable('mertekegyseg_ertek')) ? 1 : $product->getVariable('mertekegyseg_ertek');
+			$crmdata = $product->getVariable('crm');
 
 			// Cashman sync
 			$this->syncUpCRMProduct( 1, $product->getVariable('crm') );
@@ -357,53 +358,63 @@ class Products
 			$meret 	= ( !$product->getVariable( 'meret' ) ) ? NULL : $product->getVariable( 'meret' );
 			$szin 	= ( !$product->getVariable( 'szin' ) ) ? NULL : $product->getVariable( 'szin' );
 
+			if ( $crmdata['cikkszam'] != $cikkszam ) {
+				$cikkszam = $crmdata['cikkszam'];
+			}
+
+			if ( $crmdata['termek_nev'] != $nev ) {
+				$nev = $crmdata['termek_nev'];
+			}
+
+			$update = array(
+				'cikkszam' => $cikkszam,
+				'marka' => $marka,
+				'nev' => $nev,
+				'leiras' => $leiras,
+				'bankihitel_leiras' => $bankihitel_leiras,
+				'rovid_leiras' => $rovid_leiras,
+				'meta_title' => $meta_title,
+				'meta_desc' => $meta_desc,
+				'marketing_leiras' => $marketing_leiras,
+				'letoltesek' => $letoltesek,
+				'lathato' => $lathato,
+				'pickpackszallitas' => $pickpackszallitas,
+				'csomagautomata' => $csomagautomata,
+				'no_cetelem' => $no_cetelem,
+				'akcios' => $akcios,
+				'szallitasID' => $szallitasID,
+				'keszletID' => $keszletID,
+				'ujdonsag' => $ujdonsag,
+				'argep' => $argep,
+				'arukereso' => $arukereso,
+				'garancia_honap' => $garancia,
+				'kulcsszavak' => $kulcsszavak,
+				'linkek' => $linkek,
+				'raktar_keszlet' => $raktar_keszlet,
+				'meret' => $meret,
+				'szin' => $szin,
+				'fotermek' => ($product->isMainProduct() ? 1 : 0),
+				'raktar_articleid' => $raktar_articleid,
+				'raktar_variantid' => $raktar_variantid,
+				'raktar_supplierid' => $raktar_supplierid,
+				'raktar_number' => $raktar_number,
+				'alapertelmezett_kategoria' => $alapertelmezett_kategoria,
+				'csoport_kategoria' => $csoport_kategoria,
+				'ajandek' => $ajandek,
+				'kiemelt'=> $kiemelt,
+				'ajanlorendszer_kiemelt' => $ajanlorendszer_kiemelt,
+				'termek_site_url' => $termek_site_url,
+				'tudastar_url' => $tudastar_url,
+				'referer_price_discount' => $referer_price_discount,
+				'sorrend' => $sorrend,
+				'show_stock' => $show_stock,
+				'mertekegyseg' => $mertekegyseg,
+				'mertekegyseg_ertek' => $mertekegyseg_ertek,
+			);
+
 			$this->db->update(
 				'shop_termekek',
-				array(
-					'cikkszam' => $cikkszam,
-					'marka' => $marka,
-					'nev' => $nev,
-					'leiras' => $leiras,
-					'bankihitel_leiras' => $bankihitel_leiras,
-					'rovid_leiras' => $rovid_leiras,
-					'meta_title' => $meta_title,
-					'meta_desc' => $meta_desc,
-					'marketing_leiras' => $marketing_leiras,
-					'letoltesek' => $letoltesek,
-					'lathato' => $lathato,
-					'pickpackszallitas' => $pickpackszallitas,
-					'csomagautomata' => $csomagautomata,
-					'no_cetelem' => $no_cetelem,
-					'akcios' => $akcios,
-					'szallitasID' => $szallitasID,
-					'keszletID' => $keszletID,
-					'ujdonsag' => $ujdonsag,
-					'argep' => $argep,
-					'arukereso' => $arukereso,
-					'garancia_honap' => $garancia,
-					'kulcsszavak' => $kulcsszavak,
-					'linkek' => $linkek,
-					'raktar_keszlet' => $raktar_keszlet,
-					'meret' => $meret,
-					'szin' => $szin,
-					'fotermek' => ($product->isMainProduct() ? 1 : 0),
-					'raktar_articleid' => $raktar_articleid,
-					'raktar_variantid' => $raktar_variantid,
-					'raktar_supplierid' => $raktar_supplierid,
-					'raktar_number' => $raktar_number,
-					'alapertelmezett_kategoria' => $alapertelmezett_kategoria,
-					'csoport_kategoria' => $csoport_kategoria,
-					'ajandek' => $ajandek,
-					'kiemelt'=> $kiemelt,
-					'ajanlorendszer_kiemelt' => $ajanlorendszer_kiemelt,
-					'termek_site_url' => $termek_site_url,
-					'tudastar_url' => $tudastar_url,
-					'referer_price_discount' => $referer_price_discount,
-					'sorrend' => $sorrend,
-					'show_stock' => $show_stock,
-					'mertekegyseg' => $mertekegyseg,
-					'mertekegyseg_ertek' => $mertekegyseg_ertek,
-				),
+				$update,
 				sprintf("ID = %d", $product->getId())
 			);
 
@@ -2446,7 +2457,7 @@ class Products
 	{
 		$ids = array();
 		$mid = \Helper::getMachineID();
-		$favs = $this->db->query("SELECT termekID FROM shop_termek_favorite WHERE mid = '$mid'");
+		$favs = $this->db->query("SELECT f.termekID FROM shop_termek_favorite as f LEFT OUTER JOIN shop_termekek as t ON t.ID = f.termekID WHERE t.lathato = 1 and f.mid = '$mid'");
 
 		if ( $favs->rowCount() != 0) {
 			$favs = $favs->fetchAll(\PDO::FETCH_ASSOC);
