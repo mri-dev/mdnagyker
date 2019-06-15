@@ -39,6 +39,96 @@ class cron extends Controller{
 
 			switch ( $this->gets[2] )
 			{
+				/**
+				* Ez a funkció frissíti a cashmanfx termék árakat annál a termékeknél amik már jelen vannak. A termék ár forrás a joomla régi rendszerből letöltött prodcts.json fájlból nyeri ki
+				**/
+				case 'resyncPriceFromJoomla':
+
+					//autoradiokeret.web-pro.hu/admin/src/json/products.json
+					$wsjson = '/home/webprohu/autoradiokeret.web-pro.hu/admin/src/json/products.json';
+					$jsonopen = file_get_contents($wsjson);
+					$lista = json_decode($jsonopen, true);
+
+					$res = new ResourceImport(array('db' => $this->db));
+
+					$i = 0;
+					//echo '<pre>';
+					foreach ((array)$lista as $l) {
+						$i++;
+						if ($i >= 100) {
+							//break;
+						}
+
+						$prices = array();
+
+						foreach ((array)$l['prices'] as $p) {
+							$pricegroup = 1;
+							if ($p['name'] == 'Viszonteladó') {
+									$pricegroup = 2;
+							}
+							if ($p['name'] == 'Nagykereskedő') {
+									$pricegroup = 3;
+							}
+							$p['pricegroup'] = $pricegroup;
+							$prices[] = $p;
+						}
+						$l['prices'] = $prices;
+						unset($prices);
+
+						$l['res'] = $res->findProductBySKU(trim($l['sku']));
+						$l['cmdata'] = $crm->getProduct(trim($l['sku']));
+
+						$net_price = 0;
+
+						if ($l['prices']) {
+							foreach ((array)$l['prices'] as $price ) {
+								if ($price['pricegroup'] == '1') {
+									$net_price = (float)$price['net_price'];
+								}
+							}
+						}
+
+						// Update process
+						if ($l['cmdata']) {
+							$items = array();
+							$item = array(
+								'termek_id' => trim($l['cmdata']['id']),
+								'cikkszam' => trim($l['res']['cikkszam']),
+								'gyarto_cikkszam' => trim($l['res']['cikkszam']),
+								'gyartocikkszam' => trim($l['res']['cikkszam']),
+								'megnevezes' => trim($l['res']['termek_nev']),
+								'vonalkod' => trim($l['res']['cikkszam']),
+								'afa' => 27,
+								'netto_egysegar' => (float)$net_price,
+								'termekcsoport_id' => 1,
+								'koltseghely_id' => 2,
+								'termek' => 1,
+								'mennyisegiegyseg' => trim($l['res']['mennyisegegyseg'])
+							);
+
+							if ($l['prices']) {
+								foreach ((array)$l['prices'] as $price ) {
+									if ($price['pricegroup'] == '1') {
+										continue;
+									}
+									$priceid = $price['pricegroup'];
+
+									$item['afa'.$priceid] = 27;
+									$item['netto_egysegar'.$priceid] = (float)$price['net_price'];
+								}
+							}
+
+							$items[] = $item;
+
+							$l['cmprepareddata'] = $items;
+							$ins = $crm->addProduct( $items );
+							$l['cmresponse'] = $ins;
+						}
+
+						//print_r($l);
+					}
+
+				break;
 				case 'raktar':
 					$crm = new CashmanAPI(array('db' => $this->db));
 					$keszlet = $crm->getKeszlet();
