@@ -121,6 +121,7 @@
                     <i class="fa fa-gear dropdown-toggle" title="Beállítások" id="dm<?=$d['ID']?>" data-toggle="dropdown"></i>
                       <ul class="dropdown-menu" role="menu" aria-labelledby="dm<?=$d['ID']?>">
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="/account/?t=edit&ID=<?=$d['ID']?>&ret=<?=$_SERVER[REQUEST_URI]?>">Szerkesztés <i class="fa fa-pencil"></i></a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/account/?t=delete&ID=<?=$d['ID']?>&ret=<?=$_SERVER[REQUEST_URI]?>">Törlés <i class="fa fa-times"></i></a></li>
                       </ul>
                 </div>
             </td>

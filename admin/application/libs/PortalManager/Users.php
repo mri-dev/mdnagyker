@@ -53,6 +53,16 @@ class Users
 		$this->getUser();
 	}
 
+	public function deleteUser( $id )
+	{
+		if (empty($id)) {
+			return false;
+		}
+
+		$this->db->squery("DELETE FROM felhasznalo_adatok WHERE fiok_id = :uid", array('uid' => $id));
+		$this->db->squery("DELETE FROM felhasznalok WHERE ID = :uid", array('uid' => $id));
+	}
+
 	public function getUserGroupes( $key = false )
 	{
 		if ( !$key ) {
