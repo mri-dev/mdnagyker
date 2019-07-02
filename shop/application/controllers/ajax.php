@@ -22,7 +22,6 @@ class ajax extends Controller{
 			switch (  $this->gets[2] )
 			{
 				case 'products':
-
 					$arg = array();
 					$arg['limit'] = -1;
 
@@ -41,6 +40,7 @@ class ajax extends Controller{
 						$ret[]  = array(
 							'ID' => $p['product_id'],
 							'label' => $p['product_nev'],
+							'cikkszam' => $p['cikkszam'],
 							'img' => $p['profil_kep'],
 							'value' => $p['link'],
 							'ar' => $p['ar'],

@@ -810,7 +810,7 @@ class Products
 			$add = " and (";
 				foreach ($arg['search'] as $src ) {
 					$src = trim($src);
-					$add .= "(p.nev LIKE '%".$src."%' or p.kulcsszavak LIKE '%".$src."%' or p.rovid_leiras LIKE '%".$src."%' or p.cikkszam = '".$src."') ".$search_realtive;
+					$add .= "(p.nev LIKE '%".$src."%' or p.kulcsszavak LIKE '%".$src."%' or p.rovid_leiras LIKE '%".$src."%' or p.cikkszam = '".$src."' or p.cikkszam LIKE '%".$src."%') ".$search_realtive;
 				}
 				$add = rtrim($add, $search_realtive);
 			$add .= ") ";
