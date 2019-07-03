@@ -2638,10 +2638,6 @@ class Products
 			}
 		}
 
-
-
-
-
 		return $set;
 	}
 
