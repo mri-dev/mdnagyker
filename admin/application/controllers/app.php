@@ -1,5 +1,6 @@
 <?
 use Applications\CSVParser;
+use Applications\EMAGApi;
 
 class app extends Controller{
 		private $AUTH_USER 	= '';
@@ -19,6 +20,35 @@ class app extends Controller{
 
 				echo "Sikertelen azonosítás. Illetéktelenek nem férhetnek hozzá a fájlokhoz!";
 				exit;*/
+			}
+		}
+
+		public function emag()
+		{
+
+			if ($_GET['key'] != 'xGX39pPGkgPJvmpasIpvUW8gu2QELvY5') {
+				header('HTTP/1.0 403 Forbidden');
+				exit;
+			}
+
+			try {
+				$emag = new EMAGApi(array(
+					'username' => EMAG_USERNAME,
+					'password' => EMAG_PASSWORD
+				),
+				array('db' => $this->db));
+
+				switch ( $this->view->gets[2] ) {
+					case 'test':
+						$emag->setEndpoint('order')->setAction('read')->run();
+					break;
+
+					default:
+						die('Nincs ilyen végpont: '.$this->view->gets[2]); exit;
+					break;
+				}
+			} catch (\Exception $e) {
+				die($e->getMessage()); exit;
 			}
 		}
 
