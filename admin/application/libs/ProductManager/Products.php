@@ -1145,8 +1145,6 @@ class Products
 
 		return $this;
 	}
-
-
 	public static function calcEgysegAr( $me, $mevar, $price)
 	{
 		$ea = 0;

@@ -243,7 +243,6 @@
         <tr>
           <td colspan="99" class="in i<?=$d['product_id']?>" style="display:none;">
           	<div class="row">
-
                 <div align="left" class="col-md-3">
                     <h4>Kategóriákban megjelen</h4>
                     <div class="list">

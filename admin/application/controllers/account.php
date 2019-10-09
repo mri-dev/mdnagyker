@@ -1,5 +1,4 @@
 <?
-
 use ProductManager\Products;
 
 class account extends Controller
@@ -8,7 +7,7 @@ class account extends Controller
 		parent::__construct();
 		parent::$pageTitle = 'Fiókok';
 
-        $this->view->adm = $this->AdminUser;
+      $this->view->adm = $this->AdminUser;
 		$this->view->adm->logged = $this->AdminUser->isLogged();
 
 		$products = new Products( array(
