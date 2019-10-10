@@ -40,7 +40,14 @@ class app extends Controller{
 
 				switch ( $this->view->gets[2] ) {
 					case 'test':
-						$emag->setEndpoint('order')->setAction('read')->run();
+						$emag
+						->setEndpoint('product_offer')
+						->setAction('read')
+						->filter(array(
+							'brand' => 'Pioneer',
+							'status' => 0
+						))
+						->run();
 					break;
 
 					default:
@@ -50,6 +57,8 @@ class app extends Controller{
 			} catch (\Exception $e) {
 				die($e->getMessage()); exit;
 			}
+
+			unset( $emag );
 		}
 
 		public function userimport()
