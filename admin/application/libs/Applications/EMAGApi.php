@@ -50,8 +50,6 @@ class EMAGApi
   {
     $ch = curl_init();
 
-    echo http_build_query($this->requestData);
-
     curl_setopt($ch, CURLOPT_URL, self::API_URI . $this->endpoint . $this->action);
     curl_setopt($ch, CURLOPT_HEADER, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -60,12 +58,7 @@ class EMAGApi
     curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: Basic ' . $this->hash]);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->requestData));
     $result = json_decode(curl_exec($ch), true);
-
-    echo '<pre>';
-    print_r($result);
-    echo '</pre>';
     curl_close($ch);
-
     return $result;
   }
 

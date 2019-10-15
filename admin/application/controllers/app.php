@@ -1,6 +1,7 @@
 <?
 use Applications\CSVParser;
 use Applications\EMAGApi;
+use ProductManager\Products;
 
 class app extends Controller{
 		private $AUTH_USER 	= '';
@@ -38,16 +39,168 @@ class app extends Controller{
 				),
 				array('db' => $this->db));
 
-				switch ( $this->view->gets[2] ) {
-					case 'test':
-						$emag
-						->setEndpoint('product_offer')
+				switch ( $this->view->gets[2] )
+				{
+					case 'vat':
+						$vats = $emag
+						->setEndpoint('vat')
 						->setAction('read')
 						->filter(array(
-							'brand' => 'Pioneer',
-							'status' => 0
+
 						))
 						->run();
+
+						/* */
+						echo '<pre>';
+							print_r($vats);
+						echo '</pre>';
+						/* */
+					break;
+					// Leszinkronizálás az eMAG-ról, hogy melyik termék szerepel már a marketplace-en
+					case 'syncDownProductUsage':
+						$pages = $emag
+						->setEndpoint('product_offer')
+						->setAction('count')
+						->filter(array(
+							'itemsPerPage' => 100
+						))
+						->run();
+
+						if ( $pages && !$pages['isError'] )
+						{
+							$total_page = (int)$pages['results']['noOfPages'];
+							$total_items = (int)$pages['results']['noOfItems'];
+							$itemperpage = (int)$pages['results']['itemsPerPage'];
+
+							$insert_row = array();
+
+							$pl = 2;
+							for($p = 1; $p <= $total_page; $p++)
+							{
+								$pl--;
+								//if($pl < 0) break;
+								$page = $emag
+								->setEndpoint('product_offer')
+								->setAction('read')
+								->filter(array(
+									'itemsPerPage' => 100,
+									'currentPage' => $p
+								))
+								->run();
+
+								if ( $page && !$page['isError'] && $page['results'] )
+								{
+									foreach ((array)$page['results'] as $r) {
+										if(empty($r['part_number_key'])) continue;
+										$insert_row[] = array(
+											$r['part_number'],
+											$r['sale_price'],
+											$r['part_number_key'],
+											$r['status'],
+											$r['id'],
+											NOW
+										);
+									}
+								}
+
+								/* */
+								echo '<pre>';
+									print_r($page);
+								echo '</pre>';
+								/* */
+
+								usleep(500);
+							}
+
+							if (!empty($insert_row) && false) {
+								$dbx = $this->db->multi_insert(
+									'emag__products',
+									array('cikkszam', 'price', 'PNK', 'status', 'internal_id', 'last_sync'),
+									$insert_row,
+									array(
+										'debug' => $debug,
+										'duplicate_keys' => array('PNK','cikkszam', 'price', 'status', 'internal_id', 'last_sync' )
+									)
+								);
+							}
+						}
+					break;
+
+					// A még nem feltöltött termékek feltöltése a marketplace-re
+					case 'uploadProducts':
+						$products = new Products(array('db' => $this->db));
+						// Még nem feltöltött termékek lekérése
+						$unuploaded_products_raw = array();
+						$pq = $this->db->query("SELECT
+							t.ID, t.cikkszam, t.nev, t.marka, t.profil_kep, t.alapertelmezett_kategoria, t.garancia_honap, t.leiras, t.xml_import_res_id, t.mertekegyseg, t.raktar_keszlet, getTermekAr(t.ID, 0) as ar,
+							m.neve as marka_nev
+						FROM `shop_termekek` as t
+						LEFT OUTER JOIN shop_markak as m ON m.ID = t.marka
+						WHERE t.cikkszam = 'TS-A1370F' and t.cikkszam NOT IN (SELECT e.cikkszam FROM emag__products as e) LIMIT 0,50");
+						if ($pq->rowCount() != 0)
+						{
+							$prods = $pq->fetchAll(\PDO::FETCH_ASSOC);
+							foreach ((array)$prods as $p) {
+								$p['images'] = $products->getProductImages($p['ID']);
+								$p['leiras'] = preg_replace('/\{.*\}/','',$p['leiras']);
+								$p['leiras'] = str_replace('../../../../src/uploads/',SOURCE.'uploads/',$p['leiras']);
+								$unuploaded_products_raw[] = $p;
+							}
+						}
+
+						$offers = array();
+						if ($unuploaded_products_raw)
+						{
+							foreach ( (array)$unuploaded_products_raw as $d )
+							{
+								$id = $this->ownproduct_id($d['ID'], '9', 8);
+								//$id = $this->ownproduct_id( '90003224' );
+
+								// Images
+								$images = array();
+								if ( $d['images'] && !empty($d['images']) ) {
+									foreach ((array)$d['images'] as $img) {
+										$images[] = array(
+											'url' => str_replace('//cp.','//www.cp.',DOMAIN).$img,
+											'display_type' => ($d['profil_kep'] == $img) ? 1 : 2,
+										);
+									}
+								}
+
+								$offers[] = array(
+									'id' => $id,
+									'name' => $d['nev'],
+									'vendor_category_id' => (int)$d['alapertelmezett_kategoria'],
+									'sale_price' => (float)$d['ar']/1.27,
+									'part_number' => $d['cikkszam'],
+									'description' => $d['leiras'],
+									'brand' => $d['marka_nev'],
+									'images' => $images,
+									'warranty' => (int)$d['garancia_honap'],
+									'url' => str_replace('//cp.','//www.',DOMAIN).'termek/'.\Helper::makeSafeUrl($d['nev'],'_-'.$d['ID']),
+									'stock' => array(
+										'warehouse_id' => 1,
+										'value' => (float)$d['raktar_keszlet']
+									),
+									'status' => 0,
+									'vat_id' => 1
+								);
+							}
+						}
+
+						if ($offers) {
+							$createrow = $emag
+								->setEndpoint('product_offer')
+								->setAction('save')
+								->filter($offers)
+								->run();
+						}
+
+						echo '<pre>';
+							print_r($createrow);
+							//print_r($unuploaded_products_raw);
+						echo '</pre>';
+
 					break;
 
 					default:
@@ -59,6 +212,22 @@ class app extends Controller{
 			}
 
 			unset( $emag );
+		}
+
+		private function ownproduct_id( $id, $prefix = '9', $target_num = 8 )
+		{
+			$target = $target_num;
+
+			if ( strlen($id) == '8' and substr($id, 0, 1) == '9' )
+			{
+				return preg_replace("/^[90+]+/i",'', $id);
+			}
+
+			$ct = strlen($id);
+			$nullc = $target-$ct-strlen($prefix);
+			$myid = $prefix.str_repeat('0', $nullc).$id;
+
+			return $myid;
 		}
 
 		public function userimport()
